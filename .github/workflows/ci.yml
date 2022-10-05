@@ -1,0 +1,55 @@
+name: Build and test flake outputs
+on:
+  push:
+  workflow_call:
+    inputs:
+      branch:
+        description: Branch name to build on
+        default: ''
+        required: false
+        type: string
+
+jobs:
+  nix:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        system:
+          - x86_64
+        nix-command:
+          - flake check
+          - eval .#apps.$_system.nixos-install.program
+          - eval .#apps.$_system.setup.program
+
+        include:
+          - nix-command: develop
+            system: x86_64
+
+          - nix-command: build --dry-run .#homeConfigurations."demo@non-nixos-vm".activationPackage
+            system: x86_64
+
+          - nix-command: build --dry-run .#nixosConfigurations.nixos-vm.config.system.build.toplevel
+            system: x86_64
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ inputs.branch }}
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v16
+
+      - name: Build command (x86_64)
+        if: matrix.system == 'x86_64'
+        env:
+          _system: ${{ matrix.system }}-linux
+        run: |
+          nix \
+            --verbose \
+            --log-format bar-with-logs \
+            --keep-going \
+            --show-trace \
+            ${{ matrix.nix-command }}
+

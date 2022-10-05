@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+cd "$(dirname "$0")" || exit
+. ./lib/btctl
+
+device="04:5D:4B:97:5D:55"
+connect $device
+
+# Set profile to A2DP
+pacmd set-card-profile bluez_card.04_5D_4B_97_5D_55 a2dp_sink
+
+# Set the headsets volume to 35% as long as
+# the hardware buttons don't work
+pactl set-sink-volume bluez_sink.04_5D_4B_97_5D_55.a2dp_sink 35%
+
