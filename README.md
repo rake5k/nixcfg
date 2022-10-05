@@ -76,7 +76,9 @@ repo and add your host and user configurations into the folder structure and ref
       ];
     }
     // eachSystem ({ mkGeneric, mkApp, mkCheck, getDevShell, mkDevShell, ... }:
+      {
         # ...
+      });
 }
 ```
 
