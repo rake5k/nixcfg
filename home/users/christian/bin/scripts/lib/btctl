@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+connect() {
+  local device="$1"
+  echo "Connect device $device"
+  if is_connected "$device"; then
+    echo "Device is already connected, doing nothing..."
+  else
+    echo "Device is not connected, attempting to connect..."
+    bluetoothctl -- connect "$device"
+  fi
+}
+
+disconnect() {
+  local device="$1"
+  echo "Disconnect device $device"
+  if is_connected "$device"; then
+    echo "Device is connected, attempting to disconnect..."
+    bluetoothctl -- disconnect "$device"
+  else
+    echo "Device is already disconnected, doing nothing..."
+  fi
+}
+
+is_connected() {
+  local device="$1"
+  if [[ -z "$device" ]]; then
+    exit 1
+  fi
+
+  local name="$(bluetoothctl -- info "$device" | grep "Name" | cut -d ":" -f 2 | tr -d '[:space:]' | xargs)"
+  local connected="$(bluetoothctl -- info "$device" | grep "Connected" | cut -d ":" -f 2 | tr -d '[:space:]' | xargs)"
+  echo "Device $name connected: $connected"
+  [[ "$connected" == 'yes' ]]
+}
+
+export -f connect
+export -f disconnect
+

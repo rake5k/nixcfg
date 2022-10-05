@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+if ! $(op get account &>/dev/null); then
+    eval $(op signin my)
+fi
+
+ACCOUNT=$(op get item "${1}" --fields username,password)
+TOTP=$(op get totp "${1}" 2>/dev/null)
+echo ${ACCOUNT} | jq --raw-output '.password' | xclip -selection clipboard
+echo ${ACCOUNT} | jq
+echo "totp: ${TOTP}"
+sleep 60
+clear

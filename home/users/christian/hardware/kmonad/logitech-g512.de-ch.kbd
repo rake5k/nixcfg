@@ -1,0 +1,107 @@
+(defcfg
+  input  (device-file "/dev/input/by-id/usb-Logitech_G512_RGB_MECHANICAL_GAMING_KEYBOARD_177D30553336-event-kbd")
+  output (uinput-sink "G512")
+    ;;"/bin/sleep 1 && /bin/setxkbmap de -option compose:ralt")
+  fallthrough true
+  allow-cmd true
+)
+
+(defalias
+  sym  (tap-hold 150 spc (layer-toggle syms))   ;; Tap on space for space and hold for nums/syms layer
+  ec   (tap-hold 150 esc ctl)                   ;; Tap on escape for escape and hold for left ctrl
+  ;; vi   (layer-toggle vim)                       ;; enables the vim layer
+)
+
+(defalias ;; aliases for de-CH QWERTZ
+  ;; Syms
+  § grv
+  < 102d
+  ' -
+  ^ #(= space)
+  ü [
+  ¨ #(] space)
+  ö ;
+  ä '
+  ! \
+  - /
+
+  ;; Shift-Syms
+  ° S-grv
+  > S-102d
+  ? S--
+  ` #(S-= space)
+  è S-[
+  $ S-]
+  é S-;
+  à S-'
+  £ S-\
+  ; S-,
+  : S-.
+  \_ S-/
+
+  ;; RAlt-Syms
+  ~ #((around ralt =) space)
+  \ (around ralt 102d)
+  ´ (around ralt -)
+  [ (around ralt [)
+  ] (around ralt ])
+  { (around ralt ')
+  } (around ralt \\)
+  · (around ralt .)
+
+  ;; Shift-Nums
+  + S-1
+  ;; " S-2
+  * S-3
+  ç S-4
+  % S-5
+  & S-6
+  / S-7
+  po S-8 ;; (
+  pc S-9 ;; )
+  = S-0
+
+  ;; RAlt-Nums
+  @ (around ralt 2)
+  \# (around ralt 3)
+  ¼ (around ralt 4)
+  ½ (around ralt 5)
+  ¬ (around ralt 6)
+  | (around ralt 7)
+  ¢ (around ralt 8)
+)
+
+(defalias ;; Special Syms
+  ¹  #(= 1)
+  ²  #(= 2)
+  ³  #(= 3)
+  € (around ralt e)
+)
+
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12        ssrq slck pause
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc  ins  home pgup  nlck kp/  kp*  kp-
+  tab  q    w    e    r    t    z    u    i    o    p    [    ]    ret   del  end  pgdn  kp7  kp8  kp9  kp+
+  caps a    s    d    f    g    h    j    k    l    ;    '    \                          kp4  kp5  kp6
+  lsft 102d y    x    c    v    b    n    m    ,    .    /    rsft            up         kp1  kp2  kp3  kprt
+  lctl lmet lalt           spc                 ralt rmet cmp  rctl       left down rght  kp0  kp.
+)
+
+(deflayer base
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  @ec  _    _    _    _    _    _    _    _    _    _    _    _                          _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _               _          _    _    _    _
+  _    _    _              @sym                _    _    _    _          _    _    _     _    _
+)
+
+(deflayer syms
+  _    _    _    _    _    _    _    _    _    _    _    _    _          _    _    _
+  _    @¹   @²   @³   _    _    _    _    _    _    _    _    _    _     _    _    _     _    _    _    _
+  _    @@   @\_  @[   @]   @^   @!   @<   @>   @=   @&   @€   @/   _     _    _    _     _    _    _    _
+  _    @\   @/   @{   @}   @*   @?   @po  @pc  @-   @:   @@   _                          _    _    _
+  _    @\#  @$   @|   @~   @`   @+   @%   S-2  @'   @;   _    _               _          _    _    _    _
+  _    _    _              _                   _    _    _    _          _    _    _     _    _
+)
+

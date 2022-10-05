@@ -1,0 +1,7 @@
+result
+.pre-commit-config.yaml
+
+*.tgz
+*.tar
+*.gz
+*.zip
