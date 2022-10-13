@@ -22,28 +22,34 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      ranger
+    home = {
+      packages = with pkgs; [
+        ranger
 
-      # dependencies
-      _7zz
-      atool
-      catdoc
-      exiftool
-      ffmpeg
-      ffmpegthumbnailer
-      imagemagick
-      mediainfo
-      odt2txt
-      pandoc
-      transmission
-      trash-cli
-      ueberzug
-      unrar
-      w3m
-      xlsx2csv
-      #xpdf # insecure
-    ];
+        # dependencies
+        _7zz
+        atool
+        catdoc
+        exiftool
+        ffmpeg
+        ffmpegthumbnailer
+        imagemagick
+        mediainfo
+        odt2txt
+        pandoc
+        transmission
+        trash-cli
+        ueberzug
+        unrar
+        w3m
+        xlsx2csv
+        #xpdf # insecure
+      ];
+
+      sessionVariables = {
+        RANGERCD = true;
+      };
+    };
 
     xdg = {
       configFile = {
