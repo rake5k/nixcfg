@@ -473,7 +473,8 @@
   map p'<any> paste dest=%any_path
 
   map dD console delete
-  map dT console trash
+  map dT shell trash %s
+  map DD shell trash %s
 
   map dd cut
   map ud uncut
