@@ -37,6 +37,7 @@ in
         mediainfo
         odt2txt
         pandoc
+        poppler_utils
         transmission
         trash-cli
         ueberzug
