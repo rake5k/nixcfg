@@ -38,6 +38,7 @@ in
           "Linux-B64--3.6.2"
           "Linux-B64--3.6.5"
           "Linux-B64--4.0.2"
+          "Linux-B64--unknown---3.6.22"
         ]
         mkSymlink;
     };
