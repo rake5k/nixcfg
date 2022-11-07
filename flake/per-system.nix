@@ -21,7 +21,7 @@ let
   customOverlays = [
     inputs.i3lock-pixeled.overlay
     (final: prev: {
-      neovim = inputs.neovim.defaultPackage."${system}";
+      neovim = inputs.neovim.packages.default."${system}";
     })
   ];
 
