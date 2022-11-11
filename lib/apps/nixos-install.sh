@@ -3,44 +3,36 @@ source @bashLib@
 
 # Source: https://qfpl.io/posts/installing-nixos/
 
-set -x
-
 ### Gather system info
 
-echo '1'
 readonly HOSTNAME="${1}"
 readonly DISK="${2}"
+readonly FLAKE="${3}"
 
 # Validate arguments
 
-echo '2'
 test "${HOSTNAME}" || {
     # shellcheck disable=SC2016
     echo '$HOSTNAME is not given!'
     exit 1
 }
 
-echo '3'
-NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c)
+NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c || echo 0)
 readonly NUM_SUPPORTED_DISKS
 
-echo '4'
 [[ ${NUM_SUPPORTED_DISKS} -gt 0 ]] || {
     # shellcheck disable=SC2016
     echo '$DISK is not of format "/dev/sda" or "/dev/nvme0n1"!'
     exit 1
 }
 
-echo '5'
 NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c || echo 0)
 readonly NUM_NVME_DISKS
 
-echo '6'
 is_nvme_disk() {
     [[ ${NUM_NVME_DISKS} -gt 0 ]]
 }
 
-echo '7'
 get_partition() {
     # shellcheck disable=SC2310
     if is_nvme_disk; then
@@ -50,35 +42,18 @@ get_partition() {
     fi
 }
 
-echo '8'
 BOOT_PARTITION="$(get_partition 1)"
 readonly BOOT_PARTITION
-LVM_PARTITION="$(get_partition 2)"
-readonly LVM_PARTITION
-
-echo '9'
-get_ram_size() {
-    local mem_summary
-    mem_summary="$(lsmem --summary=only)"
-    local mem_summary_online
-    mem_summary_online="$(echo "${mem_summary}" | grep "Total online memory:")"
-    local mem_online_size
-    mem_online_size="$(echo "${mem_summary_online}" | grep -Po "[0-9]+[kKmMgGtTpPeE]")"
-    echo "${mem_online_size}"
-}
-
-echo '10'
-RAM_SIZE="$(get_ram_size)"
-readonly RAM_SIZE
+ROOT_PARTITION="$(get_partition 2)"
+readonly ROOT_PARTITION
 
 
 ### Declare functions
 
-echo '11'
-readonly LVM_PV="nixos-enc"
-readonly LVM_VG="nixos-vg"
-readonly LVM_LV_ROOT="/dev/${LVM_VG}/root"
-readonly LVM_LV_SWAP="/dev/${LVM_VG}/swap"
+readonly ROOT_CRYPT="root-crypt"
+readonly BOOT_FS="BOOT"
+readonly ROOT_FS="root"
+readonly MOUNT_ROOT="/mnt"
 
 partition() {
     _log "[partition] Deleting partitions..."
@@ -94,65 +69,79 @@ partition() {
     fdisk "${DISK}" -l
 }
 
-echo '12'
-encrypt_partition() {
-    _log "[encrypt_partition] Encrypting LVM partition..."
-    cryptsetup luksFormat "${LVM_PARTITION}"
-    cryptsetup luksOpen "${LVM_PARTITION}" "${LVM_PV}"
+crypt_setup() {
+    _log "[crypt_setup] Encrypting LVM partition..."
+    cryptsetup luksFormat "${ROOT_PARTITION}"
+    cryptsetup luksOpen "${ROOT_PARTITION}" "${ROOT_CRYPT}"
 }
 
-create_volumes() {
-    _log "[create_volumes] Creating LVM volumes..."
-    pvcreate "/dev/mapper/${LVM_PV}"
-    vgcreate "${LVM_VG}" "/dev/mapper/${LVM_PV}"
-    lvcreate -L "${RAM_SIZE}" -n swap "${LVM_VG}"
-    lvcreate -l 100%FREE -n root "${LVM_VG}"
-}
-
-echo '13'
 create_filesystems() {
-    # TODO: Switch to btrfs (https://github.com/wiltaylor/dotfiles/blob/master/tools/makefs-nixos)
+    local root_partition="${1}"
     _log "[create_filesystems] Creating filesystems..."
-    mkfs.vfat -n boot "${BOOT_PARTITION}"
-    mkfs.ext4 -L nixos "${LVM_LV_ROOT}"
-    mkswap -L swap "${LVM_LV_SWAP}"
+    mkfs.vfat -n "${BOOT_FS}" "${BOOT_PARTITION}"
+    mkfs.btrfs -f  -L "${ROOT_FS}" "${root_partition}"
+
+    _log "[create_filesystems] Creating sub volumes"
+    mount "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}"
+    btrfs subvolume create "${MOUNT_ROOT}/@"
+    btrfs subvolume create "${MOUNT_ROOT}/@home"
+    btrfs subvolume create "${MOUNT_ROOT}/@nix"
+    btrfs subvolume create "${MOUNT_ROOT}/@swap"
+    umount "${MOUNT_ROOT}"
 
     _log "[create_filesystems] Result of filesystems creation:"
     lsblk -f "${DISK}"
 }
 
-echo '14'
-decrypt_lvm() {
-    _log "[decrypt_lvm] Decrypting volumes..."
-    cryptsetup luksOpen "${LVM_PARTITION}" "${LVM_PV}"
-    lvscan
-    vgchange -ay
+decrypt_volumes() {
+    _log "[decrypt_volumes] Decrypting volumes..."
+    cryptsetup luksOpen "${ROOT_PARTITION}" "${ROOT_CRYPT}"
 
-    _log "[decrypt_lvm] Volumes decrypted:"
+    _log "[decrypt_volumes] Volumes decrypted:"
     lsblk -f "${DISK}"
 }
 
-echo '15'
-install() {
-    local mount_root="/mnt"
-    local mount_boot="${mount_root}/boot"
+mount_filesystems() {
+    _log "[mount_filesystems] Mounting file systems..."
 
-    _log "[install] Enabling swap..."
-    local swap_list
-    swap_list="$(swapon --noheadings)"
-    local num_swap
-    num_swap=$(echo "${swap_list}" | wc -l)
-    if [[ ${num_swap} -lt 1 ]]; then
-        swapon -v "${LVM_LV_SWAP}"
-    fi
+    grep "${ROOT_PARTITION} ${MOUNT_ROOT} btrfs" "/proc/mounts" \
+        || mount -o noatime,compress=lzo,subvol=@ "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}"
 
-    _log "[install] Mounting volumes..."
-    mount "${LVM_LV_ROOT}" "${mount_root}"
+    # shellcheck disable=SC2248
+    mkdir -p ${MOUNT_ROOT}/{home,nix,swap}
+    grep "${ROOT_PARTITION} ${MOUNT_ROOT}/home btrfs" "/proc/mounts" \
+        || mount -o noatime,compress=lzo,subvol=@home "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}/home"
+    grep "${ROOT_PARTITION} ${MOUNT_ROOT}/nix btrfs" "/proc/mounts" \
+        || mount -o noatime,compress=zstd,subvol=@nix "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}/nix"
+    grep "${ROOT_PARTITION} ${MOUNT_ROOT}/swap btrfs" "/proc/mounts" \
+        || mount -o subvol=@swap "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}/swap"
+
+    local mount_boot="${MOUNT_ROOT}/boot"
     mkdir -p "${mount_boot}"
-    mount "${BOOT_PARTITION}" "${mount_boot}"
+    grep "${BOOT_PARTITION} ${mount_boot} vfat" "/proc/mounts" \
+        || mount "${BOOT_PARTITION}" "${mount_boot}"
 
+    _log "[mount_filesystems] File systems mounted:"
+    findmnt --real
+}
+
+enable_swap() {
+    local swap_dir="${MOUNT_ROOT}/swap"
+    local swap_file="${swap_dir}/swapfile"
+
+    _log "[enable_swap] Creating swap file..."
+    btrfs filesystem mkswapfile --size 4G "${swap_file}"
+
+    _log "[enable_swap] Enabling swap..."
+    swapon "${swap_file}"
+
+    _log "[enable_swap] Enabled swaps:"
+    cat /proc/swaps
+}
+
+install() {
     _log "[install] Installing NixOS..."
-    nixos-install --root "${mount_root}" --flake "github:rake5k/nixcfg#${HOSTNAME}" --impure
+    nixos-install --root "${MOUNT_ROOT}" --flake "${FLAKE}#${HOSTNAME}" --impure
     _log "[install] Installing NixOS... finished!"
 
     _log "[install] Installation finished, please reboot and remove installation media..."
@@ -161,35 +150,36 @@ install() {
 
 ### Pull the trigger
 
-echo '16'
 # shellcheck disable=SC2310
 if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
     partition
 
-    echo '16-1'
     # shellcheck disable=SC2310
     if _read_boolean "Do you want to ENCRYPT THE DISK?" N; then
-        encrypt_partition
+        crypt_setup
+        create_filesystems "/dev/mapper/${ROOT_CRYPT}"
+    else
+	create_filesystems "${ROOT_PARTITION}"
     fi
 
-    create_volumes
-    create_filesystems
 fi
 
-echo '17'
-LVM_PV_STATUS="$(cryptsetup -q status "${LVM_PV}")"
-readonly LVM_PV_STATUS
-LVM_PV_NUM_ACTIVE=$(echo "${LVM_PV_STATUS}" | grep "^/dev/mapper/${LVM_PV} is active and is in use.$" -c)
-readonly LVM_PV_NUM_ACTIVE
-if [[ ${LVM_PV_NUM_ACTIVE} -lt 1 ]]; then
-    decrypt_lvm
+ROOT_PARTITION_TYPE=$(blkid -s "TYPE" -o "value" "${ROOT_PARTITION}")
+readonly ROOT_PARTITION_TYPE
+if [[ "${ROOT_PARTITION_TYPE}" == "crypto_LUKS" ]]; then
+    CRYPT_VOL_STATUS="$(cryptsetup -q status "${ROOT_CRYPT}" || true)"
+    readonly CRYPT_VOL_STATUS
+    CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || echo 0)
+    readonly CRYPT_VOL_NUM_ACTIVE
+    if [[ ${CRYPT_VOL_NUM_ACTIVE} -lt 1 ]]; then
+        decrypt_volumes
+    fi
 fi
 
-echo '18'
 # shellcheck disable=SC2310
-DO_INSTALL="$(_read_boolean "Do you want to INSTALL NixOS now?" N)" || true
-readonly DO_INSTALL
-if "${DO_INSTALL}"; then
+if _read_boolean "Do you want to INSTALL NixOS now?" N; then
+    mount_filesystems
+    enable_swap
     install
 fi
 
