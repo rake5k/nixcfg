@@ -130,7 +130,8 @@ sudo su # become root
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
-nix run github:rake5k/nixcfg#nixos-install -- <hostname> <disk>
+export FLAKE=github:rake5k/nixcfg
+nix run $FLAKE#nixos-install" -- <hostname> <disk> $FLAKE
 ```
 
 Where:
