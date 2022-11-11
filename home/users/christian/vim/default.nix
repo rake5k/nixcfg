@@ -45,13 +45,17 @@ in
       file =
         let
           inherit (config.lib.file) mkOutOfStoreSymlink;
+          nixcfgDir = "${config.home.homeDirectory}/code/nixcfg";
+          nixcfgDictionaryDir = "${nixcfgDir}/home/users/christian/vim/data/spell";
+          spellConfDir = "${config.xdg.configHome}/nvim/spell";
+          spellDataDir = "${config.xdg.dataHome}/nvim/site/spell";
         in
         {
-          "${config.xdg.configHome}/nvim/spell/de.utf-8.spl".source = nvim-spell-de-utf8-dictionary;
-          "${config.xdg.configHome}/nvim/spell/en.utf-8.spl".source = nvim-spell-en-utf8-dictionary;
-          "${config.xdg.dataHome}/nvim/site/spell/shared.utf-8.add".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-config/home/users/christian/vim/data/spell/shared.utf-8.add";
-          "${config.xdg.dataHome}/nvim/site/spell/de.utf-8.add".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-config/home/users/christian/vim/data/spell/de.utf-8.add";
-          "${config.xdg.dataHome}/nvim/site/spell/en.utf-8.add".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/.nix-config/home/users/christian/vim/data/spell/en.utf-8.add";
+          "${spellConfDir}/de.utf-8.spl".source = nvim-spell-de-utf8-dictionary;
+          "${spellConfDir}/en.utf-8.spl".source = nvim-spell-en-utf8-dictionary;
+          "${spellDataDir}/shared.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/shared.utf-8.add";
+          "${spellDataDir}/de.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/de.utf-8.add";
+          "${spellDataDir}/en.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/en.utf-8.add";
         };
 
       packages = [
