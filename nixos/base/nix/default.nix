@@ -1,6 +1,10 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./auto-upgrade.nix
+  ];
+
   nix = {
     extraOptions = ''
       experimental-features = nix-command flakes
