@@ -68,10 +68,10 @@
 
     mach-nix = {
       url = "github:DavHau/mach-nix/3.5.0";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
-      };
+      #inputs = {
+      #  flake-utils.follows = "flake-utils";
+      #  nixpkgs.follows = "nixpkgs";
+      #};
     };
 
     neovim = {
