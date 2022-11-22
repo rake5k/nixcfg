@@ -66,12 +66,17 @@
       };
     };
 
+    pypi-deps-db = {
+      url = "github:DavHau/pypi-deps-db";
+    };
+
     mach-nix = {
       url = "github:DavHau/mach-nix/3.5.0";
-      #inputs = {
-      #  flake-utils.follows = "flake-utils";
-      #  nixpkgs.follows = "nixpkgs";
-      #};
+      inputs = {
+        flake-utils.follows = "flake-utils";
+        nixpkgs.follows = "nixpkgs";
+        pypi-deps-db.follows = "pypi-deps-db";
+      };
     };
 
     neovim = {
