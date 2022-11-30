@@ -28,6 +28,7 @@ in
 
     home.packages = with pkgs; [
       ascii
+      libxml2
       wrk
     ];
   };
