@@ -26,10 +26,10 @@ jobs:
           - nix-command: develop
             system: x86_64
 
-          - nix-command: build --dry-run .#homeConfigurations."demo@non-nixos-vm".activationPackage
+          - nix-command: build .#homeConfigurations."demo@non-nixos-vm".activationPackage
             system: x86_64
 
-          - nix-command: build --dry-run .#nixosConfigurations.nixos-vm.config.system.build.toplevel
+          - nix-command: build .#nixosConfigurations.nixos-vm.config.system.build.toplevel
             system: x86_64
 
     steps:
