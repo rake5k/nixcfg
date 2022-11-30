@@ -12,7 +12,7 @@ in
   users.users."${username}" = {
     name = username;
     isNormalUser = true;
-    uid = 1000;
+    uid = 1001;
     initialPassword = "changeme";
   };
 }

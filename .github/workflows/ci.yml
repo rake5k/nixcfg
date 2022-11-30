@@ -26,6 +26,9 @@ jobs:
           - nix-command: develop
             system: x86_64
 
+          - nix-command: build .#homeConfigurations."christian@non-nixos-vm".activationPackage
+            system: x86_64
+
           - nix-command: build .#homeConfigurations."demo@non-nixos-vm".activationPackage
             system: x86_64
 

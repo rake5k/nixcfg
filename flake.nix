@@ -104,6 +104,7 @@
 
       homeConfigurations = listToAttrs [
         (mkHome "x86_64-linux" "demo@non-nixos-vm")
+        (mkHome "x86_64-linux" "christian@non-nixos-vm")
       ];
 
       nixosConfigurations = listToAttrs [
