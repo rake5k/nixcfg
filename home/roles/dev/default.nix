@@ -26,8 +26,9 @@ in
       scala.enable = true;
     };
 
-    home.packages = [
-      pkgs.ascii
+    home.packages = with pkgs; [
+      ascii
+      wrk
     ];
   };
 }
