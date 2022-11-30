@@ -567,7 +567,7 @@
         "lspconfig": "lspconfig",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "plenary": "plenary",
         "popup": "popup",
