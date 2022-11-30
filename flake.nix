@@ -83,7 +83,7 @@
       url = "github:christianharke/neovim-flake";
       inputs = {
         flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
         pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
