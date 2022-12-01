@@ -36,12 +36,13 @@ See [flake.nix](flake.nix) for more information like `system`.
 │  └──📂 users      -- user-specific config
 ├──📂 hosts         -- NixOS host configs
 │  └──📂 nixos-vm
-└──📂 nixos         -- custom NixOS modules
-   ├──📂 base       -- basic configs
-   │   └──📂 users  -- user configs
-   ├──📂 containers -- custom container modules
-   ├──📂 programs   -- custom program modules
-   └──📂 roles      -- custom roles for bundling configsets
+├──📂 nixos         -- custom NixOS modules
+│  ├──📂 base       -- basic configs
+│  │   └──📂 users  -- user configs
+│  ├──📂 containers -- custom container modules
+│  ├──📂 programs   -- custom program modules
+│  └──📂 roles      -- custom roles for bundling configsets
+└──📂 secrets       -- agenix-encrypted secrets
 ```
 
 ## Usage
