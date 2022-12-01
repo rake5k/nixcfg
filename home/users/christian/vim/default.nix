@@ -1,4 +1,4 @@
-{ config, lib, pkgs, machNix, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with builtins;
@@ -16,12 +16,6 @@ let
     sha256 = "sha256:0w1h9lw2c52is553r8yh5qzyc9dbbraa57w9q0r9v8xn974vvjpy";
   };
 
-  pythonEnv = machNix.mkPython {
-    requirements = ''
-      vimwiki-cli
-    '';
-  };
-
 in
 
 {
@@ -32,6 +26,13 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.programs.python = {
+      enable = true;
+      requirements = ''
+        vimwiki-cli
+      '';
+    };
+
     home = {
       file =
         let
@@ -51,7 +52,6 @@ in
 
       packages = [
         pkgs.custom.neovim
-        pythonEnv
       ];
 
       sessionVariables = {
