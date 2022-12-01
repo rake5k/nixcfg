@@ -16,19 +16,10 @@ let
     sha256 = "sha256:0w1h9lw2c52is553r8yh5qzyc9dbbraa57w9q0r9v8xn974vvjpy";
   };
 
-  vimwiki-cli = machNix.buildPythonPackage {
-    pname = "vimwiki-cli";
-    version = "1.0.0";
+  pythonEnv = machNix.mkPython {
     requirements = ''
-      click~=7.1
-      setuptools
-      wheel
+      vimwiki-cli
     '';
-    src = fetchGit {
-      url = "https://github.com/sstallion/vimwiki-cli";
-      ref = "refs/tags/v1.0.0";
-      rev = "6e7689e052d1462d950e6af19964c97827216e64";
-    };
   };
 
 in
@@ -60,7 +51,7 @@ in
 
       packages = [
         pkgs.custom.neovim
-        vimwiki-cli
+        pythonEnv
       ];
 
       sessionVariables = {
