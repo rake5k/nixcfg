@@ -482,7 +482,7 @@
           "flake-utils"
         ],
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "pypi-deps-db": [
           "pypi-deps-db"
@@ -592,11 +592,11 @@
         "which-key": "which-key"
       },
       "locked": {
-        "lastModified": 1669859219,
-        "narHash": "sha256-AdxqqTiHb7rbbq5aYq4I+gD8pAqP9IfGJKxBKxJ6ROk=",
+        "lastModified": 1669878707,
+        "narHash": "sha256-t5TQ02mcQwGLq9w7/yAGVHOtRITNrbRqYl19hF8NEMA=",
         "owner": "christianharke",
         "repo": "neovim-flake",
-        "rev": "f6e4df986af42e97ecd229afbd998738a922705e",
+        "rev": "ef919647abd00b10f2880eadef2080589d234c06",
         "type": "github"
       },
       "original": {
@@ -716,21 +716,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1618619705,
-        "narHash": "sha256-+yBGazqJxjT+BR00oCNamOgiEFPHBOPkqak7MUYcpBA=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "e5cc06a1e806070693add4f231060a62b962fc44",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "ref": "nixos-unstable",
-        "type": "indirect"
-      }
-    },
     "nur": {
       "locked": {
         "lastModified": 1669805596,
@@ -805,7 +790,9 @@
     "pypi-deps-db": {
       "inputs": {
         "mach-nix": "mach-nix_2",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
         "nixpkgsPy36": "nixpkgsPy36",
         "pypiIndex": "pypiIndex"
       },
