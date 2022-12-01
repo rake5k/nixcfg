@@ -4,6 +4,7 @@
   nix = {
     package = pkgs.nix;
     settings = {
+      auto-optimise-store = true;
       substituters = [
         "https://christianharke.cachix.org/"
         "https://nix-community.cachix.org"
