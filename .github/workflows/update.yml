@@ -30,7 +30,7 @@ jobs:
 
       - name: Set branch name output
         id: branch
-        run: echo "::set-output name=branch::ci/automatic-update-$(date +%Y-%m-%d)"
+        run: echo "name=branch::ci/automatic-update-$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
       - name: Create branch locally
         run: git switch -c ${{ steps.branch.outputs.branch }}
