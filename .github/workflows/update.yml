@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      branch: ${{ steps.branch.outputs.branch }}
+      branch: ${{ steps.branch.outputs.name }}
       update_available: ${{ steps.commit.outputs.changes_detected }}
 
     steps:
@@ -30,10 +30,10 @@ jobs:
 
       - name: Set branch name output
         id: branch
-        run: echo "::set-output name=branch::ci/automatic-update-$(date +%Y-%m-%d)"
+        run: echo "name=ci/automatic-update-$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
 
       - name: Create branch locally
-        run: git switch -c ${{ steps.branch.outputs.branch }}
+        run: git switch -c ${{ steps.branch.outputs.name }}
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -41,7 +41,7 @@ jobs:
         with:
           commit_author: Christian Harke <christian@harke.ch>
           commit_message: "flake.inputs: automatic update"
-          branch: ${{ steps.branch.outputs.branch }}
+          branch: ${{ steps.branch.outputs.name }}
           push_options: --force
 
   build:
