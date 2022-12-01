@@ -7,7 +7,7 @@ let
   cfg = config.custom.roles.dev.python;
 
   pythonEnv = machNix.mkPython {
-    python = "python39";
+    python = "python310";
   };
 
 in
