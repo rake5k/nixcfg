@@ -10,12 +10,11 @@ in
 
 ''
     Config { overrideRedirect = False
-           , font     = "xft:${cfg.font.xft}"
+           , font     = "${cfg.font.pango}"
            , alpha    = 254
            , bgColor  = "${cfg.colorScheme.background}"
            , fgColor  = "${cfg.colorScheme.foreground}"
-           , position = Top
-           , textOffset = 16
+           , position = TopH 22
            , commands = [ Run Alsa "default" "Master"
                             [ "-t", "<volumestatus>"
                             , "-S", "True"

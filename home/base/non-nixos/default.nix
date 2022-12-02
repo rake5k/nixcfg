@@ -5,7 +5,6 @@ with lib;
 let
 
   cfg = config.custom.base.non-nixos;
-
   flakeBaseDir = config.home.homeDirectory + "/.nix-config";
 
 in
@@ -32,6 +31,8 @@ in
         hm-switch = "home-manager switch -b hm-bak --flake '${flakeBaseDir}'";
       };
     };
+
+    nix.package = pkgs.nix;
 
     programs.zsh.envExtra = mkAfter ''
       hash -f

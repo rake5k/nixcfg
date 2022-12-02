@@ -75,9 +75,9 @@ in
           description = "Font derivation";
         };
 
-        xft = mkOption {
+        pango = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font:style=SemiBold:pixelsize=14:antialias=true";
+          default = "VictorMono Nerd Font SemiBold 14";
           description = "Font config";
         };
       };

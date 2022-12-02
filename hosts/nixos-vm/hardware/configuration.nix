@@ -34,6 +34,6 @@
   swapDevices =
     [{ device = "/dev/disk/by-label/swap"; }];
 
-  nix.maxJobs = lib.mkDefault 2;
+  nix.settings.max-jobs = lib.mkDefault 2;
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }

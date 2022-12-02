@@ -4,23 +4,27 @@ with lib;
 
 let
 
-  cfg = config.custom.users.christian;
+  username = "christian";
+  cfg = config.custom.users."${username}";
 
 in
 
 {
   options = {
-    custom.users.christian = {
+    custom.users."${username}" = {
       enable = mkEnableOption "User config";
     };
   };
 
   config = mkIf cfg.enable {
-    home.username = "christian";
+    home = {
+      inherit username;
+      homeDirectory = "/home/${username}";
+    };
 
     custom = {
       roles.homeage.enable = true;
-      users.christian = {
+      users."${username}" = {
         bin.enable = true;
         fonts.enable = true;
         git.enable = true;
