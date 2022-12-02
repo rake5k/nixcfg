@@ -10,8 +10,8 @@ let
   dmenuPatched = pkgs.dmenu.override {
     patches = builtins.map builtins.fetchurl [
       {
-        url = "https://tools.suckless.org/dmenu/patches/line-height/dmenu-lineheight-5.0.diff";
-        sha256 = "1dllfy9yznjcq65ivwkd77377ccfry72jmy3m77ms6ns62x891by";
+        url = "https://tools.suckless.org/dmenu/patches/line-height/dmenu-lineheight-5.2.diff";
+        sha256 = "0jabb2ycfn3xw0k2d2rv7nyas5cwjr6zvwaffdn9jawh62c50qy5";
       }
     ];
   };
@@ -35,7 +35,7 @@ in
         "alacritty" = 1;
       };
       font = {
-        inherit (desktopCfg.font) package xft;
+        inherit (desktopCfg.font) package pango;
       };
       dmenu = {
         package = dmenuPatched;

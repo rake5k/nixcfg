@@ -20,29 +20,26 @@ in
       enable = true;
       package = pkgs.unstable.picom;
       backend = "glx";
-      blur = true;
-      blurExclude = [
-        "name = 'as_toolbar'" # Zoom screen sharing toolbar
-        "window_type = 'utility'" # Firefox/Thunderbird dropdowns
-      ];
-      experimentalBackends = true;
-      extraOptions = ''
-        blur:
-        {
+      settings = {
+        blur = {
           method = "gaussian";
           size = 10;
           deviation = 5.0;
         };
+        blur-background-exclude = [
+          "name = 'as_toolbar'" # Zoom screen sharing toolbar
+          "window_type = 'utility'" # Firefox/Thunderbird dropdowns
+        ];
         unredir-if-possible = false; # Stop IntelliJ from flickering
-      '';
+      };
       fade = true;
       fadeDelta = 5;
       fadeExclude = [
         "window_type *= 'menu'"
         "window_type = 'utility'"
       ];
-      inactiveOpacity = "0.9";
-      opacityRule = [
+      inactiveOpacity = 0.9;
+      opacityRules = [
         "70:window_type = 'dock'"
 
         "100:_NET_WM_STATE@:32a ~= '_NET_WM_STATE_MAXIMIZED_*'"

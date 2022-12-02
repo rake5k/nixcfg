@@ -32,6 +32,12 @@ in
           description = "Mono Font family";
         };
 
+        pango = mkOption {
+          type = types.str;
+          default = "VictorMono Nerd Font SemiBold 10.8";
+          description = "Font config";
+        };
+
         xft = mkOption {
           type = types.str;
           default = "VictorMono Nerd Font:style=SemiBold:pixelsize=14:antialias=true";

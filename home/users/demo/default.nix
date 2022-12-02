@@ -4,22 +4,26 @@ with lib;
 
 let
 
-  cfg = config.custom.users.demo;
+  username = "demo";
+  cfg = config.custom.users."${username}";
 
 in
 
 {
   options = {
-    custom.users.demo = {
+    custom.users."${username}" = {
       enable = mkEnableOption "User config";
     };
   };
 
   config = mkIf cfg.enable {
-    home.username = "demo";
+    home = {
+      inherit username;
+      homeDirectory = "/home/${username}";
+    };
 
     custom = {
-      users.demo = {
+      users."${username}" = {
         ranger.enable = true;
       };
     };

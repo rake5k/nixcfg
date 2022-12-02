@@ -11,14 +11,14 @@ let
 in
 
 inputs.home-manager.lib.homeManagerConfiguration {
-  inherit username pkgs system;
 
-  configuration = rootPath + "/hosts/${hostname}/home-${username}.nix";
-  homeDirectory = "/home/${username}";
-  stateVersion = "22.05";
+  inherit pkgs;
 
-  extraModules = homeModules;
   extraSpecialArgs = {
     inherit rootPath machNix;
   };
+
+  modules = [
+    "${rootPath}/hosts/${hostname}/home-${username}.nix"
+  ] ++ homeModules;
 }
