@@ -29,7 +29,6 @@
     flake-commons = {
       url = "github:christianharke/flake-commons";
       inputs = {
-        flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs";
         pre-commit-hooks.follows = "pre-commit-hooks";
       };

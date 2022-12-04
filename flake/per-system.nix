@@ -39,7 +39,7 @@ let
     inherit config overlays system;
   };
 
-  customLib = inputs.flake-commons.lib."${system}" {
+  customLib = inputs.flake-commons.lib {
     inherit (inputs.nixpkgs) lib;
     inherit pkgs rootPath;
   };
