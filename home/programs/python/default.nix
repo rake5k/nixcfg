@@ -26,6 +26,7 @@ in
       let
         pythonEnv = machNix.mkPython {
           inherit (cfg) requirements;
+          ignoreDataOutdated = true;
           python = "python310";
         };
       in
