@@ -37,6 +37,7 @@ in
       _1password
       _1password-gui
       bind
+      unstable.fluent-reader
       wget
       thunderbird
 
