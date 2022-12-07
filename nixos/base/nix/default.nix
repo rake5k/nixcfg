@@ -1,10 +1,6 @@
 { pkgs, ... }:
 
 {
-  imports = [
-    ./auto-upgrade.nix
-  ];
-
   nix = {
     gc = {
       automatic = true;
