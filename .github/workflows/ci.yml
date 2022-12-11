@@ -4,3 +4,5 @@ on: [ push ]
 jobs:
   nix-ci:
     uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
+    with:
+      branch: master
