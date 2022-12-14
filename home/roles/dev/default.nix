@@ -18,7 +18,10 @@ in
   config = mkIf cfg.enable {
     custom.roles.dev = {
       embedmongo.enable = true;
-      intellij.enable = true;
+      intellij = {
+        enable = true;
+        ultimate = true;
+      };
       java.enable = true;
       js.enable = true;
       plantuml.enable = true;

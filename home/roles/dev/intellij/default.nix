@@ -5,6 +5,10 @@ with lib;
 let
 
   cfg = config.custom.roles.dev.intellij;
+  ideaPackage =
+    if cfg.ultimate then
+      pkgs.jetbrains.idea-ultimate else
+      pkgs.jetbrains.idea-community;
 
 in
 
@@ -12,14 +16,20 @@ in
   options = {
     custom.roles.dev.intellij = {
       enable = mkEnableOption "IntelliJ";
+
+      ultimate = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to Install the Ultimate Edition, Community Edition otherwise.";
+      };
     };
   };
 
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
+        ideaPackage
         openjfx11
-        jetbrains.idea-ultimate
         (nerdfonts.override { fonts = [ "FiraCode" ]; })
       ];
 
