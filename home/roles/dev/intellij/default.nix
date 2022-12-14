@@ -27,6 +27,12 @@ in
 
   config = mkIf cfg.enable {
     home = {
+      file.".ideavimrc".text = ''
+        Plug 'tpope/vim-surround'
+        set ideajoin
+        set clipboard+=unnamedplus
+      '';
+
       packages = with pkgs; [
         ideaPackage
         openjfx11
