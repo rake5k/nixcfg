@@ -18,8 +18,8 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      inherit username;
-      homeDirectory = "/home/${username}";
+      username = mkDefault username;
+      homeDirectory = mkDefault "/home/${username}";
     };
 
     custom = {
