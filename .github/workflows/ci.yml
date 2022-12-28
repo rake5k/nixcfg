@@ -6,3 +6,18 @@ jobs:
     uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
     with:
       branch: master
+  nix-ci-nixos-vm:
+    uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
+    with:
+      branch: master
+      nix-command: build .#nixosConfigurations.nixos-vm.config.system.build.toplevel
+  nix-ci-non-nixos-vm-christian:
+    uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
+    with:
+      branch: master
+      nix-command: build .#homeConfigurations."christian@non-nixos-vm".activationPackage
+  nix-ci-non-nixos-vm-demo:
+    uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
+    with:
+      branch: master
+      nix-command: build .#homeConfigurations."demo@non-nixos-vm".activationPackage
