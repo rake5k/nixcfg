@@ -11,6 +11,11 @@ let
     inherit config system;
   };
 
+  nixgl = import inputs.nixpkgs-unstable {
+    inherit system;
+    overlays = [ inputs.nixgl.overlays.default ];
+  };
+
   nur = import inputs.nur {
     nurpkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
     pkgs = import inputs.nixpkgs {
@@ -27,7 +32,7 @@ let
 
   overlays = [
     (final: prev: {
-      inherit unstable nur;
+      inherit unstable nixgl nur;
       inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       inherit (inputs.kmonad.packages."${system}") kmonad;
 

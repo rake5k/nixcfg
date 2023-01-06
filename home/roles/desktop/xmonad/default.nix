@@ -29,17 +29,17 @@ in
     custom.programs.xmonad = {
       enable = true;
 
-      inherit (desktopCfg) locker;
+      inherit (desktopCfg) locker terminalCmd;
 
       autoruns = {
-        "alacritty" = 1;
-      };
-      font = {
-        inherit (desktopCfg.font) package pango;
+        "${desktopCfg.terminalCmd}" = 1;
       };
       dmenu = {
         package = dmenuPatched;
         runCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h 22";
+      };
+      font = {
+        inherit (desktopCfg.font) package pango;
       };
       xmobar = {
         enable = true;

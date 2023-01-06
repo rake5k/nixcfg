@@ -15,9 +15,9 @@ jobs:
     uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
     with:
       branch: master
-      nix-command: build .#homeConfigurations."christian@non-nixos-vm".activationPackage
+      nix-command: build --impure .#homeConfigurations."christian@non-nixos-vm".activationPackage
   nix-ci-non-nixos-vm-demo:
     uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
     with:
       branch: master
-      nix-command: build .#homeConfigurations."demo@non-nixos-vm".activationPackage
+      nix-command: build --impure .#homeConfigurations."demo@non-nixos-vm".activationPackage

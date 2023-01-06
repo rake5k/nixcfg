@@ -92,6 +92,14 @@
         pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
+
+    nixgl = {
+      url = "github:guibou/nixGL";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-utils.follows = "flake-utils";
+      };
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:

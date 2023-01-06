@@ -654,13 +654,36 @@
         "type": "github"
       }
     },
+    "nixgl": {
+      "inputs": {
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1672992692,
+        "narHash": "sha256-/eLQLSNIa22ARTZbk+x8i0iE8khe1eiHWkuxgTVXZ7g=",
+        "owner": "guibou",
+        "repo": "nixGL",
+        "rev": "643e730efb981ffaf8478f441ec9b9aeea1c89f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "guibou",
+        "repo": "nixGL",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1672844754,
-        "narHash": "sha256-o26WabuHABQsaHxxmIrR3AQRqDFUEdLckLXkVCpIjSU=",
+        "lastModified": 1672781980,
+        "narHash": "sha256-L+yqt2szcp+BFiWoMJCisDsNA5OrpYVW1QSbbS5U8RU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e9ade2c8240e00a4784fac282a502efff2786bdc",
+        "rev": "a9eedea7232f5d00f0aca7267efb69a54da1b8a1",
         "type": "github"
       },
       "original": {
@@ -881,6 +904,7 @@
         "kmonad": "kmonad",
         "mach-nix": "mach-nix",
         "neovim": "neovim",
+        "nixgl": "nixgl",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
