@@ -130,6 +130,11 @@ in
         };
       };
 
+      terminalCmd = mkOption {
+        type = types.str;
+        description = "Command to spawn the default terminal emulator";
+      };
+
       xmobar = {
         enable = mkEnableOption "Xmobar";
         mobile = mkEnableOption "Enable additional mobile monitors";

@@ -44,6 +44,12 @@ in
           description = "Font config";
         };
       };
+
+      terminalCmd = mkOption {
+        type = types.str;
+        default = "${cfg.alacritty.spawnCmd}";
+        description = "Command to spawn the default terminal emulator";
+      };
     };
   };
 

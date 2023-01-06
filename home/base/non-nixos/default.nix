@@ -27,7 +27,7 @@ in
       ];
 
       shellAliases = {
-        hm-switch = "home-manager switch -b hm-bak --flake '${flakeBaseDir}'";
+        hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}'";
       };
     };
 

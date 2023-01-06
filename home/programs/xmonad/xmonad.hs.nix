@@ -67,7 +67,7 @@ pkgs.writeText "xmonad.hs" ''
   myModMask = ${cfg.modKey}Mask
 
   myTerminal :: String
-  myTerminal = "alacritty"
+  myTerminal = "${cfg.terminalCmd}"
 
   myScratchpads :: [NamedScratchpad]
   myScratchpads =
