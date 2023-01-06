@@ -24,7 +24,6 @@ in
     home = {
       packages = with pkgs; [
         unstable.home-manager
-        nixStatic
       ];
 
       shellAliases = {
@@ -32,16 +31,20 @@ in
       };
     };
 
-    nix.package = pkgs.nix;
+    nix = {
+      package = pkgs.nix;
+      settings = {
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+      };
+    };
 
     programs.zsh.envExtra = mkAfter ''
       hash -f
     '';
 
     targets.genericLinux.enable = true;
-
-    xdg.configFile."nix/nix.conf".text = ''
-      experimental-features = nix-command flakes
-    '';
   };
 }
