@@ -211,7 +211,7 @@ $ # Update `tmpfile` contents...
 $ vim tmpfile
 
 $ # Re-encrypt the updated secret
-$ age --encrypt -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
+$ age --encrypt --armor -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
 ```
 
 ## Updating inputs
