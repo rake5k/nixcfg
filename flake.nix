@@ -185,10 +185,9 @@
           })
         ];
 
-        devShell = getDevShell "nixcfg";
-
         devShells = listToAttrs [
-          (mkDevShell "nixcfg" {
+          (mkDevShell "default" {
+            name = "nixcfg";
             checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
             packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
             customShellHook = mkShellCheck;

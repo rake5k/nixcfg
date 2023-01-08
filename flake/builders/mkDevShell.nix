@@ -1,4 +1,4 @@
-{ pkgs, name, system, args, ... }:
+{ pkgs, system, args, ... }:
 
 let
 
@@ -8,8 +8,8 @@ let
 
 in
 
-pkgs.mkShell {
-  inherit name;
+pkgs.mkShell rec {
+  inherit (args) name;
   buildInputs = with pkgs; [
     # banner printing on enter
     figlet
