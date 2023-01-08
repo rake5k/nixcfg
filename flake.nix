@@ -109,7 +109,7 @@
         rootPath = ./.;
       };
 
-      inherit (nixpkgs.lib) listToAttrs;
+      inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
       inherit (flakeLib) eachSystem mkHome mkNixos;
     in
     {
@@ -163,27 +163,33 @@
           })
         ];
 
-        checks = listToAttrs [
-          (mkGeneric "pre-commit-check" (system: inputs.pre-commit-hooks.lib."${system}".run {
-            src = ./.;
-            hooks = {
-              nixpkgs-fmt.enable = true;
-              shellcheck.enable = true;
-              statix.enable = true;
-            };
-          }))
+        checks = recursiveUpdate
+          (listToAttrs [
+            (mkGeneric "pre-commit-check" (system: inputs.pre-commit-hooks.lib."${system}".run {
+              src = ./.;
+              hooks = {
+                nixpkgs-fmt.enable = true;
+                shellcheck.enable = true;
+                statix.enable = true;
+              };
+            }))
 
-          (mkCheck "shellcheck" {
-            script = mkShellCheck;
-          })
+            (mkCheck "shellcheck" {
+              script = mkShellCheck;
+            })
 
-          (mkCheck "nixpkgs-fmt" {
-            script = pkgs: ''
-              shopt -s globstar
-              ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
-            '';
-          })
-        ];
+            (mkCheck "nixpkgs-fmt" {
+              script = pkgs: ''
+                shopt -s globstar
+                ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
+              '';
+            })
+          ])
+          {
+            "build-nixos-vm" = self.nixosConfigurations.nixos-vm.config.system.build.toplevel;
+            "build-demo@non-nixos-vm" = self.homeConfigurations."demo@non-nixos-vm".activationPackage;
+            "build-christian@non-nixos-vm" = self.homeConfigurations."christian@non-nixos-vm".activationPackage;
+          };
 
         devShells = listToAttrs [
           (mkDevShell "default" {

@@ -8,3 +8,4 @@ jobs:
     uses: christianharke/flake-commons/.github/workflows/nix-update.yml@main
     with:
       base-branch: master
+      nix-check-command: flake check --impure
