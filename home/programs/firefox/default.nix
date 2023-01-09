@@ -39,6 +39,7 @@ in
         isDefault = true;
         settings = {
           "browser.startup.homepage" = cfg.homepage;
+          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
         userChrome = ''
           /* Workaround for vim-vixen issue
