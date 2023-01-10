@@ -9,3 +9,5 @@ jobs:
     with:
       base-branch: master
       nix-check-command: flake check --impure
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
