@@ -51,12 +51,7 @@ in
           gtk-xft-rgba = "rgb";
         };
         bookmarks = [
-          "file:///home/christian/Downloads"
-          "file:///home/christian/Documents"
-          "file:///home/christian/Pictures"
-          "file:///home/christian/Videos"
-          "file:///home/christian/Nextcloud"
-          "file:///mnt/home"
+          "file://${config.home.homeDirectory}/Nextcloud"
         ];
       };
     };
