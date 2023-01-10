@@ -36,6 +36,9 @@ in
         lolcat
         toilet
 
+        # Make sure to have the right version in $PATH
+        less
+
         # GNU util replacements
         fd # ultra-fast find
         ripgrep
@@ -54,6 +57,10 @@ in
         trash-cli
         unzip
       ];
+
+      sessionVariables = {
+        MANPAGER = "less -R --use-color -Dd+g -Du+b";
+      };
 
       shellAliases = import ./aliases.nix;
     };
