@@ -34,12 +34,6 @@ in
       options = automount_opts ++ auth_opts;
     in
     {
-      "${target}/backup" = {
-        device = "//${fileserver}/backup";
-        inherit fsType;
-        inherit options;
-      };
-
       "${target}/home" = {
         device = "//${fileserver}/home";
         inherit fsType;
