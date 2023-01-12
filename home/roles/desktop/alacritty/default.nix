@@ -41,6 +41,10 @@ in
 
       programs.alacritty = {
         enable = true;
+        package =
+          if config.custom.base.non-nixos.enable
+          then (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
+          else pkgs.alacritty;
         settings = {
           env.TERM = "xterm-256color";
           window = {
@@ -99,13 +103,5 @@ in
           ];
         };
       };
-    } // mkIf config.custom.base.non-nixos.enable {
-    custom.roles.desktop.alacritty.spawnCmd = "nixGL alacritty";
-
-    home = {
-      packages = with pkgs; [
-        nixgl.nixgl.auto.nixGLDefault
-      ];
     };
-  };
 }
