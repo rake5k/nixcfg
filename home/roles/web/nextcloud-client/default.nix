@@ -5,6 +5,10 @@ with lib;
 let
 
   cfg = config.custom.roles.web.nextcloud-client;
+  pkg =
+    if config.custom.base.non-nixos.enable
+    then (config.lib.custom.nixGLWrap pkgs.nextcloud-client)
+    else pkgs.nextcloud-client;
 
 in
 
@@ -16,9 +20,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      pkgs.nextcloud-client
-    ];
+    home.packages = [ pkg ];
 
     services.nextcloud-client = {
       enable = true;

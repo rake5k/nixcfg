@@ -32,7 +32,7 @@ let
 
   overlays = [
     (final: prev: {
-      inherit unstable nixgl nur;
+      inherit unstable nur;
       inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       inherit (inputs.kmonad.packages."${system}") kmonad;
 
@@ -44,9 +44,22 @@ let
     inherit config overlays system;
   };
 
-  customLib = inputs.flake-commons.lib {
-    inherit (inputs.nixpkgs) lib;
-    inherit pkgs rootPath;
+  customLib = inputs.flake-commons.lib
+    {
+      inherit (inputs.nixpkgs) lib;
+      inherit pkgs rootPath;
+    } // {
+    nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapper" { } ''
+      mkdir $out
+      ln -s ${pkg}/* $out
+      rm $out/bin
+      mkdir $out/bin
+      for bin in ${pkg}/bin/*; do
+        wrapped_bin=$out/bin/$(basename $bin)
+        echo "exec ${pkgs.lib.getExe nixgl.nixgl.auto.nixGLDefault} $bin \"\$@\"" > $wrapped_bin
+        chmod +x $wrapped_bin
+      done
+    '';
   };
 
   machNix = inputs.mach-nix.lib."${system}";
