@@ -1,5 +1,7 @@
 { inputs, rootPath }:
 
+with inputs.nixpkgs;
+
 let
 
   homeModulesBuilder = { rootPath, customLib, ... }:
@@ -14,7 +16,7 @@ let
     ++ customLib.getRecursiveDefaultNixFileList (rootPath + "/home");
 
   nameValuePairSystemWrapper = system: name: fn:
-    inputs.nixpkgs.lib.nameValuePair name (fn system);
+    lib.nameValuePair name (fn system);
 
   wrapper = builder: system: name: args:
     let
@@ -28,7 +30,7 @@ let
     import builder builderArgs;
 
   nameValuePairWrapper = builder: system: name: args:
-    inputs.nixpkgs.lib.nameValuePair name (wrapper builder system name args);
+    lib.nameValuePair name (wrapper builder system name args);
 
   simpleNameValuePairWrapper = builder: system: name:
     nameValuePairWrapper builder system name { };
