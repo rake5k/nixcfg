@@ -24,6 +24,7 @@ in
 
     services.nextcloud-client = {
       enable = true;
+      package = pkg;
       startInBackground = true;
     };
   };
