@@ -113,7 +113,8 @@
       inherit (flakeLib) eachSystem mkHome mkNixos;
     in
     {
-      lib = import ./flake;
+      lib = { rootPath }:
+        import ./flake { inherit inputs rootPath; };
 
       homeConfigurations = listToAttrs [
         (mkHome "x86_64-linux" "demo@non-nixos-vm")
