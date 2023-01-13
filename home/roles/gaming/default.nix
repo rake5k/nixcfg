@@ -19,7 +19,7 @@ in
     home.packages = with pkgs; [
       # Comms
       discord
-      teamspeak_client
+      teamspeak5_client
 
       # Game libs
       lutris
