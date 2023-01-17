@@ -18,7 +18,10 @@ in
   config = mkIf cfg.enable {
     services.picom = {
       enable = true;
-      package = pkgs.unstable.picom;
+      package =
+        if config.custom.base.non-nixos.enable
+        then (config.lib.custom.nixGLWrap pkgs.unstable.picom)
+        else pkgs.unstable.picom;
       backend = "glx";
       settings = {
         blur = {
