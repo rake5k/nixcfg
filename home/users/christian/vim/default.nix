@@ -7,6 +7,10 @@ let
 
   cfg = config.custom.users.christian.vim;
 
+  spacevim = pkgs.spacevim.override {
+    spacevim_config = import ./config.nix;
+  };
+
   nvim-spell-de-utf8-dictionary = fetchurl {
     url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
     sha256 = "sha256:73c7107ea339856cdbe921deb92a45939c4de6eb9c07261da1b9dd19f683a3d1";
@@ -51,11 +55,16 @@ in
         };
 
       packages = [
-        pkgs.custom.neovim
+        spacevim
       ];
 
       sessionVariables = {
-        EDITOR = "vim";
+        EDITOR = "spacevim";
+      };
+
+      shellAliases = {
+        vi = "spacevim";
+        vim = "spacevim";
       };
     };
 
