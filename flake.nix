@@ -84,15 +84,6 @@
       };
     };
 
-    neovim = {
-      url = "github:christianharke/neovim-flake";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs-unstable";
-        pre-commit-hooks.follows = "pre-commit-hooks";
-      };
-    };
-
     nixgl = {
       url = "github:guibou/nixGL";
       inputs = {
