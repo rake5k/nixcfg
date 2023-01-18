@@ -38,6 +38,11 @@ in
     };
 
     home = {
+      activation.clearSpaceVimConfigCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        $DRY_RUN_CMD rm -f $VERBOSE_ARG \
+        ${config.xdg.cacheHome}/SpaceVim/conf/init.json
+      '';
+
       file =
         let
           inherit (config.lib.file) mkOutOfStoreSymlink;
