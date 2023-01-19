@@ -20,7 +20,7 @@ in
 
     home.packages = with pkgs; [
       libreoffice
-      sent # plaintext presentations
+      nodePackages.reveal-md
     ];
   };
 }
