@@ -59,8 +59,22 @@ in
           "${spellDataDir}/en.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/en.utf-8.add";
         };
 
-      packages = [
+      packages = with pkgs; [
         spacevim
+
+        # LSP servers
+        elmPackages.elm-language-server
+        haskell-language-server
+        jdt-language-server
+        nodePackages.bash-language-server
+        nodePackages.dockerfile-language-server-nodejs
+        nodePackages.typescript-language-server
+        nodePackages.vscode-langservers-extracted
+        nodePackages.vue-language-server
+        nodePackages.yaml-language-server
+        python310Packages.python-lsp-server
+        rnix-lsp
+        rust-analyzer
       ];
 
       sessionVariables = {
