@@ -83,6 +83,7 @@ in
 
       sessionVariables = {
         EDITOR = "spacevim";
+        SPACEVIMDIR = spacevimDir;
       };
 
       shellAliases = {
