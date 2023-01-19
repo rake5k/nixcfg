@@ -7,8 +7,8 @@ let
   cfg = config.custom.roles.dev.intellij;
   ideaPackage =
     if cfg.ultimate then
-      pkgs.jetbrains.idea-ultimate else
-      pkgs.jetbrains.idea-community;
+      pkgs.unstable.jetbrains.idea-ultimate else
+      pkgs.unstable.jetbrains.idea-community;
 
 in
 
@@ -35,14 +35,8 @@ in
 
       packages = with pkgs; [
         ideaPackage
-        openjfx11
         (nerdfonts.override { fonts = [ "FiraCode" ]; })
       ];
-
-      sessionVariables = {
-        # IntelliJ IDEA Code with me
-        INTELLIJCLIENT_JDK = "${pkgs.jdk11}/lib/openjdk";
-      };
     };
   };
 }
