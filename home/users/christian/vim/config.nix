@@ -2,6 +2,7 @@
   custom_plugins = [
     { repo = "lilydjwg/colorizer"; }
     { repo = "vimwiki/vimwiki"; }
+    { repo = "hoaxdream/calendar-vim"; }
   ];
   layers = [
     { name = "default"; }
@@ -91,6 +92,8 @@
     }
   ];
   options = {
+    bootstrap_before = "myspacevim#before";
+    bootstrap_after = "myspacevim#after";
     buffer_index_type = 4;
     colorscheme = "onedark";
     colorscheme_bg = "dark";

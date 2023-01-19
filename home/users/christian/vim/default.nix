@@ -10,6 +10,7 @@ let
   spacevim = pkgs.spacevim.override {
     spacevim_config = import ./config.nix;
   };
+  spacevimDir = "${config.home.homeDirectory}/.SpaceVim.d";
 
   nvim-spell-de-utf8-dictionary = fetchurl {
     url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
@@ -50,6 +51,7 @@ in
           nixcfgDictionaryDir = "${nixcfgDir}/home/users/christian/vim/data/spell";
           spellConfDir = "${config.xdg.configHome}/nvim/spell";
           spellDataDir = "${config.xdg.dataHome}/nvim/site/spell";
+          format = pkgs.formats.toml { };
         in
         {
           "${spellConfDir}/de.utf-8.spl".source = nvim-spell-de-utf8-dictionary;
@@ -57,6 +59,8 @@ in
           "${spellDataDir}/shared.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/shared.utf-8.add";
           "${spellDataDir}/de.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/de.utf-8.add";
           "${spellDataDir}/en.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/en.utf-8.add";
+          "${spacevimDir}/init.toml".source = format.generate "init.toml" (import ./config.nix);
+          "${spacevimDir}/autoload/myspacevim.vim".source = ./myspacevim.vim;
         };
 
       packages = with pkgs; [
