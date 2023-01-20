@@ -13,7 +13,6 @@ let
       name = "bin/${name}";
       value = {
         source = ./scripts + "/${name}";
-        target = config.home.homeDirectory + "/bin/${name}";
         executable = true;
       };
     };
@@ -28,24 +27,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      # Bluetooth
-      bluez
+    home = {
+      packages = with pkgs; [
+        # Bluetooth
+        bluez
 
-      _1password
-      pulseaudio
-    ];
+        _1password
+        pulseaudio
+      ];
 
-    xdg.configFile = genAttrs'
-      [
-        # Bluetooth headset
-        "lib/btctl"
-        "wh1000xm2-connect"
-        "wh1000xm2-disconnect"
+      file = genAttrs'
+        [
+          # Bluetooth headset
+          "lib/btctl"
+          "wh1000xm2-connect"
+          "wh1000xm2-disconnect"
 
-        # Password CLI
-        "pass"
-      ]
-      mkUserBinScript;
+          # Password CLI
+          "pass"
+        ]
+        mkUserBinScript;
+    };
   };
 }
