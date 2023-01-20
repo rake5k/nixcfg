@@ -10,7 +10,7 @@ let
   spacevim = pkgs.spacevim.override {
     spacevim_config = import ./config.nix;
   };
-  spacevimDir = "${config.home.homeDirectory}/.SpaceVim.d";
+  spacevimDir = "${config.xdg.configHome}/SpaceVim.d";
 
   nvim-spell-de-utf8-dictionary = fetchurl {
     url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
