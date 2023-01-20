@@ -21,7 +21,12 @@ in
       bookmarks = ''
         # Common
         d:${config.home.homeDirectory}/Downloads
+        f:/mnt/home/photo
         h:/mnt/home/home
+        m:/mnt/home/music
+        p:/mnt/home/public
+        s:/mnt/home/home/Scan
+        v:/mnt/home/video
       '';
     };
   };
