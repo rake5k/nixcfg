@@ -33,9 +33,18 @@ in
   config = mkIf cfg.enable {
     custom.programs.python = {
       enable = true;
-      requirements = ''
-        vimwiki-cli
-      '';
+      packages = with pkgs.python3Packages; [
+        (buildPythonPackage rec {
+          pname = "vimwiki-cli";
+          version = "1.0.2";
+          src = fetchPypi {
+            inherit pname version;
+            sha256 = "sha256-sqiNyUdskFGQrqt0vzYv20U5REoN9LzohK7l6fofowc=";
+          };
+          propagatedBuildInputs = [ click ];
+          doCheck = false;
+        })
+      ];
     };
 
     home = {

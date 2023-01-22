@@ -63,10 +63,8 @@ let
     '';
   };
 
-  machNix = inputs.mach-nix.lib."${system}";
-
 in
 
 {
-  inherit pkgs customLib machNix;
+  inherit pkgs customLib;
 }

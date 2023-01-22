@@ -1,10 +1,10 @@
-{ inputs, rootPath, machNix, system, pkgs, customLib, homeModules, name, ... }:
+{ inputs, rootPath, system, pkgs, customLib, homeModules, name, ... }:
 
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit homeModules rootPath machNix;
+    inherit homeModules rootPath;
   };
 
   modules = [

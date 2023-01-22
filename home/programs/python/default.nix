@@ -1,4 +1,4 @@
-{ config, lib, pkgs, machNix, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -13,10 +13,22 @@ in
     custom.programs.python = {
       enable = mkEnableOption "Python";
 
-      requirements = mkOption {
-        type = types.lines;
+      packages = mkOption {
+        type = with types; listOf package;
         description = "Python apps and libs to put into path";
-        default = "";
+        example = with pkgs.python3Packages; [
+          (buildPythonPackage rec {
+            pname = "vimwiki-cli";
+            version = "1.0.2";
+            src = fetchPypi {
+              inherit pname version;
+              sha256 = "sha256-sqiNyUdskFGQrqt0vzYv20U5REoN9LzohK7l6fofowc=";
+            };
+            propagatedBuildInputs = [ click ];
+            doCheck = false;
+          })
+        ];
+        default = [ ];
       };
     };
   };
@@ -24,11 +36,8 @@ in
   config = mkIf cfg.enable {
     home.packages =
       let
-        pythonEnv = machNix.mkPython {
-          inherit (cfg) requirements;
-          ignoreDataOutdated = true;
-          python = "python310";
-        };
+        pythonPackages = p: with p; cfg.packages;
+        pythonEnv = pkgs.python3.withPackages pythonPackages;
       in
       [ pythonEnv ];
   };
