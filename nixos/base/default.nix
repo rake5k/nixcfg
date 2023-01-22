@@ -1,4 +1,4 @@
-{ config, lib, pkgs, homeModules, rootPath, machNix, ... } @ args:
+{ config, lib, pkgs, homeModules, rootPath, ... } @ args:
 
 with lib;
 
@@ -49,7 +49,7 @@ in
       backupFileExtension = "hm-bak";
       useGlobalPkgs = true;
       useUserPackages = true;
-      extraSpecialArgs = { inherit rootPath machNix; };
+      extraSpecialArgs = { inherit rootPath; };
       sharedModules = homeModules;
       users = hmUsers;
     };

@@ -1,4 +1,4 @@
-{ inputs, rootPath, machNix, system, pkgs, homeModules, name, ... }:
+{ inputs, rootPath, system, pkgs, homeModules, name, ... }:
 
 let
 
@@ -15,7 +15,7 @@ inputs.home-manager.lib.homeManagerConfiguration {
   inherit pkgs;
 
   extraSpecialArgs = {
-    inherit rootPath machNix;
+    inherit rootPath;
   };
 
   modules = [

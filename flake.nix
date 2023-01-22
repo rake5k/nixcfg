@@ -68,22 +68,6 @@
       };
     };
 
-    pypi-deps-db = {
-      url = "github:DavHau/pypi-deps-db";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-      };
-    };
-
-    mach-nix = {
-      url = "github:DavHau/mach-nix/3.5.0";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs-unstable";
-        pypi-deps-db.follows = "pypi-deps-db";
-      };
-    };
-
     nixgl = {
       url = "github:guibou/nixGL";
       inputs = {
