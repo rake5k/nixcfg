@@ -5,7 +5,7 @@ jobs:
   nix-ci:
     uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
     with:
-      branch: master
+      branch: ${{ github.ref_name }}
       nix-command: flake check --impure
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
