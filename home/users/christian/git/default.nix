@@ -24,6 +24,7 @@ in
 
     programs.git = {
       enable = true;
+      lfs.enable = true;
       userName = "Christian Harke";
       signing.key = "630966F4";
 
