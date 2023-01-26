@@ -15,7 +15,9 @@ in
 
       packages = mkOption {
         type = with types; listOf package;
-        description = "Python apps and libs to put into path";
+        description = ''
+          Python apps and libs to put into path. See docs for more information: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/python.section.md.
+        '';
         example = with pkgs.python3Packages; [
           (buildPythonPackage rec {
             pname = "vimwiki-cli";
