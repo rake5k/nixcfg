@@ -7,6 +7,7 @@ let
   cfg = config.custom.roles.dev.java;
 
   java = pkgs.jdk;
+  visualvm = pkgs.visualvm.override { jdk = pkgs.jdk8; };
 
 in
 
@@ -21,6 +22,7 @@ in
     home = {
       packages = [
         java
+        visualvm
       ];
 
       sessionVariables = {
