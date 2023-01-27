@@ -11,11 +11,6 @@ let
     inherit config system;
   };
 
-  nixgl = import inputs.nixpkgs-unstable {
-    inherit system;
-    overlays = [ inputs.nixgl.overlays.default ];
-  };
-
   nur = import inputs.nur {
     nurpkgs = inputs.nixpkgs.legacyPackages."${system}";
     pkgs = import inputs.nixpkgs {
@@ -36,8 +31,9 @@ let
       inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       inherit (inputs.kmonad.packages."${system}") kmonad;
 
+      nixgl = inputs.nixgl.packages."${system}".default;
+
       inherit unstable nur custom;
-      inherit (nixgl) nixgl;
     })
   ];
 
@@ -58,7 +54,7 @@ let
       for bin in ${pkg}/bin/*; do
         wrapped_bin=$out/bin/$(basename $bin)
         echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-        echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
+        echo "exec ${pkgs.lib.getExe pkgs.nixgl} $bin \"\$@\"" >> $wrapped_bin
         chmod +x $wrapped_bin
       done
     '';
