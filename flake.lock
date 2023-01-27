@@ -250,7 +250,7 @@
           "flake-utils"
         ],
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ]
       },
       "locked": {
@@ -282,7 +282,31 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
-        "pre-commit-hooks": "pre-commit-hooks"
+        "pre-commit-hooks": "pre-commit-hooks",
+        "spacevim": "spacevim"
+      }
+    },
+    "spacevim": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "pre-commit-hooks": [
+          "pre-commit-hooks"
+        ]
+      },
+      "locked": {
+        "lastModified": 1674831646,
+        "narHash": "sha256-lUNL1xzA+A+pfsGarVDRIaqou7cGBwKP8AoOcQo1Mq4=",
+        "owner": "christianharke",
+        "repo": "spacevim-flake",
+        "rev": "17339f0c525c85207443453cb96b69a22f7e9997",
+        "type": "github"
+      },
+      "original": {
+        "owner": "christianharke",
+        "repo": "spacevim-flake",
+        "type": "github"
       }
     }
   },
