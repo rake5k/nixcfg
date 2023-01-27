@@ -92,8 +92,6 @@
     }
   ];
   options = {
-    bootstrap_before = "myspacevim#before";
-    bootstrap_after = "myspacevim#after";
     buffer_index_type = 4;
     colorscheme = "onedark";
     colorscheme_bg = "dark";
