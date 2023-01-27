@@ -1,22 +1,22 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-with builtins;
 
 let
 
   cfg = config.custom.users.christian.vim;
 
-  spacevim = pkgs.spacevim.override {
+  spacevim = pkgs.custom.spacevim.override {
     spacevim_config = import ./config.nix;
+    bootstrap_before = builtins.readFile ./bootstrap_before.vim;
+    bootstrap_after = builtins.readFile ./bootstrap_after.vim;
   };
-  spacevimDir = "${config.xdg.configHome}/SpaceVim.d";
 
-  nvim-spell-de-utf8-dictionary = fetchurl {
+  nvim-spell-de-utf8-dictionary = builtins.fetchurl {
     url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
     sha256 = "sha256:73c7107ea339856cdbe921deb92a45939c4de6eb9c07261da1b9dd19f683a3d1";
   };
-  nvim-spell-en-utf8-dictionary = fetchurl {
+  nvim-spell-en-utf8-dictionary = builtins.fetchurl {
     url = "http://ftp.vim.org/vim/runtime/spell/en.utf-8.spl";
     sha256 = "sha256:0w1h9lw2c52is553r8yh5qzyc9dbbraa57w9q0r9v8xn974vvjpy";
   };
@@ -68,8 +68,6 @@ in
           "${spellDataDir}/shared.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/shared.utf-8.add";
           "${spellDataDir}/de.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/de.utf-8.add";
           "${spellDataDir}/en.utf-8.add".source = mkOutOfStoreSymlink "${nixcfgDictionaryDir}/en.utf-8.add";
-          "${spacevimDir}/init.toml".source = format.generate "init.toml" (import ./config.nix);
-          "${spacevimDir}/autoload/myspacevim.vim".source = ./myspacevim.vim;
         };
 
       packages = with pkgs; [
@@ -77,7 +75,7 @@ in
         # - spell config
         # - vimwiki config
         # see: https://spacevim.org/documentation/#bootstrap-functions
-        custom.spacevim
+        spacevim
 
         # LSP servers
         elmPackages.elm-language-server
@@ -96,7 +94,6 @@ in
 
       sessionVariables = {
         EDITOR = "spacevim";
-        SPACEVIMDIR = spacevimDir;
       };
 
       shellAliases = {
