@@ -73,7 +73,11 @@ in
         };
 
       packages = with pkgs; [
-        spacevim
+        # TODO:
+        # - spell config
+        # - vimwiki config
+        # see: https://spacevim.org/documentation/#bootstrap-functions
+        custom.spacevim
 
         # LSP servers
         elmPackages.elm-language-server

@@ -27,6 +27,7 @@ let
     inherit system;
     overlays = [
       inputs.i3lock-pixeled.overlay
+      inputs.spacevim.overlays.default
     ];
   };
 

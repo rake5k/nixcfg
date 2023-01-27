@@ -20,7 +20,7 @@
       url = "github:cachix/pre-commit-hooks.nix?rev=6799201bec19b753a4ac305a53d34371e497941e";
       inputs = {
         flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
+        nixpkgs.follows = "nixpkgs-unstable";
       };
     };
 
@@ -73,6 +73,14 @@
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
         flake-utils.follows = "flake-utils";
+      };
+    };
+
+    spacevim = {
+      url = "github:christianharke/spacevim-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
   };
