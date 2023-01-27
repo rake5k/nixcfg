@@ -32,9 +32,11 @@ let
 
   overlays = [
     (final: prev: {
-      inherit unstable nur;
       inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       inherit (inputs.kmonad.packages."${system}") kmonad;
+
+      inherit unstable nur;
+      inherit (nixgl) nixgl;
 
       custom = prev.lib.composeManyExtensions customOverlays final prev;
     })
@@ -57,7 +59,7 @@ let
       for bin in ${pkg}/bin/*; do
         wrapped_bin=$out/bin/$(basename $bin)
         echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-        echo "exec ${pkgs.lib.getExe nixgl.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
+        echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
         chmod +x $wrapped_bin
       done
     '';
