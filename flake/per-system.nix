@@ -23,22 +23,20 @@ let
     };
   };
 
-  customOverlays = [
-    inputs.i3lock-pixeled.overlay
-    (final: prev: {
-      neovim = inputs.neovim.packages."${system}".default;
-    })
-  ];
+  custom = import inputs.nixpkgs {
+    inherit system;
+    overlays = [
+      inputs.i3lock-pixeled.overlay
+    ];
+  };
 
   overlays = [
     (final: prev: {
       inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       inherit (inputs.kmonad.packages."${system}") kmonad;
 
-      inherit unstable nur;
+      inherit unstable nur custom;
       inherit (nixgl) nixgl;
-
-      custom = prev.lib.composeManyExtensions customOverlays final prev;
     })
   ];
 
