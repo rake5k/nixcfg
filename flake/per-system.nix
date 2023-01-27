@@ -17,7 +17,7 @@ let
   };
 
   nur = import inputs.nur {
-    nurpkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    nurpkgs = inputs.nixpkgs.legacyPackages."${system}";
     pkgs = import inputs.nixpkgs {
       inherit config system;
     };
