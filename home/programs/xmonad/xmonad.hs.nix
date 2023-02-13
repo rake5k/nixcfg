@@ -73,7 +73,6 @@ pkgs.writeText "xmonad.hs" ''
   myScratchpads =
     [ NS "terminal" spawnTerm findTerm manageTerm
     , NS "calendar" spawnCal findCal manageCal
-    , NS "diary" spawnDiary findDiary manageDiary
     , NS "wiki" spawnWiki findWiki manageWiki
     , NS "htop" spawnHtop findHtop manageHtop
     , NS "pavucontrol" spawnPavuCtl findPavuCtl managePavuCtl
@@ -97,15 +96,7 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnDiary    = myTerminal ++ " -t diary -e bash -c 'vimwiki diary today && vimwiki diary generate-links'"
-      findDiary     = title =? "diary"
-      manageDiary   = customFloating $ W.RationalRect x y w h
-        where
-          w = (4/5)
-          h = (5/6)
-          x = center w
-          y = center h
-      spawnWiki     = myTerminal ++ " -t wiki -e vimwiki"
+      spawnWiki     = "joplin-desktop"
       findWiki      = title =? "wiki"
       manageWiki    = customFloating $ W.RationalRect x y w h
         where
@@ -236,7 +227,6 @@ pkgs.writeText "xmonad.hs" ''
     -- ScratchPads
     , ("M-C-<Return>",  namedScratchpadAction myScratchpads "terminal")
     , ("M-C-k",         namedScratchpadAction myScratchpads "calendar")
-    , ("M-C-d",         namedScratchpadAction myScratchpads "diary")
     , ("M-C-w",         namedScratchpadAction myScratchpads "wiki")
     , ("M-C-t",         namedScratchpadAction myScratchpads "htop")
     , ("M-C-v",         namedScratchpadAction myScratchpads "pavucontrol")

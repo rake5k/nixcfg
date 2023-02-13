@@ -31,22 +31,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.programs.python = {
-      enable = true;
-      packages = with pkgs.python3Packages; [
-        (buildPythonPackage rec {
-          pname = "vimwiki-cli";
-          version = "1.0.2";
-          src = fetchPypi {
-            inherit pname version;
-            sha256 = "sha256-sqiNyUdskFGQrqt0vzYv20U5REoN9LzohK7l6fofowc=";
-          };
-          propagatedBuildInputs = [ click ];
-          doCheck = false;
-        })
-      ];
-    };
-
     home = {
       activation.clearSpaceVimConfigCache = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         $DRY_RUN_CMD rm -f $VERBOSE_ARG \
@@ -71,10 +55,6 @@ in
         };
 
       packages = with pkgs; [
-        # TODO:
-        # - spell config
-        # - vimwiki config
-        # see: https://spacevim.org/documentation/#bootstrap-functions
         spacevim
 
         # LSP servers
