@@ -1,8 +1,6 @@
 {
   custom_plugins = [
     { repo = "lilydjwg/colorizer"; }
-    { repo = "vimwiki/vimwiki"; }
-    { repo = "hoaxdream/calendar-vim"; }
   ];
   layers = [
     { name = "default"; }
