@@ -34,6 +34,10 @@ in
       '';
     };
 
+    home.sessionVariables = {
+      DIRENV_LOG_FORMAT = "";
+    };
+
     xdg.configFile."nix/nix.conf" = mkIf nonNixosCfg.enable {
       text = ''
         keep-derivations = true
