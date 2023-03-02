@@ -2,13 +2,23 @@
   # Enable aliases with `sudo`
   sudo = "sudo ";
 
+  # System utilities
+  df = "df -Tha --total";
+  du = "du -ach | sort -h";
+  free = "free -mt";
+  ps = "ps auxf";
+  psg = "ps aux | grep -v grep | grep -i -e VSZ -e";
+
   # Navigating
+  "cd.." = "cd ..";
   d = "dirs -v | head -10";
   l = "exa -hl --git --icons";
   la = "exa -ahl --git --icons";
+  lal = "la | less";
   ll = "l";
-  ls = "ls -sh --color='auto'";
+  ls = "ls -h --color='auto'";
   lsa = "ls -a";
+  lsl = "ls | less";
   tree = "l --tree";
 
   # File reading
@@ -36,4 +46,8 @@
 
   # Password manager
   pass = "source pass";
+
+  # Web
+  wget = "wget -c";
+  myip = "curl http://ipecho.net/plain; echo";
 }
