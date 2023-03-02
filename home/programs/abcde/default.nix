@@ -23,6 +23,14 @@ in
         easytag
         ffmpeg
         id3lib
+
+        # codecs
+        fdk-aac-encoder
+        lame
+        monkeysAudio
+        opusTools
+        twolame
+        wavpack
       ];
     };
 
