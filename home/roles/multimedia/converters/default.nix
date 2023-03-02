@@ -21,6 +21,7 @@ in
     home = {
       packages = with pkgs; [
         handbrake
+        picard
       ];
 
       file."bin/mp3conv" = {
