@@ -143,9 +143,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.programs.trayer.enable = true;
+
     home = {
       packages = with pkgs; [
-        trayer
         cfg.dmenu.package
         cfg.font.package
         cfg.locker.package
