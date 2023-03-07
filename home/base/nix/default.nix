@@ -10,6 +10,7 @@
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
       flake-registry = null;
+      log-lines = 30;
       substituters = [
         "https://christianharke.cachix.org/"
         "https://nix-community.cachix.org"
