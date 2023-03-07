@@ -1,4 +1,4 @@
-{ inputs, rootPath, system }:
+{ inputs, system }:
 
 let
 
@@ -38,7 +38,8 @@ let
   customLib = inputs.flake-commons.lib
     {
       inherit (inputs.nixpkgs) lib;
-      inherit pkgs rootPath;
+      inherit pkgs;
+      rootPath = inputs.self;
     } // {
     nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapper" { } ''
       mkdir $out

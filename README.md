@@ -100,8 +100,7 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
   outputs = { nixpkgs, nixcfg, ... } @ inputs:
     let
       nixcfgLib = nixcfg.lib."x86_64-linux" {
-        inherit (inputs.nixcfg) inputs;
-        rootPath = ./.;
+        inherit inputs;
       };
 
       inherit (nixpkgs.lib) listToAttrs;

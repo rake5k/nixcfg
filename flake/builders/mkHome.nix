@@ -1,4 +1,4 @@
-{ inputs, rootPath, system, pkgs, homeModules, name, ... }:
+{ inputs, system, pkgs, homeModules, name, ... }:
 
 let
 
@@ -15,10 +15,10 @@ inputs.home-manager.lib.homeManagerConfiguration {
   inherit pkgs;
 
   extraSpecialArgs = {
-    inherit inputs rootPath;
+    inherit inputs;
   };
 
   modules = [
-    "${rootPath}/hosts/${hostname}/home-${username}.nix"
+    "${inputs.self}/hosts/${hostname}/home-${username}.nix"
   ] ++ homeModules;
 }
