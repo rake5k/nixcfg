@@ -291,6 +291,29 @@
         "type": "github"
       }
     },
+    "programsdb": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "utils": [
+          "flake-utils"
+        ]
+      },
+      "locked": {
+        "lastModified": 1678200790,
+        "narHash": "sha256-IcbCbFbWsz9Hc7obACnj+xn53+f4ThGX/Qt2BZ4Mo2s=",
+        "owner": "wamserma",
+        "repo": "flake-programs-sqlite",
+        "rev": "e7a1539129197a71f3ce6063d681d3767ed6ad24",
+        "type": "github"
+      },
+      "original": {
+        "owner": "wamserma",
+        "repo": "flake-programs-sqlite",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agenix": "agenix",
@@ -306,6 +329,7 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "pre-commit-hooks": "pre-commit-hooks",
+        "programsdb": "programsdb",
         "spacevim": "spacevim"
       }
     },

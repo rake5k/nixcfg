@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   nix = {
@@ -18,4 +18,10 @@
   };
   nixpkgs.config = import ./nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
+
+  # Command-not-found hook
+  programs.command-not-found = {
+    enable = true;
+    dbPath = config.lib.custom.programsdb;
+  };
 }

@@ -47,6 +47,14 @@
       };
     };
 
+    programsdb = {
+      url = "github:wamserma/flake-programs-sqlite";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        utils.follows = "flake-utils";
+      };
+    };
+
     homeage = {
       url = "github:jordanisaacs/homeage/release";
       inputs.nixpkgs.follows = "nixpkgs";

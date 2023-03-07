@@ -58,6 +58,8 @@ let
         chmod +x $wrapped_bin
       done
     '';
+
+    programsdb = inputs.programsdb.packages.${system}.programs-sqlite;
   };
 
 in
