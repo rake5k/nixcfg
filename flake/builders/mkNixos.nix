@@ -4,7 +4,7 @@ inputs.nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit homeModules rootPath;
+    inherit homeModules inputs rootPath;
   };
 
   modules = [
@@ -21,13 +21,6 @@ inputs.nixpkgs.lib.nixosSystem {
 
       nixpkgs = {
         inherit pkgs;
-      };
-
-      nix = {
-        nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-        registry = {
-          nixpkgs.flake = inputs.nixpkgs;
-        };
       };
     }
   ]

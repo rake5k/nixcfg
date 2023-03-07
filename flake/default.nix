@@ -7,6 +7,7 @@ let
   homeModulesBuilder = { rootPath, customLib, ... }:
     [
       inputs.homeage.homeManagerModules.homeage
+      inputs.nix-index-database.hmModules.nix-index
 
       {
         lib.custom = customLib;

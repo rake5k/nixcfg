@@ -1,4 +1,4 @@
-{ config, lib, pkgs, homeModules, rootPath, ... } @ args:
+{ config, lib, pkgs, homeModules, inputs, rootPath, ... } @ args:
 
 with lib;
 
@@ -49,7 +49,7 @@ in
       backupFileExtension = "hm-bak";
       useGlobalPkgs = true;
       useUserPackages = true;
-      extraSpecialArgs = { inherit rootPath; };
+      extraSpecialArgs = { inherit inputs rootPath; };
       sharedModules = homeModules;
       users = hmUsers;
     };

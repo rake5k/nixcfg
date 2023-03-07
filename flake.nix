@@ -76,6 +76,11 @@
       };
     };
 
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     spacevim = {
       url = "github:christianharke/spacevim-flake";
       inputs = {
