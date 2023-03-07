@@ -94,15 +94,14 @@
     let
       flakeLib = import ./flake {
         inherit inputs;
-        rootPath = ./.;
       };
 
       inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
       inherit (flakeLib) eachSystem mkHome mkNixos;
     in
     {
-      lib = { rootPath }:
-        import ./flake { inherit inputs rootPath; };
+      lib = { inputs }:
+        import ./flake { inputs = inputs // self.inputs; };
 
       homeConfigurations = listToAttrs [
         (mkHome "x86_64-linux" "demo@non-nixos-vm")

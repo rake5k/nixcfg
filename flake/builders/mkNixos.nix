@@ -1,14 +1,14 @@
-{ inputs, rootPath, system, pkgs, customLib, homeModules, name, ... }:
+{ inputs, system, pkgs, customLib, homeModules, name, ... }:
 
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
 
   specialArgs = {
-    inherit homeModules inputs rootPath;
+    inherit homeModules inputs;
   };
 
   modules = [
-    (rootPath + "/hosts/${name}")
+    "${inputs.self}/hosts/${name}"
 
     inputs.agenix.nixosModules.age
     inputs.home-manager.nixosModules.home-manager
@@ -25,6 +25,6 @@ inputs.nixpkgs.lib.nixosSystem {
     }
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nixos
-  ++ customLib.getRecursiveDefaultNixFileList (rootPath + "/nixos");
+  ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";
 }
 

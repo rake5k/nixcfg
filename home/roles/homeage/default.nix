@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.roles.homeage;
 
-  secretsSourcePath = rootPath + "/secrets/${config.home.username}";
+  secretsSourcePath = "${inputs.self}/secrets/${config.home.username}";
 
   mkHomeageFile = secret: nameValuePair secret {
     path = secret;
@@ -29,7 +29,7 @@ in
 
       secretsPath = mkOption {
         type = types.path;
-        default = config.xdg.dataHome + "/secrets";
+        default = "${config.xdg.dataHome}/secrets";
         description = "Base path of the secret symlinks.";
       };
     };

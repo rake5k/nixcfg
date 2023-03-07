@@ -1,10 +1,10 @@
-{ inputs, rootPath }:
+{ inputs }:
 
 with inputs.nixpkgs;
 
 let
 
-  homeModulesBuilder = { rootPath, customLib, ... }:
+  homeModulesBuilder = { customLib, ... }:
     [
       inputs.homeage.homeManagerModules.homeage
       inputs.nix-index-database.hmModules.nix-index
@@ -14,14 +14,14 @@ let
       }
     ]
     ++ customLib.getRecursiveDefaultNixFileList ../home
-    ++ customLib.getRecursiveDefaultNixFileList (rootPath + "/home");
+    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home";
 
   nameValuePairSystemWrapper = system: name: fn:
     lib.nameValuePair name (fn system);
 
   wrapper = builder: system: name: args:
     let
-      flakeArgs = { inherit inputs rootPath system; };
+      flakeArgs = { inherit inputs system; };
       perSystem = import ./per-system.nix flakeArgs;
 
       homeModules = homeModulesBuilder (flakeArgs // perSystem);

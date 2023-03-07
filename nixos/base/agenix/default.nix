@@ -1,4 +1,4 @@
-{ config, lib, pkgs, rootPath, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
@@ -23,7 +23,7 @@ in
     age = {
       secrets = mkMerge (builtins.map
         (secret: {
-          "${secret}".file = rootPath + "/secrets/${secret}.age";
+          "${secret}".file = "${inputs.self}/secrets/${secret}.age";
         })
         cfg.secrets);
 

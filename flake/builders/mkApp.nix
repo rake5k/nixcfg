@@ -1,8 +1,8 @@
-{ inputs, pkgs, customLib, rootPath, name, args, ... }:
+{ inputs, pkgs, customLib, name, args, ... }:
 
 let
 
-  file = rootPath + "/flake/apps/${args.file}";
+  file = "${inputs.self}/flake/apps/${args.file}";
   mkPath = args.path or (pkgs: [ ]);
 
 in
