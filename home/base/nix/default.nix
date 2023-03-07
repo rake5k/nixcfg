@@ -1,9 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   nix = {
+    registry = {
+      nixpkgs.flake = inputs.nixpkgs;
+      nix-config.flake = inputs.self;
+    };
     settings = {
       auto-optimise-store = true;
+      experimental-features = [ "nix-command" "flakes" ];
+      flake-registry = null;
       substituters = [
         "https://christianharke.cachix.org/"
         "https://nix-community.cachix.org"
@@ -18,4 +24,7 @@
   };
   nixpkgs.config = import ./nixpkgs-config.nix;
   xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
+
+  # Command-not-found replacement
+  programs.nix-index.enable = true;
 }

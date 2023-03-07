@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   nix = {
@@ -7,9 +7,15 @@
       dates = "04:00";
       options = "--delete-older-than 7d";
     };
+    nixPath = [ "nixpkgs=flake:nixpkgs" ];
     optimise.automatic = true;
+    registry = {
+      nixpkgs.flake = inputs.nixpkgs;
+      nix-config.flake = inputs.self;
+    };
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
+      flake-registry = null;
       substituters = [
         "https://christianharke.cachix.org/"
         "https://nix-community.cachix.org"
