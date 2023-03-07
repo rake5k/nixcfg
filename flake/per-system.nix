@@ -33,7 +33,7 @@ let
 
       nixgl = inputs.nixgl.packages."${system}".default;
 
-      inherit unstable nur custom;
+      inherit system unstable nur custom;
     })
   ];
 
