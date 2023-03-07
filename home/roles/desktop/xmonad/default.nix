@@ -32,6 +32,7 @@ in
       inherit (desktopCfg) locker terminalCmd;
 
       autoruns = {
+        "nm-applet" = 1;
         "${desktopCfg.terminalCmd}" = 1;
       };
       dmenu = {
