@@ -42,6 +42,10 @@ in
       font = {
         inherit (desktopCfg.font) package pango;
       };
+      passwordManager = {
+        command = mkDefault "1password";
+        wmClassName = mkDefault "1Password";
+      };
       xmobar = {
         enable = true;
         mobile = desktopCfg.mobile.enable;

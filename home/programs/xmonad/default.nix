@@ -130,6 +130,17 @@ in
         };
       };
 
+      passwordManager = {
+        command = mkOption {
+          type = types.str;
+          description = "Command to spawn the default password manager";
+        };
+        wmClassName = mkOption {
+          type = types.str;
+          description = "Window manager class name retrieved via `xprop` utility";
+        };
+      };
+
       terminalCmd = mkOption {
         type = types.str;
         description = "Command to spawn the default terminal emulator";
