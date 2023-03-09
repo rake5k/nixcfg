@@ -73,9 +73,10 @@ pkgs.writeText "xmonad.hs" ''
   myScratchpads =
     [ NS "terminal" spawnTerm findTerm manageTerm
     , NS "calendar" spawnCal findCal manageCal
-    , NS "wiki" spawnWiki findWiki manageWiki
     , NS "htop" spawnHtop findHtop manageHtop
     , NS "pavucontrol" spawnPavuCtl findPavuCtl managePavuCtl
+    , NS "pwmanager" spawnPwManager findPwManager managePwManager
+    , NS "wiki" spawnWiki findWiki manageWiki
     ]
     where
       center :: Rational -> Rational
@@ -96,14 +97,6 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnWiki     = "joplin-desktop"
-      findWiki   = className =? "Joplin"
-      manageWiki    = customFloating $ W.RationalRect x y w h
-        where
-          w = (4/5)
-          h = (5/6)
-          x = center w
-          y = center h
       spawnHtop     = myTerminal ++ " -t htop -e htop"
       findHtop      = title =? "htop"
       manageHtop    = customFloating $ W.RationalRect x y w h
@@ -118,6 +111,22 @@ pkgs.writeText "xmonad.hs" ''
         where
           w = (2/3)
           h = (3/4)
+          x = center w
+          y = center h
+      spawnPwManager  = "${cfg.passwordManager.command}"
+      findPwManager   = className =? "${cfg.passwordManager.wmClassName}"
+      managePwManager = customFloating $ W.RationalRect x y w h
+        where
+          w = (2/3)
+          h = (3/4)
+          x = center w
+          y = center h
+      spawnWiki     = "joplin-desktop"
+      findWiki   = className =? "Joplin"
+      manageWiki    = customFloating $ W.RationalRect x y w h
+        where
+          w = (4/5)
+          h = (5/6)
           x = center w
           y = center h
 
@@ -227,9 +236,10 @@ pkgs.writeText "xmonad.hs" ''
     -- ScratchPads
     , ("M-C-<Return>",  namedScratchpadAction myScratchpads "terminal")
     , ("M-C-k",         namedScratchpadAction myScratchpads "calendar")
-    , ("M-C-w",         namedScratchpadAction myScratchpads "wiki")
     , ("M-C-t",         namedScratchpadAction myScratchpads "htop")
     , ("M-C-v",         namedScratchpadAction myScratchpads "pavucontrol")
+    , ("M-C-p",         namedScratchpadAction myScratchpads "pwmanager")
+    , ("M-C-w",         namedScratchpadAction myScratchpads "wiki")
     ]
     where
       scratchpadWorkspaceTag = "NSP"
