@@ -15,7 +15,6 @@
     };
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      flake-registry = null;
       log-lines = 30;
       substituters = [
         "https://christianharke.cachix.org/"
