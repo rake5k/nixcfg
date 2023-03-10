@@ -52,15 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    i3lock-pixeled = {
-      url = "gitlab:christianharke/i3lock-pixeled";
-      inputs = {
-        flake-utils.follows = "flake-utils";
-        nixpkgs.follows = "nixpkgs";
-        pre-commit-hooks.follows = "pre-commit-hooks";
-      };
-    };
-
     kmonad = {
       url = "github:christianharke/kmonad?dir=nix";
       inputs = {

@@ -4,7 +4,8 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.grobi;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.grobi;
 
 in
 
@@ -17,12 +18,6 @@ in
         type = with types; listOf attrs;
         default = [ ];
         description = "Grobi rules";
-      };
-
-      wallpapersDir = mkOption {
-        type = types.path;
-        default = config.home.homeDirectory + "/Pictures/wallpapers";
-        description = "Directory containing wallpapers";
       };
     };
   };
@@ -39,7 +34,7 @@ in
       inherit (cfg) rules;
       enable = true;
       executeAfter = [
-        "${pkgs.feh}/bin/feh --no-fehbg --bg-fill --randomize ${cfg.wallpapersDir}"
+        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${desktopCfg.wallpapersDir}"
       ];
     };
   };

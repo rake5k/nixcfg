@@ -4,7 +4,8 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.locker;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.locker;
 
 in
 
@@ -13,15 +14,28 @@ in
     custom.roles.desktop.locker = {
       package = mkOption {
         type = types.package;
-        default = pkgs.custom.i3lock-pixeled;
+        default = pkgs.betterlockscreen;
         description = "Locker package to use";
       };
 
       lockCmd = mkOption {
         type = types.str;
-        default = "${pkgs.custom.i3lock-pixeled}/bin/i3lock-pixeled";
+        default = "${lib.getExe pkgs.betterlockscreen} --lock dim";
         description = "Command to activate locker";
       };
     };
+  };
+
+  config = {
+    home.packages = [
+      cfg.package
+    ] ++ (with pkgs; [
+      playerctl
+    ]);
+
+    # Update random lock image on login
+    xsession.initExtra = ''
+      ${lib.getExe pkgs.betterlockscreen} --update ${desktopCfg.wallpapersDir} --fx dim &
+    '';
   };
 }

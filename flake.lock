@@ -149,32 +149,6 @@
         "type": "github"
       }
     },
-    "i3lock-pixeled": {
-      "inputs": {
-        "flake-utils": [
-          "flake-utils"
-        ],
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "pre-commit-hooks": [
-          "pre-commit-hooks"
-        ]
-      },
-      "locked": {
-        "lastModified": 1647291961,
-        "narHash": "sha256-VSqx+t36K5JH8l93i3iS12AT8eVPf1V3NZEiDmrvHf4=",
-        "owner": "christianharke",
-        "repo": "i3lock-pixeled",
-        "rev": "9cb79ec1e7e5d9860ed27ff89e8fd69dc9ce9777",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "christianharke",
-        "repo": "i3lock-pixeled",
-        "type": "gitlab"
-      }
-    },
     "kmonad": {
       "inputs": {
         "nixpkgs": [
@@ -319,7 +293,6 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "homeage": "homeage",
-        "i3lock-pixeled": "i3lock-pixeled",
         "kmonad": "kmonad",
         "nix-index-database": "nix-index-database",
         "nixgl": "nixgl",

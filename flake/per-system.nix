@@ -14,7 +14,6 @@ let
   custom = import inputs.nixpkgs {
     inherit system;
     overlays = [
-      inputs.i3lock-pixeled.overlay
       inputs.spacevim.overlays.default
     ];
   };
