@@ -50,6 +50,12 @@ in
         default = "${cfg.alacritty.spawnCmd}";
         description = "Command to spawn the default terminal emulator";
       };
+
+      wallpapersDir = mkOption {
+        type = types.path;
+        default = config.home.homeDirectory + "/Pictures/wallpapers";
+        description = "Directory containing wallpapers";
+      };
     };
   };
 
