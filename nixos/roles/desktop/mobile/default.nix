@@ -18,6 +18,8 @@ in
   config = mkIf cfg.enable {
     services = {
       logind.lidSwitch = "suspend-then-hibernate";
+      logind.lidSwitchExternalPower = "lock";
+      logind.lidSwitchDocked = "ignore";
       upower.enable = true;
     };
 
