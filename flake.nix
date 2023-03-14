@@ -84,13 +84,12 @@
   outputs = { self, nixpkgs, ... } @ inputs:
     let
 
+      inherit (inputs.flake-utils.lib.system) aarch64-linux x86_64-linux;
+
       forEachSystem =
-        let
-          inherit (inputs.flake-utils.lib) system;
-        in
         inputs.nixpkgs.lib.genAttrs [
-          system.aarch64-linux
-          system.x86_64-linux
+          aarch64-linux
+          x86_64-linux
         ];
 
       flakeLib = import ./flake {
@@ -111,12 +110,12 @@
         import ./flake { inputs = inputs // self.inputs; };
 
       homeConfigurations = listToAttrs [
-        (mkHome "x86_64-linux" "demo@non-nixos-vm")
-        (mkHome "x86_64-linux" "christian@non-nixos-vm")
+        (mkHome x86_64-linux "demo@non-nixos-vm")
+        (mkHome x86_64-linux "christian@non-nixos-vm")
       ];
 
       nixosConfigurations = listToAttrs [
-        (mkNixos "x86_64-linux" "nixos-vm")
+        (mkNixos x86_64-linux "nixos-vm")
       ];
 
 
