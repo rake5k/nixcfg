@@ -69,17 +69,15 @@ repo and add your host and user configurations into the folder structure and ref
     in
     {
       homeConfigurations = listToAttrs [
-        (mkHome "x86_64-linux" "demo@non-nixos-host")
+        (mkHome x86_64-linux "demo@non-nixos-host")
       ];
 
       nixosConfigurations = listToAttrs [
-        (mkNixos "x86_64-linux" "nixos-host")
+        (mkNixos x86_64-linux "nixos-host")
       ];
-    }
-    // eachSystem ({ mkGeneric, mkApp, mkCheck, getDevShell, mkDevShell, ... }:
-      {
-        # ...
-      });
+
+      # ...
+    };
 }
 ```
 
@@ -99,20 +97,18 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 
   outputs = { nixpkgs, nixcfg, ... } @ inputs:
     let
-      nixcfgLib = nixcfg.lib."x86_64-linux" {
-        inherit inputs;
-      };
+      nixcfgLib = nixcfg.lib { inherit inputs; };
 
-      inherit (nixpkgs.lib) listToAttrs;
-      inherit (nixcfgLib) mkHome mkNixos;
+      # ...
     in
+    with nixcfgLib;
     {
       homeConfigurations = listToAttrs [
-        (mkHome "x86_64-linux" "demo@non-nixos-host")
+        (mkHome x86_64-linux "demo@non-nixos-host")
       ];
 
       nixosConfigurations = listToAttrs [
-        (mkNixos "x86_64-linux" "nixos-host")
+        (mkNixos x86_64-linux "nixos-host")
       ];
     };
 }
