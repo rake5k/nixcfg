@@ -75,4 +75,9 @@ in
   mkCheck = wrapper ./builders/mkCheck.nix;
   getDevShell = name: forEachSystem (system: inputs.self.devShells."${system}"."${name}");
   mkDevShell = wrapper ./builders/mkDevShell.nix;
+  mkShellCheck = pkgs: ''
+    shopt -s globstar
+    echo 'Running shellcheck...'
+    ${pkgs.lib.getExe pkgs.shellcheck} --check-sourced --enable all --external-sources --shell bash ${./.}/**/*.sh
+  '';
 }
