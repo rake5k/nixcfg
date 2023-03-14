@@ -26,7 +26,6 @@ See [flake.nix](flake.nix) for more information like `system`.
 
 ```
 📂 .
-├──📂 flake         -- internal flake library
 ├──🔒 flake.lock    -- flake lockfile
 ├── ❄ flake.nix     -- flake definition
 ├──📂 home          -- Home Manager configuration
@@ -36,6 +35,7 @@ See [flake.nix](flake.nix) for more information like `system`.
 │  └──📂 users      -- user-specific config
 ├──📂 hosts         -- NixOS host configs
 │  └──📂 nixos-vm
+├──📂 lib           -- internal flake library
 ├──📂 nixos         -- custom NixOS modules
 │  ├──📂 base       -- basic configs
 │  │   └──📂 users  -- user configs

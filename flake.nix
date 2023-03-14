@@ -83,16 +83,16 @@
 
   outputs = { self, nixpkgs, ... } @ inputs:
     let
-      flakeLib = import ./flake {
+      nixcfgLib = import ./lib {
         inherit inputs;
       };
       inherit (inputs.flake-utils.lib.system) x86_64-linux;
       inherit (nixpkgs.lib) listToAttrs;
     in
-    with flakeLib;
+    with nixcfgLib;
     {
       lib = { inputs }:
-        import ./flake { inputs = inputs // self.inputs; };
+        import ./lib { inputs = inputs // self.inputs; };
 
       homeConfigurations = listToAttrs [
         (mkHome x86_64-linux "demo@non-nixos-vm")
