@@ -22,7 +22,9 @@ let
 in
 
 {
-  imports = importUserModules;
+  imports = [
+    inputs.home-manager.nixosModules.home-manager
+  ] ++ importUserModules;
 
   options = {
     custom.base = {

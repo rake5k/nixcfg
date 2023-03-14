@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-with builtins;
 
 let
 
@@ -18,7 +17,7 @@ let
           Type = "simple";
           Restart = "always";
           RestartSec = 10;
-          ExecStart = "${cfg.package}/bin/kmonad ${kbd-path}";
+          ExecStart = "${lib.getExe cfg.package} ${kbd-path}";
         };
         Install = {
           WantedBy = [ "default.target" ];
