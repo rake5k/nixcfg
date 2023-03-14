@@ -87,7 +87,7 @@
         inherit inputs;
       };
       inherit (inputs.flake-utils.lib.system) x86_64-linux;
-      inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
+      inherit (nixpkgs.lib) listToAttrs;
     in
     with flakeLib;
     {
@@ -103,73 +103,69 @@
         (mkNixos x86_64-linux "nixos-vm")
       ];
 
+      apps = mkForEachSystem [
+        (mkApp "setup" {
+          file = "setup.sh";
+          envs = {
+            _doNotClearPath = true;
+            flakePath = "/home/\$(logname)/.nix-config";
+          };
+          path = pkgs: with pkgs; [
+            git
+            hostname
+            jq
+          ];
+        })
 
-      apps = forEachSystem (system:
-        listToAttrs [
-          (mkApp system "setup" {
-            file = "setup.sh";
-            envs = {
-              _doNotClearPath = true;
-              flakePath = "/home/\$(logname)/.nix-config";
-            };
-            path = pkgs: with pkgs; [
-              git
-              hostname
-              jq
-            ];
-          })
+        (mkApp "nixos-install" {
+          file = "nixos-install.sh";
+          envs = {
+            _doNotClearPath = true;
+          };
+          path = pkgs: with pkgs; [
+            git
+            hostname
+            util-linux
+            parted
+            cryptsetup
+            lvm2
+          ];
+        })
+      ];
 
-          (mkApp system "nixos-install" {
-            file = "nixos-install.sh";
-            envs = {
-              _doNotClearPath = true;
-            };
-            path = pkgs: with pkgs; [
-              git
-              hostname
-              util-linux
-              parted
-              cryptsetup
-              lvm2
-            ];
-          })
-        ]);
+      checks = mkForEachSystem [
+        (mkGeneric "pre-commit-check" (system: inputs.pre-commit-hooks.lib."${system}".run {
+          src = ./.;
+          hooks = {
+            nixpkgs-fmt.enable = true;
+            shellcheck.enable = true;
+            statix.enable = true;
+          };
+        }))
 
-      checks = forEachSystem (system:
-        listToAttrs [
-          (inputs.nixpkgs.lib.nameValuePair "pre-commit-check" (inputs.pre-commit-hooks.lib."${system}".run {
-            src = ./.;
-            hooks = {
-              nixpkgs-fmt.enable = true;
-              shellcheck.enable = true;
-              statix.enable = true;
-            };
-          }))
+        (mkCheck "shellcheck" {
+          script = mkShellCheck;
+        })
 
-          (mkCheck system "shellcheck" {
-            script = mkShellCheck;
-          })
+        (mkCheck "nixpkgs-fmt" {
+          script = pkgs: ''
+            shopt -s globstar
+            ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
+          '';
+        })
 
-          (mkCheck system "nixpkgs-fmt" {
-            script = pkgs: ''
-              shopt -s globstar
-              ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
-            '';
-          })
+        (mkBuild "build-nixos-vm" self.nixosConfigurations.nixos-vm.config.system.build.toplevel)
+        (mkBuild "build-demo@non-nixos-vm" self.homeConfigurations."demo@non-nixos-vm".activationPackage)
+        (mkBuild "build-christian@non-nixos-vm" self.homeConfigurations."christian@non-nixos-vm".activationPackage)
+      ];
 
-          (inputs.nixpkgs.lib.nameValuePair "build-nixos-vm" self.nixosConfigurations.nixos-vm.config.system.build.toplevel)
-          (inputs.nixpkgs.lib.nameValuePair "build-demo@non-nixos-vm" self.homeConfigurations."demo@non-nixos-vm".activationPackage)
-          (inputs.nixpkgs.lib.nameValuePair "build-christian@non-nixos-vm" self.homeConfigurations."christian@non-nixos-vm".activationPackage)
-        ]);
-
-      devShells = forEachSystem (system:
-        listToAttrs [
-          (mkDevShell system "default" {
-            name = "nixcfg";
-            checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
-            packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
-            customShellHook = mkShellCheck;
-          })
-        ]);
+      devShells = mkForEachSystem [
+        (mkDevShell "default" {
+          name = "nixcfg";
+          checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
+          packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
+          customShellHook = mkShellCheck;
+        })
+      ];
     };
 }

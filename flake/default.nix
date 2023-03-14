@@ -52,7 +52,9 @@ let
     ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
   );
 
-  wrapper = builder: system: name: args:
+  nameValuePairWrapper = name: fn: system: inputs.nixpkgs.lib.nameValuePair name (fn system);
+
+  wrapper = builder: name: args: system:
     inputs.nixpkgs.lib.nameValuePair
       name
       (import builder {
@@ -62,19 +64,20 @@ let
         homeModules = homeModulesFor."${system}";
       });
 
-  simpleWrapper = builder: system: name: wrapper builder system name { };
+  simpleWrapper = builder: system: name: wrapper builder name { } system;
 
 in
 
 {
   inherit forEachSystem;
-
+  mkForEachSystem = bs: forEachSystem (system: (inputs.nixpkgs.lib.listToAttrs (map (b: b system) bs)));
+  mkApp = wrapper ./builders/mkApp.nix;
+  mkBuild = name: args: nameValuePairWrapper name (system: args);
+  mkCheck = wrapper ./builders/mkCheck.nix;
+  mkDevShell = wrapper ./builders/mkDevShell.nix;
+  mkGeneric = nameValuePairWrapper;
   mkHome = simpleWrapper ./builders/mkHome.nix;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
-  mkApp = wrapper ./builders/mkApp.nix;
-  mkCheck = wrapper ./builders/mkCheck.nix;
-  getDevShell = name: forEachSystem (system: inputs.self.devShells."${system}"."${name}");
-  mkDevShell = wrapper ./builders/mkDevShell.nix;
   mkShellCheck = pkgs: ''
     shopt -s globstar
     echo 'Running shellcheck...'
