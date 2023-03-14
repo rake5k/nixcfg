@@ -83,12 +83,28 @@
 
   outputs = { self, nixpkgs, ... } @ inputs:
     let
+
+      forEachSystem =
+        let
+          inherit (inputs.flake-utils.lib) system;
+        in
+        inputs.nixpkgs.lib.genAttrs [
+          system.aarch64-linux
+          system.x86_64-linux
+        ];
+
       flakeLib = import ./flake {
-        inherit inputs;
+        inherit inputs forEachSystem;
       };
 
-      inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
-      inherit (flakeLib) eachSystem mkHome mkNixos;
+      inherit (nixpkgs.lib) getExe listToAttrs recursiveUpdate;
+      inherit (flakeLib) mkHome mkNixos mkGeneric mkApp mkCheck getDevShell mkDevShell;
+
+      mkShellCheck = pkgs: ''
+        shopt -s globstar
+        echo 'Running shellcheck...'
+        ${getExe pkgs.shellcheck} --check-sourced --enable all --external-sources --shell bash ${./.}/**/*.sh
+      '';
     in
     {
       lib = { inputs }:
@@ -102,18 +118,11 @@
       nixosConfigurations = listToAttrs [
         (mkNixos "x86_64-linux" "nixos-vm")
       ];
-    }
-    // eachSystem ({ mkGeneric, mkApp, mkCheck, getDevShell, mkDevShell, ... }:
-      let
-        mkShellCheck = pkgs: ''
-          shopt -s globstar
-          echo 'Running shellcheck...'
-          ${pkgs.shellcheck}/bin/shellcheck --check-sourced --enable all --external-sources --shell bash ${./.}/**/*.sh
-        '';
-      in
-      {
-        apps = listToAttrs [
-          (mkApp "setup" {
+
+
+      apps = forEachSystem (system:
+        listToAttrs [
+          (mkApp system "setup" {
             file = "setup.sh";
             envs = {
               _doNotClearPath = true;
@@ -126,7 +135,7 @@
             ];
           })
 
-          (mkApp "nixos-install" {
+          (mkApp system "nixos-install" {
             file = "nixos-install.sh";
             envs = {
               _doNotClearPath = true;
@@ -140,11 +149,12 @@
               lvm2
             ];
           })
-        ];
+        ]);
 
-        checks = recursiveUpdate
+      checks = forEachSystem (system:
+        recursiveUpdate
           (listToAttrs [
-            (mkGeneric "pre-commit-check" (system: inputs.pre-commit-hooks.lib."${system}".run {
+            (inputs.nixpkgs.lib.nameValuePair "pre-commit-check" (inputs.pre-commit-hooks.lib."${system}".run {
               src = ./.;
               hooks = {
                 nixpkgs-fmt.enable = true;
@@ -153,11 +163,11 @@
               };
             }))
 
-            (mkCheck "shellcheck" {
+            (mkCheck system "shellcheck" {
               script = mkShellCheck;
             })
 
-            (mkCheck "nixpkgs-fmt" {
+            (mkCheck system "nixpkgs-fmt" {
               script = pkgs: ''
                 shopt -s globstar
                 ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
@@ -168,15 +178,16 @@
             "build-nixos-vm" = self.nixosConfigurations.nixos-vm.config.system.build.toplevel;
             "build-demo@non-nixos-vm" = self.homeConfigurations."demo@non-nixos-vm".activationPackage;
             "build-christian@non-nixos-vm" = self.homeConfigurations."christian@non-nixos-vm".activationPackage;
-          };
+          });
 
-        devShells = listToAttrs [
-          (mkDevShell "default" {
+      devShells = forEachSystem (system:
+        listToAttrs [
+          (mkDevShell system "default" {
             name = "nixcfg";
             checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
             packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
             customShellHook = mkShellCheck;
           })
-        ];
-      });
+        ]);
+    };
 }

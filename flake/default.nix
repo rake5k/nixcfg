@@ -1,10 +1,36 @@
-{ inputs }:
-
-with inputs.nixpkgs;
+{ inputs, forEachSystem }:
 
 let
 
-  homeModulesBuilder = { customLib, ... }:
+  pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
+  customLibFor = forEachSystem (system:
+    let
+      pkgs = pkgsFor."${system}";
+    in
+    inputs.flake-commons.lib
+      {
+        inherit (inputs.nixpkgs) lib;
+        inherit pkgs;
+        rootPath = inputs.self;
+      } // {
+      nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapper" { } ''
+        mkdir $out
+        ln -s ${pkg}/* $out
+        rm $out/bin
+        mkdir $out/bin
+        for bin in ${pkg}/bin/*; do
+          wrapped_bin=$out/bin/$(basename $bin)
+          echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
+          echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
+          chmod +x $wrapped_bin
+        done
+      '';
+    });
+
+  homeModulesFor = forEachSystem (system:
+    let
+      customLib = customLibFor.${system};
+    in
     [
       inputs.homeage.homeManagerModules.homeage
       inputs.nix-index-database.hmModules.nix-index
@@ -14,44 +40,28 @@ let
       }
     ]
     ++ customLib.getRecursiveDefaultNixFileList ../home
-    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home";
-
-  nameValuePairSystemWrapper = system: name: fn:
-    lib.nameValuePair name (fn system);
+    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
+  );
 
   wrapper = builder: system: name: args:
-    let
-      flakeArgs = { inherit inputs system; };
-      perSystem = import ./per-system.nix flakeArgs;
+    inputs.nixpkgs.lib.nameValuePair
+      name
+      (import builder {
+        inherit inputs system name args;
+        pkgs = pkgsFor."${system}";
+        customLib = customLibFor."${system}";
+        homeModules = homeModulesFor."${system}";
+      });
 
-      homeModules = homeModulesBuilder (flakeArgs // perSystem);
-
-      builderArgs = flakeArgs // perSystem // { inherit args homeModules name; };
-    in
-    import builder builderArgs;
-
-  nameValuePairWrapper = builder: system: name: args:
-    lib.nameValuePair name (wrapper builder system name args);
-
-  simpleNameValuePairWrapper = builder: system: name:
-    nameValuePairWrapper builder system name { };
+  simpleWrapper = builder: system: name: wrapper builder system name { };
 
 in
 
 {
-  mkHome = simpleNameValuePairWrapper ./builders/mkHome.nix;
-  mkNixos = simpleNameValuePairWrapper ./builders/mkNixos.nix;
-
-  eachSystem = builderPerSystem:
-    inputs.flake-utils.lib.eachSystem
-      [ "aarch64-linux" "x86_64-linux" ]
-      (system:
-        builderPerSystem {
-          mkGeneric = nameValuePairSystemWrapper system;
-          mkApp = nameValuePairWrapper ./builders/mkApp.nix system;
-          mkCheck = nameValuePairWrapper ./builders/mkCheck.nix system;
-          getDevShell = name: inputs.self.devShells."${system}"."${name}";
-          mkDevShell = nameValuePairWrapper ./builders/mkDevShell.nix system;
-        }
-      );
+  mkHome = simpleWrapper ./builders/mkHome.nix;
+  mkNixos = simpleWrapper ./builders/mkNixos.nix;
+  mkApp = wrapper ./builders/mkApp.nix;
+  mkCheck = wrapper ./builders/mkCheck.nix;
+  getDevShell = name: forEachSystem (system: inputs.self.devShells."${system}"."${name}");
+  mkDevShell = wrapper ./builders/mkDevShell.nix;
 }
