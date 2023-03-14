@@ -1,6 +1,15 @@
-{ inputs, forEachSystem }:
+{ inputs }:
 
 let
+
+  forEachSystem =
+    let
+      inherit (inputs.flake-utils.lib.system) aarch64-linux x86_64-linux;
+    in
+    inputs.nixpkgs.lib.genAttrs [
+      aarch64-linux
+      x86_64-linux
+    ];
 
   pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
   customLibFor = forEachSystem (system:
@@ -58,6 +67,8 @@ let
 in
 
 {
+  inherit forEachSystem;
+
   mkHome = simpleWrapper ./builders/mkHome.nix;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
   mkApp = wrapper ./builders/mkApp.nix;

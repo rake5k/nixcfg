@@ -84,20 +84,13 @@
   outputs = { self, nixpkgs, ... } @ inputs:
     let
 
-      inherit (inputs.flake-utils.lib.system) aarch64-linux x86_64-linux;
-
-      forEachSystem =
-        inputs.nixpkgs.lib.genAttrs [
-          aarch64-linux
-          x86_64-linux
-        ];
-
       flakeLib = import ./flake {
-        inherit inputs forEachSystem;
+        inherit inputs;
       };
 
+      inherit (inputs.flake-utils.lib.system) x86_64-linux;
       inherit (nixpkgs.lib) getExe listToAttrs recursiveUpdate;
-      inherit (flakeLib) mkHome mkNixos mkGeneric mkApp mkCheck getDevShell mkDevShell;
+      inherit (flakeLib) forEachSystem mkHome mkNixos mkGeneric mkApp mkCheck getDevShell mkDevShell;
 
       mkShellCheck = pkgs: ''
         shopt -s globstar
