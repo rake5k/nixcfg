@@ -9,6 +9,8 @@ let
 in
 
 {
+  imports = [ inputs.agenix.nixosModules.age ];
+
   options = {
     custom.base.agenix.secrets = mkOption {
       type = with types; listOf str;
