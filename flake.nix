@@ -17,7 +17,7 @@
     };
 
     pre-commit-hooks = {
-      url = "github:cachix/pre-commit-hooks.nix?rev=6799201bec19b753a4ac305a53d34371e497941e";
+      url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
         flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs-unstable";
@@ -133,26 +133,35 @@
         })
       ];
 
-      checks = mkForEachSystem [
-        (mkGeneric "pre-commit-check" (system: inputs.pre-commit-hooks.lib."${system}".run {
-          src = ./.;
-          hooks = {
-            nixpkgs-fmt.enable = true;
-            shellcheck.enable = true;
-            statix.enable = true;
-          };
-        }))
-
-        (mkCheck "shellcheck" {
-          script = mkShellCheck;
-        })
-
-        (mkCheck "nixpkgs-fmt" {
-          script = pkgs: ''
-            shopt -s globstar
-            ${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt --check ${./.}/**/*.nix
+      overlays.default = nixpkgs.lib.composeManyExtensions [
+        (final: prev: {
+          shellcheckPicky = prev.writeShellScriptBin "shellcheck" ''
+            ${inputs.nixpkgs.lib.getExe prev.shellcheck} \
+            --check-sourced --enable all --external-sources \
+            "$@"
           '';
         })
+      ];
+
+      checks = mkForEachSystem [
+        (mkGeneric "pre-commit-check" (system:
+          let
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [ self.overlays.default ];
+            };
+          in
+          inputs.pre-commit-hooks.lib."${system}".run {
+            src = ./.;
+            hooks = {
+              nixpkgs-fmt.enable = true;
+              shellcheck = {
+                enable = true;
+                entry = nixpkgs.lib.mkForce "${pkgs.lib.getExe pkgs.shellcheckPicky}";
+              };
+              statix.enable = true;
+            };
+          }))
 
         (mkBuild "build-nixos-vm" self.nixosConfigurations.nixos-vm.config.system.build.toplevel)
         (mkBuild "build-demo@non-nixos-vm" self.homeConfigurations."demo@non-nixos-vm".activationPackage)
@@ -164,7 +173,6 @@
           name = "nixcfg";
           checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
           packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
-          customShellHook = mkShellCheck;
         })
       ];
     };
