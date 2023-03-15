@@ -26,18 +26,18 @@ handle_multimedia() {
 printf "Process 'a'll in directory or 'c'urrent? "
 read -r resp
 
-if [ "$resp" = "a" ]; then
-    if ! [ -e "${outdir}" ]; then
+if [[ "${resp}" = "a" ]]; then
+    if ! [[ -e "${outdir}" ]]; then
         mkdir "${outdir}"
     fi
 
     for f in *; do
-        if [ -f "${f}" ]; then
+        if [[ -f "${f}" ]]; then
             mimestr="$( file --dereference --brief --mime-type -- "${f}" )"
             handle_multimedia "${mimestr}" "${f}" "${@}"
         fi
     done
-elif [ "$resp" = "c" ] && [ -f "$1" ]; then
+elif [[ "${resp}" = "c" ]] && [[ -f "$1" ]]; then
     file="${1}"
     shift 1
     args=("${@}")

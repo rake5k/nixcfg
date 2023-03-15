@@ -78,9 +78,4 @@ in
   mkGeneric = nameValuePairWrapper;
   mkHome = simpleWrapper ./builders/mkHome.nix;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
-  mkShellCheck = pkgs: ''
-    shopt -s globstar
-    echo 'Running shellcheck...'
-    ${pkgs.lib.getExe pkgs.shellcheck} --check-sourced --enable all --external-sources --shell bash ${./.}/**/*.sh
-  '';
 }
