@@ -4,7 +4,7 @@ let
 
   packagesFn = args.packages or (pkgs: [ ]);
   checksShellHookFn = args.checksShellHook or (system: "");
-  customShellHookFn = args.customShellHook or (pkgs: { });
+  customShellHookFn = args.customShellHook or (pkgs: "");
 
 in
 
