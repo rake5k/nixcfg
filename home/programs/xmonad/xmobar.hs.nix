@@ -4,6 +4,7 @@ with lib;
 
 let
 
+  inherit (cfg.xmobar) monitors;
   sep = "<fc=${cfg.colorScheme.accent}>•</fc>";
 
 in
@@ -15,24 +16,7 @@ in
            , bgColor  = "${cfg.colorScheme.background}"
            , fgColor  = "${cfg.colorScheme.foreground}"
            , position = TopH 22
-           , commands = [ Run Alsa "default" "Master"
-                            [ "-t", "<volumestatus>"
-                            , "-S", "True"
-                            , "--"
-                            , "--alsactl", "${pkgs.alsa-utils}/bin/alsactl"
-                            , "--on", "", "--off", "<fc=${cfg.colorScheme.warn}>\xfc5d</fc>"
-                            , "--onc", "${cfg.colorScheme.foreground}"
-                            , "-l", "\xfa7e ", "-m", "\xfa7f ", "-h", "\xfa7d "
-                            ]
-                        , Run Alsa "default" "Capture"
-                            [ "-t", "<volumestatus>"
-                            , "-S", "True"
-                            , "--"
-                            , "--alsactl", "${pkgs.alsa-utils}/bin/alsactl"
-                            , "--on", "\xf86b ", "--off", "<fc=${cfg.colorScheme.warn}>\xf86c</fc>"
-                            , "--onc", "${cfg.colorScheme.foreground}"
-                            ]
-                        , Run Cpu
+           , commands = [ Run Cpu
                             [ "-t", "\xfb19 <total>"
                             , "-S", "True"
                             , "-L", "40", "-H", "60"
@@ -84,9 +68,7 @@ in
                         --trayerpad
                         , Run Com "${pkgs.bash}/bin/bash" ["${./scripts/systraypad.sh}"] "traypad" 10
                         , Run XMonadLog
-  ${optionalString cfg.xmobar.mobile ''
-
-                          -- Mobile monitors
+  ${optionalString monitors.battery ''
                           , Run Battery
                               [ "-t", "<acstatus>"
                               , "-S", "True"
@@ -99,9 +81,27 @@ in
                               , "-O", "\xfba3"
                               , "-o", "<leftbar> <left>"
                               ] 10''}
+  ${optionalString monitors.volume ''
+                        , Run Alsa "default" "Master"
+                            [ "-t", "<volumestatus>"
+                            , "-S", "True"
+                            , "--"
+                            , "--alsactl", "${pkgs.alsa-utils}/bin/alsactl"
+                            , "--on", "", "--off", "<fc=${cfg.colorScheme.warn}>\xfc5d</fc>"
+                            , "--onc", "${cfg.colorScheme.foreground}"
+                            , "-l", "\xfa7e ", "-m", "\xfa7f ", "-h", "\xfa7d "
+                            ]
+                        , Run Alsa "default" "Capture"
+                            [ "-t", "<volumestatus>"
+                            , "-S", "True"
+                            , "--"
+                            , "--alsactl", "${pkgs.alsa-utils}/bin/alsactl"
+                            , "--on", "\xf86b ", "--off", "<fc=${cfg.colorScheme.warn}>\xf86c</fc>"
+                            , "--onc", "${cfg.colorScheme.foreground}"
+                            ]''}
                         ]
            , sepChar  = "%"
            , alignSep = "}{"
-           , template = " <fc=${cfg.colorScheme.base}></fc>  %XMonadLog% }{ %alsa:default:Master% ${sep} %alsa:default:Capture% ${sep} %cpu% ${sep} %memory% ${sep} %disku% ${sep} %multicoretemp% ${sep} ${optionalString cfg.xmobar.mobile "%battery% ${sep} "}%LSZB% ${sep} %date% ${sep} %traypad%"
+           , template = " <fc=${cfg.colorScheme.base}></fc>  %XMonadLog% }{ ${optionalString monitors.volume "%alsa:default:Master% ${sep} %alsa:default:Capture% ${sep} "}%cpu% ${sep} %memory% ${sep} %disku% ${sep} %multicoretemp% ${sep} ${optionalString monitors.battery "%battery% ${sep} "}%LSZB% ${sep} %date% ${sep} %traypad%"
            }
 ''

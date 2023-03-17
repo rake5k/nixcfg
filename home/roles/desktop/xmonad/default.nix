@@ -48,7 +48,7 @@ in
       };
       xmobar = {
         enable = true;
-        mobile = desktopCfg.mobile.enable;
+        monitors.battery = desktopCfg.mobile.enable;
       };
     };
   };
