@@ -148,7 +148,10 @@ in
 
       xmobar = {
         enable = mkEnableOption "Xmobar";
-        mobile = mkEnableOption "Enable additional mobile monitors";
+        monitors = {
+          battery = mkEnableOption "Battery monitor";
+          volume = mkEnableOption "Volume monitor" // { enable = true; };
+        };
       };
     };
   };
