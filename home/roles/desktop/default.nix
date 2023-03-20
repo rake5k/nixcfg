@@ -34,13 +34,13 @@ in
 
         pango = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font SemiBold 10.8";
+          default = "VictorMono Nerd Font Bold 9";
           description = "Font config";
         };
 
         xft = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font:style=SemiBold:pixelsize=14:antialias=true";
+          default = "VictorMono Nerd Font:style=Bold:size=9:antialias=true";
           description = "Font config";
         };
       };

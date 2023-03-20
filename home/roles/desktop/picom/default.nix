@@ -30,6 +30,7 @@ in
           deviation = 5.0;
         };
         blur-background-exclude = [
+          "class_i = 'tray'"
           "name = 'as_toolbar'" # Zoom screen sharing toolbar
           "window_type = 'utility'" # Firefox/Thunderbird dropdowns
         ];
