@@ -16,6 +16,8 @@ let
     ];
   };
 
+  statusbarHeight = 20;
+
 in
 
 {
@@ -37,17 +39,18 @@ in
       };
       dmenu = {
         package = dmenuPatched;
-        runCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h 22";
+        runCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h ${toString statusbarHeight}";
       };
       font = {
-        inherit (desktopCfg.font) package pango;
+        inherit (desktopCfg.font) package xft;
       };
       passwordManager = {
         command = mkDefault "1password";
         wmClassName = mkDefault "1Password";
       };
-      xmobar = {
+      statusbar = {
         enable = true;
+        height = statusbarHeight;
         monitors.battery = desktopCfg.mobile.enable;
       };
     };

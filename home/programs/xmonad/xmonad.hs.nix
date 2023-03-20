@@ -5,32 +5,7 @@ with lib;
 let
 
   escapeHaskellString = arg: replaceStrings [ "\"" ] [ "\\\"" ] (toString arg);
-
-  /* Create a fixed width string with additional prefix to match
-    required width.
-    This function will fail if the input string is longer than the
-    requested length.
-    Type: fixedWidthString :: int -> string -> string -> string
-    Example:
-    fixedWidthString 5 "0" (toString 15)
-    => "15000"
-  */
-  fixedWidthString = width: filler: str:
-    let
-      strw = stringLength str;
-      reqWidth = width - (stringLength filler);
-    in
-    assert assertMsg (strw <= width)
-      "fixedWidthString: requested string length (${
-          toString width}) must not be shorter than actual length (${
-            toString strw})";
-    if strw == width then str else fixedWidthString reqWidth filler str + filler;
-
   mkAutorun = n: v: "spawnOnOnce \"${toString v}\" \"${n}\"";
-
-  mkXmobarColor = n: v: ''
-    ${fixedWidthString 10 " " n} = xmobarColor "${v}" ""
-  '';
 
 in
 
@@ -40,26 +15,22 @@ pkgs.writeText "xmonad.hs" ''
 
   import XMonad
 
-  import XMonad.Actions.CycleWS
+  import XMonad.Actions.CycleWS (Direction1D(Next, Prev), moveTo, shiftTo, toggleWS', WSType(WSIs))
 
-  import XMonad.Hooks.DynamicLog
-  import XMonad.Hooks.EwmhDesktops
-  import XMonad.Hooks.ManageDocks
-  import XMonad.Hooks.ManageHelpers
-  import XMonad.Hooks.StatusBar
-  import XMonad.Hooks.StatusBar.PP
+  import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
+  import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
+  import XMonad.Hooks.ManageHelpers (isDialog)
 
-  import XMonad.Layout.Magnifier
-  import XMonad.Layout.NoBorders
-  import XMonad.Layout.Renamed
-  import XMonad.Layout.Spacing
-  import XMonad.Layout.ThreeColumns
+  import XMonad.Layout.Magnifier (magnifiercz')
+  import XMonad.Layout.NoBorders (smartBorders)
+  import XMonad.Layout.Renamed (renamed, Rename(Replace))
+  import XMonad.Layout.Spacing (spacingWithEdge)
+  import XMonad.Layout.ThreeColumns (ThreeCol(ThreeColMid))
 
-  import XMonad.Util.EZConfig
-  import XMonad.Util.Loggers
-  import XMonad.Util.NamedScratchpad
-  import XMonad.Util.SpawnOnce
-  import XMonad.Util.Ungrab
+  import XMonad.Util.EZConfig (additionalKeysP)
+  import XMonad.Util.NamedScratchpad (customFloating, NamedScratchpad(NS), namedScratchpadAction, namedScratchpadManageHook)
+  import XMonad.Util.SpawnOnce (spawnOnOnce)
+  import XMonad.Util.Ungrab (unGrab)
 
   import qualified XMonad.StackSet as W
 
@@ -148,7 +119,7 @@ pkgs.writeText "xmonad.hs" ''
       doSink = (ask >>= doF . W.sink) <+> doF W.swapDown
 
   myManageHook :: ManageHook
-  myManageHook =  manageZoomHook <+> (
+  myManageHook =  manageDocks <+> manageZoomHook <+> (
     composeAll . concat $ [
       -- Workspace assignments
         [ className =? "jetbrains-idea"             --> doShift "2" ]
@@ -183,7 +154,7 @@ pkgs.writeText "xmonad.hs" ''
       ${optionalString (cfg.autoruns != {}) ''
             ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
       ''}
-  myLayout = smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full ||| threeCol
+  myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full ||| threeCol
     where
       threeCol = renamed [Replace "ThreeCol"]
           $ magnifiercz' 1.3
@@ -192,30 +163,6 @@ pkgs.writeText "xmonad.hs" ''
       nmaster  = 1      -- Default number of windows in the master pane
       ratio    = 1/2    -- Default proportion of screen occupied by master pane
       delta    = 3/100  -- Percent of screen to increment by when resizing panes
-
-  myXmobarPP :: PP
-  myXmobarPP = def
-      { ppSep              = accent " • "
-      , ppTitleSanitize    = xmobarStrip
-      , ppCurrent          = wrap "" " " . xmobarBorder "Top" "${cfg.colorScheme.accent}" 2
-      , ppHidden           = base . wrap "" " "
-      , ppHiddenNoWindows  = foreground . wrap "" " "
-      , ppVisible          = foreground . wrap "" " " . base . xmobarBorder "Top" "${cfg.colorScheme.foreground}" 2
-      , ppVisibleNoWindows = Just $ wrap "" " " . xmobarBorder "Top" "${cfg.colorScheme.foreground}" 2
-      , ppUrgent           = warn . wrap "" "!"
-      , ppOrder            = \[ws, l, _, wins] -> [ws, l, wins]
-      , ppExtras           = [logTitles formatFocused formatUnfocused]
-      }
-    where
-      formatFocused   = wrap (base       "[") (base       "]") . foreground . ppWindow
-      formatUnfocused = wrap " "              " "              . foreground . ppWindow
-
-      -- | Windows should have *some* title, which should not not exceed a sane length.
-      ppWindow :: String -> String
-      ppWindow = xmobarRaw . (\w -> if null w then "untitled" else w) . shorten 30
-
-      ${concatStringsSep ", " (mapAttrsToList (n: v: toString n)  cfg.colorScheme)} :: String -> String
-      ${concatStringsSep "    " (mapAttrsToList mkXmobarColor cfg.colorScheme)}
 
   myKeys :: [(String, X ())]
   myKeys =
@@ -263,6 +210,6 @@ pkgs.writeText "xmonad.hs" ''
   main = xmonad
        . ewmhFullscreen
        . ewmh
-       . withEasySB (statusBarProp "xmobar" (pure myXmobarPP)) defToggleStrutsKey
+       . docks
        $ myConfig
 ''
