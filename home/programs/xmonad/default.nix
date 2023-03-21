@@ -408,7 +408,7 @@ in
           interval = 5;
 
           # Interactions
-          click-right = "pavucontrol";
+          click-right = lib.getExe pkgs.pavucontrol;
 
           # Default
           format-volume = "<label-volume> <bar-volume>";
