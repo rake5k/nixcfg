@@ -21,11 +21,8 @@ pkgs.writeText "xmonad.hs" ''
   import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
   import XMonad.Hooks.ManageHelpers (isDialog)
 
-  import XMonad.Layout.Magnifier (magnifiercz')
   import XMonad.Layout.NoBorders (smartBorders)
-  import XMonad.Layout.Renamed (renamed, Rename(Replace))
   import XMonad.Layout.Spacing (spacingWithEdge)
-  import XMonad.Layout.ThreeColumns (ThreeCol(ThreeColMid))
 
   import XMonad.Util.EZConfig (additionalKeysP)
   import XMonad.Util.NamedScratchpad (customFloating, NamedScratchpad(NS), namedScratchpadAction, namedScratchpadManageHook)
@@ -150,15 +147,13 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      spawn "${pkgs.bash}/bin/bash ${./scripts/systray.sh} &"
+      spawn "${getExe pkgs.bash} ${./scripts/systray.sh} &"
       ${optionalString (cfg.autoruns != {}) ''
             ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
       ''}
-  myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full ||| threeCol
+
+  myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
     where
-      threeCol = renamed [Replace "ThreeCol"]
-          $ magnifiercz' 1.3
-          $ ThreeColMid nmaster delta ratio
       tiled    = Tall nmaster delta ratio
       nmaster  = 1      -- Default number of windows in the master pane
       ratio    = 1/2    -- Default proportion of screen occupied by master pane
@@ -167,10 +162,10 @@ pkgs.writeText "xmonad.hs" ''
   myKeys :: [(String, X ())]
   myKeys =
     [ ("M-S-<Delete>",  spawn "${escapeHaskellString cfg.locker.lockCmd}")
-    , ("M-s",           unGrab *> spawn "${pkgs.bash}/bin/sh ${escapeHaskellString cfg.screenshot.runCmdFull}")
-    , ("M-S-s",         unGrab *> spawn "${pkgs.bash}/bin/sh ${escapeHaskellString cfg.screenshot.runCmdWindow}")
-    , ("<Print>",       unGrab *> spawn "${pkgs.bash}/bin/sh ${escapeHaskellString cfg.screenshot.runCmdFull}") -- 0 means no extra modifier key needs to be pressed in this case.
-    , ("C-<Print>",     unGrab *> spawn "${pkgs.bash}/bin/sh ${escapeHaskellString cfg.screenshot.runCmdWindow}")
+    , ("M-s",           unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}")
+    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
+    , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}") -- 0 means no extra modifier key needs to be pressed in this case.
+    , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
     , ("M-p",           spawn "${escapeHaskellString cfg.dmenu.runCmd}")
 
     -- Cycling workspaces
