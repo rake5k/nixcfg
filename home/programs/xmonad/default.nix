@@ -240,8 +240,8 @@ in
           monitor = "\${env:MONITOR}";
           monitor-strict = false;
           wm-restack = "generic";
-          width = "99.5%";
-          offset-x = "0.3%";
+          width = "99%";
+          offset-x = 10;
           offset-y = 5;
           radius = 0;
           background = "\${colors.background}";
