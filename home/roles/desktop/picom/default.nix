@@ -44,7 +44,7 @@ in
       ];
       inactiveOpacity = 0.9;
       opacityRules = [
-        "70:window_type = 'dock'"
+        "60:window_type = 'dock'"
 
         "100:_NET_WM_STATE@:32a ~= '_NET_WM_STATE_MAXIMIZED_*'"
         "100:_NET_WM_STATE@:32a *= '_NET_WM_STATE_FULLSCREEN'"
