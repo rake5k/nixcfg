@@ -37,7 +37,7 @@ in
           height = "50";
           notification_limit = "6";
           origin = "top-right";
-          offset = "15x36";
+          offset = "15x40";
           indicate_hidden = "true";
           transparency = 5;
           separator_height = 2;
