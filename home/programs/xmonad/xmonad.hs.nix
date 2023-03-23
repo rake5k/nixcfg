@@ -147,7 +147,6 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      spawn "${getExe pkgs.bash} ${./scripts/systray.sh} &"
       ${optionalString (cfg.autoruns != {}) ''
             ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
       ''}
