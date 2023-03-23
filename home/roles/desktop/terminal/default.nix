@@ -5,14 +5,14 @@ with lib;
 let
 
   desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.alacritty;
+  cfg = desktopCfg.terminal;
 
 in
 
 {
   options = {
-    custom.roles.desktop.alacritty = {
-      enable = mkEnableOption "Alacritty terminal emulator";
+    custom.roles.desktop.terminal = {
+      enable = mkEnableOption "Terminal emulator";
 
       spawnCmd = mkOption {
         type = types.str;

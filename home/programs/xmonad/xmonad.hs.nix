@@ -165,7 +165,7 @@ pkgs.writeText "xmonad.hs" ''
     , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
     , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}") -- 0 means no extra modifier key needs to be pressed in this case.
     , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
-    , ("M-p",           spawn "${escapeHaskellString cfg.dmenu.runCmd}")
+    , ("M-p",           spawn "${escapeHaskellString cfg.launcherCmd}")
 
     -- Cycling workspaces
     , ("M-<Right>",   moveTo Next nonNSP)

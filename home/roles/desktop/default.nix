@@ -47,7 +47,7 @@ in
 
       terminalCmd = mkOption {
         type = types.str;
-        default = "${cfg.alacritty.spawnCmd}";
+        default = "${cfg.terminal.spawnCmd}";
         description = "Command to spawn the default terminal emulator";
       };
 
@@ -62,13 +62,11 @@ in
   config = mkIf cfg.enable {
 
     custom.roles.desktop = {
-      alacritty.enable = true;
       cursors.enable = true;
-      dunst.enable = true;
       grobi.enable = true;
       gtk.enable = true;
-      picom.enable = true;
       redshift.enable = true;
+      terminal.enable = true;
       xmonad.enable = true;
     };
 
