@@ -4,22 +4,35 @@ with lib;
 
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.dunst;
+  cfg = config.custom.programs.dunst;
 
 in
 
 {
   options = {
-    custom.roles.desktop.dunst = {
-      enable = mkEnableOption "Dunst desktop notifications";
+    custom.programs.dunst = {
+      enable = mkEnableOption "Dunst desktop notification daemon";
+
+      font = {
+        package = mkOption {
+          type = types.package;
+          default = pkgs.nerdfonts;
+          description = "Font derivation";
+        };
+
+        family = mkOption {
+          type = types.str;
+          default = "VictorMono Nerd Font";
+          description = "Font family";
+        };
+      };
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       libnotify
-      desktopCfg.font.package
+      cfg.font.package
     ];
 
     services.dunst = {
@@ -47,7 +60,7 @@ in
           separator_color = "auto";
           sort = "true";
           idle_threshold = 2;
-          font = "${desktopCfg.font.family} 11";
+          font = "${cfg.font.family} 11";
           line_height = 3;
           format = "<b>[%a] %s %p</b>\\n%b";
           show_age_threshold = -1;

@@ -7,15 +7,6 @@ let
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.xmonad;
 
-  dmenuPatched = pkgs.dmenu.override {
-    patches = builtins.map builtins.fetchurl [
-      {
-        url = "https://tools.suckless.org/dmenu/patches/line-height/dmenu-lineheight-5.2.diff";
-        sha256 = "0jabb2ycfn3xw0k2d2rv7nyas5cwjr6zvwaffdn9jawh62c50qy5";
-      }
-    ];
-  };
-
   statusbarHeight = 20;
 
 in
@@ -28,30 +19,48 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.programs.xmonad = {
-      enable = true;
+    custom = {
+      programs = {
+        dmenu = {
+          enable = true;
+          font = {
+            inherit (desktopCfg.font) package;
+          };
+        };
 
-      inherit (desktopCfg) locker terminalCmd;
+        dunst = {
+          enable = true;
+          font = {
+            inherit (desktopCfg.font) package family;
+          };
+        };
 
-      autoruns = {
-        "nm-applet" = 1;
-        "${desktopCfg.terminalCmd}" = 1;
-      };
-      dmenu = {
-        package = dmenuPatched;
-        runCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h ${toString statusbarHeight}";
-      };
-      font = {
-        inherit (desktopCfg.font) package xft;
-      };
-      passwordManager = {
-        command = mkDefault "1password";
-        wmClassName = mkDefault "1Password";
-      };
-      statusbar = {
-        enable = true;
-        height = statusbarHeight;
-        monitors.battery = desktopCfg.mobile.enable;
+        picom.enable = true;
+
+        polybar = {
+          enable = true;
+          font = {
+            inherit (desktopCfg.font) package;
+            config = desktopCfg.font.xft;
+          };
+          height = statusbarHeight;
+          monitors.battery = desktopCfg.mobile.enable;
+        };
+
+        xmonad = {
+          inherit (desktopCfg) locker terminalCmd;
+
+          enable = true;
+          autoruns = {
+            "nm-applet" = 1;
+            "${desktopCfg.terminalCmd}" = 1;
+          };
+          launcherCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h ${toString statusbarHeight}";
+          passwordManager = {
+            command = mkDefault "1password";
+            wmClassName = mkDefault "1Password";
+          };
+        };
       };
     };
   };
