@@ -7,8 +7,6 @@ let
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.xmonad;
 
-  statusbarHeight = 20;
-
 in
 
 {
@@ -44,7 +42,7 @@ in
             inherit (desktopCfg.font) package;
             config = desktopCfg.font.xft;
           };
-          height = statusbarHeight;
+          height = 20;
           monitors.battery = desktopCfg.mobile.enable;
         };
 
