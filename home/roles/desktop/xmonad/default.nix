@@ -55,7 +55,7 @@ in
             "nm-applet" = 1;
             "${desktopCfg.terminalCmd}" = 1;
           };
-          launcherCmd = "dmenu_run -fn \"${desktopCfg.font.xft}\" -h ${toString statusbarHeight}";
+          launcherCmd = "dmenu_run -i -fn \"${desktopCfg.font.xft}\" -h ${toString statusbarHeight}";
           passwordManager = {
             command = mkDefault "1password";
             wmClassName = mkDefault "1Password";
