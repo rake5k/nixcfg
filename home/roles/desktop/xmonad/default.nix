@@ -55,7 +55,7 @@ in
             "nm-applet" = 1;
             "${desktopCfg.terminalCmd}" = 1;
           };
-          launcherCmd = "dmenu_run -c -i -fn \"${desktopCfg.font.family}:style=Bold:size=20:antialias=true\" -l 8";
+          launcherCmd = "dmenu_run -c -i -fn \"${desktopCfg.font.family}:style=Bold:size=20:antialias=true\" -l 8 -p \"run:\"";
           passwordManager = {
             command = mkDefault "1password";
             wmClassName = mkDefault "1Password";
