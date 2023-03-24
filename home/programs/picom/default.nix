@@ -52,7 +52,6 @@ in
 
         # App specifics
         "100:class_g = 'Alacritty' && focused"
-        "100:class_g = 'dmenu'"
         "100:class_g *= 'Microsoft Teams'"
         "100:class_g = 'trayer'"
         "100:name ^= 'Slack | Slack call'"
