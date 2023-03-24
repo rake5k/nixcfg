@@ -13,6 +13,33 @@ in
     custom.roles.desktop = {
       enable = mkEnableOption "Desktop";
 
+      colorScheme = {
+        foreground = mkOption {
+          type = types.str;
+          default = "#BBBBBB";
+        };
+
+        background = mkOption {
+          type = types.str;
+          default = "#000000";
+        };
+
+        base = mkOption {
+          type = types.str;
+          default = "#6586c8";
+        };
+
+        accent = mkOption {
+          type = types.str;
+          default = "#FF7F00";
+        };
+
+        warn = mkOption {
+          type = types.str;
+          default = "#FF5555";
+        };
+      };
+
       font = {
         package = mkOption {
           type = types.package;

@@ -39,6 +39,7 @@ in
 
         polybar = {
           enable = true;
+          inherit (desktopCfg) colorScheme;
           font = {
             inherit (desktopCfg.font) package;
             config = desktopCfg.font.xft;
@@ -48,7 +49,7 @@ in
         };
 
         xmonad = {
-          inherit (desktopCfg) locker terminalCmd;
+          inherit (desktopCfg) colorScheme locker terminalCmd;
 
           enable = true;
           autoruns = {
