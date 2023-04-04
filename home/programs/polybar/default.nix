@@ -67,6 +67,7 @@ in
         memory = mkEnableOption "Memory monitor" // { default = true; };
         temperature = mkEnableOption "Temperature monitor" // { default = true; };
         volume = mkEnableOption "Volume monitor" // { default = true; };
+        weather = mkEnableOption "Weather monitor" // { default = true; };
       };
     };
   };
@@ -74,6 +75,7 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
+        font-awesome
         networkmanagerapplet
       ];
     };
@@ -145,6 +147,7 @@ in
           padding-left = 0;
           padding-right = 1;
           font-0 = "${cfg.font.config};2";
+          font-1 = "Font Awesome 6 Free,Font Awesome 6 Free Regular:style=Regular:size=9;2";
           fixed-center = true;
 
           # Modules
@@ -162,6 +165,7 @@ in
             concatStringsSep " " (
               (if volume then [ "vol" ] else [ ]) ++
               (if battery then [ "bat" ] else [ ]) ++
+              (if weather then [ "wtr" ] else [ ]) ++
               (if date then [ "date" ] else [ ])
             );
 
@@ -365,6 +369,14 @@ in
           ramp-capacity-2 = " ";
           ramp-capacity-3 = " ";
           ramp-capacity-4 = " ";
+        };
+
+        "module/wtr" = {
+          type = "custom/script";
+          exec = "${getExe pkgs.curl} --silent 'https://wttr.in?format=1' | ${getExe pkgs.gnused} 's/  / /g' | ${getExe pkgs.gnused} 's/\\\\o357\\\\o270\\\\o217//g'";
+          exec-if = "";
+          tail = false;
+          interval = 600;
         };
 
         "module/date" = {
