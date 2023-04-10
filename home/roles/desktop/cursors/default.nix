@@ -31,6 +31,9 @@ in
         name = cfg.pointerCursorName;
         package = pkgs.bibata-extra-cursors;
         size = 22;
+
+        gtk.enable = true;
+        x11.enable = true;
       };
     };
 
