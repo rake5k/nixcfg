@@ -54,6 +54,9 @@ in
         "playerctl previous"
           XF86AudioPrev
 
+        "bash -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\""
+          XF86Bluetooth
+
         # FIXME Only working once?
         "alacritty --command eva"
           XF86Calculator
