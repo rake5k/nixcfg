@@ -20,7 +20,6 @@ in
       alacritty
 
       # Audio control
-      alsa-lib
       playerctl
 
       xbindkeys
@@ -28,20 +27,16 @@ in
 
     xdg.configFile."xbindkeysrc" = {
       text = ''
-        #"pactl set-sink-volume 0 -5%" # PulseAudio
-        "amixer set Master 5%-" # Alsa
+        "pactl set-sink-volume 0 -5%"
           XF86AudioLowerVolume
 
-        #"pactl set-sink-volume 0 +5%" # PulseAudio
-        "amixer set Master 5%+" # Alsa
+        "pactl set-sink-volume 0 +5%"
           XF86AudioRaiseVolume
 
-        #"pactl set-sink-mute 0 toggle" # PulseAudio
-        "amixer -q set Master toggle" # Alsa
+        "pactl set-sink-mute 0 toggle"
           XF86AudioMute
 
-        #"pactl set-source-mute 1 toggle" # PulseAudio
-        "amixer -q set Capture toggle" # Alsa
+        "pactl set-source-mute 1 toggle"
           XF86AudioMicMute
 
         "playerctl play"
