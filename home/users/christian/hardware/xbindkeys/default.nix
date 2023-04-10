@@ -66,6 +66,10 @@ in
 
         "xdg-open"
           XF86HomePage
+
+        # TODO:
+        #"gsettings"
+        #  XF86Tools
       '';
       target = config.home.homeDirectory + "/.xbindkeysrc";
     };
