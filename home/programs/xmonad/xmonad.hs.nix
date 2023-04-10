@@ -89,9 +89,9 @@ pkgs.writeText "xmonad.hs" ''
           h = (3/4)
           x = center w
           y = center h
-      spawnWiki     = "joplin-desktop"
-      findWiki   = className =? "Joplin"
-      manageWiki    = customFloating $ W.RationalRect x y w h
+      spawnWiki  = "${cfg.wiki.command}"
+      findWiki   = className =? "${cfg.wiki.wmClassName}"
+      manageWiki = customFloating $ W.RationalRect x y w h
         where
           w = (4/5)
           h = (5/6)
