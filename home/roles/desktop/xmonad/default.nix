@@ -51,6 +51,7 @@ in
 
           enable = true;
           autoruns = {
+            "blueberry-tray" = 1;
             "nm-applet" = 1;
             "${desktopCfg.terminalCmd}" = 1;
           };
