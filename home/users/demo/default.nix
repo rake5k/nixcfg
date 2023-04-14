@@ -21,11 +21,5 @@ in
       inherit username;
       homeDirectory = "/home/${username}";
     };
-
-    custom = {
-      users."${username}" = {
-        ranger.enable = true;
-      };
-    };
   };
 }

@@ -33,7 +33,6 @@ in
           xbindkeys.enable = true;
         };
         office.cli.enable = config.custom.roles.office.cli.enable;
-        ranger.enable = true;
         shell.enable = true;
         steam.enable = config.custom.roles.gaming.enable;
         vim.enable = true;
