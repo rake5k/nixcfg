@@ -21,17 +21,5 @@ in
       inherit username;
       homeDirectory = "/home/${username}";
     };
-
-    custom.roles = {
-      desktop.enable = true;
-      dev.enable = true;
-      gaming.enable = true;
-      graphics.enable = true;
-      homeage.enable = true;
-      multimedia.enable = true;
-      office.enable = true;
-      ops.enable = true;
-      web.enable = true;
-    };
   };
 }
