@@ -41,24 +41,6 @@ in
           "browser.startup.homepage" = cfg.homepage;
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         };
-        userChrome = ''
-          /* Workaround for vim-vixen issue
-           * https://github.com/ueokande/vim-vixen/issues/1424
-           */
-          .vimvixen-console-frame {
-            height: 0px;
-            color-scheme: light !important;
-          }
-        '';
-        userContent = ''
-          /* Workaround for vim-vixen issue
-           * https://github.com/ueokande/vim-vixen/issues/1424
-           */
-          .vimvixen-console-frame {
-            height: 0px;
-            color-scheme: light !important;
-          }
-        '';
       };
     };
   };

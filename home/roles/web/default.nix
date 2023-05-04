@@ -26,8 +26,8 @@ in
           multi-account-containers
           new-tab-override
           onepassword-password-manager
+          tridactyl
           ublock-origin
-          vim-vixen
         ];
       };
       roles.web.nextcloud-client.enable = true;
