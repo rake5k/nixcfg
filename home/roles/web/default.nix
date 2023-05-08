@@ -26,6 +26,7 @@ in
           multi-account-containers
           new-tab-override
           onepassword-password-manager
+          persistentpin
           tridactyl
           ublock-origin
         ];
