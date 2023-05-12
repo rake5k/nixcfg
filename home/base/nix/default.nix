@@ -1,6 +1,10 @@
 { pkgs, inputs, ... }:
 
 {
+  home.packages = [
+    pkgs.nix-output-monitor
+  ];
+
   nix = {
     registry = {
       nixpkgs.flake = inputs.nixpkgs;
