@@ -45,6 +45,9 @@ in
       # Messengers
       signal-desktop
       tdesktop # Telegram
+
+      # Social Media
+      freetube
     ];
 
     programs.chromium.enable = true;
