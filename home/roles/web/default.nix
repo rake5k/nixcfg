@@ -39,7 +39,6 @@ in
       _1password-gui
       bind
       joplin-desktop
-      unstable.fluent-reader
       wget
       thunderbird
 
