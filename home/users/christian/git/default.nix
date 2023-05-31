@@ -47,153 +47,316 @@ in
       };
 
       ignores = [
-        ###
-        # OS X
-        ###
+        # Taken from https://github.com/github/gitignore
+
+        # Global/Linux
+        #
+
+        "*~"
+
+        # temporary files which can be created if a process still has a handle open of a deleted file
+        ".fuse_hidden*"
+
+        # KDE directory preferences
+        ".directory"
+
+        # Linux trash folder which might appear on any partition or disk
+        ".Trash-*"
+
+        # .nfs files are created when an open file is removed but is still being accessed
+        ".nfs*"
+
+
+        # Community/Nix
+        #
+
+        # Ignore build outputs from performing a nix-build or `nix build` command
+        "result"
+        "result-*"
+
+
+        # Global/Archives
+        #
+
+        # It's better to unpack these files and commit the raw source because
+        # git has its own built in compression methods.
+        "*.7z"
+        "*.jar"
+        "*.rar"
+        "*.zip"
+        "*.gz"
+        "*.gzip"
+        "*.tgz"
+        "*.bzip"
+        "*.bzip2"
+        "*.bz2"
+        "*.xz"
+        "*.lzma"
+        "*.cab"
+        "*.xar"
+
+        # Packing-only formats
+        "*.iso"
+        "*.tar"
+
+        # Package management formats
+        "*.dmg"
+        "*.xpi"
+        "*.gem"
+        "*.egg"
+        "*.deb"
+        "*.rpm"
+        "*.msi"
+        "*.msm"
+        "*.msp"
+        "*.txz"
+
+
+        # Global/Backup
+        #
+
+        "*.bak"
+        "*.gho"
+        "*.ori"
+        "*.orig"
+        "*.tmp"
+
+
+        # Global/Diff
+        #
+
+        "*.patch"
+        "*.diff"
+
+
+        # Global/Images
+        #
+
+        # JPEG
+        "*.jpg"
+        "*.jpeg"
+        "*.jpe"
+        "*.jif"
+        "*.jfif"
+        "*.jfi"
+
+        # JPEG 2000
+        "*.jp2"
+        "*.j2k"
+        "*.jpf"
+        "*.jpx"
+        "*.jpm"
+        "*.mj2"
+
+        # JPEG XR
+        "*.jxr"
+        "*.hdp"
+        "*.wdp"
+
+        # Graphics Interchange Format
+        "*.gif"
+
+        # RAW
+        "*.raw"
+
+        # Web P
+        "*.webp"
+
+        # Portable Network Graphics
+        "*.png"
+
+        # Animated Portable Network Graphics
+        "*.apng"
+
+        # Multiple-image Network Graphics
+        "*.mng"
+
+        # Tagged Image File Format
+        "*.tiff"
+        "*.tif"
+
+        # Scalable Vector Graphics
+        "*.svg"
+        "*.svgz"
+
+        # Portable Document Format
+        "*.pdf"
+
+        # X BitMap
+        "*.xbm"
+
+        # BMP
+        "*.bmp"
+        "*.dib"
+
+        # ICO
+        "*.ico"
+
+        # 3D Images
+        "*.3dm"
+        "*.max"
+
+        # Global/Ansible
+        #
+
+        "*.retry"
+
+
+        # Global/Jetbrains
+        #
+
+        # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+        # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+        # User-specific stuff
+        ".idea/**/workspace.xml"
+        ".idea/**/tasks.xml"
+        ".idea/**/usage.statistics.xml"
+        ".idea/**/dictionaries"
+        ".idea/**/shelf"
+
+        # AWS User-specific
+        ".idea/**/aws.xml"
+
+        # Generated files
+        ".idea/**/contentModel.xml"
+
+        # Sensitive or high-churn files
+        ".idea/**/dataSources/"
+        ".idea/**/dataSources.ids"
+        ".idea/**/dataSources.local.xml"
+        ".idea/**/sqlDataSources.xml"
+        ".idea/**/dynamic.xml"
+        ".idea/**/uiDesigner.xml"
+        ".idea/**/dbnavigator.xml"
+
+        # Gradle
+        ".idea/**/gradle.xml"
+        ".idea/**/libraries"
+
+        # Gradle and Maven with auto-import
+        # When using Gradle or Maven with auto-import, you should exclude module files,
+        # since they will be recreated, and may cause churn.  Uncomment if using
+        # auto-import.
+        ".idea/artifacts"
+        ".idea/compiler.xml"
+        ".idea/jarRepositories.xml"
+        ".idea/modules.xml"
+        ".idea/*.iml"
+        ".idea/modules"
+        "*.iml"
+        "*.ipr"
+
+        # CMake
+        "cmake-build-*/"
+
+        # Mongo Explorer plugin
+        ".idea/**/mongoSettings.xml"
+
+        # File-based project format
+        "*.iws"
+
+        # IntelliJ
+        "out/"
+
+        # mpeltonen/sbt-idea plugin
+        ".idea_modules/"
+
+        # JIRA plugin
+        "atlassian-ide-plugin.xml"
+
+        # Cursive Clojure plugin
+        ".idea/replstate.xml"
+
+        # SonarLint plugin
+        ".idea/sonarlint/"
+
+        # Crashlytics plugin (for Android Studio and IntelliJ)
+        "com_crashlytics_export_strings.xml"
+        "crashlytics.properties"
+        "crashlytics-build.properties"
+        "fabric.properties"
+
+        # Editor-based Rest Client
+        ".idea/httpRequests"
+
+        # Android studio 3.1+ serialized cache file
+        ".idea/caches/build_file_checksums.ser"
+
+
+        # Global/LibreOffice
+        #
+
+        # LibreOffice locks
+        ".~lock.*#"
+
+
+        # Global/SBT
+        #
+
+        # Simple Build Tool
+        # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
+
+        "dist/*"
+        "target/"
+        "lib_managed/"
+        "src_managed/"
+        "project/boot/"
+        "project/plugins/project/"
+        ".history"
+        ".cache"
+        ".lib/"
+
+
+        # Global/Vagrant
+        #
 
         # General
-        ".DS_Store.AppleDouble.LSOverride"
+        ".vagrant/"
 
-        # Icon must end with two \r
-        "Icon"
-
-        # Thumbnails
-        "._*"
-
-        # Files that might appear in the root of a volume
-        ".DocumentRevisions-V100"
-        ".fseventsd"
-        ".Spotlight-V100"
-        ".TemporaryItems"
-        ".Trashes"
-        ".VolumeIcon.icns"
-        ".com.apple.timemachine.donotpresent"
-
-        # Directories potentially created on remote AFP share
-        ".AppleDB"
-        ".AppleDesktop"
-        "Network Trash Folder"
-        "Temporary Items"
-        ".apdisk"
-
-        ###
-        # Java
-        ###
-
-        # Compiled class file
-        "*.class"
-
-        # Log file
+        # Log files (if you are creating logs in debug mode, uncomment this)
         "*.log"
 
-        # Mobile Tools for Java (J2ME)
-        ".mtj.tmp/"
 
-        # Package Files #
-        "*.jar"
-        "*.war"
-        "*.nar"
-        "*.ear"
-        "*.rar"
+        # Global/Vim
+        #
 
-        # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-        "hs_err_pid"
+        # Swap
+        "[._]*.s[a-v][a-z]"
+        "!*.svg" # comment out if you don't need vector files
+        "[._]*.sw[a-p]"
+        "[._]s[a-rt-v][a-z]"
+        "[._]ss[a-gi-z]"
+        "[._]sw[a-p]"
 
-        # IDEs
-        ".idea/"
-        ".vscode/"
+        # Session
+        "Session.vim"
+        "Sessionx.vim"
 
-        ##
-        # Node
-        ##
+        # Temporary
+        ".netrwhist"
+        "*~"
+        # Auto-generated tag files
+        "tags"
+        # Persistent undo
+        "[._]*.un~"
 
-        # Logs
-        "logs"
-        "*.log"
-        "npm-debug.log*"
-        "yarn-debug.log*"
-        "yarn-error.log*"
-        "lerna-debug.log*"
 
-        # Diagnostic reports (https://nodejs.org/api/report.html)
-        "report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json"
+        # Global/VisualStudioCode
+        #
 
-        # Runtime data
-        "pids"
-        "*.pid"
-        "*.seed"
-        "*.pid.lock"
+        ".vscode/*"
+        "!.vscode/settings.json"
+        "!.vscode/tasks.json"
+        "!.vscode/launch.json"
+        "!.vscode/extensions.json"
+        "!.vscode/*.code-snippets"
 
-        # Directory for instrumented libs generated by jscoverage/JSCover
-        "lib-cov"
+        # Local History for Visual Studio Code
+        ".history/"
 
-        # Coverage directory used by tools like istanbul
-        "coverage"
-        "*.lcov"
-
-        # nyc test coverage
-        ".nyc_output"
-
-        # Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-        ".grunt"
-
-        # Bower dependency directory (https://bower.io/)
-        "bower_components"
-
-        # node-waf configuration
-        ".lock-wscript"
-
-        # Compiled binary addons (https://nodejs.org/api/addons.html)
-        "build/Release"
-
-        # Dependency directories
-        "node_modules/"
-        "jspm_packages/"
-
-        # TypeScript v1 declaration files
-        "typings/"
-
-        # TypeScript cache
-        "*.tsbuildinfo"
-
-        # Optional npm cache directory
-        ".npm"
-
-        # Optional eslint cache
-        ".eslintcache"
-
-        # Optional REPL history
-        ".node_repl_history"
-
-        # Output of 'npm pack'
-        "*.tgz"
-
-        # Yarn Integrity file
-        ".yarn-integrity"
-
-        # parcel-bundler cache (https://parceljs.org/)
-        ".cache"
-
-        # next.js build output
-        ".next"
-
-        # nuxt.js build output
-        ".nuxt"
-
-        # vuepress build output
-        ".vuepress/dist"
-
-        # Serverless directories
-        ".serverless/"
-
-        # FuseBox cache
-        ".fusebox/"
-
-        # DynamoDB Local files
-        ".dynamodb/"
-
-        # VIM swap files
-        "*.swp"
+        # Built Visual Studio Code Extensions
+        "*.vsix"
       ];
     };
   };
