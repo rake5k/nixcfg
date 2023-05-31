@@ -35,7 +35,7 @@
   tomorrow = "cal tomorrow 24h --format '{start-end-time-style} {title}'";
 
   # Java REPL
-  jshell = "nix-shell -p openjdk --command jshell";
+  jshell = "nix shell nixpkgs#openjdk --command jshell";
   visualvm = "visualvm --cp:a ~/jmx/jmxremote_optional.jar";
 
   # PDF viewer
