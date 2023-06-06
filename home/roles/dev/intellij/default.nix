@@ -31,6 +31,8 @@ in
         Plug 'tpope/vim-surround'
         set ideajoin
         set clipboard+=unnamedplus
+        set visualbell
+        set noerrorbells
       '';
 
       packages = with pkgs; [
