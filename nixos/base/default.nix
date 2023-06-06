@@ -43,9 +43,7 @@ in
 
   config = {
 
-    boot = {
-      cleanTmpDir = true;
-    };
+    boot.tmp.cleanOnBoot = true;
 
     home-manager = {
       backupFileExtension = "hm-bak";

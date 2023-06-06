@@ -12,12 +12,6 @@ in
   options = {
     custom.roles.desktop.cursors = {
       enable = mkEnableOption "Cursors config";
-
-      pointerCursorName = mkOption {
-        type = types.str;
-        default = "Bibata-Modern-DodgerBlue";
-        description = "Pointer cursors to use from the Bibata cursors package";
-      };
     };
   };
 
@@ -28,8 +22,8 @@ in
       ];
 
       pointerCursor = {
-        name = cfg.pointerCursorName;
-        package = pkgs.bibata-extra-cursors;
+        name = "volantes_cursors";
+        package = pkgs.volantes-cursors;
         size = 22;
 
         gtk.enable = true;
@@ -38,7 +32,6 @@ in
     };
 
     gtk.enable = true;
-
     xsession.enable = true;
   };
 }

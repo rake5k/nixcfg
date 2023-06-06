@@ -44,7 +44,7 @@ in
 
       # Messengers
       signal-desktop
-      tdesktop # Telegram
+      telegram-desktop
 
       # Social Media
       freetube

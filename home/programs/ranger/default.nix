@@ -48,7 +48,7 @@ in
       ];
 
       sessionVariables = {
-        RANGERCD = true;
+        RANGERCD = "true";
       };
     };
 
