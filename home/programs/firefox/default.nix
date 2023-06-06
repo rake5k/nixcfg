@@ -33,9 +33,10 @@ in
 
   config = mkIf cfg.enable {
     programs.firefox = {
-      inherit (cfg) enable extensions;
+      inherit (cfg) enable;
 
       profiles."ztbvdcs8.default" = {
+        inherit (cfg) extensions;
         isDefault = true;
         settings = {
           "browser.startup.homepage" = cfg.homepage;
