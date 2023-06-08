@@ -17,7 +17,7 @@ in
 
   config = mkIf cfg.enable {
     custom.roles.dev = {
-      embedmongo.enable = true;
+      embedmongo.enable = false;
       intellij = {
         enable = true;
         ultimate = true;
