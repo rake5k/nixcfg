@@ -20,6 +20,7 @@ in
       enable = true;
       configFiles = {
         WASD_V3 = ./wasd-v3.de-ch.kbd;
+        CHERRY_G80 = ./cherry-mx-g80-3000n-tkl-rgb.de-ch.kbd;
       };
     };
   };
