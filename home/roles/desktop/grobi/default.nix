@@ -35,6 +35,7 @@ in
       enable = true;
       executeAfter = [
         "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${desktopCfg.wallpapersDir}"
+        "${pkgs.polybar}/bin/polybar-msg cmd restart"
       ];
     };
   };

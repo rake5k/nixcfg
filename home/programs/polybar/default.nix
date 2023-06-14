@@ -6,6 +6,10 @@ let
 
   cfg = config.custom.programs.polybar;
 
+  package = pkgs.polybar.override {
+    pulseSupport = true;
+  };
+
 in
 
 {
@@ -81,11 +85,9 @@ in
     };
 
     services.polybar = {
-      enable = true;
+      inherit package;
 
-      package = pkgs.polybar.override {
-        pulseSupport = true;
-      };
+      enable = true;
 
       config = {
         "global/wm" = {
@@ -391,9 +393,9 @@ in
 
       script = ''
         # Terminate already running bar instances
-        polybar-msg cmd quit
+        ${package}/bin/polybar-msg cmd quit
         # Launch polybar
-        MONITOR=$(polybar -m|grep '(primary)'|sed -e 's/:.*$//g') polybar top &
+        MONITOR=$(${lib.getExe package} -m | grep '(primary)' | sed -e 's/:.*$//g') ${lib.getExe package} top &
       '';
     };
   };
