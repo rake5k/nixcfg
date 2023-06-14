@@ -128,6 +128,10 @@ in
           bar-empty = "#444444";
         };
 
+        spacing = {
+          radius = 3;
+        };
+
         "bar/top" = {
           inherit (cfg) height;
 
@@ -140,12 +144,11 @@ in
           width = "99%";
           offset-x = 10;
           offset-y = 5;
-          radius = 0;
+          radius = "\${spacing.radius}";
           background = "\${colors.background}";
           foreground = "\${colors.foreground}";
           line-size = "2pt";
-          padding-left = 0;
-          padding-right = 1;
+          padding = "\${spacing.radius}";
           font-0 = "${cfg.font.config};2";
           font-1 = "Font Awesome 6 Free,Font Awesome 6 Free Regular:style=Regular:size=9;2";
           fixed-center = true;
@@ -166,8 +169,13 @@ in
               (if volume then [ "vol" ] else [ ]) ++
               (if battery then [ "bat" ] else [ ]) ++
               (if weather then [ "wtr" ] else [ ]) ++
-              (if date then [ "date" ] else [ ])
+              (if date then [ "date" ] else [ ]) ++
+              [ "tray" ]
             );
+        };
+
+        "module/tray" = {
+          type = "internal/tray";
 
           # Tray
           tray-position = "right";
@@ -175,9 +183,9 @@ in
           tray-maxsize = 16;
           tray-background = "\${colors.background}";
           tray-foreground = "\${colors.foreground}";
-          tray-offset-x = 0;
+          tray-offset-x = "\${spacing.radius}";
           tray-offset-y = 0;
-          tray-padding = 1;
+          tray-spacing = 1;
           tray-scale = "1.0";
         };
 
