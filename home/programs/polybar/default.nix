@@ -137,9 +137,9 @@ in
           monitor = "\${env:MONITOR}";
           monitor-strict = false;
           wm-restack = "generic";
-          width = "99%";
-          offset-x = 10;
-          offset-y = 5;
+          width = "100%:-20px";
+          offset-x = "10px";
+          offset-y = "5px";
           radius = 0;
           background = "\${colors.background}";
           foreground = "\${colors.foreground}";
