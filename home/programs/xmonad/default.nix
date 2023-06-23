@@ -97,13 +97,19 @@ in
 
         runCmdFull = mkOption {
           type = types.str;
-          default = "${./scripts/screenshot.sh} --silent full";
+          default = "${./scripts/screenshot.sh} full";
           description = "Command for taking full-screen screenshots";
+        };
+
+        runCmdSelect = mkOption {
+          type = types.str;
+          default = "${./scripts/screenshot.sh} select";
+          description = "Command for taking selection screenshots";
         };
 
         runCmdWindow = mkOption {
           type = types.str;
-          default = "${./scripts/screenshot.sh} --silent window";
+          default = "${./scripts/screenshot.sh} window";
           description = "Command for taking window screenshots";
         };
       };
