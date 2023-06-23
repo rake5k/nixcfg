@@ -162,9 +162,10 @@ pkgs.writeText "xmonad.hs" ''
   myKeys =
     [ ("M-S-<Delete>",  spawn "${escapeHaskellString cfg.locker.lockCmd}")
     , ("M-s",           unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}")
-    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
-    , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}") -- 0 means no extra modifier key needs to be pressed in this case.
+    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdSelect}")
+    , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}")
     , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
+    , ("C-S-<Print>",   unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdSelect}")
     , ("M-p",           spawn "${escapeHaskellString cfg.launcherCmd}")
 
     -- Cycling workspaces
