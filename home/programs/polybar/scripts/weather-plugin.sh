@@ -4,7 +4,7 @@
 
 # API settings ________________________________________________________________
 
-APIKEY="$(/usr/bin/cat "${HOME}/.config/polybar/owm-key.txt")"
+APIKEY="$(/usr/bin/cat "${HOME}/.local/share/secrets/owm-key")"
 # if you leave these empty location will be picked based on your ip-adres
 CITY_NAME='Langnau im Emmental'
 COUNTRY_CODE='CH'
