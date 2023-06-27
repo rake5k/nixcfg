@@ -375,8 +375,7 @@ in
 
         "module/wtr" = {
           type = "custom/script";
-          exec = "${getExe pkgs.curl} --silent 'https://wttr.in?format=1' | ${getExe pkgs.gnused} 's/  / /g' | ${getExe pkgs.gnused} 's/\\\\o357\\\\o270\\\\o217//g'";
-          exec-if = "";
+          exec = toString ./scripts/weather-plugin.sh;
           tail = false;
           interval = 600;
         };
