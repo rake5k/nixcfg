@@ -378,6 +378,10 @@ in
           exec = toString ./scripts/weather-plugin.sh;
           tail = false;
           interval = 600;
+
+          # Format
+          format-prefix = "WTR ";
+          format-prefix-foreground = "\${colors.primary}";
         };
 
         "module/date" = {
