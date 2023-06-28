@@ -33,6 +33,7 @@ in
         set clipboard+=unnamedplus
         set visualbell
         set noerrorbells
+        set nu rnu
       '';
 
       packages = with pkgs; [
