@@ -165,9 +165,9 @@ in
           modules-center = "xwindow";
           modules-right = with cfg.monitors;
             concatStringsSep " " (
+              (if weather then [ "wtr" ] else [ ]) ++
               (if volume then [ "vol" ] else [ ]) ++
               (if battery then [ "bat" ] else [ ]) ++
-              (if weather then [ "wtr" ] else [ ]) ++
               (if date then [ "date" ] else [ ])
             );
 
