@@ -309,7 +309,7 @@ in
           interval = 5;
 
           # Interactions
-          click-right = lib.getExe pkgs.pavucontrol;
+          click-right = getExe pkgs.pavucontrol;
 
           # Default
           format-volume = "<label-volume> <bar-volume>";
@@ -375,7 +375,7 @@ in
 
         "module/wtr" = {
           type = "custom/script";
-          exec = toString ./scripts/weather-plugin.sh;
+          exec = "${getExe pkgs.bash} ${config.xdg.configFile."polybar/weather-plugin.sh".target}";
           tail = false;
           interval = 600;
 
@@ -398,8 +398,12 @@ in
         # Terminate already running bar instances
         ${package}/bin/polybar-msg cmd quit
         # Launch polybar
-        MONITOR=$(${lib.getExe package} -m | grep '(primary)' | sed -e 's/:.*$//g') ${lib.getExe package} top &
+        MONITOR=$(${getExe package} -m | grep '(primary)' | sed -e 's/:.*$//g') ${getExe package} top &
       '';
+    };
+
+    xdg = {
+      configFile."polybar/weather-plugin.sh".text = import ./config/weather-plugin.nix { inherit lib pkgs; };
     };
   };
 }
