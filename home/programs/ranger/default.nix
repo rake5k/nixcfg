@@ -31,7 +31,7 @@ in
         atool
         catdoc
         exiftool
-        ffmpeg
+        ffmpeg_6
         ffmpegthumbnailer
         imagemagick
         mediainfo

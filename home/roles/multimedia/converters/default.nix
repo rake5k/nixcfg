@@ -21,6 +21,7 @@ in
     home = {
       packages = with pkgs; [
         handbrake
+        ffmpeg_6
         picard
       ];
 
