@@ -21,7 +21,7 @@ in
         abcde
         cdparanoia
         easytag
-        ffmpeg
+        ffmpeg_6
         id3lib
 
         # codecs
