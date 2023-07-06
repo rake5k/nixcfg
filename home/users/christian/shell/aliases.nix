@@ -19,7 +19,7 @@
   ls = "ls -h --color='auto'";
   lsa = "ls -a";
   lsl = "ls | less";
-  tree = "l --tree";
+  tree = "exa --icons --tree";
 
   # File reading
   cat = "bat";
