@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
   nix = {
@@ -30,4 +30,11 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      ${lib.getExe pkgs.nvd} --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    '';
+  };
 }
