@@ -22,13 +22,17 @@ in
   config = mkIf cfg.enable {
 
     home = {
+      activation.report-changes = config.lib.dag.entryAnywhere ''
+        ${getExe pkgs.nix} store diff-closures $oldGenPath $newGenPath || true
+      '';
+
       packages = with pkgs; [
         unstable.home-manager
       ];
 
       shellAliases = {
-        hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}' && hm-diff";
-        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nvd} diff";
+        hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}'";
+        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nix} store diff-closures";
       };
     };
 

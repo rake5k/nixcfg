@@ -34,7 +34,9 @@
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
-      ${lib.getExe pkgs.nvd} --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+      if [[ -e /run/current-system ]]; then
+         ${lib.getExe pkgs.nix} store diff-closures /run/current-system "$systemConfig"
+      fi
     '';
   };
 }
