@@ -121,7 +121,7 @@ pkgs.writeText "xmonad.hs" ''
       -- Workspace assignments
         [ className =? "jetbrains-idea"             --> doShift "2" ]
       , [ className =? "firefox"                    --> doShift "3" ]
-      , [ className =? "Microsoft Teams - Preview"  --> doShift "4" ]
+      , [ className =? "teams-for-linux"            --> doShift "4" ]
       , [ className =? "Signal"                     --> doShift "4" ]
       , [ className =? "Slack"                      --> doShift "4" ]
       , [ className =? "TelegramDesktop"            --> doShift "4" ]
