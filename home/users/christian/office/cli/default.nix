@@ -37,7 +37,7 @@ in
           [pair nextcloud_calendar]
           a = "nextcloud_calendar_local"
           b = "nextcloud_calendar_remote"
-          collections = ["personal"]
+          collections = ["personal", "family"]
           metadata = ["displayname", "color"]
 
           [storage nextcloud_calendar_local]
