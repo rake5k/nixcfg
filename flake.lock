@@ -77,11 +77,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1691370305,
-        "narHash": "sha256-HISqLBpLY1NF+ZoTigEQ6KCKgBPlR0hz75Oc2AnU6OM=",
+        "lastModified": 1691456588,
+        "narHash": "sha256-Hk7AyZ9DgMW3SXOxouxoAoBNbgcSlwbqxqxzlyFMxus=",
         "owner": "christianharke",
         "repo": "flake-commons",
-        "rev": "c3e302a66e08f28eb90ad5475b71484be3bdb470",
+        "rev": "8a6232ebd12fd38788bb39c81eec7010dcfcc001",
         "type": "github"
       },
       "original": {
@@ -291,11 +291,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1691276849,
-        "narHash": "sha256-RNnrzxhW38SOFIF6TY/WaX7VB3PCkYFEeRE5YZU+wHw=",
+        "lastModified": 1691368598,
+        "narHash": "sha256-ia7li22keBBbj02tEdqjVeLtc7ZlSBuhUk+7XTUFr14=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "5faab29808a2d72f4ee0c44c8e850e4e6ada972f",
+        "rev": "5a8e9243812ba528000995b294292d3b5e120947",
         "type": "github"
       },
       "original": {
@@ -307,11 +307,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1691369976,
-        "narHash": "sha256-bAVVJID+R7MQz08JZx9yBdp804iihnHpZF+VkKVyWak=",
+        "lastModified": 1691455178,
+        "narHash": "sha256-DAg4CiKlKyW87ZhzX7KPUAjCFG2EPMe2F4WleUrgd6A=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "da4cafcc14ccde3e813cc3c4b1c3ba712d31947d",
+        "rev": "c42cb337cde2c82282deab1a8d6df4c4d9059429",
         "type": "github"
       },
       "original": {
@@ -335,11 +335,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1691256628,
-        "narHash": "sha256-M0YXHemR3zbyhM7PvJa5lzGhWVf6kM/fpZ4cWe/VIhI=",
+        "lastModified": 1691397944,
+        "narHash": "sha256-4fa4bX3kPYKpEssgrFRxRCPVXczidArDeSWaUMSzQAU=",
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
-        "rev": "3139c4d1f7732cab89f06492bdd4677b877e3785",
+        "rev": "e5588ddffd4c3578547a86ef40ec9a6fbdae2986",
         "type": "github"
       },
       "original": {
@@ -376,11 +376,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1691370700,
-        "narHash": "sha256-p4vh+LPPFTsLhTaWhsn6diWQ6KfI/VJPMjBNushbCfE=",
+        "lastModified": 1691456945,
+        "narHash": "sha256-2GGTgf0L1uzFqsdn5DkY3+cnjGQWUFRWxm5I4Y7sk2A=",
         "owner": "christianharke",
         "repo": "spacevim-flake",
-        "rev": "eb215ee0897af6b6b5239195c0d6d385c4567b4f",
+        "rev": "734fa73e8f264329239a36c53fac7b17c75ee7a4",
         "type": "github"
       },
       "original": {
