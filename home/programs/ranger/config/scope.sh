@@ -361,4 +361,5 @@ handle_extension
 handle_mime "${MIMETYPE}"
 handle_fallback
 
+# shellcheck disable=SC2317
 exit 1

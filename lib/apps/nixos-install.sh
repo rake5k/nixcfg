@@ -1,4 +1,4 @@
-# shellcheck disable=SC1091
+# shellcheck disable=SC1091,SC2148
 source @bashLib@
 
 # Source: https://qfpl.io/posts/installing-nixos/
