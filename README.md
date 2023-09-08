@@ -6,7 +6,7 @@
 
 ## Features
 
-* Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
+* Automation scripts to setup a fresh [NixOS machine from scratch](flake/appsrnixos-install.sh) or
   an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
 * Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
@@ -92,7 +92,7 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-22.05";
-    nixcfg.url = "github:christianharke/nixcfg";
+    nixcfg.url = "github:rake5k/nixcfg";
   };
 
   outputs = { nixpkgs, nixcfg, ... } @ inputs:
@@ -130,7 +130,7 @@ sudo su # become root
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
-nix run github:christianharke/nixcfg#nixos-install -- <hostname> <disk>
+nix run github:rake5k/nixcfg#nixos-install -- <hostname> <disk>
 ```
 
 Where:
@@ -151,7 +151,7 @@ After rebooting proceed with the [next section](#nixos-config-setup).
 #### NixOS config setup
 
 ```bash
-$ sudo nix run github:christianharke/nixcfg#setup
+$ sudo nix run github:rake5k/nixcfg#setup
 ```
 
 ### Non-NixOS
@@ -170,7 +170,7 @@ sh <(curl -L https://nixos.org/nix/install) --no-channel-add --no-modify-profile
 
 ```bash
 # Set up this Nix configuration
-nix run github:christianharke/nixcfg#setup
+nix run github:rake5k/nixcfg#setup
 
 # set login shell
 chsh -s /bin/zsh
@@ -230,10 +230,10 @@ $ # On non-NixOS
 $ hm-switch
 ```
 
-[ci]: https://github.com/christianharke/nixcfg/actions/workflows/ci.yml
-[ci-badge]: https://github.com/christianharke/nixcfg/actions/workflows/ci.yml/badge.svg
-[update]: https://github.com/christianharke/nixcfg/actions/workflows/update.yml
-[update-badge]: https://github.com/christianharke/nixcfg/actions/workflows/update.yml/badge.svg
+[ci]: https://github.com/rake5k/nixcfg/actions/workflows/ci.yml
+[ci-badge]: https://github.com/rake5k/nixcfg/actions/workflows/ci.yml/badge.svg
+[update]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml
+[update-badge]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml/badge.svg
 
 [age]: https://age-encryption.org/
 [agenix]: https://github.com/ryantm/agenix

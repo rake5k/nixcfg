@@ -132,7 +132,7 @@ install() {
     mount "${BOOT_PARTITION}" "${mount_boot}"
 
     _log "[install] Installing NixOS..."
-    nixos-install --root "${mount_root}" --flake "github:christianharke/nixcfg#${HOSTNAME}" --impure
+    nixos-install --root "${mount_root}" --flake "github:rake5k/nixcfg#${HOSTNAME}" --impure
     _log "[install] Installing NixOS... finished!"
 
     _log "[install] Installation finished, please reboot and remove installation media..."

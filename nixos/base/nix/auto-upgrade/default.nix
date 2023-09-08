@@ -13,7 +13,7 @@ in
     enable = mkEnableOption "Enable automatic upgrades";
     flake = mkOption {
       type = types.str;
-      default = "github:christianharke/nixcfg";
+      default = "github:rake5k/nixcfg";
       description = "Flake URI of the NixOS configuration to build.";
     };
   };

@@ -25,7 +25,7 @@
     # Modules
 
     flake-commons = {
-      url = "github:christianharke/flake-commons";
+      url = "github:rake5k/flake-commons";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
         pre-commit-hooks.follows = "pre-commit-hooks";
@@ -51,7 +51,7 @@
     };
 
     kmonad = {
-      url = "github:christianharke/kmonad?dir=nix";
+      url = "github:rake5k/kmonad?dir=nix";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
       };
@@ -71,7 +71,7 @@
     };
 
     spacevim = {
-      url = "github:christianharke/spacevim-flake";
+      url = "github:rake5k/spacevim-flake";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
         pre-commit-hooks.follows = "pre-commit-hooks";
