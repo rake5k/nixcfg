@@ -28,7 +28,7 @@ _clone() {
 
 # clone repos
 if ! _is_nixos || _is_root; then
-    _clone "nix-config" git@github.com:christianharke/nixcfg.git "${nix_config}"
+    _clone "nix-config" git@github.com:rake5k/nixcfg.git "${nix_config}"
 fi
 
 # generage age key

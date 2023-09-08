@@ -79,13 +79,13 @@
       "locked": {
         "lastModified": 1694134491,
         "narHash": "sha256-BUSmc3DD3ZlMeRS3C/6DBbXFXmHfZPfnP1Y5eP6Zoio=",
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "flake-commons",
         "rev": "f670d8cf5fad0267734c588e3fb4ea14085b4454",
         "type": "github"
       },
       "original": {
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "flake-commons",
         "type": "github"
       }
@@ -218,14 +218,14 @@
         "dir": "nix",
         "lastModified": 1674855709,
         "narHash": "sha256-rd5GBiT1xsLl39KRUgnIjvczlgqdcq+PZ8JUcnYN1Gg=",
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "kmonad",
         "rev": "ac767bde78a8cc3b160233758a4eb288227716c1",
         "type": "github"
       },
       "original": {
         "dir": "nix",
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "kmonad",
         "type": "github"
       }
@@ -378,13 +378,13 @@
       "locked": {
         "lastModified": 1694134812,
         "narHash": "sha256-tQDGasl5L4Z/ncljw/QmZUVtsBbNVSWo/fk5p2rOeBI=",
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "spacevim-flake",
         "rev": "dd2e3b31358442001d8d8db064a8d264cae96cf6",
         "type": "github"
       },
       "original": {
-        "owner": "christianharke",
+        "owner": "rake5k",
         "repo": "spacevim-flake",
         "type": "github"
       }
