@@ -29,7 +29,7 @@ in
   options = {
     custom.base = {
       hostname = mkOption {
-        type = types.enum [ "altair" "bcr-nl011" "nixos-vm" ];
+        type = types.str;
         description = "Host name.";
       };
 
