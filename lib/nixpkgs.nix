@@ -17,17 +17,10 @@ import inputs.nixpkgs {
       unstable = import inputs.nixpkgs-unstable {
         inherit config system;
       };
-
-      custom = import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.spacevim.overlays.default
-        ];
-      };
     in
     [
       (final: prev: {
-        inherit system unstable custom;
+        inherit system unstable;
 
         inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       })

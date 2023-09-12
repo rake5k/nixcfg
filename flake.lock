@@ -362,31 +362,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
-        "pre-commit-hooks": "pre-commit-hooks",
-        "spacevim": "spacevim"
-      }
-    },
-    "spacevim": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ],
-        "pre-commit-hooks": [
-          "pre-commit-hooks"
-        ]
-      },
-      "locked": {
-        "lastModified": 1694480346,
-        "narHash": "sha256-2SFm7pcoS7zp8h4cJgjsD2St9ceKUZhQXJEv6CLuVaI=",
-        "owner": "rake5k",
-        "repo": "spacevim-flake",
-        "rev": "7a32a6709d708c2da7dc3f1fb94e97872e91a649",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rake5k",
-        "repo": "spacevim-flake",
-        "type": "github"
+        "pre-commit-hooks": "pre-commit-hooks"
       }
     },
     "systems": {
