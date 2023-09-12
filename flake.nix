@@ -69,14 +69,6 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-
-    spacevim = {
-      url = "github:rake5k/spacevim-flake";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        pre-commit-hooks.follows = "pre-commit-hooks";
-      };
-    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:
