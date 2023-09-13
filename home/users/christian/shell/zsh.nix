@@ -6,9 +6,19 @@
   autocd = true;
   dotDir = ".config/zsh";
   dirHashes = {
-    docs = "$HOME/Documents";
-    vids = "$HOME/Videos";
+    bb = "/mnt/bluecare/bluecare";
+    bh = "/mnt/bluecare/home";
+    bt = "/mnt/bluecare/transfer";
+    d = "$HOME/Documents";
     dl = "$HOME/Downloads";
+    hh = "/mnt/home/home";
+    hm = "/mnt/home/music";
+    hp = "/mnt/home/photo";
+    ht = "/mnt/home/public";
+    hv = "/mnt/home/video";
+    p = "$HOME/Pictures";
+    usb = "/run/media/chr";
+    v = "$HOME/Videos";
   };
   history =
     let
