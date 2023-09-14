@@ -5,6 +5,7 @@ with lib;
 let
 
   cfg = config.custom.programs.ranger;
+  rangerPackage = pkgs.callPackage ./package.nix { };
 
 in
 
@@ -24,27 +25,30 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        ranger
+        rangerPackage
 
         # dependencies
         _7zz
         atool
         catdoc
+        djvulibre
         exiftool
         ffmpeg_6
         ffmpegthumbnailer
         imagemagick
+        librsvg
         mediainfo
+        mu
         odt2txt
         pandoc
         poppler_utils
+        python3Packages.nbconvert
         transmission
         trash-cli
         ueberzug
         unrar
         w3m
         xlsx2csv
-        #xpdf # insecure
       ];
 
       sessionVariables = {
