@@ -10,7 +10,6 @@
   #     multipane: Midnight-commander like multipane view showing all tabs next
   #                to each other
   set viewmode miller
-  #set viewmode multipane
 
   # How many columns are there, and what are their relative widths?
   set column_ratios 1,3,4
@@ -29,7 +28,7 @@
   # Use non-default path for file preview script?
   # ranger ships with scope.sh, a script that calls external programs (see
   # README.md for dependencies) to preview images, archives, etc.
-  set preview_script ${config.home.homeDirectory + "/" + config.xdg.configFile."ranger/scope.sh".target}
+  set preview_script ${config.xdg.configHome}/ranger/scope.sh
 
   # Use the external preview script or display simple plain text or image previews?
   set use_preview_script true
@@ -78,6 +77,9 @@
   #   Previews images in full color in the terminology terminal emulator.
   #   Supports a wide variety of formats, even vector graphics like svg.
   #
+  # * sixel:
+  #   Previews images using the SIXEL protocol. This requires "imagemagick".
+  #
   # * urxvt:
   #   Preview images in full color using urxvt image backgrounds. This
   #   requires using urxvt compiled with pixbuf support.
@@ -104,6 +106,11 @@
   # Default iTerm2 font size (see: preview_images_method: iterm2)
   set iterm2_font_width 8
   set iterm2_font_height 11
+
+  # Dithering mode for SIXEL previews.  One of:
+  # None, Riemersma, FloydSteinberg
+  # (see: preview_images_method: sixel)
+  set sixel_dithering FloydSteinberg
 
   # Use a unicode "..." character to mark cut-off filenames?
   set unicode_ellipsis false
@@ -270,6 +277,9 @@
   # Save tabs on exit
   set save_tabs_on_exit false
 
+  # Remove tabs with unavailable paths on startup
+  set filter_dead_tabs_on_startup false
+
   # Enable scroll wrapping - moving down while on the last item will wrap around to
   # the top and vice versa.
   set wrap_scroll false
@@ -285,6 +295,14 @@
   # Print file sizes in bytes instead of the default human-readable format.
   set size_in_bytes false
 
+  # Shows large filesizes with binary unit prefixes - kibibytes=Ki, mebibytes=Mi etc.
+  # instead of the default decimal prefixes - kilobytes=k, megabytes=M etc.
+  # Each binary unit prefix signifies 1024=2^10 of the preceding unit prefix (there are
+  # 1024 KiB in 1 MiB) as opposed to decimal unit prefixes which signify a
+  # 1000 of the preceding unit prefix (there are 1000 kB in 1 MB) 
+  # https://en.wikipedia.org/wiki/Binary_prefix
+  set binary_size_prefix false
+
   # Warn at startup if RANGER_LEVEL env var is greater than 0, in other words
   # give a warning when you nest ranger in a subshell started by ranger.
   # Special value "error" makes the warning more visible.
@@ -296,7 +314,7 @@
   # You can set local options that only affect a single directory.
 
   # Examples:
-  setlocal path=~/downloads sort mtime
+  setlocal path=~/Downloads sort mtime
 
   # ===================================================================
   # == Command Aliases in the Console
@@ -312,6 +330,7 @@
   alias setl  setlocal
 
   alias filter     scout -prts
+  alias hide       scout -prtsv
   alias find       scout -aets
   alias mark       scout -mr
   alias unmark     scout -Mr
@@ -384,8 +403,8 @@
   map <F5> copy
   map <F6> cut
   map <F7> console mkdir%space
-  #map <F8> console delete
-  map <F8> console trash
+  map <F8> console delete
+  #map <F8> console trash
   map <F10> exit
 
   # In case you work on a keyboard with dvorak layout
@@ -445,8 +464,8 @@
 
   # External Programs
   map E  edit
-  map du shell -p du --max-depth=1 -h --apparent-size
-  map dU shell -p du --max-depth=1 -h --apparent-size | sort -rh
+  map du shell -p du -d 1 -h "$(2>/dev/null >&2 du --apparent-size /dev/null && printf '%s\n' --apparent-size || printf '%s\n' --)"
+  map dU shell -p du -d 1 -h "$(2>/dev/null >&2 du --apparent-size /dev/null && printf '%s\n' --apparent-size || printf '%s\n' --)" | sort -rh
   map yp yank path
   map yd yank dir
   map yn yank name
@@ -599,20 +618,20 @@
   map um<any> unset_bookmark %any
 
   map m<bg>   draw_bookmarks
-  copymap m<bg>  um<bg> `<bg> '<bg>
+  copymap m<bg>  um<bg> `<bg> '<bg> p`<bg> p'<bg>
 
   # Generate all the chmod bindings with some python help:
   eval for arg in "rwxXst": cmd("map +u{0} shell -f chmod u+{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map +g{0} shell -f chmod g+{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map +o{0} shell -f chmod o+{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map +a{0} shell -f chmod a+{0} %s".format(arg))
-  eval for arg in "rwxXst": cmd("map +{0}  shell -f chmod u+{0} %s".format(arg))
+  eval for arg in "rwxXst": cmd("map +{0}  shell -f chmod +{0} %s".format(arg))
 
   eval for arg in "rwxXst": cmd("map -u{0} shell -f chmod u-{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map -g{0} shell -f chmod g-{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map -o{0} shell -f chmod o-{0} %s".format(arg))
   eval for arg in "rwxXst": cmd("map -a{0} shell -f chmod a-{0} %s".format(arg))
-  eval for arg in "rwxXst": cmd("map -{0}  shell -f chmod u-{0} %s".format(arg))
+  eval for arg in "rwxXst": cmd("map -{0}  shell -f chmod -{0} %s".format(arg))
 
   # ===================================================================
   # == Define keys for the console
@@ -650,6 +669,8 @@
   cmap <C-k>        eval fm.ui.console.delete_rest(1)
   cmap <C-u>        eval fm.ui.console.delete_rest(-1)
   cmap <C-y>        eval fm.ui.console.paste()
+  cmap <C-t>        eval fm.ui.console.transpose_chars()
+  cmap <A-t>        eval fm.ui.console.transpose_words()
 
   # And of course the emacs way
   copycmap <ESC>       <C-g>
