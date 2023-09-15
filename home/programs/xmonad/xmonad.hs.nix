@@ -12,10 +12,12 @@ in
 pkgs.writeText "xmonad.hs" ''
   import Control.Monad (join, when)
   import Data.Maybe (maybeToList)
+  import qualified Data.Map as M
 
   import XMonad
 
   import XMonad.Actions.CycleWS (Direction1D(Next, Prev), moveTo, shiftTo, toggleWS', WSType(WSIs))
+  import XMonad.Actions.NoBorders (toggleBorder)
 
   import XMonad.Hooks.EwmhDesktops (ewmh, ewmhFullscreen)
   import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
@@ -161,6 +163,17 @@ pkgs.writeText "xmonad.hs" ''
       ratio    = 1/2    -- Default proportion of screen occupied by master pane
       delta    = 3/100  -- Percent of screen to increment by when resizing panes
 
+  toggleFull = withFocused (\windowId -> do {
+     floats <- gets (W.floating . windowset);
+     if windowId `M.member` floats
+     then do
+       withFocused $ toggleBorder
+       withFocused $ windows . W.sink
+     else do
+       withFocused $ toggleBorder
+       withFocused $  windows . (flip W.float $ W.RationalRect 0 0 1 1)
+     })
+
   myKeys :: [(String, X ())]
   myKeys =
     [ ("M-S-<Delete>",  spawn "${escapeHaskellString cfg.locker.lockCmd}")
@@ -170,6 +183,7 @@ pkgs.writeText "xmonad.hs" ''
     , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
     , ("C-S-<Print>",   unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdSelect}")
     , ("M-p",           spawn "${escapeHaskellString cfg.launcherCmd}")
+    , ("M-f",           toggleFull)
 
     -- Cycling workspaces
     , ("M-<Right>",   moveTo Next nonNSP)
