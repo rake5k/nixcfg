@@ -21,7 +21,7 @@ python3Packages.buildPythonApplication rec {
     owner = "ranger";
     repo = "ranger";
     rev = "136416c7e2ecc27315fe2354ecadfe09202df7dd";
-    hash = "sha256-KPCts1MimDQYljoPR4obkbfFT8gH66c542CMG9UW7O1=";
+    hash = "sha256-nW4KlatugmPRPXl+XvV0/mo+DE5o8FLRrsJuiKbFGyY=";
   };
   LC_ALL = "en_US.UTF-8";
   doCheck = true;
