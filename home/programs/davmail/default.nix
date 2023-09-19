@@ -76,9 +76,11 @@ in
         smtpPort = 1025;
       };
       log4j = {
-        logger.davmail = mkDefault "WARN";
-        logger.httpclient.wire = mkDefault "WARN";
-        logger.org.apache.commons.httpclient = mkDefault "WARN";
+        logger = {
+          davmail = mkDefault "WARN";
+          httpclient.wire = mkDefault "WARN";
+          org.apache.commons.httpclient = mkDefault "WARN";
+        };
         rootLogger = mkDefault "WARN";
       };
     };

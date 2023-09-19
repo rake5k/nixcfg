@@ -9,14 +9,17 @@
       (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ "dm-snapshot" ];
-  boot.kernelModules = [ ];
-  boot.extraModulePackages = [ ];
-
-  boot.initrd.luks.devices.root = {
-    device = "/dev/sda2";
-    preLVM = true;
+  boot = {
+    initrd = {
+      availableKernelModules = [ "ata_piix" "ohci_pci" "sd_mod" "sr_mod" ];
+      kernelModules = [ "dm-snapshot" ];
+      luks.devices.root = {
+        device = "/dev/sda2";
+        preLVM = true;
+      };
+    };
+    kernelModules = [ ];
+    extraModulePackages = [ ];
   };
 
   fileSystems."/" =
