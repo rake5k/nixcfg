@@ -240,7 +240,7 @@ in
             # region = screen[1]:1280x1024+1280+0
             
             # Launch applications in a workspace of choice
-            ${concatStringsSep "\n" ([ ] ++ mapAttrsToList mkAutorun cfg.autoruns)}
+            ${concatStringsSep "\n" (mapAttrsToList mkAutorun cfg.autoruns)}
             
             # Customize workspace layout at start
             # format: ws[idx]:master_grow:master_add:stack_inc:always_raise:stack_mode
