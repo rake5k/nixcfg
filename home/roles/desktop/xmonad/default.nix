@@ -60,10 +60,6 @@ in
             command = mkDefault "1password";
             wmClassName = mkDefault "1Password";
           };
-          wiki = {
-            command = mkDefault "joplin-desktop";
-            wmClassName = mkDefault "Joplin";
-          };
         };
       };
     };

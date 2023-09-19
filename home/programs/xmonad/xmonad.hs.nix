@@ -91,8 +91,8 @@ pkgs.writeText "xmonad.hs" ''
           h = (3/4)
           x = center w
           y = center h
-      spawnWiki  = "${cfg.wiki.command}"
-      findWiki   = className =? "${cfg.wiki.wmClassName}"
+      spawnWiki  = myTerminal ++ " -t wiki -e nb --interactive ls"
+      findWiki   = title =? "wiki"
       manageWiki = customFloating $ W.RationalRect x y w h
         where
           w = (4/5)

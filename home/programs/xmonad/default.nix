@@ -129,18 +129,6 @@ in
         type = types.str;
         description = "Command to spawn the default terminal emulator";
       };
-
-      wiki = {
-        command = mkOption {
-          type = types.str;
-          description = "Command to spawn the default wiki app";
-        };
-        wmClassName = mkOption {
-          type = types.str;
-          description = "Window manager class name retrieved via `xprop` utility";
-        };
-      };
-
     };
   };
 
