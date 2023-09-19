@@ -20,7 +20,9 @@ in
       programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
+        nb.enable = true;
         ranger.enable = true;
+        zsh.enable = true;
       };
     };
 
@@ -51,7 +53,6 @@ in
         gron
         htop
         killall
-        nb
         neofetch
         pandoc
         texlive.combined.scheme-small
