@@ -39,8 +39,53 @@ in
         inherit (cfg) extensions;
         isDefault = true;
         settings = {
+          "browser.search.suggest.enabled" = false;
+          "browser.search.region" = "CH";
           "browser.startup.homepage" = cfg.homepage;
-          "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        };
+        search = {
+          default = "DuckDuckGo";
+          engines = {
+            "Nix Packages" = {
+              urls = [{
+                template = "https://search.nixos.org/packages";
+                params = [
+                  { name = "query"; value = "{searchTerms}"; }
+                ];
+              }];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "@np" ];
+            };
+
+            "NixOS Options" = {
+              urls = [{
+                template = "https://search.nixos.org/options";
+                params = [
+                  { name = "query"; value = "{searchTerms}"; }
+                ];
+              }];
+              icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+              definedAliases = [ "@np" ];
+            };
+
+            "NixOS Wiki" = {
+              urls = [{
+                template = "https://nixos.wiki/index.php";
+                params = [
+                  { name = "search"; value = "{searchTerms}"; }
+                ];
+              }];
+              iconUpdateURL = "https://nixos.wiki/favicon.png";
+              updateInterval = 24 * 60 * 60 * 1000; # every day
+              definedAliases = [ "@nw" ];
+            };
+
+            "Amazon.de".metaData.hidden = true;
+            "Bing".metaData.hidden = true;
+            "eBay".metaData.hidden = true;
+            "Google".metaData.hidden = true;
+          };
+          force = true;
         };
       };
     };
