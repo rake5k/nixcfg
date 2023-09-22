@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... } @ args:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -16,6 +16,14 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom = {
+      programs.direnv.enable = true;
+      roles = {
+        printing.enable = true;
+        sound.enable = true;
+      };
+    };
+
     services = {
       xserver = {
         enable = true;
