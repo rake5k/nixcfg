@@ -3,6 +3,10 @@ source @bashLib@
 
 export -f _log
 
+### Gather flake info
+
+readonly FLAKE_GIT_REPO="${1}"
+
 nix_config="@flakePath@"
 export nix_config
 
@@ -27,8 +31,9 @@ _clone() {
 }
 
 # clone repos
+# shellcheck disable=SC2310
 if ! _is_nixos || _is_root; then
-    _clone "nix-config" git@github.com:rake5k/nixcfg.git "${nix_config}"
+    _clone "nix-config" "${FLAKE_GIT_REPO}" "${nix_config}"
 fi
 
 # generage age key
@@ -93,6 +98,7 @@ _setup_nix() {
     fi
 }
 
+# shellcheck disable=SC2310
 if _is_nixos && _is_root; then
     _setup_nixos
 elif ! _is_nixos && ! _is_root; then
