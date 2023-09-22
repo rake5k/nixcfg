@@ -5,33 +5,40 @@ source @bashLib@
 
 ### Gather system info
 
+echo '1'
 readonly HOSTNAME="${1}"
 readonly DISK="${2}"
 
 # Validate arguments
 
+echo '2'
 test "${HOSTNAME}" || {
     # shellcheck disable=SC2016
     echo '$HOSTNAME is not given!'
     exit 1
 }
 
+echo '3'
 NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c)
 readonly NUM_SUPPORTED_DISKS
 
+echo '4'
 [[ ${NUM_SUPPORTED_DISKS} -gt 0 ]] || {
     # shellcheck disable=SC2016
     echo '$DISK is not of format "/dev/sda" or "/dev/nvme0n1"!'
     exit 1
 }
 
+echo '5'
 NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c)
 readonly NUM_NVME_DISKS
 
+echo '6'
 is_nvme_disk() {
     [[ ${NUM_NVME_DISKS} -gt 0 ]]
 }
 
+echo '7'
 get_partition() {
     # shellcheck disable=SC2310
     if is_nvme_disk; then
@@ -41,11 +48,13 @@ get_partition() {
     fi
 }
 
+echo '8'
 BOOT_PARTITION="$(get_partition 1)"
 readonly BOOT_PARTITION
 LVM_PARTITION="$(get_partition 2)"
 readonly LVM_PARTITION
 
+echo '9'
 get_ram_size() {
     local mem_summary
     mem_summary="$(lsmem --summary=only)"
@@ -56,12 +65,14 @@ get_ram_size() {
     echo "${mem_online_size}"
 }
 
+echo '10'
 RAM_SIZE="$(get_ram_size)"
 readonly RAM_SIZE
 
 
 ### Declare functions
 
+echo '11'
 readonly LVM_PV="nixos-enc"
 readonly LVM_VG="nixos-vg"
 readonly LVM_LV_ROOT="/dev/${LVM_VG}/root"
@@ -81,6 +92,7 @@ partition() {
     fdisk "${DISK}" -l
 }
 
+echo '12'
 create_volumes() {
     _log "[create_volumes] Encrypting LVM partition..."
     cryptsetup luksFormat "${LVM_PARTITION}"
@@ -93,6 +105,7 @@ create_volumes() {
     lvcreate -l 100%FREE -n root "${LVM_VG}"
 }
 
+echo '13'
 create_filesystems() {
     # TODO: Switch to btrfs (https://github.com/wiltaylor/dotfiles/blob/master/tools/makefs-nixos)
     _log "[create_filesystems] Creating filesystems..."
@@ -104,6 +117,7 @@ create_filesystems() {
     lsblk -f "${DISK}"
 }
 
+echo '14'
 decrypt_lvm() {
     _log "[decrypt_lvm] Decrypting volumes..."
     cryptsetup luksOpen "${LVM_PARTITION}" "${LVM_PV}"
@@ -114,6 +128,7 @@ decrypt_lvm() {
     lsblk -f "${DISK}"
 }
 
+echo '15'
 install() {
     local mount_root="/mnt"
     local mount_boot="${mount_root}/boot"
@@ -142,6 +157,7 @@ install() {
 
 ### Pull the trigger
 
+echo '16'
 # shellcheck disable=SC2310
 if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
     partition
@@ -149,6 +165,7 @@ if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
     create_filesystems
 fi
 
+echo '17'
 LVM_PV_STATUS="$(cryptsetup -q status "${LVM_PV}")"
 readonly LVM_PV_STATUS
 LVM_PV_NUM_ACTIVE=$(echo "${LVM_PV_STATUS}" | grep "^/dev/mapper/${LVM_PV} is active and is in use.$" -c)
@@ -157,6 +174,7 @@ if [[ ${LVM_PV_NUM_ACTIVE} -lt 1 ]]; then
     decrypt_lvm
 fi
 
+echo '18'
 # shellcheck disable=SC2310
 if _read_boolean "Do you want to INSTALL NixOS now?" N; then
     install
