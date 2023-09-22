@@ -32,7 +32,7 @@ echo '4'
 }
 
 echo '5'
-NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c)
+NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c || echo 0)
 readonly NUM_NVME_DISKS
 
 echo '6'
