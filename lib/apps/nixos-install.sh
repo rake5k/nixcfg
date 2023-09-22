@@ -33,6 +33,7 @@ is_nvme_disk() {
 }
 
 get_partition() {
+    # shellcheck disable=SC2310
     if is_nvme_disk; then
         echo "${DISK}p${1}"
     else
@@ -141,6 +142,7 @@ install() {
 
 ### Pull the trigger
 
+# shellcheck disable=SC2310
 if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
     partition
     create_volumes
@@ -155,6 +157,7 @@ if [[ ${LVM_PV_NUM_ACTIVE} -lt 1 ]]; then
     decrypt_lvm
 fi
 
+# shellcheck disable=SC2310
 if _read_boolean "Do you want to INSTALL NixOS now?" N; then
     install
 fi
