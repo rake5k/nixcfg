@@ -4,25 +4,42 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.mobile;
+  cfg = config.custom.roles.mobile;
 
 in
 
 {
   options = {
-    custom.roles.desktop.mobile = {
+    custom.roles.mobile = {
       enable = mkEnableOption "Mobile computer config";
     };
   };
 
   config = mkIf cfg.enable {
+    custom.programs = {
+      direnv.enable = true;
+    };
+
     services = {
       logind = {
         lidSwitch = "suspend-then-hibernate";
         lidSwitchDocked = "ignore";
         lidSwitchExternalPower = "lock";
       };
+
       upower.enable = true;
+
+      xserver = {
+        # Touchpad settings
+        libinput = {
+          enable = true;
+          touchpad = {
+            naturalScrolling = true;
+            disableWhileTyping = true;
+            sendEventsMode = "disabled-on-external-mouse";
+          };
+        };
+      };
     };
 
     networking.networkmanager.dispatcherScripts = [{
