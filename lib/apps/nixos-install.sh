@@ -3,6 +3,8 @@ source @bashLib@
 
 # Source: https://qfpl.io/posts/installing-nixos/
 
+set -x
+
 ### Gather system info
 
 echo '1'
