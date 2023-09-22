@@ -125,20 +125,6 @@ mount_filesystems() {
     findmnt --real
 }
 
-enable_swap() {
-    local swap_dir="${MOUNT_ROOT}/swap"
-    local swap_file="${swap_dir}/swapfile"
-
-    _log "[enable_swap] Creating swap file..."
-    btrfs filesystem mkswapfile --size 4G "${swap_file}"
-
-    _log "[enable_swap] Enabling swap..."
-    swapon "${swap_file}"
-
-    _log "[enable_swap] Enabled swaps:"
-    cat /proc/swaps
-}
-
 install() {
     _log "[install] Installing NixOS..."
     nixos-install --root "${MOUNT_ROOT}" --flake "${FLAKE}#${HOSTNAME}" --impure
@@ -179,7 +165,6 @@ fi
 # shellcheck disable=SC2310
 if _read_boolean "Do you want to INSTALL NixOS now?" N; then
     mount_filesystems
-    enable_swap
     install
 fi
 
