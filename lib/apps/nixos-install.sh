@@ -95,11 +95,13 @@ partition() {
 }
 
 echo '12'
-create_volumes() {
-    _log "[create_volumes] Encrypting LVM partition..."
+encrypt_partition() {
+    _log "[encrypt_partition] Encrypting LVM partition..."
     cryptsetup luksFormat "${LVM_PARTITION}"
     cryptsetup luksOpen "${LVM_PARTITION}" "${LVM_PV}"
+}
 
+create_volumes() {
     _log "[create_volumes] Creating LVM volumes..."
     pvcreate "/dev/mapper/${LVM_PV}"
     vgcreate "${LVM_VG}" "/dev/mapper/${LVM_PV}"
@@ -163,6 +165,13 @@ echo '16'
 # shellcheck disable=SC2310
 if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
     partition
+
+    echo '16-1'
+    # shellcheck disable=SC2310
+    if _read_boolean "Do you want to ENCRYPT THE DISK?" N; then
+        encrypt_partition
+    fi
+
     create_volumes
     create_filesystems
 fi
@@ -178,7 +187,9 @@ fi
 
 echo '18'
 # shellcheck disable=SC2310
-if _read_boolean "Do you want to INSTALL NixOS now?" N; then
+DO_INSTALL="$(_read_boolean "Do you want to INSTALL NixOS now?" N)" || true
+readonly DO_INSTALL
+if "${DO_INSTALL}"; then
     install
 fi
 
