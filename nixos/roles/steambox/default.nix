@@ -32,6 +32,7 @@ in
       # Geforce NOW
       microsoft-edge
 
+      chromium
       firefox
     ];
 
