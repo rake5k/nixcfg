@@ -31,6 +31,8 @@ in
 
       # Geforce NOW
       microsoft-edge
+
+      firefox
     ];
 
     hardware.opengl.driSupport32Bit = true;
