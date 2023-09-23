@@ -33,6 +33,8 @@ in
       microsoft-edge
     ];
 
+    hardware.opengl.driSupport32Bit = true;
+
     # Enable the KDE Desktop Environment.
     services.xserver = {
       enable = true;
@@ -54,8 +56,5 @@ in
         };
       };
     };
-
-    #systemd.extraConfig = "DefaultLimitNOFILE=1048576";
-    #boot.kernelPackages = pkgs.linuxPackages_latest;
   };
 }
