@@ -28,6 +28,9 @@ in
     environment.systemPackages = with pkgs; [
       steam_autostart
       steam-run
+
+      # Geforce NOW
+      microsoft-edge
     ];
 
     # Enable the KDE Desktop Environment.
