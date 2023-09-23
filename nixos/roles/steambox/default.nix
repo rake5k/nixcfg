@@ -36,8 +36,6 @@ in
       firefox
     ];
 
-    hardware.opengl.driSupport32Bit = true;
-
     # Enable the KDE Desktop Environment.
     services.xserver = {
       enable = true;
