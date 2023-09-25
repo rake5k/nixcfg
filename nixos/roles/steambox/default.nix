@@ -30,8 +30,6 @@ in
       steam-run
 
       # Geforce NOW
-      microsoft-edge
-
       chromium
       firefox
     ];
