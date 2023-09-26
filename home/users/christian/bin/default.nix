@@ -29,19 +29,11 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = with pkgs; [
-        # Bluetooth
-        bluez
-
         _1password
       ];
 
       file = genAttrs'
         [
-          # Bluetooth headset
-          "lib/btctl"
-          "wh1000xm2-connect"
-          "wh1000xm2-disconnect"
-
           # Password CLI
           "pass"
         ]
