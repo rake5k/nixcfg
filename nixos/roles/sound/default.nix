@@ -16,14 +16,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    sound.enable = true;
-    hardware = {
-      bluetooth.enable = true;
-      pulseaudio = {
-        enable = true;
-        package = pkgs.pulseaudioFull;
-      };
-    };
     environment.systemPackages = [ pkgs.pavucontrol ];
+    hardware.bluetooth.enable = true;
+    security.rtkit.enable = lib.mkDefault config.services.pipewire.enable;
+    services.pipewire = {
+      enable = lib.mkDefault true;
+      alsa.enable = lib.mkDefault true;
+      pulse.enable = lib.mkDefault true;
+    };
   };
 }
