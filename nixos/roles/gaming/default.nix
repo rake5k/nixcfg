@@ -22,14 +22,6 @@ in
       remotePlay.openFirewall = true;
     };
 
-    nixpkgs.config.packageOverrides = pkgs: {
-      steam = pkgs.steam.override {
-        extraPkgs = pkgs: with pkgs; [
-          libGL
-        ];
-      };
-    };
-
     # Xbox controller
     hardware.xpadneo.enable = true;
   };
