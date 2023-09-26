@@ -33,7 +33,6 @@ in
         bluez
 
         _1password
-        pulseaudio
       ];
 
       file = genAttrs'
