@@ -81,6 +81,7 @@ in
       packages = with pkgs; [
         font-awesome
         networkmanagerapplet
+        pasystray
       ];
     };
 
