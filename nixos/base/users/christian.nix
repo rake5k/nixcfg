@@ -22,7 +22,7 @@ in
       fsType = "cifs";
       credentials = config.age.secrets."${secretSmb}".path;
       automount_opts = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=60" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
-      auth_opts = [ "uid=1000" "gid=0" "credentials=${credentials}" ];
+      auth_opts = [ "uid=1000" "gid=100" "dir_mode=0700" "file_mode=0700" "credentials=${credentials}" ];
       options = automount_opts ++ auth_opts;
     in
     {
