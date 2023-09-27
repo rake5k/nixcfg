@@ -18,11 +18,15 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = [ pkgs.pavucontrol ];
     hardware.bluetooth.enable = true;
-    security.rtkit.enable = lib.mkDefault config.services.pipewire.enable;
+
+    # Necessary for easyeffects
+    programs.dconf.enable = true;
+
+    security.rtkit.enable = config.services.pipewire.enable;
     services.pipewire = {
-      enable = lib.mkDefault true;
-      alsa.enable = lib.mkDefault true;
-      pulse.enable = lib.mkDefault true;
+      enable = true;
+      alsa.enable = true;
+      pulse.enable = true;
     };
   };
 }

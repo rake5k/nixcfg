@@ -19,11 +19,13 @@ in
     home = {
       packages = with pkgs; [
         blueberry
+        easyeffects
         plex-media-player
         spotifywm
       ];
     };
 
     programs.mpv.enable = true;
+    services.easyeffects.enable = true;
   };
 }
