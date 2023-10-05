@@ -20,7 +20,6 @@ in
       programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
-        nb.enable = true;
         ranger.enable = true;
         zsh.enable = true;
       };
@@ -69,6 +68,7 @@ in
 
     programs = {
       ssh = import ./ssh.nix;
+      zsh = import ./zsh.nix;
 
       bat.enable = true;
       exa.enable = true;

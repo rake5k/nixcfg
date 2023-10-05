@@ -38,6 +38,7 @@ in
       _1password
       _1password-gui
       bind
+      joplin-desktop
       wget
       thunderbird
 
