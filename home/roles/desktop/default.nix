@@ -100,6 +100,7 @@ in
     home = {
       packages = with pkgs; [
         gnome.pomodoro
+        logseq
         mupdf
         peek
         gifski
