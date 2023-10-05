@@ -16,12 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      file = {
-        "${config.programs.zsh.dotDir}/completions".source = ./completions;
-      };
-    };
-
     programs.zsh = {
       enable = true;
       enableAutosuggestions = true;
@@ -63,9 +57,6 @@ in
         bindkey "^[[3~" delete-char
         # Fix for https://stackoverflow.com/questions/43249043/bind-delete-key-in-vi-mode
         bindkey -a '^[[3~' vi-delete-char
-      '';
-      initExtraBeforeCompInit = ''
-        fpath=(~/.zsh/completion $fpath)
       '';
       shellGlobalAliases = {
         "..." = "../..";
