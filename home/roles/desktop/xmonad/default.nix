@@ -61,8 +61,8 @@ in
             wmClassName = mkDefault "1Password";
           };
           wiki = {
-            command = mkDefault "joplin-desktop";
-            wmClassName = mkDefault "Joplin";
+            command = mkDefault "logseq";
+            wmClassName = mkDefault "Logseq";
           };
         };
       };
