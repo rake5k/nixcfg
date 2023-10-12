@@ -13,6 +13,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    nix-on-droid = {
+      url = "github:t184256/nix-on-droid";
+      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     pre-commit-hooks = {
       url = "github:cachix/pre-commit-hooks.nix";
       inputs = {
@@ -91,6 +97,10 @@
 
       nixosConfigurations = listToAttrs [
         (mkNixos x86_64-linux "nixos-vm")
+      ];
+
+      nixOnDroidConfigurations = listToAttrs [
+        (mkNixOnDroid "aarch64-linux" "nix-on-droid")
       ];
 
       apps = mkForEachSystem [
