@@ -1,8 +1,8 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 {
   home = {
-    homeDirectory = "/home/${config.home.username}";
+    homeDirectory = lib.mkDefault "/home/${config.home.username}";
 
     sessionPath = [
       "$HOME/bin"

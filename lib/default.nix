@@ -78,4 +78,5 @@ in
   mkGeneric = nameValuePairWrapper;
   mkHome = simpleWrapper ./builders/mkHome.nix;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
+  mkNixOnDroid = simpleWrapper ./builders/mkNixOnDroid.nix;
 }
