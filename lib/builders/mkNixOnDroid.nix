@@ -9,8 +9,6 @@ in
 
 inputs.nix-on-droid.lib.nixOnDroidConfiguration {
   modules = [
-    "${rootPath}/hosts/${name}/nix-on-droid.nix"
-
     {
       _file = ./mkNixOnDroid.nix;
 
@@ -25,7 +23,8 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
       config.lib.custom = customLib;
     }
-  ];
+  ]
+  ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
 
   extraSpecialArgs = {
     inherit inputs pkgs homeModules;
