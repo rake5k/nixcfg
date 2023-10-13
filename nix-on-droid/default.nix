@@ -34,9 +34,9 @@ in
   terminal.font =
     let
       fontPackage = pkgs.nerdfonts.override {
-        fonts = [ "UbuntuMono" ];
+        fonts = [ "VictorMono" ];
       };
-      fontPath = "/share/fonts/truetype/NerdFonts/UbuntuMonoNerdFont-Regular.ttf";
+      fontPath = "/share/fonts/truetype/NerdFonts/VictorMonoNerdFont-Regular.ttf";
     in
     fontPackage + fontPath;
 
