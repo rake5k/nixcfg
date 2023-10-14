@@ -88,26 +88,28 @@ in
 
   config = mkIf cfg.enable {
 
-    custom.roles.desktop = {
-      cursors.enable = true;
-      grobi.enable = true;
-      gtk.enable = true;
-      redshift.enable = true;
-      terminal.enable = true;
-      xmonad.enable = true;
+    custom = {
+      programs.logseq.enable = true;
+      roles = {
+        desktop = {
+          cursors.enable = true;
+          grobi.enable = true;
+          gtk.enable = true;
+          redshift.enable = true;
+          terminal.enable = true;
+          xmonad.enable = true;
+        };
+      };
     };
 
-    home = {
-      packages = with pkgs; [
-        gnome.pomodoro
-        logseq
-        mupdf
-        peek
-        gifski
-        xclip
-        xzoom
-      ];
-    };
+    home.packages = with pkgs; [
+      gnome.pomodoro
+      mupdf
+      peek
+      gifski
+      xclip
+      xzoom
+    ];
 
     xsession = {
       enable = true;
