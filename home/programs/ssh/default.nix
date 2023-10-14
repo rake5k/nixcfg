@@ -10,7 +10,11 @@ let
   sshDirectory = ".ssh";
   mkFileEntry = identity: {
     name = "${sshDirectory}/${identity}";
-    value = { source = "${secretsPath}/${identity}"; };
+    value = {
+      # Using `mkOutOfStoreSymlink` as a workaround for files not being created on activation:
+      # https://github.com/jordanisaacs/homeage/issues/42
+      source = config.lib.file.mkOutOfStoreSymlink "${secretsPath}/${identity}";
+    };
   };
 
 in
