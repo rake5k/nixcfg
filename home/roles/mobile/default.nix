@@ -7,6 +7,9 @@ let
   cfg = config.custom.roles.mobile;
   username = "nix-on-droid";
 
+  logseqSshKey = "id_logseq";
+  logseqSshPubKey = "${logseqSshKey}.pub";
+
 in
 
 {
@@ -21,9 +24,18 @@ in
       inherit username;
     };
 
-    custom.base.non-nixos = {
-      enable = true;
-      installNix = false;
+    custom = {
+      base.non-nixos = {
+        enable = true;
+        installNix = false;
+      };
+
+      programs.ssh = {
+        enable = true;
+        identities = [ logseqSshKey logseqSshPubKey ];
+      };
+
+      roles.homeage.secrets = [ logseqSshKey logseqSshPubKey ];
     };
   };
 }
