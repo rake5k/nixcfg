@@ -52,7 +52,7 @@
     };
 
     homeage = {
-      url = "github:jordanisaacs/homeage/release";
+      url = "github:jordanisaacs/homeage";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

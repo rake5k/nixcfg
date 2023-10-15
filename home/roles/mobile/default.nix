@@ -24,6 +24,8 @@ in
       inherit username;
     };
 
+    homeage.installationType = "activation";
+
     custom = {
       base.nix-on-droid.enable = true;
 
