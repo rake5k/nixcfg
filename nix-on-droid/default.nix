@@ -1,10 +1,4 @@
-{ config, lib, pkgs, homeModules, inputs, ... }:
-
-let
-
-  mkUserConfigPath = host: "${inputs.self}/hosts/${host}/home-nix-on-droid.nix";
-
-in
+{ config, inputs, lib, pkgs, homeModules, name, ... }:
 
 {
   environment = {
@@ -23,7 +17,7 @@ in
     extraSpecialArgs = { inherit inputs; };
     sharedModules = homeModules;
 
-    config = mkUserConfigPath "nix-on-droid";
+    config = "${inputs.self}/hosts/${name}/home-nix-on-droid.nix";
   };
 
   nix.package = pkgs.nix;
