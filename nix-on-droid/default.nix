@@ -22,9 +22,6 @@
 
   nix.package = pkgs.nix;
 
-  # FIXME: update when released
-  system.stateVersion = "22.11";
-
   terminal.font =
     let
       fontPackage = pkgs.nerdfonts.override {

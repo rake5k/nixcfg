@@ -9,6 +9,8 @@ in
 
 inputs.nix-on-droid.lib.nixOnDroidConfiguration {
   modules = [
+    "${inputs.self}/hosts/${name}"
+
     {
       _file = ./mkNixOnDroid.nix;
 
