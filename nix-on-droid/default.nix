@@ -36,6 +36,10 @@ in
         hostname
         man
         openssh
+        unixtools.nettools
+        unixtools.ping
+        unixtools.procps
+        unixtools.whereis
         vim
       ];
     };
