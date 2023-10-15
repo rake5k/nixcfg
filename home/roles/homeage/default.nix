@@ -43,7 +43,7 @@ in
 
     homeage = {
       identityPaths = [ "${config.home.homeDirectory}/.age/key.txt" ];
-
+      installationType = mkDefault "systemd";
       file = builtins.listToAttrs (map mkHomeageFile cfg.secrets);
     };
   };

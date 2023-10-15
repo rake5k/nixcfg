@@ -194,16 +194,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1661959394,
-        "narHash": "sha256-nNGZ22LDwD8gEhNr2+uPVS7gA2wFcbYzivzR9GUSOQc=",
+        "lastModified": 1669234151,
+        "narHash": "sha256-TwT87E3m2TZLgwYJESlype14HxUOrRGojPM5C2akrMg=",
         "owner": "jordanisaacs",
         "repo": "homeage",
-        "rev": "dea8d375df3aacf3209a8b870425631e2dad0f18",
+        "rev": "02bfe4ca06962d222e522fff0240c93946b20278",
         "type": "github"
       },
       "original": {
         "owner": "jordanisaacs",
-        "ref": "release",
         "repo": "homeage",
         "type": "github"
       }
