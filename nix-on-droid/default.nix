@@ -35,6 +35,7 @@ in
         gnugrep
         hostname
         man
+        openssh
         vim
       ];
     };
