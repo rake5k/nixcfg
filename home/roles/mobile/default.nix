@@ -25,9 +25,12 @@ in
     };
 
     custom = {
-      base.non-nixos = {
-        enable = true;
-        installNix = false;
+      base = {
+        nix.enableStoreOptimization = false;
+        non-nixos = {
+          enable = true;
+          installNix = false;
+        };
       };
 
       programs.ssh = {
