@@ -1,9 +1,14 @@
-{ config, inputs, lib, pkgs, homeModules, name, ... }:
+{ config, inputs, pkgs, homeModules, name, ... }:
 
 {
   environment = {
-    #etcBackupExtension = ".nod-bak";
-    #motd = null;
+    etcBackupExtension = ".nod-bak";
+    motd = ''
+           __     ( )               ___       __            ___   /  __      ___     ( )  ___   /
+        //   ) ) / / \\ / / ____  //   ) ) //   ) ) ____  //   ) / //  ) ) //   ) ) / / //   ) /
+       //   / / / /   \/ /       //   / / //   / /       //   / / //      //   / / / / //   / /
+      //   / / / /    / /\      ((___/ / //   / /       ((___/ / //      ((___/ / / / ((___/ /
+    '';
 
     packages = with pkgs; [
       diffutils
