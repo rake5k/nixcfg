@@ -6,7 +6,13 @@
     #motd = null;
 
     packages = with pkgs; [
+      diffutils
+      findutils
       git
+      gnugrep
+      hostname
+      man
+      vim
     ];
   };
 
