@@ -6,7 +6,7 @@
 
 ## Features
 
-* Automation scripts to setup a fresh [NixOS machine from scratch](flake/appsrnixos-install.sh) or
+* Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
   an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
 * Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
@@ -15,6 +15,8 @@
 
 ## Supported configurations
 
+* [NixOnDroid][nix-on-droid]-managed
+  * `nix-on-droid`
 * [NixOS][nixos]-managed
   * `nixos-vm`
 * [Home Manager][home-manager]-managed
@@ -34,8 +36,11 @@ See [flake.nix](flake.nix) for more information like `system`.
 │  ├──📂 roles      -- custom roles for bundling configsets
 │  └──📂 users      -- user-specific config
 ├──📂 hosts         -- NixOS host configs
-│  └──📂 nixos-vm
+│  ├──📂 nixos-vm
+│  ├──📂 nix-on-droid
+│  └──📂 non-nixos-vm
 ├──📂 lib           -- internal flake library
+├──📂 nix-on-droid  -- custom NixOnDroid modules
 ├──📂 nixos         -- custom NixOS modules
 │  ├──📂 base       -- basic configs
 │  │   └──📂 users  -- user configs
@@ -238,8 +243,9 @@ $ hm-switch
 
 [age]: https://age-encryption.org/
 [agenix]: https://github.com/ryantm/agenix
-[home-manager]: https://github.com/nix-community/home-manager
+[home-manager]: https://nix-community.github.io/home-manager
 [homeage]: https://github.com/jordanisaacs/homeage
+[nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
 [nixos-badge]: https://img.shields.io/badge/NixOS-22.11-blue.svg?logo=NixOS&logoColor=white
 [nixpkgs-fmt]: https://github.com/nix-community/nixpkgs-fmt
