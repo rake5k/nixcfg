@@ -4,5 +4,5 @@
     mobile.enable = true;
   };
 
-  home.stateVersion = "23.05";
+  home.stateVersion = import ./state-version.nix;
 }
