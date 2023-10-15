@@ -25,13 +25,7 @@ in
     };
 
     custom = {
-      base = {
-        nix.enableStoreOptimization = false;
-        non-nixos = {
-          enable = true;
-          installNix = false;
-        };
-      };
+      base.nix-on-droid.enable = true;
 
       programs.ssh = {
         enable = true;
