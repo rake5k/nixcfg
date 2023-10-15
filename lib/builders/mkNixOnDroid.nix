@@ -3,7 +3,6 @@
 let
 
   inherit (pkgs) lib;
-  rootPath = inputs.self;
 
 in
 
@@ -14,16 +13,22 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
     {
       _file = ./mkNixOnDroid.nix;
 
-      options.lib = lib.mkOption {
-        type = lib.types.attrsOf lib.types.attrs;
-        default = { };
-        description = ''
-          This option allows modules to define helper functions,
-          constants, etc.
-        '';
+      options = {
+        lib = lib.mkOption {
+          type = with lib.types; attrsOf attrs;
+          default = { };
+          description = ''
+            This option allows modules to define helper functions,
+            constants, etc.
+          '';
+        };
       };
 
-      config.lib.custom = customLib;
+      config = {
+        custom.base.hostname = name;
+
+        lib.custom = customLib;
+      };
     }
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
