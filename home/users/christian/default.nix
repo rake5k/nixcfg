@@ -25,7 +25,6 @@ in
     custom = {
       roles.homeage.enable = true;
       users."${username}" = {
-        bin.enable = true;
         fonts.enable = true;
         git.enable = true;
         hardware = {
