@@ -34,7 +34,10 @@ in
         identities = [ logseqSshKey logseqSshPubKey ];
       };
 
-      roles.homeage.secrets = [ logseqSshKey logseqSshPubKey ];
+      roles = {
+        homeage.secrets = [ logseqSshKey logseqSshPubKey ];
+        mobile.bin.enable = true;
+      };
     };
   };
 }
