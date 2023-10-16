@@ -5,7 +5,6 @@ with lib;
 let
 
   cfg = config.custom.roles.mobile;
-  username = "nix-on-droid";
 
   logseqSshKey = "id_logseq";
   logseqSshPubKey = "${logseqSshKey}.pub";
@@ -20,10 +19,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      inherit username;
-    };
-
     homeage.installationType = "activation";
 
     custom = {
