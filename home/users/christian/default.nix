@@ -25,11 +25,11 @@ in
     custom = {
       roles.homeage.enable = true;
       users."${username}" = {
-        fonts.enable = true;
+        fonts.enable = !config.custom.roles.mobile.enable;
         git.enable = true;
         hardware = {
-          kmonad.enable = true;
-          xbindkeys.enable = true;
+          kmonad.enable = !config.custom.roles.mobile.enable;
+          xbindkeys.enable = !config.custom.roles.mobile.enable;
         };
         office.cli.enable = config.custom.roles.office.cli.enable;
         shell.enable = true;
