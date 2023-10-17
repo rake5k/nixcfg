@@ -6,15 +6,10 @@ let
 
   cfg = config.custom.programs.ssh;
 
-  inherit (config.custom.roles.homeage) secretsPath;
-  sshDirectory = ".ssh";
-  mkFileEntry = identity: {
-    name = "${sshDirectory}/${identity}";
-    value = {
-      # Using `mkOutOfStoreSymlink` as a workaround for files not being created on activation:
-      # https://github.com/jordanisaacs/homeage/issues/42
-      source = config.lib.file.mkOutOfStoreSymlink "${secretsPath}/${identity}";
-    };
+  sshDirectory = "${config.home.homeDirectory}/.ssh";
+  mkHomeageFile = identity: nameValuePair identity {
+    source = "${config.custom.roles.homeage.secretsSourcePath}/${identity}.age";
+    symlinks = [ "${sshDirectory}/${identity}" ];
   };
 
 in
@@ -33,8 +28,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.roles.homeage.secrets = cfg.identities;
-    home.file = listToAttrs (map mkFileEntry cfg.identities);
+    custom.roles.homeage.enable = true;
+
+    homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
     programs.ssh.enable = true;
   };
 }

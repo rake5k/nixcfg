@@ -25,7 +25,6 @@ in
         enable = true;
         identities = [ sshKey sshPubKey ];
       };
-      roles.homeage.secrets = [ sshKey sshPubKey ];
     };
 
     home.packages = [ pkgs.logseq ];

@@ -30,7 +30,6 @@ in
       };
 
       roles = {
-        homeage.secrets = [ logseqSshKey logseqSshPubKey ];
         mobile.bin.enable = true;
       };
     };

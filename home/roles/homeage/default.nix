@@ -6,11 +6,8 @@ let
 
   cfg = config.custom.roles.homeage;
 
-  secretsSourcePath = "${inputs.self}/secrets/${config.home.username}";
-
   mkHomeageFile = secret: nameValuePair secret {
-    path = secret;
-    source = "${secretsSourcePath}/${secret}.age";
+    source = "${cfg.secretsSourcePath}/${secret}.age";
     symlinks = [ "${cfg.secretsPath}/${secret}" ];
   };
 
@@ -25,6 +22,12 @@ in
         type = with types; listOf str;
         default = [ ];
         description = "Secrets to install.";
+      };
+
+      secretsSourcePath = mkOption {
+        type = types.path;
+        default = "${inputs.self}/secrets/${config.home.username}";
+        description = "Default source path of the encrypted files.";
       };
 
       secretsPath = mkOption {
