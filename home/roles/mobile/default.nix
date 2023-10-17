@@ -19,7 +19,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    homeage.installationType = "activation";
+    homeage = {
+      installationType = "activation";
+      mount = "${config.xdg.dataHome}/homeage";
+    };
 
     custom = {
       base.nix-on-droid.enable = true;
