@@ -47,6 +47,7 @@ in
         convmv
         eva
         file
+        gawk
         glow
         gnupg
         gron
