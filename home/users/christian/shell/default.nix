@@ -45,6 +45,7 @@ in
         ripgrep
 
         convmv
+        curl
         eva
         file
         gawk
