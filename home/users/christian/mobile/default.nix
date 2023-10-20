@@ -25,5 +25,16 @@ in
         identities = [ logseqSshKey logseqSshPubKey ];
       };
     };
+
+    home.file = {
+      "bin/pull-notes-home" = {
+        source = ./scripts/pull-notes-home;
+        executable = true;
+      };
+      "bin/push-notes-home" = {
+        source = ./scripts/push-notes-home;
+        executable = true;
+      };
+    };
   };
 }
