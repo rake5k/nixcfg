@@ -1,0 +1,5 @@
+#!/bin/sh
+cd ~/Documents/notes/home
+git add -A
+git commit -m "Sync from mobile"
+git push
