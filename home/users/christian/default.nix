@@ -24,6 +24,7 @@ in
 
     custom = {
       roles.homeage.enable = true;
+
       users."${username}" = {
         fonts.enable = !config.custom.roles.mobile.enable;
         git.enable = true;
@@ -31,6 +32,7 @@ in
           kmonad.enable = !config.custom.roles.mobile.enable;
           xbindkeys.enable = !config.custom.roles.mobile.enable;
         };
+        mobile.enable = config.custom.roles.mobile.enable;
         office.cli.enable = config.custom.roles.office.cli.enable;
         shell.enable = true;
         steam.enable = config.custom.roles.gaming.enable;

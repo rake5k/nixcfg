@@ -6,9 +6,6 @@ let
 
   cfg = config.custom.roles.mobile;
 
-  logseqSshKey = "id_logseq";
-  logseqSshPubKey = "${logseqSshKey}.pub";
-
 in
 
 {
@@ -26,11 +23,6 @@ in
 
     custom = {
       base.nix-on-droid.enable = true;
-
-      programs.ssh = {
-        enable = true;
-        identities = [ logseqSshKey logseqSshPubKey ];
-      };
 
       roles = {
         mobile.bin.enable = true;
