@@ -1,2 +1,3 @@
 #!/bin/sh
+cd ~/Documents/notes/home
 git pull
