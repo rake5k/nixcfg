@@ -46,7 +46,8 @@ in
       telegram-desktop
 
       # Social Media
-      freetube
+      # See: https://github.com/NixOS/nixpkgs/issues/264075
+      #freetube
     ];
 
     programs.chromium.enable = true;
