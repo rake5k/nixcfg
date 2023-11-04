@@ -31,6 +31,7 @@ in
       steam-run
 
       # Other launchers
+      heroic
       lutris
 
       # Games

@@ -22,6 +22,7 @@ in
       teamspeak5_client
 
       # Game libs
+      heroic
       lutris
       steam
 
