@@ -12,8 +12,8 @@
   # Navigating
   "cd.." = "cd ..";
   d = "dirs -v | head -10";
-  l = "exa -hl --git --icons";
-  la = "exa -ahl --git --icons";
+  l = "exa -ghl --git --icons";
+  la = "exa -aghl --git --icons";
   lal = "la | less";
   ll = "l";
   ls = "ls -h --color='auto'";
