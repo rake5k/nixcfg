@@ -26,8 +26,16 @@ in
     };
 
     environment.systemPackages = with pkgs; [
+      # Steam
       steam_autostart
       steam-run
+
+      # Other launchers
+      lutris
+
+      # Games
+      superTux
+      superTuxKart
 
       # Geforce NOW
       chromium
