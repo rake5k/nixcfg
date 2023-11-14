@@ -38,6 +38,44 @@ in
       profiles."ztbvdcs8.default" = {
         inherit (cfg) extensions;
         isDefault = true;
+        containers = {
+          personal = {
+            color = "turquoise";
+            icon = "fingerprint";
+            id = 1;
+            name = "Personal";
+          };
+          personal_admin = {
+            color = "pink";
+            icon = "fingerprint";
+            id = 2;
+            name = "Personal Admin";
+          };
+          work = {
+            color = "orange";
+            icon = "briefcase";
+            id = 3;
+            name = "Work";
+          };
+          shopping = {
+            color = "blue";
+            icon = "cart";
+            id = 4;
+            name = "Shopping";
+          };
+          banking = {
+            color = "green";
+            icon = "dollar";
+            id = 5;
+            name = "Banking";
+          };
+          danger = {
+            color = "red";
+            icon = "fruit";
+            id = 6;
+            name = "Danger Zone";
+          };
+        };
         search = {
           default = "DuckDuckGo";
           engines = {
