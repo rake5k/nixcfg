@@ -38,11 +38,6 @@ in
       profiles."ztbvdcs8.default" = {
         inherit (cfg) extensions;
         isDefault = true;
-        settings = {
-          "browser.search.suggest.enabled" = false;
-          "browser.search.region" = "CH";
-          "browser.startup.homepage" = cfg.homepage;
-        };
         search = {
           default = "DuckDuckGo";
           engines = {
@@ -86,6 +81,33 @@ in
             "Google".metaData.hidden = true;
           };
           force = true;
+        };
+        settings = {
+          "browser.search.suggest.enabled" = false;
+          "browser.search.region" = "CH";
+          "browser.startup.homepage" = cfg.homepage;
+          "browser.newtabpage.pinned" = [
+            {
+              title = "Blog";
+              url = "https://blog.harke.ch";
+            }
+            {
+              title = "Cloud";
+              url = "https://cloud.harke.ch";
+            }
+            {
+              title = "Code";
+              url = "https://code.harke.ch";
+            }
+            {
+              title = "News";
+              url = "https://news.harke.ch";
+            }
+            {
+              title = "ProtonMail";
+              url = "https://mail.proton.me";
+            }
+          ];
         };
       };
     };
