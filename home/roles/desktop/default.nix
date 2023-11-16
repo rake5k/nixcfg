@@ -103,6 +103,7 @@ in
     };
 
     home.packages = with pkgs; [
+      gnome.nautilus
       gnome.pomodoro
       mupdf
       peek
@@ -110,6 +111,13 @@ in
       xclip
       xzoom
     ];
+
+    xdg = {
+      mime.enable = true;
+      mimeApps.defaultApplications = {
+        "inode/directory" = "org.gnome.Nautilus.desktop";
+      };
+    };
 
     xsession = {
       enable = true;
