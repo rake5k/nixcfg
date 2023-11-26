@@ -27,6 +27,7 @@ in
           new-tab-override
           onepassword-password-manager
           persistentpin
+          proton-vpn
           tridactyl
           ublock-origin
         ];
@@ -38,8 +39,8 @@ in
       _1password
       _1password-gui
       bind
-      wget
       thunderbird
+      wget
 
       # Messengers
       signal-desktop
