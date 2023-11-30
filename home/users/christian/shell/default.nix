@@ -72,7 +72,7 @@ in
       ssh = import ./ssh.nix;
 
       bat.enable = true;
-      exa.enable = true;
+      eza.enable = true;
       fzf.enable = true;
       jq.enable = true;
       starship.enable = true;

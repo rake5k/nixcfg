@@ -20,7 +20,6 @@ in
       enable = true;
       enableAutosuggestions = true;
       enableCompletion = true;
-      enableSyntaxHighlighting = true;
       autocd = true;
       dotDir = ".config/zsh";
       dirHashes = {
@@ -68,6 +67,7 @@ in
         G = "| grep";
         UUID = "$(uuidgen | tr -d \\n)";
       };
+      syntaxHighlighting.enable = true;
     };
   };
 }
