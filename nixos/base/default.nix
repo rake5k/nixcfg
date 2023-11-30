@@ -59,6 +59,7 @@ in
     };
 
     programs = {
+      nano.enable = false;
       vim.defaultEditor = true;
       zsh.enable = true;
     };
