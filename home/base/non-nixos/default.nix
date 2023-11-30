@@ -37,7 +37,7 @@ in
     };
 
     nix = {
-      package = pkgs.nix;
+      package = mkForce pkgs.nix;
       settings = {
         experimental-features = [
           "nix-command"
