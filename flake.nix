@@ -14,7 +14,7 @@
     };
 
     nix-on-droid = {
-      url = "github:t184256/nix-on-droid/release-23.05";
+      url = "github:nix-community/nix-on-droid/release-23.05";
       inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -64,7 +64,7 @@
     };
 
     nixgl = {
-      url = "github:guibou/nixGL";
+      url = "github:nix-community/nixGL";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
         flake-utils.follows = "flake-utils";
@@ -72,7 +72,7 @@
     };
 
     nix-index-database = {
-      url = "github:Mic92/nix-index-database";
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };
