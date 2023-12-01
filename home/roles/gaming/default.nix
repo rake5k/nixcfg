@@ -34,6 +34,9 @@ in
       superTuxKart
       wesnoth
       zeroad
+
+      # Misc
+      mangohud
     ];
   };
 }
