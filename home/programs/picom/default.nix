@@ -20,8 +20,8 @@ in
       enable = true;
       package =
         if config.custom.base.non-nixos.enable
-        then (config.lib.custom.nixGLWrap pkgs.unstable.picom-next)
-        else pkgs.unstable.picom-next;
+        then (config.lib.custom.nixGLWrap' pkgs.picom-next "picom-next-unstable")
+        else pkgs.picom-next;
       backend = "glx";
       settings = {
         blur = {
