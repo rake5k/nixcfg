@@ -46,6 +46,7 @@ in
       # Messengers
       signal-desktop
       telegram-desktop
+      threema-desktop
 
       # Social Media
       freetube
