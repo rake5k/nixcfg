@@ -20,14 +20,15 @@ in
       programs.firefox = {
         enable = true;
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          facebook-container
           consent-o-matic
+          facebook-container
           languagetool
           multi-account-containers
           new-tab-override
           onepassword-password-manager
           persistentpin
           proton-vpn
+          simple-translate
           tridactyl
           ublock-origin
         ];
