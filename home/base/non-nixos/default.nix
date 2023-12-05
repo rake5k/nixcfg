@@ -16,6 +16,8 @@ in
       enable = mkEnableOption "Config for non NixOS systems";
 
       installNix = mkEnableOption "Nix installation" // { default = true; };
+
+      isDarwin = mkEnableOption "Darwin architecture (MacOS)";
     };
   };
 
@@ -48,8 +50,15 @@ in
 
     programs.zsh.envExtra = mkAfter ''
       hash -f
-    '';
+    ''
+    + (optionalstring cfg.isDarwin ''
+      # Nix
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+      # End Nix
+    '');
 
-    targets.genericLinux.enable = true;
+    targets.genericLinux.enable = !cfg.isDarwin;
   };
 }

@@ -18,6 +18,8 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       gimp
+    ]
+    ++ optionals (!config.custom.base.non-nixos.isDarwin) [
       sxiv
     ];
   };

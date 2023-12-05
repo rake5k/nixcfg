@@ -29,7 +29,6 @@ in
       packages = with pkgs; [
         # Terminal fun
         asciiquarium
-        bb
         cowsay
         cmatrix
         figlet
@@ -44,7 +43,6 @@ in
         fd # ultra-fast find
         ripgrep
 
-        convmv
         curl
         eva
         file

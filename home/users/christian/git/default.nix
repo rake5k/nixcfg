@@ -66,9 +66,15 @@ in
         # .nfs files are created when an open file is removed but is still being accessed
         ".nfs*"
 
+        # Global/OSX
+        ".DS_Store"
+
 
         # Community/Nix
         #
+
+        # Direnv
+        ".direnv/"
 
         # Ignore build outputs from performing a nix-build or `nix build` command
         "result"

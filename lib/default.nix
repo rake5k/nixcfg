@@ -2,14 +2,14 @@
 
 let
 
-  forEachSystem =
-    let
-      inherit (inputs.flake-utils.lib.system) aarch64-linux x86_64-linux;
-    in
-    inputs.nixpkgs.lib.genAttrs [
-      aarch64-linux
-      x86_64-linux
-    ];
+  inherit (inputs.nixpkgs) lib;
+
+  forEachSystem = with inputs.flake-utils.lib.system; lib.genAttrs [
+    aarch64-darwin
+    aarch64-linux
+    x86_64-darwin
+    x86_64-linux
+  ];
 
   pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
   customLibFor = forEachSystem (system:
@@ -18,8 +18,7 @@ let
     in
     inputs.flake-commons.lib
       {
-        inherit (inputs.nixpkgs) lib;
-        inherit pkgs;
+        inherit lib pkgs;
         rootPath = inputs.self;
       } // {
       # Wraps all binary files of the given `pkg` with `nixGL`
@@ -65,10 +64,10 @@ let
     ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
   );
 
-  nameValuePairWrapper = name: fn: system: inputs.nixpkgs.lib.nameValuePair name (fn system);
+  nameValuePairWrapper = name: fn: system: lib.nameValuePair name (fn system);
 
   wrapper = builder: name: args: system:
-    inputs.nixpkgs.lib.nameValuePair
+    lib.nameValuePair
       name
       (import builder {
         inherit inputs system name args;
@@ -79,11 +78,14 @@ let
 
   simpleWrapper = builder: system: name: wrapper builder name { } system;
 
+  buildersForSystem = system: builders: lib.listToAttrs (map (b: b system) builders);
+
 in
 
 {
   inherit forEachSystem;
-  mkForEachSystem = bs: forEachSystem (system: (inputs.nixpkgs.lib.listToAttrs (map (b: b system) bs)));
+  mkForEachSystem = bs: forEachSystem (system: (buildersForSystem system bs));
+  mkForSystem = system: bs: { "${system}" = buildersForSystem system bs; };
   mkApp = wrapper ./builders/mkApp.nix;
   mkBuild = name: args: nameValuePairWrapper name (system: args);
   mkCheck = wrapper ./builders/mkCheck.nix;
@@ -91,5 +93,11 @@ in
   mkGeneric = nameValuePairWrapper;
   mkHome = simpleWrapper ./builders/mkHome.nix;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
+  mkNixDarwin = simpleWrapper ./builders/mkNixDarwin.nix;
   mkNixOnDroid = simpleWrapper ./builders/mkNixOnDroid.nix;
+  mkSys = system:
+    {
+      isLinux = lib.hasInfix "linux" system;
+      isDarwin = lib.hasInfix "darwin" system;
+    };
 }

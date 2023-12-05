@@ -1,5 +1,11 @@
 { config, lib, ... }:
 
+let
+
+  inherit (config.custom.base.non-nixos) isDarwin;
+
+in
+
 {
   home = {
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
@@ -11,7 +17,7 @@
     enableNixpkgsReleaseCheck = true;
   };
 
-  xdg.userDirs = {
+  xdg.userDirs = lib.mkIf (!isDarwin) {
     enable = true;
     createDirectories = true;
   };
