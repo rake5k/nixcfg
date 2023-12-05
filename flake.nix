@@ -13,6 +13,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    darwin = {
+      url = "github:lnl7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nix-on-droid = {
       url = "github:nix-community/nix-on-droid/release-23.05";
       inputs.home-manager.follows = "home-manager";
@@ -82,7 +87,7 @@
       nixcfgLib = import ./lib {
         inherit inputs;
       };
-      inherit (inputs.flake-utils.lib.system) x86_64-linux;
+      inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
       inherit (nixpkgs.lib) listToAttrs;
     in
     with nixcfgLib;
@@ -90,17 +95,21 @@
       lib = { inputs }:
         import ./lib { inputs = inputs // self.inputs; };
 
+      darwinConfigurations = listToAttrs [
+        (mkNixDarwin aarch64-darwin "macos")
+      ];
+
       homeConfigurations = listToAttrs [
-        (mkHome x86_64-linux "demo@non-nixos-vm")
-        (mkHome x86_64-linux "christian@non-nixos-vm")
+        (mkHome x86_64-linux "christian@non-nixos")
+        (mkHome x86_64-linux "demo@non-nixos")
       ];
 
       nixosConfigurations = listToAttrs [
-        (mkNixos x86_64-linux "nixos-vm")
+        (mkNixos x86_64-linux "nixos")
       ];
 
       nixOnDroidConfigurations = listToAttrs [
-        (mkNixOnDroid "aarch64-linux" "nix-on-droid")
+        (mkNixOnDroid aarch64-linux "nix-on-droid")
       ];
 
       apps = mkForEachSystem [
@@ -143,30 +152,34 @@
         })
       ];
 
-      checks = mkForEachSystem [
-        (mkGeneric "pre-commit-check" (system:
-          let
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = [ self.overlays.default ];
-            };
-          in
-          inputs.pre-commit-hooks.lib."${system}".run {
-            src = ./.;
-            hooks = {
-              nixpkgs-fmt.enable = true;
-              shellcheck = {
-                enable = true;
-                entry = nixpkgs.lib.mkForce "${pkgs.lib.getExe pkgs.shellcheckPicky}";
+      checks = nixpkgs.lib.recursiveUpdate
+        (mkForEachSystem [
+          (mkGeneric "pre-commit-check" (system:
+            let
+              pkgs = import nixpkgs {
+                inherit system;
+                overlays = [ self.overlays.default ];
               };
-              statix.enable = true;
-            };
-          }))
-
-        (mkBuild "build-nixos-vm" self.nixosConfigurations.nixos-vm.config.system.build.toplevel)
-        (mkBuild "build-demo@non-nixos-vm" self.homeConfigurations."demo@non-nixos-vm".activationPackage)
-        (mkBuild "build-christian@non-nixos-vm" self.homeConfigurations."christian@non-nixos-vm".activationPackage)
-      ];
+            in
+            inputs.pre-commit-hooks.lib."${system}".run {
+              src = ./.;
+              hooks = {
+                nixpkgs-fmt.enable = true;
+                shellcheck = {
+                  enable = true;
+                  entry = nixpkgs.lib.mkForce "${pkgs.lib.getExe pkgs.shellcheckPicky}";
+                };
+                statix.enable = true;
+              };
+            }))
+        ])
+        ((mkForSystem aarch64-darwin [
+          (mkBuild "build-macos" self.darwinConfigurations.macos.system)
+        ]) // (mkForSystem x86_64-linux [
+          (mkBuild "build-christian@non-nixos" self.homeConfigurations."christian@non-nixos".activationPackage)
+          (mkBuild "build-demo@non-nixos" self.homeConfigurations."demo@non-nixos".activationPackage)
+          (mkBuild "build-nixos" self.nixosConfigurations.nixos.config.system.build.toplevel)
+        ]));
 
       devShells = mkForEachSystem [
         (mkDevShell "default" {

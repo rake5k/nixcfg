@@ -26,7 +26,7 @@ in
     };
   };
 
-  config = {
+  config = mkIf desktopCfg.enable {
     home.packages = [
       cfg.package
     ] ++ (with pkgs; [

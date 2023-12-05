@@ -29,7 +29,7 @@ in
         fonts.enable = !config.custom.roles.mobile.enable;
         git.enable = true;
         gpg.enable = true;
-        hardware = {
+        hardware = mkIf (!config.custom.base.non-nixos.isDarwin) {
           kmonad.enable = !config.custom.roles.mobile.enable;
           xbindkeys.enable = !config.custom.roles.mobile.enable;
         };

@@ -19,8 +19,10 @@ in
     custom.roles.office.cli.enable = true;
 
     home.packages = with pkgs; [
-      libreoffice
       reveal-md
+    ]
+    ++ optionals (!config.custom.base.non-nixos.isDarwin) [
+      libreoffice
     ];
   };
 }
