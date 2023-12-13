@@ -57,6 +57,8 @@ in
       };
     };
 
+  nix.settings.trusted-users = [ username ];
+
   users.users."${username}" = {
     shell = pkgs.zsh;
     name = username;
