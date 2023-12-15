@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.base;
 
-  availableUsers = [ "christian" "demo" ];
+  availableUsers = [ "christian" "demo" "gamer" ];
   importUserModule = u:
     let
       isEnabled = any (x: x == u) cfg.users;
