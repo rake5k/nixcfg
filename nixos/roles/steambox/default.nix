@@ -20,9 +20,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.roles = {
-      gaming.enable = true;
-      sound.enable = true;
+    custom = {
+      base.users = [ "gamer" ];
+      roles = {
+        gaming.enable = true;
+        sound.enable = true;
+      };
     };
 
     environment.systemPackages = with pkgs; [
@@ -52,15 +55,6 @@ in
         autoLogin = {
           enable = true;
           user = "gamer";
-        };
-      };
-    };
-
-    users = {
-      users = {
-        gamer = {
-          password = "";
-          isNormalUser = true;
         };
       };
     };
