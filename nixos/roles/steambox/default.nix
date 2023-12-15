@@ -41,9 +41,6 @@ in
       # Geforce NOW
       chromium
       firefox
-
-      # Misc
-      mangohud
     ];
 
     # Enable the KDE Desktop Environment.

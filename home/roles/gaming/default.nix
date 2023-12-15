@@ -16,6 +16,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.programs.mangohud.enable = true;
+
     home.packages = with pkgs; [
       # Comms
       discord
@@ -34,9 +36,6 @@ in
       superTuxKart
       wesnoth
       zeroad
-
-      # Misc
-      mangohud
     ];
   };
 }
