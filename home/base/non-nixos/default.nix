@@ -50,14 +50,14 @@ in
 
     programs.zsh.envExtra = mkAfter ''
       hash -f
-    ''
-    + (optionalstring cfg.isDarwin ''
+
+      # FIXME: Necessary for darwin
       # Nix
       if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
         . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
       fi
       # End Nix
-    '');
+    '';
 
     targets.genericLinux.enable = !cfg.isDarwin;
   };
