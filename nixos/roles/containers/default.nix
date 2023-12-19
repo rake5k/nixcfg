@@ -4,25 +4,19 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.docker;
+  cfg = config.custom.roles.containers;
   baseCfg = config.custom.base;
 
 in
 
 {
   options = {
-    custom.programs.docker = {
-      enable = mkEnableOption "Docker";
+    custom.roles.containers = {
+      enable = mkEnableOption "Container runtime";
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      dive
-      docker-compose
-      skopeo
-    ];
-
     virtualisation.docker = {
       enable = true;
       enableOnBoot = false;

@@ -3,6 +3,7 @@
     users.christian.enable = true;
 
     roles = {
+      containers.enable = true;
       desktop.enable = true;
       dev.enable = true;
       gaming.enable = true;
