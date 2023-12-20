@@ -38,11 +38,9 @@ in
       DIRENV_LOG_FORMAT = "";
     };
 
-    xdg.configFile."nix/nix.conf" = mkIf nonNixosCfg.enable {
-      text = ''
-        keep-derivations = true
-        keep-outputs = true
-      '';
+    nix.settings = mkIf nonNixosCfg.enable {
+      keep-derivations = true;
+      keep-outputs = true;
     };
   };
 }
