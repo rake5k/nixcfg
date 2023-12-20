@@ -1,4 +1,4 @@
-{ pkgs, lib, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   nix = {
@@ -14,6 +14,7 @@
       nix-config.flake = inputs.self;
     };
     settings = {
+      allowed-users = builtins.attrNames config.users.users;
       experimental-features = [ "nix-command" "flakes" ];
       log-lines = 30;
       substituters = [
@@ -26,7 +27,6 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       ];
-      trusted-users = [ "root" ];
     };
   };
 
