@@ -97,11 +97,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1702429194,
-        "narHash": "sha256-yMSXrg8gYB2WzjCDmr1kku7KBVjX45cW9bZK6SfRsGU=",
+        "lastModified": 1704275503,
+        "narHash": "sha256-fU0xpfYLIQd4NgtuDjH+Wl/+tyueJiQpWpeBuOM3Lbk=",
         "owner": "rake5k",
         "repo": "flake-commons",
-        "rev": "d58dc9b6d89f619d619e6a0b08831c5f44705973",
+        "rev": "2a8632641673bf969f5ac8e8e038a87d8d95f05b",
         "type": "github"
       },
       "original": {

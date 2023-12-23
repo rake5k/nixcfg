@@ -16,8 +16,6 @@ in
       enable = mkEnableOption "Config for non NixOS systems";
 
       installNix = mkEnableOption "Nix installation" // { default = true; };
-
-      isDarwin = mkEnableOption "Darwin architecture (MacOS)";
     };
   };
 
@@ -59,6 +57,6 @@ in
       # End Nix
     '';
 
-    targets.genericLinux.enable = !cfg.isDarwin;
+    targets.genericLinux.enable = config.lib.custom.sys.isLinux;
   };
 }

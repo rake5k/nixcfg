@@ -21,7 +21,7 @@ in
     home.packages = with pkgs; [
       reveal-md
     ]
-    ++ optionals (!config.custom.base.non-nixos.isDarwin) [
+    ++ optionals config.lib.custom.sys.isLinux [
       libreoffice
     ];
   };

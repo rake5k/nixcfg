@@ -1,10 +1,6 @@
 {
   custom = {
-    base.non-nixos = {
-      enable = true;
-      isDarwin = true;
-    };
-
+    base.non-nixos.enable = true;
     users.christian.enable = true;
 
     roles = {
