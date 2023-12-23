@@ -19,7 +19,7 @@ in
     home.packages = with pkgs; [
       gimp
     ]
-    ++ optionals (!config.custom.base.non-nixos.isDarwin) [
+    ++ optionals config.lib.custom.sys.isLinux [
       sxiv
     ];
   };

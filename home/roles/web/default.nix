@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.roles.web;
 
-  inherit (config.custom.base.non-nixos) isDarwin;
+  inherit (config.lib.custom.sys) isLinux;
 
 in
 
@@ -21,7 +21,7 @@ in
     custom = {
       programs.firefox = {
         # See: https://github.com/NixOS/nixpkgs/issues/71689
-        enable = !isDarwin;
+        enable = isLinux;
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           facebook-container
           istilldontcareaboutcookies
@@ -36,7 +36,7 @@ in
           ublock-origin
         ];
       };
-      roles.web.nextcloud-client.enable = !isDarwin;
+      roles.web.nextcloud-client.enable = isLinux;
     };
 
     home.packages = with pkgs; [
@@ -45,7 +45,7 @@ in
       bind
       wget
     ]
-    ++ optionals (!isDarwin) [
+    ++ optionals isLinux [
       # Messengers
       signal-desktop
       telegram-desktop
@@ -55,6 +55,6 @@ in
       freetube
     ];
 
-    programs.chromium.enable = !isDarwin;
+    programs.chromium.enable = isLinux;
   };
 }

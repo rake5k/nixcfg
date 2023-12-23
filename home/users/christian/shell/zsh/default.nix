@@ -21,7 +21,7 @@ in
       enableAutosuggestions = true;
       enableCompletion = true;
       autocd = true;
-      completionInit = optionalString config.custom.base.non-nixos.isDarwin "autoload -U compinit && compinit -u";
+      completionInit = optionalString config.lib.custom.sys.isDarwin "autoload -U compinit && compinit -u";
       dotDir = ".config/zsh";
       dirHashes = {
         bb = "/mnt/bluecare/bluecare";

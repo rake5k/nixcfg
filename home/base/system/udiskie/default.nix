@@ -1,5 +1,5 @@
 { config, ... }:
 
 {
-  services.udiskie.enable = !config.custom.base.non-nixos.isDarwin;
+  services.udiskie.enable = config.lib.custom.sys.isLinux;
 }

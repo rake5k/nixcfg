@@ -95,9 +95,4 @@ in
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
   mkNixDarwin = simpleWrapper ./builders/mkNixDarwin.nix;
   mkNixOnDroid = simpleWrapper ./builders/mkNixOnDroid.nix;
-  mkSys = system:
-    {
-      isLinux = lib.hasInfix "linux" system;
-      isDarwin = lib.hasInfix "darwin" system;
-    };
 }

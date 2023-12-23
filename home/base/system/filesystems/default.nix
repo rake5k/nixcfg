@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 
-lib.mkIf (!config.custom.base.non-nixos.isDarwin) {
+lib.mkIf config.lib.custom.sys.isLinux {
   home.packages = with pkgs; [
     parted
     exfat
