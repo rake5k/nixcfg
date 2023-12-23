@@ -88,7 +88,7 @@
         inherit inputs;
       };
       inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
-      inherit (nixpkgs.lib) listToAttrs;
+      inherit (nixpkgs.lib) composeManyExtensions getExe listToAttrs mkForce recursiveUpdate;
     in
     with nixcfgLib;
     {
@@ -142,17 +142,17 @@
         })
       ];
 
-      overlays.default = nixpkgs.lib.composeManyExtensions [
+      overlays.default = composeManyExtensions [
         (final: prev: {
           shellcheckPicky = prev.writeShellScriptBin "shellcheck" ''
-            ${inputs.nixpkgs.lib.getExe prev.shellcheck} \
+            ${getExe prev.shellcheck} \
             --check-sourced --enable all --external-sources \
             "$@"
           '';
         })
       ];
 
-      checks = nixpkgs.lib.recursiveUpdate
+      checks = recursiveUpdate
         (mkForEachSystem [
           (mkGeneric "pre-commit-check" (system:
             let
@@ -167,7 +167,7 @@
                 nixpkgs-fmt.enable = true;
                 shellcheck = {
                   enable = true;
-                  entry = nixpkgs.lib.mkForce "${pkgs.lib.getExe pkgs.shellcheckPicky}";
+                  entry = mkForce "${getExe pkgs.shellcheckPicky}";
                 };
                 statix.enable = true;
               };
