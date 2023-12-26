@@ -16,10 +16,21 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.steam = {
-      enable = true;
-      dedicatedServer.openFirewall = true;
-      remotePlay.openFirewall = true;
+    programs = {
+      gamemode = {
+        enable = true;
+        settings = {
+          custom = {
+            start = "${pkgs.libnotify}/bin/notify-send 'GameMode started'";
+            end = "${pkgs.libnotify}/bin/notify-send 'GameMode ended'";
+          };
+        };
+      };
+      steam = {
+        enable = true;
+        dedicatedServer.openFirewall = true;
+        remotePlay.openFirewall = true;
+      };
     };
 
     # Xbox controller
