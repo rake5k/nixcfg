@@ -108,6 +108,7 @@ in
       mupdf
       peek
       gifski
+      parcellite
       xclip
       xzoom
     ];
