@@ -16,7 +16,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.programs.mangohud.enable = true;
+    custom.roles.gaming.mangohud.enable = true;
 
     home.packages = with pkgs; [
       # Comms

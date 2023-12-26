@@ -4,13 +4,13 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.mangohud;
+  cfg = config.custom.roles.gaming.mangohud;
 
 in
 
 {
   options = {
-    custom.programs.mangohud = {
+    custom.roles.gaming.mangohud = {
       enable = mkEnableOption "MangoHud";
     };
   };
