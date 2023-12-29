@@ -103,6 +103,7 @@ in
     };
 
     home.packages = with pkgs; [
+      emote
       gnome.nautilus
       gnome.pomodoro
       mupdf
