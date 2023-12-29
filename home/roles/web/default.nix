@@ -20,8 +20,8 @@ in
       programs.firefox = {
         enable = true;
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-          consent-o-matic
           facebook-container
+          istilldontcareaboutcookies
           languagetool
           multi-account-containers
           new-tab-override
