@@ -146,6 +146,8 @@ in
               url = "https://mail.proton.me";
             }
           ];
+          "cookiebanners.service.mode" = 1;
+          "cookiebanners.service.mode.privateBrowsing" = 1;
         };
       };
     };
