@@ -1,6 +1,4 @@
-{ config, lib, pkgs, homeModules, inputs, ... }:
-
-with lib;
+{ config, inputs, pkgs, ... }:
 
 let
 
@@ -45,16 +43,7 @@ in
       ];
     };
 
-    home-manager = {
-      backupFileExtension = "hm-bak";
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      extraSpecialArgs = { inherit inputs; };
-      sharedModules = homeModules;
-
-      config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
-    };
-
+    home-manager.config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
     nix.package = pkgs.nix;
 
     terminal.font =
