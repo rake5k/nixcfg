@@ -8,6 +8,7 @@ inputs.nixpkgs.lib.nixosSystem {
   };
 
   modules = [
+    ./modules/nix
     "${inputs.self}/hosts/${name}"
 
     {

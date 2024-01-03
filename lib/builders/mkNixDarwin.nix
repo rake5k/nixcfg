@@ -8,6 +8,7 @@ inputs.darwin.lib.darwinSystem {
   };
 
   modules = [
+    ./modules/nix
     inputs.home-manager.darwinModules.home-manager
     "${inputs.self}/hosts/${name}"
 
