@@ -1,6 +1,7 @@
 { inputs, system, pkgs, customLib, homeModules, name, ... }:
 
 inputs.nixpkgs.lib.nixosSystem {
+
   inherit system;
 
   specialArgs = {
@@ -9,6 +10,8 @@ inputs.nixpkgs.lib.nixosSystem {
 
   modules = [
     ./modules/nix
+
+    # Host config
     "${inputs.self}/hosts/${name}"
 
     {
@@ -20,6 +23,11 @@ inputs.nixpkgs.lib.nixosSystem {
         inherit pkgs;
       };
     }
+
+    # Home-Manager
+    inputs.home-manager.nixosModules.home-manager
+    ./modules/home-manager
+    ./modules/home-manager-users
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nixos
   ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";

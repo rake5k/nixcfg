@@ -1,6 +1,4 @@
-{ config, lib, pkgs, homeModules, inputs, ... } @ args:
-
-with lib;
+{ lib, config, pkgs, ... } @ args:
 
 let
 
@@ -9,24 +7,18 @@ let
   availableUsers = [ "christian" "demo" "gamer" ];
   importUserModule = u:
     let
-      isEnabled = any (x: x == u) cfg.users;
+      isEnabled = builtins.any (x: x == u) cfg.users;
       userConfig = ./users + "/${u}.nix";
     in
-    mkIf isEnabled (import userConfig args);
+    lib.mkIf isEnabled (import userConfig args);
   importUserModules = map importUserModule availableUsers;
-
-  importHmUser = with config.lib.custom;
-    u: import (mkHostPath cfg.hostname "/home-${u}.nix");
-  hmUsers = genAttrs cfg.users importHmUser;
 
 in
 
 {
-  imports = [
-    inputs.home-manager.nixosModules.home-manager
-  ] ++ importUserModules;
+  imports = importUserModules;
 
-  options = {
+  options = with lib; {
     custom.base = {
       hostname = mkOption {
         type = types.str;
@@ -45,18 +37,7 @@ in
 
     boot.tmp.cleanOnBoot = true;
 
-    home-manager = {
-      backupFileExtension = "hm-bak";
-      useGlobalPkgs = true;
-      useUserPackages = true;
-      extraSpecialArgs = { inherit inputs; };
-      sharedModules = homeModules;
-      users = hmUsers;
-    };
-
-    networking = {
-      hostName = cfg.hostname;
-    };
+    networking.hostName = cfg.hostname;
 
     programs = {
       nano.enable = false;
@@ -68,10 +49,8 @@ in
       withInsults = true;
     };
 
-    services = {
-      logind.extraConfig = ''
-        HandlePowerKey=ignore
-      '';
-    };
+    services.logind.extraConfig = ''
+      HandlePowerKey=ignore
+    '';
   };
 }

@@ -1,6 +1,7 @@
 { inputs, system, pkgs, customLib, homeModules, name, ... }:
 
 inputs.darwin.lib.darwinSystem {
+
   inherit system;
 
   specialArgs = {
@@ -9,7 +10,8 @@ inputs.darwin.lib.darwinSystem {
 
   modules = [
     ./modules/nix
-    inputs.home-manager.darwinModules.home-manager
+
+    # Host config
     "${inputs.self}/hosts/${name}"
 
     {
@@ -21,6 +23,11 @@ inputs.darwin.lib.darwinSystem {
         inherit pkgs;
       };
     }
+
+    # Home-Manager
+    inputs.home-manager.darwinModules.home-manager
+    ./modules/home-manager
+    ./modules/home-manager-users
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nix-darwin
   ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nix-darwin";
