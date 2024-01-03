@@ -16,12 +16,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base = {
-      nix.enableStoreOptimization = false;
-      non-nixos = {
-        enable = true;
-        installNix = false;
-      };
+    custom.base.non-nixos = {
+      enable = true;
+      installNix = false;
     };
   };
 }

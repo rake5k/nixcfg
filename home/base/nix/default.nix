@@ -1,50 +1,13 @@
-{ config, lib, pkgs, inputs, ... }:
-
-with lib;
-
-let
-
-  cfg = config.custom.base.nix;
-
-in
+{ pkgs, ... }:
 
 {
-  options = {
-    custom.base.nix = {
-      enableStoreOptimization = mkEnableOption "Optimize nix store" // { default = true; };
-    };
-  };
+  home.packages = [
+    pkgs.nix-output-monitor
+  ];
 
-  config = {
-    home.packages = [
-      pkgs.nix-output-monitor
-    ];
+  nixpkgs.config = import ./nixpkgs-config.nix;
+  xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
 
-    nix = {
-      registry = {
-        nixpkgs.flake = inputs.nixpkgs;
-        nix-config.flake = inputs.self;
-      };
-      settings = {
-        auto-optimise-store = cfg.enableStoreOptimization;
-        experimental-features = [ "nix-command" "flakes" ];
-        log-lines = 30;
-        substituters = [
-          "https://christianharke.cachix.org/"
-          "https://nix-community.cachix.org"
-          "https://cache.nixos.org"
-        ];
-        trusted-public-keys = [
-          "christianharke.cachix.org-1:TzmbiNLRcH8G0932XRlQzh8GPvuV9pJcHLqLnzznLKU="
-          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        ];
-      };
-    };
-    nixpkgs.config = import ./nixpkgs-config.nix;
-    xdg.configFile."nixpkgs/config.nix".source = ./nixpkgs-config.nix;
-
-    # Command-not-found replacement
-    programs.nix-index.enable = true;
-  };
+  # Command-not-found replacement
+  programs.nix-index.enable = true;
 }
