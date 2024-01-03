@@ -1,11 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
+{ lib, config, pkgs, ... }:
 
 let
 
   cfg = config.custom.base.non-nixos;
   flakeBaseDir = config.home.homeDirectory + "/.nix-config";
+
+  inherit (config.lib.custom.sys) isDarwin isLinux;
 
 in
 
@@ -13,17 +13,17 @@ in
 
   options = {
     custom.base.non-nixos = {
-      enable = mkEnableOption "Config for non NixOS systems";
+      enable = lib.mkEnableOption "Config for non NixOS systems";
 
-      installNix = mkEnableOption "Nix installation" // { default = true; };
+      installNix = lib.mkEnableOption "Nix installation" // { default = true; };
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
 
     home = {
       activation.report-changes = config.lib.dag.entryAnywhere ''
-        ${getExe pkgs.nix} store diff-closures $oldGenPath $newGenPath || true
+        ${lib.getExe pkgs.nix} store diff-closures $oldGenPath $newGenPath || true
       '';
 
       packages = with pkgs; [
@@ -32,12 +32,12 @@ in
 
       shellAliases = {
         hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}'";
-        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nix} store diff-closures";
+        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${lib.getExe pkgs.nix} store diff-closures";
       };
     };
 
     nix = {
-      package = mkForce pkgs.nix;
+      package = lib.mkForce pkgs.nix;
       settings = {
         experimental-features = [
           "nix-command"
@@ -46,17 +46,18 @@ in
       };
     };
 
-    programs.zsh.envExtra = mkAfter ''
+    programs.zsh.envExtra = lib.mkAfter ''
       hash -f
 
-      # FIXME: Necessary for darwin
-      # Nix
-      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
-        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
-      fi
-      # End Nix
+      ${lib.optionalString isDarwin ''
+        # Nix
+        if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+          . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+        fi
+        # End Nix
+      ''}
     '';
 
-    targets.genericLinux.enable = config.lib.custom.sys.isLinux;
+    targets.genericLinux.enable = isLinux;
   };
 }
