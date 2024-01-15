@@ -27,6 +27,6 @@ in
       };
     };
 
-    home.packages = [ pkgs.logseq ];
+    home.packages = [ pkgs.unstable.logseq ];
   };
 }
