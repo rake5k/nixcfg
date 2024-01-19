@@ -17,10 +17,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      username = mkDefault username;
-      homeDirectory = mkDefault "/home/${username}";
-    };
+    home.username = mkDefault username;
 
     custom = {
       roles.homeage.enable = true;
