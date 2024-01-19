@@ -19,7 +19,6 @@ in
   config = mkIf cfg.enable {
     home = {
       inherit username;
-      homeDirectory = "/home/${username}";
     };
   };
 }
