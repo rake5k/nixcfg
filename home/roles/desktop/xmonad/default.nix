@@ -53,8 +53,9 @@ in
           autoruns = {
             "blueberry-tray" = 1;
             "emote" = 1;
-            "parcellite" = 1;
             "nm-applet" = 1;
+            "parcellite" = 1;
+            "steam -silent" = 8;
             "${desktopCfg.terminalCmd}" = 1;
           };
           launcherCmd = "dmenu_run -c -i -fn \"${desktopCfg.font.family}:style=Bold:size=20:antialias=true\" -l 8 -nf \"#C5C8C6\" -sb \"#373B41\" -sf \"#C5C8C6\" -p \"run:\"";
