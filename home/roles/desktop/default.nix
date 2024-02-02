@@ -114,6 +114,8 @@ in
       xzoom
     ];
 
+    services.gnome-keyring.enable = true;
+
     xdg = {
       mime.enable = true;
       mimeApps.defaultApplications = {
@@ -123,6 +125,9 @@ in
 
     xsession = {
       enable = true;
+      initExtra = ''
+        ${lib.getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+      '';
       numlock.enable = true;
     };
   };
