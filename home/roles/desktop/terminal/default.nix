@@ -7,6 +7,11 @@ let
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.terminal;
 
+  alacritty =
+    if config.custom.base.non-nixos.enable
+    then (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
+    else pkgs.alacritty;
+
 in
 
 {
@@ -14,10 +19,22 @@ in
     custom.roles.desktop.terminal = {
       enable = mkEnableOption "Terminal emulator";
 
+      package = mkOption {
+        type = types.package;
+        default = alacritty;
+        description = "Terminal emulator package";
+      };
+
       spawnCmd = mkOption {
         type = types.str;
         default = "alacritty";
         description = "Command to spawn the default terminal emulator";
+      };
+
+      commandSpawnCmd = mkOption {
+        type = types.str;
+        default = "alacritty --command";
+        description = "Command to spawn a shell command inside the default terminal emulator";
       };
     };
   };
@@ -29,22 +46,15 @@ in
           desktopCfg.font.package
         ];
 
-        sessionVariables =
-          let
-            terminal = "alacritty";
-          in
-          {
-            TERMINAL = terminal;
-            TERMCMD = terminal;
-          };
+        sessionVariables = {
+          TERMINAL = cfg.spawnCmd;
+          TERMCMD = cfg.spawnCmd;
+        };
       };
 
       programs.alacritty = {
         enable = true;
-        package =
-          if config.custom.base.non-nixos.enable
-          then (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
-          else pkgs.alacritty;
+        package = alacritty;
         settings = {
           env.TERM = "xterm-256color";
           window = {

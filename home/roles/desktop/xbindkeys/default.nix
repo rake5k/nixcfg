@@ -4,25 +4,29 @@ with lib;
 
 let
 
-  cfg = config.custom.users.christian.hardware.xbindkeys;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.xbindkeys;
+  terminalCfg = desktopCfg.terminal;
 
 in
 
 {
   options = {
-    custom.users.christian.hardware.xbindkeys = {
+    custom.roles.desktop.xbindkeys = {
       enable = mkEnableOption "Xbindkeys";
     };
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      alacritty
+    custom.roles.desktop.terminal.enable = true;
 
+    home.packages = with pkgs; [
       # Audio control
       playerctl
 
       xbindkeys
+    ] + [
+      terminalCfg.package
     ];
 
     xdg.configFile."xbindkeysrc" = {
@@ -58,10 +62,10 @@ in
           XF86Bluetooth
 
         # FIXME Only working once?
-        "alacritty --command eva"
+        "${terminalCfg.commandSpawnCmd} eva"
           XF86Calculator
 
-        "alacritty --command ranger"
+        "${terminalCfg.commandSpawnCmd} ranger"
           XF86Explorer
 
         "xdg-open"
