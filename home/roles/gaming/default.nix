@@ -16,13 +16,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.roles.gaming.mangohud.enable = true;
+    custom.roles.gaming = {
+      comms.enable = true;
+      mangohud.enable = true;
+    };
 
     home.packages = with pkgs; [
-      # Comms
-      discord
-      teamspeak5_client
-
       # Game libs
       heroic
       lutris
