@@ -28,7 +28,6 @@ in
         gpg.enable = true;
         hardware = mkIf config.lib.custom.sys.isLinux {
           kmonad.enable = !config.custom.roles.mobile.enable;
-          xbindkeys.enable = !config.custom.roles.mobile.enable;
         };
         mobile.enable = config.custom.roles.mobile.enable;
         office.cli.enable = config.custom.roles.office.cli.enable;
