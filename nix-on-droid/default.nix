@@ -1,10 +1,12 @@
-{ config, inputs, pkgs, ... }:
+{ lib, config, inputs, pkgs, ... }:
 
 let
 
   cfg = config.custom.base;
 
 in
+
+with lib;
 
 {
   options = {
