@@ -33,6 +33,25 @@ in
       playerctl
     ]);
 
+    services.xidlehook = {
+      enable = true;
+      detect-sleep = true;
+      not-when-audio = true;
+      not-when-fullscreen = true;
+      timers = [
+        {
+          delay = 600;
+          command = cfg.lockCmd;
+        }
+        {
+          delay = 300;
+          command = ''
+            systemctl suspend
+          '';
+        }
+      ];
+    };
+
     # Update random lock image on login
     xsession.initExtra = ''
       ${lib.getExe pkgs.betterlockscreen} --update ${desktopCfg.wallpapersDir} --fx dim &
