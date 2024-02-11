@@ -1,8 +1,8 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, ... } @args:
 
 let
 
-  nixCommons = import ../nix-commons;
+  nixCommons = import ../nix-commons args;
   nixSubstituters = import ../nix-commons/substituters.nix;
 
 in
