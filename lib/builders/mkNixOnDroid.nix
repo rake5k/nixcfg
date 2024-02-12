@@ -15,7 +15,7 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
     {
       custom.base.hostname = name;
 
-      lib.custom = customLib;
+      #lib.custom = customLib;
 
       nixpkgs = {
         inherit pkgs;
