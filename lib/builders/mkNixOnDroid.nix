@@ -17,9 +17,9 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
       #lib.custom = customLib;
 
-      nixpkgs = {
-        inherit pkgs;
-      };
+      #nixpkgs = {
+      #  inherit pkgs;
+      #};
     }
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
