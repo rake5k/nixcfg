@@ -21,6 +21,9 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       #  inherit pkgs;
       #};
     }
+
+    # Home-Manager
+    ./modules/home-manager
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
 }
