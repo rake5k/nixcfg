@@ -46,7 +46,6 @@ with lib;
     };
 
     home-manager.config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
-    nix.package = pkgs.nix;
 
     terminal.font =
       let
