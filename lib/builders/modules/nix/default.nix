@@ -3,6 +3,7 @@
 let
 
   nixCommons = import ../nix-commons args;
+  nixSubstituters = import ../nix-commons/substituters.nix;
 
 in
 
@@ -11,7 +12,10 @@ lib.recursiveUpdate nixCommons {
     nixPath = [ "nixpkgs=flake:nixpkgs" ];
     settings = {
       allowed-users = builtins.attrNames config.users.users;
-    };
+      auto-optimise-store = lib.mkDefault true;
+      experimental-features = [ "nix-command" "flakes" ];
+      log-lines = 30;
+    } // nixSubstituters;
   };
 
   system.activationScripts.diff = {
