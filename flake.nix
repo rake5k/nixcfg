@@ -175,6 +175,8 @@
         ])
         ((mkForSystem aarch64-darwin [
           (mkBuild "build-macos" self.darwinConfigurations.macos.system)
+        ]) // (mkForSystem aarch64-linux [
+          (mkBuild "build-nix-on-droid" self.nixOnDroidConfigurations.nix-on-droid.activationPackage)
         ]) // (mkForSystem x86_64-linux [
           (mkBuild "build-christian@non-nixos" self.homeConfigurations."christian@non-nixos".activationPackage)
           (mkBuild "build-demo@non-nixos" self.homeConfigurations."demo@non-nixos".activationPackage)

@@ -7,6 +7,12 @@ jobs:
     with:
       branch: ${{ github.ref_name }}
       nix-command: flake check --impure
-      system: x86_64-linux
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+  nix-ci-arm:
+    uses: christianharke/flake-commons/.github/workflows/nix-ci-arm.yml@main
+    with:
+      branch: ${{ github.ref_name }}
+      nix-command: build .#nixOnDroidConfigurations.nix-on-droid.activationPackage --impure
     secrets:
       CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
