@@ -33,6 +33,7 @@ in
           proton-vpn
           simple-translate
           tridactyl
+          ublacklist
           ublock-origin
         ];
       };
