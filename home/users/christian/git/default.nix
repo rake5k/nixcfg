@@ -25,13 +25,18 @@ in
     programs.git = {
       enable = true;
       userName = "Christian Harke";
-      signing.key = "630966F4";
 
       aliases = import ./aliases.nix;
       delta.enable = true;
       ignores = import ./ignores.nix;
       lfs.enable = true;
       extraConfig = {
+        # sign by ssh
+        gpg.format = "ssh";
+        user.signingkey = "/PATH/TO/.SSH/KEY.PUB";
+        commit.gpgSign = true;
+        tag.gpgSign = true;
+
         rerere.enabled = true;
       };
     };
