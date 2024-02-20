@@ -31,6 +31,9 @@ in
       delta.enable = true;
       ignores = import ./ignores.nix;
       lfs.enable = true;
+      extraConfig = {
+        rerere.enabled = true;
+      };
     };
   };
 }
