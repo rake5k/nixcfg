@@ -23,7 +23,7 @@ pkgs.writeText "xmonad.hs" ''
   import XMonad.Hooks.ManageDocks (avoidStruts, docks, manageDocks)
   import XMonad.Hooks.ManageHelpers (isDialog)
 
-  import XMonad.Layout.NoBorders (smartBorders)
+  import XMonad.Layout.NoBorders (hasBorder, smartBorders)
   import XMonad.Layout.Spacing (spacingWithEdge)
 
   import XMonad.Util.EZConfig (additionalKeysP)
@@ -145,6 +145,9 @@ pkgs.writeText "xmonad.hs" ''
       , [ isDialog                                            --> doFloat ]
       , [ className =? "Gimp"                                 --> doFloat ]
       , [ className =? "jetbrains-idea" <&&> title =? "win0"  --> doFloat ]
+
+      -- Border exclusions
+      , [ className =? "Nextcloud" --> hasBorder False ]
     ]) <+> namedScratchpadManageHook myScratchpads
     where
       zoomS = [ "zoom", ".zoom", ".zoom " ]
