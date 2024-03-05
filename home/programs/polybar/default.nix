@@ -169,19 +169,9 @@ in
               (if weather then [ "wtr" ] else [ ]) ++
               (if volume then [ "vol" ] else [ ]) ++
               (if battery then [ "bat" ] else [ ]) ++
-              (if date then [ "date" ] else [ ])
+              (if date then [ "date" ] else [ ]) ++
+              [ "tray" ]
             );
-
-          # Tray
-          tray-position = "right";
-          tray-detached = false;
-          tray-maxsize = 16;
-          tray-background = "\${colors.background}";
-          tray-foreground = "\${colors.foreground}";
-          tray-offset-x = 0;
-          tray-offset-y = 0;
-          tray-padding = 1;
-          tray-scale = "1.0";
         };
 
         "module/xworkspaces" = {
@@ -392,6 +382,15 @@ in
           time = "%H:%M";
           label = "%date% %time%";
           label-foreground = "\${colors.primary}";
+        };
+
+        "module/tray" = {
+          type = "internal/tray";
+
+          format-margin = "0px";
+          tray-size = "100%:-2px";
+          tray-foreground = "\${colors.foreground}";
+          tray-spacing = "2px";
         };
       };
 
