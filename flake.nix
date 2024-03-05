@@ -112,6 +112,8 @@
         (mkNixOnDroid aarch64-linux "nix-on-droid")
       ];
 
+      formatter = forEachSystem (system: nixpkgs.legacyPackages."${system}".nixpkgs-fmt);
+
       apps = mkForEachSystem [
         (mkApp "setup" {
           file = "setup.sh";
