@@ -399,7 +399,9 @@ in
         # Terminate already running bar instances
         ${package}/bin/polybar-msg cmd quit
         # Launch polybar
-        MONITOR=$(${getExe package} -m | grep '(primary)' | sed -e 's/:.*$//g') ${getExe package} top &
+        export MONITOR=$(${getExe package} -m | ${getExe pkgs.gnugrep} '(primary)' | ${getExe pkgs.gnused} -e 's/:.*$//g')
+        echo "Running polybar on $MONITOR"
+        ${getExe package} top 2>${config.xdg.dataHome}/polybar/logs/top.log &
       '';
     };
 
