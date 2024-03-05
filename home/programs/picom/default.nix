@@ -32,6 +32,7 @@ in
         blur-background-exclude = [
           "class_i = 'tray'"
           "name = 'as_toolbar'" # Zoom screen sharing toolbar
+          "name = 'Nextcloud'"
           "window_type = 'utility'" # Firefox/Thunderbird dropdowns
         ];
         unredir-if-possible = false; # Stop IntelliJ from flickering
@@ -67,6 +68,7 @@ in
         # App specifics
         "class_g = 'trayer'"
         "name = 'as_toolbar'" # Zoom screen sharing toolbar
+        "name = 'Nextcloud'"
         "name ~= 'cpt_frame(_xcb)?_window'" # Zoom screen sharing frame
         "window_type = 'utility'" # Firefox/Thunderbird dropdowns
       ];
