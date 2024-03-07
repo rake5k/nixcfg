@@ -39,6 +39,14 @@ in
         # Make sure to have the right version in $PATH
         less
 
+        # GNU utils
+        coreutils
+        gawk
+        gnugrep
+        gnupg
+        gnused
+        gnutar
+
         # GNU util replacements
         fd # ultra-fast find
         ripgrep
@@ -46,9 +54,7 @@ in
         curl
         eva
         file
-        gawk
         glow
-        gnupg
         gron
         htop
         killall
