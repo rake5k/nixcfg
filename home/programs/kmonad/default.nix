@@ -50,7 +50,7 @@ in
 
     package = mkOption {
       type = types.package;
-      default = pkgs.kmonad;
+      default = pkgs.haskellPackages.kmonad;
       description = ''
         The KMonad package.
       '';

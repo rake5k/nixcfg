@@ -228,28 +228,6 @@
         "type": "github"
       }
     },
-    "kmonad": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "dir": "nix",
-        "lastModified": 1674855709,
-        "narHash": "sha256-rd5GBiT1xsLl39KRUgnIjvczlgqdcq+PZ8JUcnYN1Gg=",
-        "owner": "rake5k",
-        "repo": "kmonad",
-        "rev": "ac767bde78a8cc3b160233758a4eb288227716c1",
-        "type": "github"
-      },
-      "original": {
-        "dir": "nix",
-        "owner": "rake5k",
-        "repo": "kmonad",
-        "type": "github"
-      }
-    },
     "nix-formatter-pack": {
       "inputs": {
         "nixpkgs": [
@@ -491,7 +469,6 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager_2",
         "homeage": "homeage",
-        "kmonad": "kmonad",
         "nix-index-database": "nix-index-database",
         "nix-on-droid": "nix-on-droid",
         "nixgl": "nixgl",

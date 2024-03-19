@@ -61,13 +61,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    kmonad = {
-      url = "github:rake5k/kmonad?dir=nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-      };
-    };
-
     nixgl = {
       url = "github:nix-community/nixGL";
       inputs = {
