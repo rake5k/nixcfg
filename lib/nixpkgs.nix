@@ -25,7 +25,6 @@ import inputs.nixpkgs {
         inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
       })
 
-      inputs.kmonad.overlays.default
       inputs.nixgl.overlays.default
       inputs.nur.overlay
     ];
