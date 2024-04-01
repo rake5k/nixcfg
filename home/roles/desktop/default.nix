@@ -89,7 +89,10 @@ in
   config = mkIf cfg.enable {
 
     custom = {
-      programs.logseq.enable = true;
+      programs = {
+        logseq.enable = true;
+        syncthing.enable = true;
+      };
       roles = {
         desktop = {
           cursors.enable = true;
