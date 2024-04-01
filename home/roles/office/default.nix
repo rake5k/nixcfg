@@ -23,6 +23,7 @@ in
     ]
     ++ optionals config.lib.custom.sys.isLinux [
       libreoffice
+      openjdk
     ];
   };
 }
