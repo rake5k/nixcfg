@@ -9,6 +9,14 @@
   ps = "ps auxf";
   psg = "ps aux | grep -v grep | grep -i -e VSZ -e";
 
+  # Safety nets
+  cp = "cp --interactive=once";
+  mv = "mv --interactive=once";
+  rm = "rm --interactive=once --preserve-root=all --one-filesystem";
+  chgrp = "chgrp --preserve-root";
+  chmod = "chmod --preserve-root";
+  chown = "chown --preserve-root";
+
   # Navigating
   "cd.." = "cd ..";
   d = "dirs -v | head -10";
