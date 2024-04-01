@@ -4,7 +4,7 @@
 
   # System utilities
   df = "df -Tha --total";
-  du = "du -ach | sort -h";
+  duh = "du -ach | sort -h";
   free = "free -mt";
   ps = "ps auxf";
   psg = "ps aux | grep -v grep | grep -i -e VSZ -e";
