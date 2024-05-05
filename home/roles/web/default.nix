@@ -26,6 +26,7 @@ in
           facebook-container
           istilldontcareaboutcookies
           languagetool
+          localcdn
           multi-account-containers
           new-tab-override
           onepassword-password-manager
