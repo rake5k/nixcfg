@@ -3,7 +3,7 @@ on: [ push ]
 
 jobs:
   nix-ci:
-    uses: christianharke/flake-commons/.github/workflows/nix-ci.yml@main
+    uses: rake5k/flake-commons/.github/workflows/nix-ci.yml@main
     with:
       branch: ${{ github.ref_name }}
       nix-command: flake check --impure
