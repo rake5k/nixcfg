@@ -30,7 +30,7 @@ let
         for bin in ${pkg}/bin/*; do
           wrapped_bin=$out/bin/$(basename $bin)
           echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-          echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
+          echo "exec ${pkgs.lib.getExe' pkgs.nixgl.auto.nixGLDefault "nixGL"} $bin \"\$@\"" >> $wrapped_bin
           chmod +x $wrapped_bin
         done
       '';
@@ -43,7 +43,7 @@ let
         mkdir $out/bin
         wrapped_bin=$out/bin/${bin}
         echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-        echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} ${pkgs.lib.getExe pkg} \"\$@\"" >> $wrapped_bin
+        echo "exec ${pkgs.lib.getExe' pkgs.nixgl.auto.nixGLDefault "nixGL"} ${pkgs.lib.getExe pkg} \"\$@\"" >> $wrapped_bin
         chmod +x $wrapped_bin
       '';
     });
