@@ -5,7 +5,7 @@ on:
 
 jobs:
   nix-update:
-    uses: christianharke/flake-commons/.github/workflows/nix-update.yml@main
+    uses: rake5k/flake-commons/.github/workflows/nix-update.yml@main
     with:
       base-branch: master
       nix-check-command: flake check --impure
