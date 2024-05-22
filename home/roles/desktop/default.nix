@@ -113,7 +113,6 @@ in
       peek
       gifski
       parcellite
-      synology-drive-client
       xclip
       xzoom
     ];
