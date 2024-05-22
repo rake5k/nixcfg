@@ -53,7 +53,7 @@ in
           autoruns = {
             "${desktopCfg.terminalCmd}" = 1;
             "blueberry-tray" = 1;
-            "emote" = 1;
+            "gnome-characters" = 1;
             "nm-applet" = 1;
             "parcellite" = 1;
             "steam -silent" = 8;

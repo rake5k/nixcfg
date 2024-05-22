@@ -106,7 +106,7 @@ in
     };
 
     home.packages = with pkgs; [
-      emote
+      gnome.gnome-characters
       gnome.nautilus
       gnome.pomodoro
       mupdf
