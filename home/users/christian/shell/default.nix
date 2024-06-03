@@ -69,7 +69,7 @@ in
         MANPAGER = "less -R --use-color -Dd+g -Du+b";
       };
 
-      shellAliases = import ./aliases.nix;
+      shellAliases = import ./aliases.nix { inherit lib; inherit (pkgs) stdenv; };
     };
 
     programs = {
