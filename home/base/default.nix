@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   home = {
@@ -13,7 +13,7 @@
 
   news.display = "silent";
 
-  xdg.userDirs = lib.mkIf config.lib.custom.sys.isLinux {
+  xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
     enable = true;
     createDirectories = true;
   };

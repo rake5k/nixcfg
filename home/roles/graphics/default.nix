@@ -19,7 +19,7 @@ in
     home.packages = with pkgs; [
       gimp
     ]
-    ++ optionals config.lib.custom.sys.isLinux [
+    ++ optionals pkgs.stdenv.isLinux [
       sxiv
     ];
   };

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -26,7 +26,7 @@ in
         fonts.enable = !config.custom.roles.mobile.enable;
         git.enable = true;
         gpg.enable = true;
-        hardware = mkIf config.lib.custom.sys.isLinux {
+        hardware = mkIf pkgs.stdenv.isLinux {
           kmonad.enable = !config.custom.roles.mobile.enable;
         };
         mobile.enable = config.custom.roles.mobile.enable;
