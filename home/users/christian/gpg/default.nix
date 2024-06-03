@@ -19,7 +19,7 @@ in
 
     home.file.".gnupg/gpg-agent.conf" = {
       text = ''
-        pinentry-program ${getExe pkgs.pinentry}
+        pinentry-program ${getExe pkgs.pinentry-gnome3}
       '';
     };
 

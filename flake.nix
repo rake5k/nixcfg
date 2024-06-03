@@ -2,14 +2,14 @@
   description = "NixOS & Home-Manager Configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
 
     flake-utils.url = "github:numtide/flake-utils";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
@@ -19,7 +19,7 @@
     };
 
     nix-on-droid = {
-      url = "github:nix-community/nix-on-droid/release-23.05";
+      url = "github:nix-community/nix-on-droid/release-23.11";
       inputs.home-manager.follows = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
