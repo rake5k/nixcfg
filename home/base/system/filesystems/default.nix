@@ -1,6 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
-lib.mkIf config.lib.custom.sys.isLinux {
+lib.mkIf pkgs.stdenv.isLinux {
   home.packages = with pkgs; [
     parted
     exfat

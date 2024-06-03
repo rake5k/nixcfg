@@ -1,5 +1,5 @@
-{ config, ... }:
+{ pkgs, ... }:
 
 {
-  services.udiskie.enable = config.lib.custom.sys.isLinux;
+  services.udiskie.enable = pkgs.stdenv.isLinux;
 }

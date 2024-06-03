@@ -5,7 +5,7 @@ let
   cfg = config.custom.base.non-nixos;
   flakeBaseDir = config.home.homeDirectory + "/.nix-config";
 
-  inherit (config.lib.custom.sys) isDarwin isLinux;
+  inherit (pkgs.stdenv) isDarwin isLinux;
 
 in
 

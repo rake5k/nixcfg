@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.roles.web;
 
-  inherit (config.lib.custom.sys) isLinux;
+  inherit (pkgs.stdenv) isLinux;
 
 in
 
