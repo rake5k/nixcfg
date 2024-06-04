@@ -84,7 +84,7 @@ in
               };
               size = 11.5;
             };
-          key_bindings = [
+          keyboard.bindings = [
             {
               key = "Key0";
               mods = "Control";
