@@ -27,7 +27,7 @@ in
       '';
 
       packages = with pkgs; [
-        unstable.home-manager
+        home-manager
       ];
 
       shellAliases = {
