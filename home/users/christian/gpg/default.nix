@@ -6,6 +6,8 @@ let
 
   cfg = config.custom.users.christian.gpg;
 
+  pinentryPkg = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3;
+
 in
 
 {
@@ -19,7 +21,7 @@ in
 
     home.file.".gnupg/gpg-agent.conf" = {
       text = ''
-        pinentry-program ${getExe pkgs.pinentry-gnome3}
+        pinentry-program ${getExe pinentryPkg}
       '';
     };
 
