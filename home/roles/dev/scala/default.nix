@@ -28,12 +28,13 @@ in
         sbt
       ];
 
-      file.".sbt/repositories".text = cfg.repositories;
-    };
-
-    xdg.configFile = {
-      "sbt/0.13/plugins/plugins.sbt".source = ./config/0.13/plugins/plugins.sbt;
-      "sbt/1.0/plugins/plugins.sbt".source = ./config/1.0/plugins/plugins.sbt;
+      file = {
+        ".sbt" = {
+          recursive = true;
+          source = ./config;
+        };
+        ".sbt/repositories".text = cfg.repositories;
+      };
     };
   };
 }
