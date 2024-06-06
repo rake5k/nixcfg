@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       enableCompletion = true;
       autocd = true;
       completionInit = optionalString pkgs.stdenv.isDarwin "autoload -U compinit && compinit -u";
