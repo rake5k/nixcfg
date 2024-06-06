@@ -1,0 +1,11 @@
+projectsEvaluated {
+  rootProject.allprojects {
+    if (!tasks.findByName('allDeps')) {
+      task allDeps(type: DependencyReportTask) {}
+    }
+
+    if (!tasks.findByName('allDepsInsight')) {
+      task allDepsInsight(type: DependencyInsightReportTask) {}
+    }
+  }
+}

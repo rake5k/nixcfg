@@ -1,0 +1,31 @@
+initscript {
+  repositories {
+    gradlePluginPortal()
+  }
+
+  dependencies {
+    classpath 'org.openrewrite:plugin:latest.release'
+  }
+}
+
+rootProject {
+  plugins.apply(org.openrewrite.gradle.RewritePlugin)
+
+  dependencies {
+    rewrite platform('org.openrewrite.recipe:rewrite-recipe-bom:2.9.0')
+    rewrite 'org.openrewrite:rewrite-java'
+
+    // add your recipe dependencies as needed:
+    rewrite 'org.openrewrite.recipe:rewrite-migrate-java'
+    rewrite 'org.openrewrite.recipe:rewrite-spring'
+    rewrite 'org.openrewrite.recipe:rewrite-testing-frameworks'
+  }
+
+  afterEvaluate {
+    if (repositories.isEmpty()) {
+      repositories {
+        mavenCentral()
+      }
+    }
+  }
+}

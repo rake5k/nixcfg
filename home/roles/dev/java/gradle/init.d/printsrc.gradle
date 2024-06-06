@@ -1,0 +1,16 @@
+projectsEvaluated {
+  rootProject.allprojects {
+    if (!tasks.findByName('printSourceSetInformation')) {
+      task printSourceSetInformation() {
+        doLast {
+          sourceSets.each { srcSet ->
+            println "[" + srcSet.name + "]"
+            print "--> Source directories: " + srcSet.allSource.srcDirs + "\n"
+            print "--> Output directories: " + srcSet.output.classesDirs.files + "\n"
+            println ""
+          }
+        }
+      }
+    }
+  }
+}
