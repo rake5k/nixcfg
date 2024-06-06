@@ -29,6 +29,11 @@ in
         JAVA_HOME = "${java}/lib/openjdk";
         JDK_HOME = "${java}/lib/openjdk";
       };
+
+      file.".gradle" = {
+        recursive = true;
+        source = ./gradle;
+      };
     };
   };
 }

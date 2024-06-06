@@ -1,0 +1,18 @@
+gradle.settingsEvaluated { settings ->
+  settings.buildCache {
+    local {
+      enabled = true
+      removeUnusedEntriesAfterDays = 30
+    }
+
+    remote(HttpBuildCache) {
+      credentials {
+        username = settings.providers.gradleProperty('buildCacheUser').getOrNull()
+        password = settings.providers.gradleProperty('buildCachePassword').getOrNull()
+      }
+      enabled = true
+      push = false
+      url = settings.providers.gradleProperty('buildCacheUrl').getOrElse('')
+    }
+  }
+}
