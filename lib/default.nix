@@ -12,41 +12,10 @@ let
   ];
 
   pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
-  customLibFor = forEachSystem (system:
-    let
-      pkgs = pkgsFor."${system}";
-    in
-    inputs.flake-commons.lib
-      {
-        inherit lib pkgs;
-        rootPath = inputs.self;
-      } // {
-      # Wraps all binary files of the given `pkg` with `nixGL`
-      nixGLWrap = pkg: pkgs.runCommand "${pkg.name}-nixgl-wrapped" { } ''
-        mkdir $out
-        ln -s ${pkg}/* $out
-        rm $out/bin
-        mkdir $out/bin
-        for bin in ${pkg}/bin/*; do
-          wrapped_bin=$out/bin/$(basename $bin)
-          echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-          echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} $bin \"\$@\"" >> $wrapped_bin
-          chmod +x $wrapped_bin
-        done
-      '';
-
-      # Wraps the main program of the given `pkg` with `nixGL` and names the wrapper script as given `bin`
-      nixGLWrap' = pkg: bin: pkgs.runCommand "${pkg.name}-nixgl-wrapped" { } ''
-        mkdir $out
-        ln -s ${pkg}/* $out
-        rm $out/bin
-        mkdir $out/bin
-        wrapped_bin=$out/bin/${bin}
-        echo "#!${pkgs.bash}/bin/bash" >> $wrapped_bin
-        echo "exec ${pkgs.lib.getExe pkgs.nixgl.auto.nixGLDefault} ${pkgs.lib.getExe pkg} \"\$@\"" >> $wrapped_bin
-        chmod +x $wrapped_bin
-      '';
-    });
+  customLibFor = forEachSystem (system: import ./customLib.nix {
+    inherit lib inputs;
+    pkgs = pkgsFor."${system}";
+  });
 
   homeModulesFor = forEachSystem (system:
     let
