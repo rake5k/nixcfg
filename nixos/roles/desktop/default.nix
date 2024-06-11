@@ -24,6 +24,8 @@ in
       };
     };
 
+    security.pam.services.login.enableGnomeKeyring = true;
+
     services = {
       xserver = {
         enable = true;
