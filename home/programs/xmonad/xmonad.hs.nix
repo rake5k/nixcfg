@@ -29,7 +29,7 @@ pkgs.writeText "xmonad.hs" ''
   import XMonad.Util.EZConfig (additionalKeysP)
   import XMonad.Util.NamedScratchpad (customFloating, NamedScratchpad(NS), namedScratchpadAction, namedScratchpadManageHook)
   import XMonad.Util.SpawnOnce (spawnOnOnce)
-  import XMonad.Util.Ungrab (unGrab)
+  import XMonad.Operations (unGrab)
 
   import qualified XMonad.StackSet as W
 
