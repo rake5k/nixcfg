@@ -25,7 +25,8 @@ in
       ];
     };
 
-    programs.mpv.enable = true;
+    custom.roles.multimedia.mpv.enable = true;
+
     services.easyeffects.enable = true;
   };
 }
