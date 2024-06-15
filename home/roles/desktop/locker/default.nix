@@ -33,23 +33,26 @@ in
       playerctl
     ]);
 
-    services.xidlehook = {
-      enable = true;
-      detect-sleep = true;
-      not-when-audio = true;
-      not-when-fullscreen = true;
-      timers = [
-        {
-          delay = 600;
-          command = cfg.lockCmd;
-        }
-        {
-          delay = 300;
-          command = ''
-            systemctl suspend
-          '';
-        }
-      ];
+    services = {
+      caffeine.enable = true;
+      xidlehook = {
+        enable = true;
+        detect-sleep = true;
+        not-when-audio = true;
+        not-when-fullscreen = true;
+        timers = [
+          {
+            delay = 600;
+            command = cfg.lockCmd;
+          }
+          {
+            delay = 300;
+            command = ''
+              systemctl suspend
+            '';
+          }
+        ];
+      };
     };
 
     # Update random lock image on login
