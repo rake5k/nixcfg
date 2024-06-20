@@ -77,8 +77,18 @@ in
           };
         };
         search = {
-          default = "DuckDuckGo";
+          default = "Harke Search";
           engines = {
+            "Harke Search" = {
+              urls = [{
+                template = "https://search.harke.ch/search";
+                params = [
+                  { name = "q"; value = "{searchTerms}"; }
+                ];
+              }];
+              icon = ./icons/search.harke.ch.svg;
+            };
+
             "Nix Packages" = {
               urls = [{
                 template = "https://search.nixos.org/packages";
