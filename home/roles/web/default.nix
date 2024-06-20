@@ -28,7 +28,6 @@ in
           languagetool
           localcdn
           multi-account-containers
-          new-tab-override
           onepassword-password-manager
           persistentpin
           proton-vpn
