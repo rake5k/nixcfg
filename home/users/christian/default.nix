@@ -26,9 +26,6 @@ in
         fonts.enable = !config.custom.roles.mobile.enable;
         git.enable = true;
         gpg.enable = true;
-        hardware = mkIf pkgs.stdenv.isLinux {
-          kmonad.enable = !config.custom.roles.mobile.enable;
-        };
         mobile.enable = config.custom.roles.mobile.enable;
         office.cli.enable = config.custom.roles.office.cli.enable;
         shell.enable = true;
