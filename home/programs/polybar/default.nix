@@ -68,6 +68,7 @@ in
         cpu = mkEnableOption "CPU monitor" // { default = true; };
         date = mkEnableOption "Date monitor" // { default = true; };
         disk = mkEnableOption "Disk monitor" // { default = true; };
+        keyboard = mkEnableOption "Keyboard layout monitor" // { default = true; };
         memory = mkEnableOption "Memory monitor" // { default = true; };
         temperature = mkEnableOption "Temperature monitor" // { default = true; };
         volume = mkEnableOption "Volume monitor" // { default = true; };
@@ -169,6 +170,7 @@ in
               (if weather then [ "wtr" ] else [ ]) ++
               (if volume then [ "vol" ] else [ ]) ++
               (if battery then [ "bat" ] else [ ]) ++
+              (if keyboard then [ "kbd" ] else [ ]) ++
               (if date then [ "date" ] else [ ]) ++
               [ "tray" ]
             );
@@ -290,6 +292,17 @@ in
           label-warn-foreground = "\${colors.alert}";
         };
 
+        "module/wtr" = {
+          type = "custom/script";
+          exec = "${getExe pkgs.bash} ${config.xdg.configFile."polybar/weather-plugin.sh".target}";
+          tail = false;
+          interval = 600;
+
+          # Format
+          format-prefix = "WTR ";
+          format-prefix-foreground = "\${colors.primary}";
+        };
+
         "module/vol" = {
           type = "internal/pulseaudio";
 
@@ -364,14 +377,12 @@ in
           ramp-capacity-4 = " ";
         };
 
-        "module/wtr" = {
-          type = "custom/script";
-          exec = "${getExe pkgs.bash} ${config.xdg.configFile."polybar/weather-plugin.sh".target}";
-          tail = false;
-          interval = 600;
+        "module/kbd" = {
+          type = "internal/xkeyboard";
+          label-layout = "%variant%";
 
           # Format
-          format-prefix = "WTR ";
+          format-prefix = "LAY ";
           format-prefix-foreground = "\${colors.primary}";
         };
 
