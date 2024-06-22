@@ -13,7 +13,7 @@ in
     xserver.xkb = {
       layout = "de,de";
       variant = "neo_qwertz,bone";
-      options = "grp:rctrl_toggle";
+      options = "grp:rctrl_toggle,grp_led:scroll";
     };
   };
 
