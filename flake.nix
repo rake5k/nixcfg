@@ -179,8 +179,15 @@
         (mkDevShell "default" {
           name = "nixcfg";
           checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
-          packages = pkgs: with pkgs; [ nixpkgs-fmt shellcheck statix ];
+          packages = pkgs: with pkgs; [ nix-tree nixpkgs-fmt shellcheck statix ];
         })
       ];
+
+      # Necessary for nix-tree
+      # Run it using `nix-tree . --impure --derivation`
+      packages = {
+        x86_64-linux.default = self.nixosConfigurations.nixos.config.system.build.toplevel;
+        aarch64-darwin.default = self.darwinConfigurations.macos.system;
+      };
     };
 }
