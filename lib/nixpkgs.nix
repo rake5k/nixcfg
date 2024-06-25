@@ -5,6 +5,9 @@ let
   config = {
     allowAliases = false;
     allowUnfree = true;
+    permittedInsecurePackages = [
+      "electron-28.3.3"
+    ];
   };
 
 in
