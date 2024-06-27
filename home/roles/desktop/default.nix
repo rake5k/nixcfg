@@ -91,6 +91,7 @@ in
     custom = {
       programs = {
         logseq.enable = true;
+        ssh.enable = true;
         syncthing.enable = true;
       };
       roles = {
