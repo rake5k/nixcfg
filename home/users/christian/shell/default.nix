@@ -73,8 +73,6 @@ in
     };
 
     programs = {
-      ssh = import ./ssh.nix;
-
       bat.enable = true;
       eza.enable = true;
       fzf.enable = true;
