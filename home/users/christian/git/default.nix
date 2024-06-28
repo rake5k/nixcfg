@@ -24,6 +24,7 @@ in
 
     programs.git = {
       enable = true;
+      package = pkgs.gitFull;
       lfs.enable = true;
       userName = "Christian Harke";
       signing.key = "630966F4";
@@ -47,6 +48,7 @@ in
       };
 
       extraConfig = {
+        credential.helper = "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
         maintenance.repo = [
           "${config.home.homeDirectory}/.nix-config"
           "${config.home.homeDirectory}/code/nixcfg"
