@@ -110,6 +110,7 @@ in
       gnome.gnome-characters
       gnome.nautilus
       gnome.pomodoro
+      gnome.seahorse
       mupdf
       peek
       gifski

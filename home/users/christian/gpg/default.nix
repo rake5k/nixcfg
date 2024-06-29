@@ -18,13 +18,8 @@ in
   };
 
   config = mkIf cfg.enable {
-
-    home.file.".gnupg/gpg-agent.conf" = {
-      text = ''
-        pinentry-program ${getExe pinentryPkg}
-      '';
-    };
-
     programs.gpg.enable = true;
+
+    services.gpg-agent.pinentryPackage = pinentryPkg;
   };
 }
