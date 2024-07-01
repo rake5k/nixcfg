@@ -32,6 +32,7 @@ in
       package = pkgs.gitFull;
       lfs.enable = true;
       userName = "Christian Harke";
+      userEmail = "christian@harke.ch";
       signing.key = "630966F4";
 
       aliases = {
