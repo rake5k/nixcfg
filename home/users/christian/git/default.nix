@@ -6,6 +6,11 @@ let
 
   cfg = config.custom.users.christian.git;
 
+  credentialHelper =
+    if pkgs.stdenv.isDarwin
+    then "${pkgs.gitFull}/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain"
+    else "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
+
 in
 
 {
@@ -48,7 +53,7 @@ in
       };
 
       extraConfig = {
-        credential.helper = "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
+        credential.helper = credentialHelper;
         maintenance.repo = [
           "${config.home.homeDirectory}/.nix-config"
           "${config.home.homeDirectory}/code/nixcfg"
