@@ -38,6 +38,15 @@ in
 
   config = mkIf cfg.enable {
     systemd.user = {
+      # Needs to be started from the X session after importing the dbus session:
+      #    systemctl --user import-environment DBUS_SESSION_DBUS_ADDRESS
+      #    systemctl --user start dbus-environment.target
+      targets.dbus-environment = {
+        Unit = {
+          Description = "Environment Imported Target";
+        };
+      };
+
       services.home-manager-upgrade = {
         Unit = {
           Description = "Home-Manager Upgrade";
@@ -50,7 +59,12 @@ in
         };
       };
 
+
       timers.home-manager-upgrade = {
+        Unit = {
+          Requires = [ "dbus-environment.target" ];
+          After = [ "dbus-environment.target" ];
+        };
         Install = {
           WantedBy = [ "timers.target" ];
         };
