@@ -6,7 +6,7 @@ let
     allowAliases = false;
     allowUnfree = true;
     permittedInsecurePackages = [
-      "electron-28.3.3"
+      "electron-27.3.11"
     ];
   };
 
