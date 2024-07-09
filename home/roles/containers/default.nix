@@ -11,14 +11,13 @@ in
 {
   options = {
     custom.roles.containers = {
-      enable = mkEnableOption "Container runtime and tooling";
+      enable = mkEnableOption "Container tooling";
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       dive
-      docker-client
       skopeo
     ];
   };
