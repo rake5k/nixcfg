@@ -4,14 +4,14 @@ with lib;
 
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.locker;
+  xCfg = config.custom.roles.desktop.xserver;
+  cfg = xCfg.locker;
 
 in
 
 {
   options = {
-    custom.roles.desktop.locker = {
+    custom.roles.desktop.xserver.locker = {
       package = mkOption {
         type = types.package;
         default = pkgs.betterlockscreen;
@@ -26,7 +26,7 @@ in
     };
   };
 
-  config = mkIf desktopCfg.enable {
+  config = mkIf xCfg.enable {
     home.packages = [
       cfg.package
     ] ++ (with pkgs; [
@@ -57,7 +57,7 @@ in
 
     # Update random lock image on login
     xsession.initExtra = ''
-      ${lib.getExe pkgs.betterlockscreen} --update ${desktopCfg.wallpapersDir} --fx dim &
+      ${lib.getExe pkgs.betterlockscreen} --update ${xCfg.wallpapersDir} --fx dim &
     '';
   };
 }

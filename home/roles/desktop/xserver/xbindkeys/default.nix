@@ -4,15 +4,15 @@ with lib;
 
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.xbindkeys;
-  terminalCfg = desktopCfg.terminal;
+  xCfg = config.custom.roles.desktop.xserver;
+  cfg = xCfg.xbindkeys;
+  terminalCfg = xCfg.terminal;
 
 in
 
 {
   options = {
-    custom.roles.desktop.xbindkeys = {
+    custom.roles.desktop.xserver.xbindkeys = {
       enable = mkEnableOption "Xbindkeys";
     };
   };
