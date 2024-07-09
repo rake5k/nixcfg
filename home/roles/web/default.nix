@@ -31,7 +31,6 @@ in
           onepassword-password-manager
           persistentpin
           proton-vpn
-          simple-translate
           tridactyl
           ublacklist
           ublock-origin
