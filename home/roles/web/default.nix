@@ -36,7 +36,6 @@ in
           ublock-origin
         ];
       };
-      roles.web.nextcloud-client.enable = isLinux;
     };
 
     home.packages = with pkgs; [
