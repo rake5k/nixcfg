@@ -62,10 +62,7 @@ in
   config = mkIf cfg.enable {
 
     custom = {
-      programs = {
-        logseq.enable = true;
-        syncthing.enable = true;
-      };
+      programs.logseq.enable = true;
       roles = {
         desktop = {
           gtk.enable = true;
