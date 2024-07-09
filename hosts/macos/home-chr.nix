@@ -5,6 +5,7 @@
 
     roles = {
       containers.enable = true;
+      desktop.enable = true;
       dev.enable = true;
       graphics.enable = true;
       homeage.enable = true;

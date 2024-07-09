@@ -4,14 +4,14 @@ with lib;
 
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.grobi;
+  xCfg = config.custom.roles.desktop.xserver;
+  cfg = xCfg.grobi;
 
 in
 
 {
   options = {
-    custom.roles.desktop.grobi = {
+    custom.roles.desktop.xserver.grobi = {
       enable = mkEnableOption "Grobi config";
 
       rules = mkOption {
@@ -34,7 +34,7 @@ in
       inherit (cfg) rules;
       enable = true;
       executeAfter = [
-        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${desktopCfg.wallpapersDir}"
+        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${xCfg.wallpapersDir}"
         "${pkgs.polybar}/bin/polybar-msg cmd restart"
       ];
     };

@@ -4,13 +4,13 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.redshift;
+  cfg = config.custom.roles.desktop.xserver.redshift;
 
 in
 
 {
   options = {
-    custom.roles.desktop.redshift = {
+    custom.roles.desktop.xserver.redshift = {
       enable = mkEnableOption "Redshift";
     };
   };

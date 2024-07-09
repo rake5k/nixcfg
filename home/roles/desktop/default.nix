@@ -13,33 +13,6 @@ in
     custom.roles.desktop = {
       enable = mkEnableOption "Desktop";
 
-      colorScheme = {
-        foreground = mkOption {
-          type = types.str;
-          default = "#BBBBBB";
-        };
-
-        background = mkOption {
-          type = types.str;
-          default = "#000000";
-        };
-
-        base = mkOption {
-          type = types.str;
-          default = "#6586c8";
-        };
-
-        accent = mkOption {
-          type = types.str;
-          default = "#FF7F00";
-        };
-
-        warn = mkOption {
-          type = types.str;
-          default = "#FF5555";
-        };
-      };
-
       font = {
         package = mkOption {
           type = types.package;
@@ -95,12 +68,8 @@ in
       };
       roles = {
         desktop = {
-          cursors.enable = true;
-          grobi.enable = true;
           gtk.enable = true;
-          redshift.enable = true;
           terminal.enable = true;
-          xmonad.enable = true;
         };
       };
     };
@@ -110,29 +79,8 @@ in
       gnome.nautilus
       gnome.pomodoro
       gnome.seahorse
-      mupdf
-      peek
-      gifski
-      parcellite
-      xclip
-      xzoom
     ];
 
     services.gnome-keyring.enable = true;
-
-    xdg = {
-      mime.enable = true;
-      mimeApps.defaultApplications = {
-        "inode/directory" = "org.gnome.Nautilus.desktop";
-      };
-    };
-
-    xsession = {
-      enable = true;
-      initExtra = ''
-        ${lib.getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-      '';
-      numlock.enable = true;
-    };
   };
 }

@@ -4,13 +4,13 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.cursors;
+  cfg = config.custom.roles.desktop.xserver.cursors;
 
 in
 
 {
   options = {
-    custom.roles.desktop.cursors = {
+    custom.roles.desktop.xserver.cursors = {
       enable = mkEnableOption "Cursors config";
     };
   };

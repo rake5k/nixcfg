@@ -8,7 +8,10 @@
 
     roles = {
       containers.enable = true;
-      desktop.enable = true;
+      desktop = {
+        enable = true;
+        xserver.enable = true;
+      };
       dev.enable = true;
       gaming.enable = true;
       graphics.enable = true;

@@ -5,20 +5,21 @@ with lib;
 let
 
   desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.spectrwm;
+  xCfg = desktopCfg.xserver;
+  cfg = xCfg.spectrwm;
 
 in
 
 {
   options = {
-    custom.roles.desktop.spectrwm = {
+    custom.roles.desktop.xserver.spectrwm = {
       enable = mkEnableOption "Spectrwm window manager";
     };
   };
 
   config = mkIf cfg.enable {
     custom.programs.spectrwm = {
-      inherit (desktopCfg) locker;
+      inherit (xCfg) locker;
 
       autoruns = {
         "alacritty" = 1;

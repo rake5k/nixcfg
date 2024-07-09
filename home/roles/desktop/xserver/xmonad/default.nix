@@ -5,13 +5,14 @@ with lib;
 let
 
   desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.xmonad;
+  xCfg = desktopCfg.xserver;
+  cfg = xCfg.xmonad;
 
 in
 
 {
   options = {
-    custom.roles.desktop.xmonad = {
+    custom.roles.desktop.xserver.xmonad = {
       enable = mkEnableOption "Xmonad window manager";
     };
   };
@@ -37,21 +38,21 @@ in
 
         polybar = {
           enable = true;
-          inherit (desktopCfg) colorScheme;
+          inherit (xCfg) colorScheme;
           font = {
             inherit (desktopCfg.font) package;
             config = desktopCfg.font.xft;
           };
           height = 20;
-          monitors.battery = desktopCfg.mobile.enable;
+          monitors.battery = xCfg.mobile.enable;
         };
 
         xmonad = {
-          inherit (desktopCfg) colorScheme locker terminalCmd;
+          inherit (xCfg) colorScheme locker terminalCmd;
 
           enable = true;
           autoruns = {
-            "${desktopCfg.terminalCmd}" = 1;
+            "${xCfg.terminalCmd}" = 1;
             "blueberry-tray" = 1;
             "nm-applet" = 1;
             "parcellite" = 1;
