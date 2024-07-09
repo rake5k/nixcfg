@@ -17,7 +17,10 @@
         enable = true;
         converters.enable = true;
       };
-      office.enable = true;
+      office = {
+        enable = true;
+        cli.enable = true;
+      };
       ops.enable = true;
       web.enable = true;
     };
