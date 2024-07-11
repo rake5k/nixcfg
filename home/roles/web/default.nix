@@ -54,6 +54,9 @@ in
       freetube
     ];
 
-    programs.chromium.enable = isLinux;
+    programs.chromium = {
+      enable = isLinux;
+      package = pkgs.chromium.override { enableWideVine = true; };
+    };
   };
 }
