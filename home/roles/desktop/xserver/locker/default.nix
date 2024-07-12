@@ -4,7 +4,8 @@ with lib;
 
 let
 
-  xCfg = config.custom.roles.desktop.xserver;
+  desktopCfg = config.custom.roles.desktop;
+  xCfg = desktopCfg.xserver;
   cfg = xCfg.locker;
 
 in
@@ -57,7 +58,7 @@ in
 
     # Update random lock image on login
     xsession.initExtra = ''
-      ${lib.getExe pkgs.betterlockscreen} --update ${xCfg.wallpapersDir} --fx dim &
+      ${lib.getExe pkgs.betterlockscreen} --update ${desktopCfg.wallpapersDir} --fx dim &
     '';
   };
 }

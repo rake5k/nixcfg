@@ -4,7 +4,8 @@ with lib;
 
 let
 
-  xCfg = config.custom.roles.desktop.xserver;
+  desktopCfg = config.custom.roles.desktop;
+  xCfg = desktopCfg.xserver;
   cfg = xCfg.grobi;
 
 in
@@ -34,7 +35,7 @@ in
       inherit (cfg) rules;
       enable = true;
       executeAfter = [
-        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${xCfg.wallpapersDir}"
+        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${desktopCfg.wallpapersDir}"
         "${pkgs.polybar}/bin/polybar-msg cmd restart"
       ];
     };
