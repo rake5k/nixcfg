@@ -45,12 +45,6 @@ in
         };
       };
 
-      terminalCmd = mkOption {
-        type = types.str;
-        default = "${cfg.terminal.spawnCmd}";
-        description = "Command to spawn the default terminal emulator";
-      };
-
       wallpapersDir = mkOption {
         type = types.path;
         default = config.home.homeDirectory + "/Pictures/wallpapers";
@@ -62,11 +56,12 @@ in
   config = mkIf cfg.enable {
 
     custom = {
-      programs.logseq.enable = true;
       roles = {
         desktop = {
           gtk.enable = true;
+          passwordManager.enable = true;
           terminal.enable = true;
+          wiki.enable = true;
         };
       };
     };
