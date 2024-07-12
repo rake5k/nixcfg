@@ -19,14 +19,14 @@
   # Navigating
   "cd.." = "cd ..";
   d = "dirs -v | head -10";
-  l = "exa -ghl --git --icons";
-  la = "exa -aghl --git --icons";
+  l = "eza -ghl --git --icons";
+  la = "eza -aghl --git --icons";
   lal = "la | less";
   ll = "l";
   ls = "ls -h --color='auto'";
   lsa = "ls -a";
   lsl = "ls | less";
-  tree = "exa --icons --tree";
+  tree = "eza --icons --tree";
 
   # File reading
   cat = "bat";
