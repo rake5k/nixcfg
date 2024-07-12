@@ -47,15 +47,17 @@ in
     ];
 
     # Enable the KDE Desktop Environment.
-    services.xserver = {
-      enable = true;
-      desktopManager.plasma5.enable = true;
+    services = {
       displayManager = {
         sddm.enable = true;
         autoLogin = {
           enable = true;
           user = "gamer";
         };
+      };
+      xserver = {
+        enable = true;
+        desktopManager.plasma5.enable = true;
       };
     };
   };
