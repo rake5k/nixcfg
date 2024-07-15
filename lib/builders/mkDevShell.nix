@@ -1,5 +1,14 @@
 { pkgs, system, args, ... }:
 
+let
+
+  preCommitShellHook = (import ./modules/pre-commit-checks {
+    inherit system pkgs;
+    inherit (args) flake;
+  }).shellHook;
+
+in
+
 pkgs.mkShell {
   buildInputs = with pkgs; [
     # banner printing on enter
@@ -13,6 +22,6 @@ pkgs.mkShell {
   ];
   shellHook = ''
     figlet ${args.flake.name} | lolcat --freq 0.5
-  '' +
-  args.flake.checks."${system}".pre-commit-check.shellHook;
+    ${preCommitShellHook}
+  '';
 }

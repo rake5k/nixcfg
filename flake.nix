@@ -6,7 +6,11 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
 
-    flake-utils.url = "github:numtide/flake-utils";
+    systems.url = "github:nix-systems/default";
+    flake-utils = {
+      url = "github:numtide/flake-utils";
+      inputs.systems.follows = "systems";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
@@ -44,7 +48,10 @@
 
     agenix = {
       url = "github:ryantm/agenix";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        systems.follows = "systems";
+      };
     };
 
     agenix-cli = {
@@ -138,37 +145,8 @@
         })
       ];
 
-      overlays.default = composeManyExtensions [
-        (final: prev: {
-          shellcheckPicky = prev.writeShellScriptBin "shellcheck" ''
-            ${getExe prev.shellcheck} \
-            --check-sourced --enable all --external-sources \
-            "$@"
-          '';
-        })
-      ];
-
       checks = recursiveUpdate
-        (mkForEachSystem [
-          (mkGeneric "pre-commit-check" (system:
-            let
-              pkgs = import nixpkgs {
-                inherit system;
-                overlays = [ self.overlays.default ];
-              };
-            in
-            inputs.pre-commit-hooks.lib."${system}".run {
-              src = ./.;
-              hooks = {
-                nixpkgs-fmt.enable = true;
-                shellcheck = {
-                  enable = true;
-                  entry = mkForce "${getExe pkgs.shellcheckPicky}";
-                };
-                statix.enable = true;
-              };
-            }))
-        ])
+        (forEachSystem (system: import ./lib/checks { pkgs = pkgsFor."${system}"; flake = self; }))
         ((mkForSystem aarch64-darwin [
           (mkBuild "build-macos" self.darwinConfigurations.macos.system)
         ]) // (mkForSystem x86_64-linux [
