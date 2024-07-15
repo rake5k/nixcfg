@@ -26,7 +26,7 @@ See [flake.nix](flake.nix) for more information like `system`.
 
 ## Structure
 
-```
+```noformat
 📂 .
 ├──🔒 flake.lock    -- flake lockfile
 ├── ❄ flake.nix     -- flake definition
@@ -127,7 +127,7 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 
 To install NixOS from the ISO of [nixos.org][nixos] on a fresh machine, run:
 
-```bash
+```shell
 # If nix version < 2.4, run:
 nix-shell -p nixFlakes
 
@@ -156,15 +156,15 @@ After rebooting proceed with the [next section](#nixos-config-setup).
 
 #### NixOS config setup
 
-```bash
-$ sudo nix run github:rake5k/nixcfg#setup -- git@github.com:rake5k/nixcfg.git
+```shell
+sudo nix run github:rake5k/nixcfg#setup -- git@github.com:rake5k/nixcfg.git
 ```
 
 ### Non-NixOS
 
 #### Nix installation
 
-```bash
+```shell
 # install Nix
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
@@ -174,7 +174,7 @@ sh <(curl -L https://nixos.org/nix/install) --no-channel-add --no-modify-profile
 
 #### Nix config setup
 
-```bash
+```shell
 # Set up this Nix configuration
 nix run github:rake5k/nixcfg#setup -- git@github.com:rake5k/nixcfg.git
 
@@ -191,12 +191,12 @@ The setup script will create the [age][age] keys needed and put them in the
 Push the updated `.agenix.toml` back to the git repository, pull it to an existing host and
 re-key all the secrets with the command:
 
-```bash
-$ # On NixOS:
-$ sudo agenix -i /root/.age/key.txt -i ~/.age/key.txt -r -vv
+```shell
+# On NixOS:
+sudo agenix -i /root/.age/key.txt -i ~/.age/key.txt -r -vv
 
-$ # On non-NixOS:
-$ agenix -i ~/.age/key.txt -r -vv
+# On non-NixOS:
+agenix -i ~/.age/key.txt -r -vv
 ```
 
 After pushing/pulling the re-keyed secrets, just [run a rebuild](#rebuilding) of the new host's
@@ -204,23 +204,23 @@ config for decrypting them.
 
 ### Updating secrets
 
-```bash
-$ # First decrypt current secret
-$ age --decrypt -i ~/.age/key.txt -o tmpfile < ./secrets/<secretfile>.age
+```shell
+# First decrypt current secret
+age --decrypt -i ~/.age/key.txt -o tmpfile < ./secrets/<secretfile>.age
 
-$ # Update `tmpfile` contents...
-$ vim tmpfile
+# Update `tmpfile` contents...
+vim tmpfile
 
-$ # Re-encrypt the updated secret
-$ age --encrypt --armor -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
+# Re-encrypt the updated secret
+age --encrypt --armor -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
 ```
 
 ## Updating inputs
 
 This corresponds to the classical software/system update process known from other distros.
 
-```bash
-$ nix flake update
+```shell
+nix flake update
 ```
 
 To apply (install) the updated inputs on the system, just [run a rebuild](#rebuilding) of the
@@ -228,12 +228,12 @@ config.
 
 ## Rebuilding
 
-```bash
-$ # On NixOS
-$ sudo nixos-rebuild switch
+```shell
+# On NixOS
+sudo nixos-rebuild switch
 
-$ # On non-NixOS
-$ hm-switch
+# On non-NixOS
+hm-switch
 ```
 
 [ci]: https://github.com/rake5k/nixcfg/actions/workflows/ci.yml
@@ -251,4 +251,3 @@ $ hm-switch
 [nixpkgs-fmt]: https://github.com/nix-community/nixpkgs-fmt
 [shellcheck]: https://github.com/koalaman/shellcheck
 [statix]: https://github.com/NerdyPepper/statix
-
