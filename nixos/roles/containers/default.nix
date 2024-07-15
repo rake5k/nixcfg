@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -22,6 +22,6 @@ in
       enableOnBoot = false;
     };
 
-    users.users = genAttrs baseCfg.users (u: { extraGroups = [ "docker" ]; });
+    users.users = genAttrs baseCfg.users (_: { extraGroups = [ "docker" ]; });
   };
 }

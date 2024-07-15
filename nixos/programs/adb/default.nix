@@ -23,6 +23,6 @@ in
 
     programs.adb.enable = true;
 
-    users.users = genAttrs baseCfg.users (u: { extraGroups = [ "adbusers" ]; });
+    users.users = genAttrs baseCfg.users (_: { extraGroups = [ "adbusers" ]; });
   };
 }

@@ -3,7 +3,7 @@
 let
 
   file = "${inputs.self}/lib/apps/${args.file}";
-  mkPath = args.path or (pkgs: [ ]);
+  mkPath = args.path or (_: [ ]);
   script = customLib.mkScript
     name
     file

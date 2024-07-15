@@ -1,11 +1,5 @@
 { lib, config, ... }:
 
-let
-
-  cfg = config.custom.base;
-
-in
-
 {
   options = with lib; {
     custom.base = {

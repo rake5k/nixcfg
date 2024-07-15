@@ -51,7 +51,7 @@ in
   mkForEachSystem = bs: forEachSystem (system: (buildersForSystem system bs));
   mkForSystem = system: bs: { "${system}" = buildersForSystem system bs; };
   mkApp = wrapper ./builders/mkApp.nix;
-  mkBuild = name: args: nameValuePairWrapper name (system: args);
+  mkBuild = name: args: nameValuePairWrapper name (_system: args);
   mkCheck = wrapper ./builders/mkCheck.nix;
   mkDevShell = wrapper ./builders/mkDevShell.nix;
   mkGeneric = nameValuePairWrapper;

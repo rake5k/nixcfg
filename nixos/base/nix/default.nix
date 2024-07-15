@@ -1,5 +1,3 @@
-{ config, lib, pkgs, inputs, ... }:
-
 {
   nix = {
     gc = {

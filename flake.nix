@@ -87,7 +87,7 @@
         inherit inputs;
       };
       inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
-      inherit (nixpkgs.lib) composeManyExtensions getExe listToAttrs mkForce recursiveUpdate;
+      inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
     in
     with nixcfgLib;
     {

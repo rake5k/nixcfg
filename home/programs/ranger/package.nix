@@ -2,17 +2,10 @@
 
 { lib
 , fetchFromGitHub
-, writeText
 , python3Packages
 , file
 , less
 }:
-
-let
-
-  rifleConf = writeText "rifle.conf" (builtins.readFile ./config/rifle.conf);
-
-in
 
 python3Packages.buildPythonApplication rec {
   pname = "ranger";

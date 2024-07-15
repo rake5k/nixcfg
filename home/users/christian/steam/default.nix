@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -8,10 +8,6 @@ let
 
   mkCfgs = filename:
     let
-      userId = "5051778";
-      appIds = {
-        csgo = "730";
-      };
       csgoCfgPath = "Steam/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg";
     in
     nameValuePair "${csgoCfgPath}/${filename}.cfg" {

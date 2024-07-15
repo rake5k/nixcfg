@@ -62,7 +62,7 @@ in
   config = mkIf cfg.enable {
 
     custom.programs.davmail.config = {
-      davmail = mapAttrs (name: mkDefault) {
+      davmail = mapAttrs (_: mkDefault) {
         server = true;
         disableUpdateCheck = true;
         logFilePath = config.xdg.dataHome + "/davmail/davmail.log";

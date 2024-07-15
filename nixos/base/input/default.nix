@@ -1,13 +1,3 @@
-{ config, lib, ... }:
-
-with lib;
-
-let
-
-  baseCfg = config.custom.base;
-
-in
-
 {
   services = {
     xserver.xkb = {

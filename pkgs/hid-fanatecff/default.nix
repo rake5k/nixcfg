@@ -1,8 +1,6 @@
-{ lib
-, stdenv
+{ stdenv
 , fetchFromGitHub
 , kernel
-, kmod
 , linuxConsoleTools
 , runtimeShell
 }:

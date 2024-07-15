@@ -1,5 +1,3 @@
-{ inputs, ... }:
-
 {
   home.keyboard = {
     layout = "de,de";

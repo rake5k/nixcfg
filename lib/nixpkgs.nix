@@ -22,7 +22,7 @@ import inputs.nixpkgs {
       };
     in
     [
-      (final: prev: {
+      (_final: _prev: {
         inherit system unstable;
 
         inherit (inputs.agenix-cli.packages."${system}") agenix-cli;
