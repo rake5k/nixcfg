@@ -1,12 +1,15 @@
-name: Build and test
-on: [ push ]
+---
+
+name: "Build and test"
+on:  # yamllint disable-line rule:truthy
+  - "push"
 
 jobs:
   nix-ci:
-    uses: rake5k/flake-commons/.github/workflows/nix-ci.yml@main
+    uses: "rake5k/flake-commons/.github/workflows/nix-ci.yml@main"
     with:
-      branch: ${{ github.ref_name }}
-      nix-command: flake check --impure
-      system: x86_64-linux
+      branch: "${{ github.ref_name }}"
+      nix-command: "flake check --impure"
+      system: "x86_64-linux"
     secrets:
-      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"

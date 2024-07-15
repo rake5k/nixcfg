@@ -1,13 +1,15 @@
-name: Update inputs
-on:
+---
+
+name: "Update inputs"
+on:  # yamllint disable-line rule:truthy
   schedule:
-    - cron: 0 1 * * *
+    - cron: "0 1 * * *"
 
 jobs:
   nix-update:
-    uses: rake5k/flake-commons/.github/workflows/nix-update.yml@main
+    uses: "rake5k/flake-commons/.github/workflows/nix-update.yml@main"
     with:
-      base-branch: master
-      nix-check-command: flake check --impure
+      base-branch: "master"
+      nix-check-command: "flake check --impure"
     secrets:
-      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
