@@ -1,4 +1,4 @@
-{ lib, pkgs, ... } @args:
+{ lib, ... } @args:
 
 let
 

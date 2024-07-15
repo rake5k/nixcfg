@@ -1,5 +1,3 @@
-{ pkgs, ... }:
-
 {
   custom.base.users = [ "chr" ];
 
