@@ -84,6 +84,8 @@
     in
     with nixcfgLib;
     {
+      name = "nixcfg";
+
       lib = { inputs }:
         import ./lib { inputs = inputs // self.inputs; };
 
@@ -176,11 +178,7 @@
         ]));
 
       devShells = mkForEachSystem [
-        (mkDevShell "default" {
-          name = "nixcfg";
-          checksShellHook = system: self.checks."${system}".pre-commit-check.shellHook;
-          packages = pkgs: with pkgs; [ nix-tree nixpkgs-fmt shellcheck statix ];
-        })
+        (mkDevShell "default" { flake = self; })
       ];
 
       # Necessary for nix-tree
