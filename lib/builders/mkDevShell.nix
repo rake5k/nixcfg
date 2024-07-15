@@ -1,23 +1,18 @@
 { pkgs, system, args, ... }:
 
-let
-
-  packagesFn = args.packages or (pkgs: [ ]);
-  checksShellHookFn = args.checksShellHook or (system: "");
-  customShellHookFn = args.customShellHook or (pkgs: "");
-
-in
-
-pkgs.mkShell rec {
-  inherit (args) name;
+pkgs.mkShell {
   buildInputs = with pkgs; [
     # banner printing on enter
     figlet
     lolcat
-  ] ++ (packagesFn pkgs);
+
+    nix-tree
+    nixpkgs-fmt
+    shellcheck
+    statix
+  ];
   shellHook = ''
-    figlet ${name} | lolcat --freq 0.5
-  ''
-  + (checksShellHookFn system)
-  + (customShellHookFn pkgs);
+    figlet ${args.flake.name} | lolcat --freq 0.5
+  '' +
+  args.flake.checks."${system}".pre-commit-check.shellHook;
 }
