@@ -31,13 +31,6 @@ in
     custom.roles.homeage.enable = true;
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
-    programs.ssh = {
-      enable = true;
-      addKeysToAgent = "yes";
-      controlMaster = "auto";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "10m";
-    };
 
     services.ssh-agent.enable = true;
   };
