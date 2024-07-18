@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.roles.web.nextcloud-client;
   pkg =
-    if config.custom.base.non-nixos.enable && config.custom.roles.desktop.xserver.enable
+    if config.custom.base.non-nixos.enable
     then (config.lib.custom.nixGLWrap pkgs.nextcloud-client)
     else pkgs.nextcloud-client;
 
