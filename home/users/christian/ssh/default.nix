@@ -16,11 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.ssh = {
-      enable = true;
-      controlMaster = "auto";
-      controlPath = "~/.ssh/master-%r@%n:%p";
-      controlPersist = "10m";
-    };
+    custom.programs.ssh.enable = true;
   };
 }
