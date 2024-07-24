@@ -32,7 +32,6 @@ in
         set ideajoin
         set clipboard+=unnamedplus
         set visualbell
-        set noerrorbells
         set nu rnu
       '';
 
