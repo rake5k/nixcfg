@@ -36,6 +36,11 @@ in
           ublock-origin
         ];
       };
+
+      roles.web = {
+        freetube.enable = isLinux;
+        messengers.enable = isLinux;
+      };
     };
 
     home.packages = with pkgs; [
@@ -43,15 +48,6 @@ in
       _1password-gui
       bind
       wget
-    ]
-    ++ optionals isLinux [
-      # Messengers
-      signal-desktop
-      telegram-desktop
-      threema-desktop
-
-      # Social Media
-      freetube
     ];
 
     programs.chromium = {
