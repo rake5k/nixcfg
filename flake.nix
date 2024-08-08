@@ -63,7 +63,7 @@
     };
 
     homeage = {
-      url = "github:jordanisaacs/homeage";
+      url = "github:dbingham/homeage/checkConditionFix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
