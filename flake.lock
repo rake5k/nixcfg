@@ -219,15 +219,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1669234151,
-        "narHash": "sha256-TwT87E3m2TZLgwYJESlype14HxUOrRGojPM5C2akrMg=",
-        "owner": "jordanisaacs",
+        "lastModified": 1699664582,
+        "narHash": "sha256-aVeFahZXph+XZp1NET5+On36g9ZTkyBK9LminAMKi3Y=",
+        "owner": "dbingham",
         "repo": "homeage",
-        "rev": "02bfe4ca06962d222e522fff0240c93946b20278",
+        "rev": "df76dac66485d654cba7879386e695b3a9f9cb45",
         "type": "github"
       },
       "original": {
-        "owner": "jordanisaacs",
+        "owner": "dbingham",
+        "ref": "checkConditionFix",
         "repo": "homeage",
         "type": "github"
       }
