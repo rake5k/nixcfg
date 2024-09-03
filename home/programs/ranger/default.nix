@@ -45,7 +45,7 @@ in
         python3Packages.nbconvert
         transmission
         trash-cli
-        ueberzug
+        ueberzugpp
         unrar
         w3m
         xlsx2csv
