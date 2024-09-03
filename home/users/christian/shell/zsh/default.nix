@@ -21,7 +21,6 @@ in
       autosuggestion.enable = true;
       enableCompletion = true;
       autocd = true;
-      completionInit = optionalString pkgs.stdenv.isDarwin "autoload -U compinit && compinit -u";
       dotDir = ".config/zsh";
       dirHashes = {
         bb = "/mnt/bluecare/bluecare";
