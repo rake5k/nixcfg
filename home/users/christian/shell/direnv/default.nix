@@ -41,10 +41,5 @@ in
     home.sessionVariables = {
       DIRENV_LOG_FORMAT = "";
     };
-
-    nix.settings = mkIf nonNixosCfg.enable {
-      keep-derivations = true;
-      keep-outputs = true;
-    };
   };
 }
