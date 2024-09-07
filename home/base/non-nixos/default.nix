@@ -28,16 +28,6 @@ in
       '';
     };
 
-    nix = {
-      package = lib.mkForce pkgs.nix;
-      settings = {
-        experimental-features = [
-          "nix-command"
-          "flakes"
-        ];
-      };
-    };
-
     programs.zsh.envExtra = lib.mkAfter ''
       hash -f
 

@@ -19,7 +19,7 @@ inputs.home-manager.lib.homeManagerConfiguration {
   };
 
   modules = [
-    ./modules/nix-commons
+    ./modules/nix-home
     "${inputs.self}/hosts/${hostname}/home-${username}.nix"
   ] ++ homeModules;
 }
