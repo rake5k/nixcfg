@@ -5,18 +5,29 @@
   ...
 }:
 
-with lib;
-
 let
 
-  cfg = config.custom.roles.desktop.xserver.dunst;
+  cfg = config.custom.roles.desktop.notification;
+
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
 in
 
 {
   options = {
-    custom.roles.desktop.xserver.dunst = {
-      enable = mkEnableOption "Dunst desktop notification daemon";
+    custom.roles.desktop.notification = {
+      enable = mkEnableOption "Desktop notification daemon";
+
+      offset = mkOption {
+        description = "Positioning offset from the display corner";
+        type = types.str;
+        example = "15x40";
+      };
     };
   };
 
@@ -34,10 +45,11 @@ in
       };
       settings = {
         global = {
+          inherit (cfg) offset;
+
           monitor = 0;
           follow = "none";
           notification_limit = "6";
-          offset = "15x40";
           indicate_hidden = "true";
           sort = "true";
           idle_threshold = 2;

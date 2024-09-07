@@ -154,26 +154,29 @@ in
 
   config = mkIf cfg.enable {
     custom = {
-      roles.desktop.xserver = {
-        dmenu = {
+      roles.desktop = {
+        notification = {
           enable = true;
+          offset = "15x40";
         };
 
-        dunst = {
-          enable = true;
-        };
-
-        picom.enable = !cfg.lightweight;
-
-        polybar = {
-          enable = true;
-          inherit (xCfg) colorScheme;
-          font = {
-            inherit (desktopCfg.font) package;
-            config = desktopCfg.font.xft;
+        xserver = {
+          dmenu = {
+            enable = true;
           };
-          height = 20;
-          monitors.battery = desktopCfg.mobile.enable;
+
+          picom.enable = !cfg.lightweight;
+
+          polybar = {
+            enable = true;
+            inherit (xCfg) colorScheme;
+            font = {
+              inherit (desktopCfg.font) package;
+              config = desktopCfg.font.xft;
+            };
+            height = 20;
+            monitors.battery = desktopCfg.mobile.enable;
+          };
         };
       };
     };
