@@ -20,5 +20,13 @@ in
     };
   };
 
-  config = mkIf cfg.enable { home.packages = with pkgs; [ wl-clipboard ]; };
+  config = mkIf cfg.enable {
+    custom.roles.desktop.wayland.river.enable = true;
+
+    home.packages = with pkgs; [
+      wl-clipboard
+    ];
+
+    xsession.enable = true;
+  };
 }
