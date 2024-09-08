@@ -1,8 +1,8 @@
-{ lib, inputs, pkgs, ... } @args:
+{ lib, inputs, pkgs, ... }:
 
 let
 
-  nixCommons = import ../nix-commons args;
+  nixCommons = import ../nix-commons { inherit lib inputs pkgs; };
 
 in
 
