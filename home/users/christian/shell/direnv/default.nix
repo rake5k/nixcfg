@@ -5,7 +5,6 @@ with lib;
 let
 
   cfg = config.custom.users.christian.shell.direnv;
-  nonNixosCfg = config.custom.base.non-nixos;
 
 in
 
