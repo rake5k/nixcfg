@@ -4,6 +4,10 @@
   # Enable aliases with `sudo`
   sudo = "sudo ";
 
+  # Nix
+  nix-store-repair = "nix-store --verify --check-contents --repair";
+  nixos-generations = "nix profile history --profile /nix/var/nix/profiles/system";
+
   # System utilities
   df = "df -Tha --total";
   duh = "du -ach | sort -h";
