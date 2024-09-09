@@ -20,5 +20,7 @@ in
       dive
       skopeo
     ];
+
+    programs.k9s.enable = true;
   };
 }
