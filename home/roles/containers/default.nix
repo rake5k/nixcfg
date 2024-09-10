@@ -18,9 +18,14 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       dive
+      kubectl
       skopeo
     ];
 
     programs.k9s.enable = true;
+    programs.zsh.initExtra = ''
+      # kubectl autocompletion
+      source <(kubectl completion zsh)
+    '';
   };
 }
