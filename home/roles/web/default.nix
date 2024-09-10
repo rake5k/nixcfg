@@ -47,6 +47,7 @@ in
       _1password
       _1password-gui
       bind
+      protonmail-desktop
       wget
     ];
 
