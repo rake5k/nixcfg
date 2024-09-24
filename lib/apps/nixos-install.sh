@@ -17,7 +17,7 @@ test "${HOSTNAME}" || {
     exit 1
 }
 
-NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c || echo 0)
+NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c || true)
 readonly NUM_SUPPORTED_DISKS
 
 (( NUM_SUPPORTED_DISKS > 0 )) || {
@@ -26,7 +26,7 @@ readonly NUM_SUPPORTED_DISKS
     exit 1
 }
 
-NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c || echo 0)
+NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c || true)
 readonly NUM_NVME_DISKS
 
 is_nvme_disk() {
@@ -111,7 +111,7 @@ mount_filesystems() {
         CRYPT_VOL_STATUS="$(cryptsetup -q status "${ROOT_CRYPT}" || true)"
         readonly CRYPT_VOL_STATUS
         _log "[mount_filesystems] Volume encryption status is: ${CRYPT_VOL_STATUS}"
-        CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || echo 0)
+        CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || true)
         readonly CRYPT_VOL_NUM_ACTIVE
 	if (( CRYPT_VOL_NUM_ACTIVE < 1 )); then
             _log "[mount_filesystems] Volume is not active yet, we need to decrypt it."
