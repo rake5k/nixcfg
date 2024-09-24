@@ -81,8 +81,9 @@ create_filesystems() {
     mkfs.vfat -n "${BOOT_FS}" "${BOOT_PARTITION}"
     mkfs.btrfs -f  -L "${ROOT_FS}" "${root_partition}"
 
-    _log "[create_filesystems] Creating sub volumes"
     sleep 2
+
+    _log "[create_filesystems] Creating sub volumes"
     mount "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}"
     btrfs subvolume create "${MOUNT_ROOT}/@"
     btrfs subvolume create "${MOUNT_ROOT}/@home"
@@ -118,6 +119,8 @@ mount_filesystems() {
             decrypt_volumes
         fi
     fi
+
+    sleep 2
 
     _log "[mount_filesystems] Mounting file systems..."
 
