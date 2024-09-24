@@ -103,6 +103,22 @@ decrypt_volumes() {
 }
 
 mount_filesystems() {
+    _log "[mount_filesystems] Checking if we need to decrypt any disk..."
+    ROOT_PARTITION_TYPE=$(blkid -s "TYPE" -o "value" "${ROOT_PARTITION}")
+    readonly ROOT_PARTITION_TYPE
+    _log "[mount_filesystems] Root partition type is: ${ROOT_PARTITION_TYPE}"
+    if [[ "${ROOT_PARTITION_TYPE}" == "crypto_LUKS" ]]; then
+        CRYPT_VOL_STATUS="$(cryptsetup -q status "${ROOT_CRYPT}" || true)"
+        readonly CRYPT_VOL_STATUS
+        _log "[mount_filesystems] Volume encryption status is: ${CRYPT_VOL_STATUS}"
+        CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || echo 0)
+        readonly CRYPT_VOL_NUM_ACTIVE
+        if [[ ${CRYPT_VOL_NUM_ACTIVE} -lt 1 ]]; then
+            _log "[mount_filesystems] Volume is not active yet, we need to decrypt it."
+            decrypt_volumes
+        fi
+    fi
+
     _log "[mount_filesystems] Mounting file systems..."
 
     grep "${ROOT_PARTITION} ${MOUNT_ROOT} btrfs" "/proc/mounts" \
@@ -149,18 +165,6 @@ if _read_boolean "Do you want to DELETE ALL PARTITIONS?" N; then
 	create_filesystems "${ROOT_PARTITION}"
     fi
 
-fi
-
-ROOT_PARTITION_TYPE=$(blkid -s "TYPE" -o "value" "${ROOT_PARTITION}")
-readonly ROOT_PARTITION_TYPE
-if [[ "${ROOT_PARTITION_TYPE}" == "crypto_LUKS" ]]; then
-    CRYPT_VOL_STATUS="$(cryptsetup -q status "${ROOT_CRYPT}" || true)"
-    readonly CRYPT_VOL_STATUS
-    CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || echo 0)
-    readonly CRYPT_VOL_NUM_ACTIVE
-    if [[ ${CRYPT_VOL_NUM_ACTIVE} -lt 1 ]]; then
-        decrypt_volumes
-    fi
 fi
 
 # shellcheck disable=SC2310
