@@ -20,7 +20,7 @@ test "${HOSTNAME}" || {
 NUM_SUPPORTED_DISKS=$(echo "${DISK}" | grep -P "^/dev/(sd[a-z]|nvme[0-9]n[1-9])$" -c || echo 0)
 readonly NUM_SUPPORTED_DISKS
 
-[[ ${NUM_SUPPORTED_DISKS} -gt 0 ]] || {
+(( NUM_SUPPORTED_DISKS > 0 )) || {
     # shellcheck disable=SC2016
     echo '$DISK is not of format "/dev/sda" or "/dev/nvme0n1"!'
     exit 1
@@ -30,7 +30,7 @@ NUM_NVME_DISKS=$(echo "${DISK}" | grep "^/dev/nvme" -c || echo 0)
 readonly NUM_NVME_DISKS
 
 is_nvme_disk() {
-    [[ ${NUM_NVME_DISKS} -gt 0 ]]
+    (( NUM_NVME_DISKS > 0 ))
 }
 
 get_partition() {
@@ -113,7 +113,7 @@ mount_filesystems() {
         _log "[mount_filesystems] Volume encryption status is: ${CRYPT_VOL_STATUS}"
         CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || echo 0)
         readonly CRYPT_VOL_NUM_ACTIVE
-        if [[ ${CRYPT_VOL_NUM_ACTIVE} -lt 1 ]]; then
+	if (( CRYPT_VOL_NUM_ACTIVE < 1 )); then
             _log "[mount_filesystems] Volume is not active yet, we need to decrypt it."
             decrypt_volumes
         fi
