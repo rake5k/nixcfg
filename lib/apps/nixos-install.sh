@@ -82,6 +82,7 @@ create_filesystems() {
     mkfs.btrfs -f  -L "${ROOT_FS}" "${root_partition}"
 
     _log "[create_filesystems] Creating sub volumes"
+    sleep 2
     mount "/dev/disk/by-label/${ROOT_FS}" "${MOUNT_ROOT}"
     btrfs subvolume create "${MOUNT_ROOT}/@"
     btrfs subvolume create "${MOUNT_ROOT}/@home"
