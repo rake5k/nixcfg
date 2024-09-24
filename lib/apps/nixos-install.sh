@@ -112,7 +112,7 @@ mount_filesystems() {
         CRYPT_VOL_STATUS="$(cryptsetup -q status "${ROOT_CRYPT}" || true)"
         readonly CRYPT_VOL_STATUS
         _log "[mount_filesystems] Volume encryption status is: ${CRYPT_VOL_STATUS}"
-        CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active.$" -c || true)
+        CRYPT_VOL_NUM_ACTIVE=$(echo "${CRYPT_VOL_STATUS}" | grep "^/dev/mapper/${ROOT_CRYPT} is active" -c || true)
         readonly CRYPT_VOL_NUM_ACTIVE
 	if (( CRYPT_VOL_NUM_ACTIVE < 1 )); then
             _log "[mount_filesystems] Volume is not active yet, we need to decrypt it."
