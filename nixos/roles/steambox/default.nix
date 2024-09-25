@@ -38,6 +38,8 @@ in
       lutris
 
       # Games
+      pinball
+      space-cadet-pinball
       superTux
       superTuxKart
 
