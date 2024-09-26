@@ -157,7 +157,7 @@ After rebooting proceed with the [next section](#nixos-config-setup).
 #### NixOS config setup
 
 ```shell
-sudo nix run github:rake5k/nixcfg#setup -- git@github.com:rake5k/nixcfg.git
+sudo nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 ```
 
 ### Non-NixOS
@@ -176,7 +176,7 @@ sh <(curl -L https://nixos.org/nix/install) --no-channel-add --no-modify-profile
 
 ```shell
 # Set up this Nix configuration
-nix run github:rake5k/nixcfg#setup -- git@github.com:rake5k/nixcfg.git
+nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 
 # set login shell
 chsh -s /bin/zsh
