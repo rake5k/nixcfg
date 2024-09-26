@@ -44,8 +44,8 @@ in
     };
 
     home.packages = with pkgs; [
-      _1password
-      _1password-gui
+      unstable._1password
+      unstable._1password-gui
       bind
       unstable.protonmail-desktop
       wget

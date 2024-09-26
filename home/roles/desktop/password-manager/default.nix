@@ -16,7 +16,7 @@ in
 
       package = mkOption {
         type = types.package;
-        default = pkgs._1password;
+        default = pkgs.unstable._1password;
         description = "Password manager package";
       };
 
