@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      autosuggestion.enable = true;
+      #autosuggestion.enable = true;
       enableCompletion = true;
       autocd = true;
       dotDir = ".config/zsh";
@@ -67,7 +67,7 @@ in
         G = "| grep";
         UUID = "$(uuidgen | tr -d \\n)";
       };
-      syntaxHighlighting.enable = true;
+      #syntaxHighlighting.enable = true;
     };
   };
 }

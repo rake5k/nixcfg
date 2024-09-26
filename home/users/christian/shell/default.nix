@@ -74,7 +74,7 @@ in
 
     programs = {
       bat.enable = true;
-      eza.enable = true;
+      #eza.enable = true;
       fzf.enable = true;
       jq.enable = true;
       starship.enable = true;

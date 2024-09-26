@@ -38,7 +38,7 @@
   # Misc
 
   markdownlint = pkgs.runCommand "check-markdownlint"
-    { buildInputs = [ pkgs.markdownlint-cli ]; }
+    { buildInputs = [ pkgs.unstable.markdownlint-cli ]; }
     ''
       mkdir $out
       cd ${flake}

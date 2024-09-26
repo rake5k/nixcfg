@@ -35,113 +35,113 @@ in
     programs.firefox = {
       inherit (cfg) enable;
 
-      policies = {
-        PasswordManagerEnabled = false;
-        DisableFirefoxAccounts = false;
-        DisableFirefoxStudies = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        EnableTrackingProtection = {
-          Value = true;
-          Locked = true;
-          Cryptomining = true;
-          Fingerprinting = true;
-          EmailTracking = true;
-        };
-        FirefoxHome = {
-          Search = true;
-          TopSites = true;
-          SponsoredTopSites = false;
-          Highlights = false;
-          Locked = true;
-        };
-        HomePage = {
-          URL = cfg.homepage;
-          StartPage = "homepage-locked";
-          Locked = true;
-        };
-        HttpsOnlyMode = "force_enabled";
-        OfferToSaveLogins = false;
-        Preferences = {
-          "browser.newtabpage.pinned" = [
-            {
-              label = "Blog";
-              url = "https://blog.harke.ch";
-            }
-            {
-              label = "Cloud";
-              url = "https://cloud.harke.ch";
-            }
-            {
-              label = "Code";
-              url = "https://code.harke.ch";
-            }
-            {
-              label = "News";
-              url = "https://news.harke.ch";
-            }
-            {
-              label = "ProtonMail";
-              url = "https://mail.proton.me";
-            }
-          ];
-          "browser.search.suggest.enabled" = false;
-          "browser.search.region" = "CH";
-          "cookiebanners.service.mode" = 1;
-          "cookiebanners.service.mode.privateBrowsing" = 1;
-        };
-      };
+      #policies = {
+      #  PasswordManagerEnabled = false;
+      #  DisableFirefoxAccounts = false;
+      #  DisableFirefoxStudies = true;
+      #  DisablePocket = true;
+      #  DisableTelemetry = true;
+      #  EnableTrackingProtection = {
+      #    Value = true;
+      #    Locked = true;
+      #    Cryptomining = true;
+      #    Fingerprinting = true;
+      #    EmailTracking = true;
+      #  };
+      #  FirefoxHome = {
+      #    Search = true;
+      #    TopSites = true;
+      #    SponsoredTopSites = false;
+      #    Highlights = false;
+      #    Locked = true;
+      #  };
+      #  HomePage = {
+      #    URL = cfg.homepage;
+      #    StartPage = "homepage-locked";
+      #    Locked = true;
+      #  };
+      #  HttpsOnlyMode = "force_enabled";
+      #  OfferToSaveLogins = false;
+      #  Preferences = {
+      #    "browser.newtabpage.pinned" = [
+      #      {
+      #        label = "Blog";
+      #        url = "https://blog.harke.ch";
+      #      }
+      #      {
+      #        label = "Cloud";
+      #        url = "https://cloud.harke.ch";
+      #      }
+      #      {
+      #        label = "Code";
+      #        url = "https://code.harke.ch";
+      #      }
+      #      {
+      #        label = "News";
+      #        url = "https://news.harke.ch";
+      #      }
+      #      {
+      #        label = "ProtonMail";
+      #        url = "https://mail.proton.me";
+      #      }
+      #    ];
+      #    "browser.search.suggest.enabled" = false;
+      #    "browser.search.region" = "CH";
+      #    "cookiebanners.service.mode" = 1;
+      #    "cookiebanners.service.mode.privateBrowsing" = 1;
+      #  };
+      #};
 
       profiles."ztbvdcs8.default" = {
         inherit (cfg) extensions;
 
         isDefault = true;
 
-        containers = {
-          personal = {
-            color = "turquoise";
-            icon = "fingerprint";
-            id = 1;
-            name = "Personal";
-          };
-          personal_admin = {
-            color = "pink";
-            icon = "fingerprint";
-            id = 2;
-            name = "Personal Admin";
-          };
-          work = {
-            color = "orange";
-            icon = "briefcase";
-            id = 3;
-            name = "Work";
-          };
-          shopping = {
-            color = "blue";
-            icon = "cart";
-            id = 4;
-            name = "Shopping";
-          };
-          banking = {
-            color = "green";
-            icon = "dollar";
-            id = 5;
-            name = "Banking";
-          };
-          danger = {
-            color = "red";
-            icon = "fruit";
-            id = 6;
-            name = "Danger Zone";
-          };
-          Facebook = {
-            color = "toolbar";
-            icon = "fence";
-            id = 7;
-            name = "Facebook";
-          };
-        };
-        containersForce = true;
+        #containers = {
+        #  personal = {
+        #    color = "turquoise";
+        #    icon = "fingerprint";
+        #    id = 1;
+        #    name = "Personal";
+        #  };
+        #  personal_admin = {
+        #    color = "pink";
+        #    icon = "fingerprint";
+        #    id = 2;
+        #    name = "Personal Admin";
+        #  };
+        #  work = {
+        #    color = "orange";
+        #    icon = "briefcase";
+        #    id = 3;
+        #    name = "Work";
+        #  };
+        #  shopping = {
+        #    color = "blue";
+        #    icon = "cart";
+        #    id = 4;
+        #    name = "Shopping";
+        #  };
+        #  banking = {
+        #    color = "green";
+        #    icon = "dollar";
+        #    id = 5;
+        #    name = "Banking";
+        #  };
+        #  danger = {
+        #    color = "red";
+        #    icon = "fruit";
+        #    id = 6;
+        #    name = "Danger Zone";
+        #  };
+        #  Facebook = {
+        #    color = "toolbar";
+        #    icon = "fence";
+        #    id = 7;
+        #    name = "Facebook";
+        #  };
+        #};
+        #containersForce = true;
 
         search =
           let

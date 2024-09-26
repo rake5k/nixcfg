@@ -30,7 +30,6 @@ in
         office.cli.enable = config.custom.roles.office.cli.enable;
         shell.enable = true;
         ssh.enable = true;
-        steam.enable = config.custom.roles.gaming.enable;
         vim.enable = true;
       };
     };

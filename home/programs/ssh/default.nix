@@ -32,6 +32,6 @@ in
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
 
-    services.ssh-agent.enable = true;
+    #services.ssh-agent.enable = true;
   };
 }

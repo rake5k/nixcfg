@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -6,7 +6,7 @@ let
 
   cfg = config.custom.users.christian.gpg;
 
-  pinentryPkg = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3;
+  #pinentryPkg = if pkgs.stdenv.isDarwin then pkgs.pinentry_mac else pkgs.pinentry-gnome3;
 
 in
 
@@ -20,6 +20,6 @@ in
   config = mkIf cfg.enable {
     programs.gpg.enable = true;
 
-    services.gpg-agent.pinentryPackage = pinentryPkg;
+    #services.gpg-agent.pinentryPackage = pinentryPkg;
   };
 }
