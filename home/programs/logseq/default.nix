@@ -16,6 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ pkgs.unstable.logseq ];
+    home.packages = [ pkgs.logseq ];
   };
 }
