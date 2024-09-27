@@ -71,6 +71,11 @@ in
         keyboard = mkEnableOption "Keyboard layout monitor" // { default = true; };
         memory = mkEnableOption "Memory monitor" // { default = true; };
         temperature = mkEnableOption "Temperature monitor" // { default = true; };
+        temperature-source = mkOption {
+          type = types.string;
+          default = "";
+          description = "Temperature source path";
+        };
         volume = mkEnableOption "Volume monitor" // { default = true; };
         weather = mkEnableOption "Weather monitor" // { default = true; };
       };
@@ -274,6 +279,7 @@ in
           type = "internal/temperature";
           interval = 2;
           thermal-zone = 0;
+          hwmon-path = cfg.monitors.temperature-source;
           units = true;
           base-temperature = 20;
           warn-temperature = 65;

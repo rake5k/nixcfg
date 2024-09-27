@@ -71,6 +71,7 @@ in
       gnome.nautilus
       gnome.pomodoro
       gnome.seahorse
+      psensor
     ];
 
     services.gnome-keyring.enable = true;
