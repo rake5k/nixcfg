@@ -4,7 +4,8 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.desktop.xserver;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.xserver;
 
 in
 
@@ -51,7 +52,29 @@ in
             cursors.enable = true;
             grobi.enable = true;
             redshift.enable = true;
-            xmonad.enable = true;
+
+            xmonad = {
+              inherit (cfg) colorScheme;
+
+              enable = true;
+              autoruns = {
+                "${desktopCfg.terminal.spawnCmd}" = 1;
+                "blueberry-tray" = 1;
+                "nm-applet" = 1;
+                "parcellite" = 1;
+                "steam -silent" = 8;
+              };
+              launcherCmd = "dmenu_run -c -i -fn \"${desktopCfg.font.family}:style=Bold:size=20:antialias=true\" -l 8 -nf \"#C5C8C6\" -sb \"#373B41\" -sf \"#C5C8C6\" -p \"run:\"";
+              terminalCmd = mkDefault desktopCfg.terminal.spawnCmd;
+              passwordManager = {
+                command = mkDefault "1password";
+                wmClassName = mkDefault "1Password";
+              };
+              wiki = {
+                command = mkDefault "logseq";
+                wmClassName = mkDefault "Logseq";
+              };
+            };
           };
         };
       };

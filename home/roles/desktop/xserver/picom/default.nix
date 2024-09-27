@@ -4,13 +4,13 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.picom;
+  cfg = config.custom.roles.desktop.xserver.picom;
 
 in
 
 {
   options = {
-    custom.programs.picom = {
+    custom.roles.desktop.xserver.picom = {
       enable = mkEnableOption "Picom compositor";
     };
   };

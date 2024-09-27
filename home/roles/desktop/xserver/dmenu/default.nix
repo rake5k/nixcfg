@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.dmenu;
+  cfg = config.custom.roles.desktop.xserver.dmenu;
 
   dmenuPatched = pkgs.dmenu.override {
     patches = builtins.map builtins.fetchurl [
@@ -23,7 +23,7 @@ in
 
 {
   options = {
-    custom.programs.dmenu = {
+    custom.roles.desktop.xserver.dmenu = {
       enable = mkEnableOption "Dmenu launcher";
 
       font = {
