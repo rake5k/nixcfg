@@ -14,6 +14,7 @@ in
   options = {
     custom.roles.desktop.xserver.xmonad = {
       enable = mkEnableOption "Xmonad window manager";
+      lightweight = mkEnableOption "Disable resource intensive effects";
     };
   };
 
@@ -34,7 +35,7 @@ in
           };
         };
 
-        picom.enable = true;
+        picom.enable = !cfg.lightweight;
 
         polybar = {
           enable = true;
