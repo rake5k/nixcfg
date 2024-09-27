@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.polybar;
+  cfg = config.custom.roles.desktop.xserver.polybar;
 
   package = pkgs.polybar.override {
     pulseSupport = true;
@@ -14,7 +14,7 @@ in
 
 {
   options = {
-    custom.programs.polybar = {
+    custom.roles.desktop.xserver.polybar = {
       enable = mkEnableOption "Polybar status bar";
 
       colorScheme = {

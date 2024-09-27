@@ -4,13 +4,13 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.dunst;
+  cfg = config.custom.roles.desktop.xserver.dunst;
 
 in
 
 {
   options = {
-    custom.programs.dunst = {
+    custom.roles.desktop.xserver.dunst = {
       enable = mkEnableOption "Dunst desktop notification daemon";
 
       font = {
