@@ -4,14 +4,14 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.mobile;
+  cfg = config.custom.roles.laptop;
 
 in
 
 {
   options = {
-    custom.roles.mobile = {
-      enable = mkEnableOption "Mobile computer config";
+    custom.roles.laptop = {
+      enable = mkEnableOption "Laptop computer config";
     };
   };
 
