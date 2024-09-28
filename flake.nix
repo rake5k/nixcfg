@@ -79,6 +79,15 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    # Misc
+
+    wallpapers = {
+      type = "gitlab";
+      owner = "rake5k";
+      repo = "wallpapers";
+      flake = false;
+    };
   };
 
   outputs = { self, nixpkgs, ... } @ inputs:

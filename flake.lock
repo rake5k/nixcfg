@@ -501,7 +501,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nur": "nur",
         "pre-commit-hooks": "pre-commit-hooks",
-        "systems": "systems"
+        "systems": "systems",
+        "wallpapers": "wallpapers"
       }
     },
     "scss-reset": {
@@ -533,6 +534,22 @@
         "owner": "nix-systems",
         "repo": "default",
         "type": "github"
+      }
+    },
+    "wallpapers": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1628696441,
+        "narHash": "sha256-6Xx2Sqz6Ed07tVj9bJ+pNI2hYdjBLPQYSUDbfE1TKXk=",
+        "owner": "rake5k",
+        "repo": "wallpapers",
+        "rev": "e8e0b8e7a9077ddc6a8b94bf7dc118e3fae65772",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "rake5k",
+        "repo": "wallpapers",
+        "type": "gitlab"
       }
     }
   },
