@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 
 with lib;
 
@@ -50,7 +50,6 @@ in
         desktop = {
           xserver = {
             cursors.enable = true;
-            grobi.enable = true;
             locker.enable = true;
             redshift.enable = true;
 
@@ -100,7 +99,8 @@ in
     xsession = {
       enable = true;
       initExtra = ''
-        ${lib.getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+        ${getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+        ${optionalString (!cfg.grobi.enable) "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"}
       '';
       numlock.enable = true;
     };
