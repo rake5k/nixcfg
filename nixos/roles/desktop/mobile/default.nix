@@ -4,22 +4,18 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.laptop;
+  cfg = config.custom.roles.desktop.mobile;
 
 in
 
 {
   options = {
-    custom.roles.laptop = {
-      enable = mkEnableOption "Laptop computer config";
+    custom.roles.desktop.mobile = {
+      enable = mkEnableOption "Mobile computer config";
     };
   };
 
   config = mkIf cfg.enable {
-    custom.programs = {
-      direnv.enable = true;
-    };
-
     services = {
       logind = {
         lidSwitch = "suspend-then-hibernate";
