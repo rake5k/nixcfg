@@ -27,6 +27,8 @@ in
         lidSwitchExternalPower = "lock";
       };
 
+      thermald.enable = true;
+      tlp.enable = true;
       upower.enable = true;
 
       xserver = {
