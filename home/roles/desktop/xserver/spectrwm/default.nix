@@ -19,8 +19,6 @@ in
 
   config = mkIf cfg.enable {
     custom.programs.spectrwm = {
-      inherit (xCfg) locker;
-
       autoruns = {
         "alacritty" = 1;
       };

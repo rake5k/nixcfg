@@ -44,12 +44,6 @@ in
           description = "Font config";
         };
       };
-
-      wallpapersDir = mkOption {
-        type = types.path;
-        default = config.home.homeDirectory + "/Pictures/wallpapers";
-        description = "Directory containing wallpapers";
-      };
     };
   };
 

@@ -1,18 +1,18 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 
 with lib;
 
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  xCfg = desktopCfg.xserver;
-  cfg = xCfg.locker;
+  cfg = config.custom.roles.desktop.xserver.locker;
 
 in
 
 {
   options = {
     custom.roles.desktop.xserver.locker = {
+      enable = mkEnableOption "Xorg screen locker";
+
       package = mkOption {
         type = types.package;
         default = pkgs.betterlockscreen;
@@ -27,7 +27,7 @@ in
     };
   };
 
-  config = mkIf xCfg.enable {
+  config = mkIf cfg.enable {
     home.packages = [
       cfg.package
     ] ++ (with pkgs; [
@@ -58,7 +58,7 @@ in
 
     # Update random lock image on login
     xsession.initExtra = ''
-      ${lib.getExe pkgs.betterlockscreen} --update ${desktopCfg.wallpapersDir} --fx dim &
+      ${lib.getExe pkgs.betterlockscreen} --update ${inputs.wallpapers} --fx dim &
     '';
   };
 }

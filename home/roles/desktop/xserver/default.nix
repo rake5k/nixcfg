@@ -51,6 +51,7 @@ in
           xserver = {
             cursors.enable = true;
             grobi.enable = true;
+            locker.enable = true;
             redshift.enable = true;
 
             xmonad = {
