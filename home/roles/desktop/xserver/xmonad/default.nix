@@ -81,13 +81,13 @@ in
       locker = {
         package = mkOption {
           type = types.package;
-          default = pkgs.i3lock;
+          default = xCfg.locker.package;
           description = "Locker util";
         };
 
         lockCmd = mkOption {
           type = types.str;
-          default = "${pkgs.i3lock}/bin/i3lock";
+          default = xCfg.locker.lockCmd;
           description = "Command for locking screen";
         };
       };
