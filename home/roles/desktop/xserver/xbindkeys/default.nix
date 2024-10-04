@@ -4,9 +4,35 @@ with lib;
 
 let
 
-  xCfg = config.custom.roles.desktop.xserver;
-  cfg = xCfg.xbindkeys;
-  terminalCfg = xCfg.terminal;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.xserver.xbindkeys;
+  terminalCfg = desktopCfg.terminal;
+
+  defaultKeymap = {
+    XF86AudioLowerVolume = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+    XF86AudioRaiseVolume = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+    XF86AudioMute = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+    XF86AudioMicMute = "wpctl set-source-mute @DEFAULT_SOURCE@ toggle";
+    XF86AudioPlay = "playerctl play-pause";
+    XF86AudioStop = "playerctl stop";
+    XF86AudioPause = "playerctl pause";
+    XF86AudioNext = "playerctl next";
+    XF86AudioPrev = "playerctl previous";
+    XF86Bluetooth = "${getExe pkgs.bash} -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\"";
+    XF86MonBrightnessDown = "brightnessctl set 10%-";
+    XF86MonBrightnessUp = "brightnessctl set 10%+";
+    XF86Calculator = "${terminalCfg.commandSpawnCmd} ${getExe pkgs.eva}";
+    XF86Explorer = "${terminalCfg.commandSpawnCmd} ${getExe pkgs.ranger}";
+    XF86HomePage = "xdg-open";
+  };
+
+  mkRcEntry = keymap:
+    concatStringsSep "\n" (
+      mapAttrsToList (code: command: ''
+        "${command}"
+          ${code}
+      '') keymap
+    );
 
 in
 
@@ -14,6 +40,12 @@ in
   options = {
     custom.roles.desktop.xserver.xbindkeys = {
       enable = mkEnableOption "Xbindkeys";
+
+      keymap = mkOption {
+        type = with types; attrsOf str;
+        description = "Key mapping";
+        default = defaultKeymap;
+      };
     };
   };
 
@@ -21,60 +53,15 @@ in
     custom.roles.desktop.terminal.enable = true;
 
     home.packages = with pkgs; [
-      # Audio control
-      playerctl
-
-      xbindkeys
-    ] + [
       terminalCfg.package
+
+      brightnessctl
+      playerctl
+      xbindkeys
     ];
 
     xdg.configFile."xbindkeysrc" = {
-      text = ''
-        "pactl set-sink-volume 0 -5%"
-          XF86AudioLowerVolume
-
-        "pactl set-sink-volume 0 +5%"
-          XF86AudioRaiseVolume
-
-        "pactl set-sink-mute 0 toggle"
-          XF86AudioMute
-
-        "pactl set-source-mute 1 toggle"
-          XF86AudioMicMute
-
-        "playerctl play"
-          XF86AudioPlay
-
-        "playerctl stop"
-          XF86AudioStop
-
-        "playerctl pause"
-          XF86AudioPause
-
-        "playerctl next"
-          XF86AudioNext
-
-        "playerctl previous"
-          XF86AudioPrev
-
-        "bash -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\""
-          XF86Bluetooth
-
-        # FIXME Only working once?
-        "${terminalCfg.commandSpawnCmd} eva"
-          XF86Calculator
-
-        "${terminalCfg.commandSpawnCmd} ranger"
-          XF86Explorer
-
-        "xdg-open"
-          XF86HomePage
-
-        # TODO:
-        #"gsettings"
-        #  XF86Tools
-      '';
+      text = mkRcEntry (defaultKeymap // cfg.keymap);
       target = config.home.homeDirectory + "/.xbindkeysrc";
     };
 

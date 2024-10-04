@@ -52,6 +52,7 @@ in
             cursors.enable = true;
             locker.enable = true;
             redshift.enable = true;
+            xbindkeys.enable = true;
 
             xmonad = {
               inherit (cfg) colorScheme;
