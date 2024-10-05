@@ -6,6 +6,11 @@ let
 
   cfg = config.custom.roles.desktop.xserver.grobi;
 
+  fallbackRule = {
+    name = "Fallback";
+    configure_single = cfg.fallbackOutput;
+  };
+
 in
 
 {
@@ -13,9 +18,16 @@ in
     custom.roles.desktop.xserver.grobi = {
       enable = mkEnableOption "Grobi config";
 
+      fallbackOutput = mkOption {
+        type = types.str;
+        description = "Fallback output if no rule matches";
+      };
+
       rules = mkOption {
         type = with types; listOf attrs;
-        default = [ ];
+        default = [
+          fallbackRule
+        ];
         description = "Grobi rules";
       };
     };
@@ -30,8 +42,8 @@ in
     programs.feh.enable = true;
 
     services.grobi = {
-      inherit (cfg) rules;
       enable = true;
+      rules = cfg.rules ++ [ fallbackRule ];
       executeAfter = [
         "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"
         "${pkgs.polybar}/bin/polybar-msg cmd restart"
