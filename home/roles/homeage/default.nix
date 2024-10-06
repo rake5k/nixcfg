@@ -24,9 +24,17 @@ in
         description = "Secrets to install.";
       };
 
+      secretsBasePath = mkOption {
+        type = types.str;
+        default = "${inputs.self}/secrets/home";
+        description = ''
+          Base path to the homeage secrets.
+        '';
+      };
+
       secretsSourcePath = mkOption {
         type = types.path;
-        default = "${inputs.self}/secrets/${config.home.username}";
+        default = "${cfg.secretsBasePath}/${config.home.username}";
         description = "Default source path of the encrypted files.";
       };
 
