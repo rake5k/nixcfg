@@ -12,12 +12,6 @@ in
   options = {
     custom.roles.dev.scala = {
       enable = mkEnableOption "Scala";
-
-      repositories = mkOption {
-        type = types.str;
-        default = "";
-        description = "Lines to be added into repositories config";
-      };
     };
   };
 
@@ -25,7 +19,6 @@ in
     home = {
       packages = with pkgs; [
         ammonite # REPL
-        sbt
       ];
 
       file = {
@@ -33,7 +26,6 @@ in
           recursive = true;
           source = ./config;
         };
-        ".sbt/repositories".text = cfg.repositories;
       };
     };
   };
