@@ -1,11 +1,17 @@
-{ pkgs, system, args, ... }:
+{
+  pkgs,
+  system,
+  args,
+  ...
+}:
 
 let
 
-  preCommitShellHook = (import ./modules/pre-commit-checks {
-    inherit system pkgs;
-    inherit (args) flake;
-  }).shellHook;
+  preCommitShellHook =
+    (import ./modules/pre-commit-checks {
+      inherit system pkgs;
+      inherit (args) flake;
+    }).shellHook;
 
 in
 

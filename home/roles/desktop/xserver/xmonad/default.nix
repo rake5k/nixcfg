@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -18,7 +23,11 @@ in
       lightweight = mkEnableOption "Disable resource intensive effects";
 
       modKey = mkOption {
-        type = types.enum [ "mod1" "mod2" "mod4" ];
+        type = types.enum [
+          "mod1"
+          "mod2"
+          "mod4"
+        ];
         default = "mod4";
         description = ''
           The window manager mod key.

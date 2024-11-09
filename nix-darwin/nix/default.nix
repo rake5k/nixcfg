@@ -1,3 +1,1 @@
-{
-  nix.settings.auto-optimise-store = true;
-}
+{ nix.settings.auto-optimise-store = true; }

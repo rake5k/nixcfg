@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -26,14 +31,13 @@ let
     XF86HomePage = "xdg-open";
   };
 
-  mkRcEntry = keymap:
+  mkRcEntry =
+    keymap:
     concatStringsSep "\n" (
-      mapAttrsToList
-        (code: command: ''
-          "${command}"
-            ${code}
-        '')
-        keymap
+      mapAttrsToList (code: command: ''
+        "${command}"
+          ${code}
+      '') keymap
     );
 
 in

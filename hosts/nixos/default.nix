@@ -2,7 +2,10 @@
   imports = [ ./hardware ];
 
   custom = {
-    base.users = [ "demo" "christian" ];
+    base.users = [
+      "demo"
+      "christian"
+    ];
     roles = {
       android.enable = true;
       containers.enable = true;

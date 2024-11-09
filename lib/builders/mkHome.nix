@@ -1,4 +1,10 @@
-{ inputs, pkgs, homeModules, name, ... }:
+{
+  inputs,
+  pkgs,
+  homeModules,
+  name,
+  ...
+}:
 
 let
 

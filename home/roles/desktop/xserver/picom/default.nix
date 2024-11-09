@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -19,9 +24,10 @@ in
     services.picom = {
       enable = true;
       package =
-        if config.custom.base.non-nixos.enable
-        then (config.lib.custom.nixGLWrap pkgs.picom)
-        else pkgs.picom;
+        if config.custom.base.non-nixos.enable then
+          (config.lib.custom.nixGLWrap pkgs.picom)
+        else
+          pkgs.picom;
       backend = "glx";
       settings = {
         blur = {

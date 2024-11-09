@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -16,12 +21,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      reveal-md
-    ]
-    ++ optionals pkgs.stdenv.isLinux [
-      libreoffice
-      openjdk
-    ];
+    home.packages =
+      with pkgs;
+      [ reveal-md ]
+      ++ optionals pkgs.stdenv.isLinux [
+        libreoffice
+        openjdk
+      ];
   };
 }

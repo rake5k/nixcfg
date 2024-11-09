@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -8,9 +13,10 @@ let
   cfg = desktopCfg.terminal;
 
   alacritty =
-    if config.custom.base.non-nixos.enable
-    then (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
-    else pkgs.alacritty;
+    if config.custom.base.non-nixos.enable then
+      (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
+    else
+      pkgs.alacritty;
 
 in
 
@@ -39,82 +45,79 @@ in
     };
   };
 
-  config = mkIf cfg.enable
-    {
-      home = {
-        packages = with pkgs; [
-          desktopCfg.font.package
-        ];
+  config = mkIf cfg.enable {
+    home = {
+      packages = with pkgs; [ desktopCfg.font.package ];
 
-        sessionVariables = {
-          TERMINAL = cfg.spawnCmd;
-          TERMCMD = cfg.spawnCmd;
-        };
-      };
-
-      programs.alacritty = {
-        enable = true;
-        package = alacritty;
-        settings = {
-          env = {
-            TERM = "xterm-256color";
-            WINIT_X11_SCALE_FACTOR = "1";
-          };
-          window = {
-            dynamic_padding = true;
-            opacity = 0.95;
-          };
-          font =
-            let
-              fontFamily = "${desktopCfg.font.family}";
-            in
-            {
-              normal = {
-                family = fontFamily;
-                style = "SemiBold";
-              };
-              bold = {
-                family = fontFamily;
-                style = "Bold";
-              };
-              italic = {
-                family = fontFamily;
-                style = "Italic";
-              };
-              bold_italic = {
-                family = fontFamily;
-                style = "Bold Italic";
-              };
-              size = 11.5;
-            };
-          keyboard.bindings = [
-            {
-              key = "Key0";
-              mods = "Control";
-              action = "ResetFontSize";
-            }
-            {
-              key = "Numpad0";
-              mods = "Control";
-              action = "ResetFontSize";
-            }
-            {
-              key = "NumpadAdd";
-              mods = "Control";
-              action = "IncreaseFontSize";
-            }
-            {
-              key = "Plus";
-              mods = "Control|Shift";
-              action = "IncreaseFontSize";
-            }
-            {
-              key = "NumpadSubtract";
-              mods = "Control";
-              action = "DecreaseFontSize";
-            }
-          ];
-        };
+      sessionVariables = {
+        TERMINAL = cfg.spawnCmd;
+        TERMCMD = cfg.spawnCmd;
       };
     };
+
+    programs.alacritty = {
+      enable = true;
+      package = alacritty;
+      settings = {
+        env = {
+          TERM = "xterm-256color";
+          WINIT_X11_SCALE_FACTOR = "1";
+        };
+        window = {
+          dynamic_padding = true;
+          opacity = 0.95;
+        };
+        font =
+          let
+            fontFamily = "${desktopCfg.font.family}";
+          in
+          {
+            normal = {
+              family = fontFamily;
+              style = "SemiBold";
+            };
+            bold = {
+              family = fontFamily;
+              style = "Bold";
+            };
+            italic = {
+              family = fontFamily;
+              style = "Italic";
+            };
+            bold_italic = {
+              family = fontFamily;
+              style = "Bold Italic";
+            };
+            size = 11.5;
+          };
+        keyboard.bindings = [
+          {
+            key = "Key0";
+            mods = "Control";
+            action = "ResetFontSize";
+          }
+          {
+            key = "Numpad0";
+            mods = "Control";
+            action = "ResetFontSize";
+          }
+          {
+            key = "NumpadAdd";
+            mods = "Control";
+            action = "IncreaseFontSize";
+          }
+          {
+            key = "Plus";
+            mods = "Control|Shift";
+            action = "IncreaseFontSize";
+          }
+          {
+            key = "NumpadSubtract";
+            mods = "Control";
+            action = "DecreaseFontSize";
+          }
+        ];
+      };
+    };
+  };
 }

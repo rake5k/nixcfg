@@ -6,13 +6,12 @@ let
 
   cfg = config.custom.users.christian.steam;
 
-  mkCfgs = filename:
+  mkCfgs =
+    filename:
     let
       csgoCfgPath = "Steam/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg";
     in
-    nameValuePair "${csgoCfgPath}/${filename}.cfg" {
-      source = ./data/${filename}.cfg;
-    };
+    nameValuePair "${csgoCfgPath}/${filename}.cfg" { source = ./data/${filename}.cfg; };
 
 in
 
@@ -24,15 +23,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    xdg.dataFile = listToAttrs (map mkCfgs [
-      "autoexec"
-      "binds"
-      "crosshair"
-      "hud"
-      "input"
-      "myconf"
-      "net"
-    ]
+    xdg.dataFile = listToAttrs (
+      map mkCfgs [
+        "autoexec"
+        "binds"
+        "crosshair"
+        "hud"
+        "input"
+        "myconf"
+        "net"
+      ]
     );
   };
 }

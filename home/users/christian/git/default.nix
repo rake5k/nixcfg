@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -7,9 +12,10 @@ let
   cfg = config.custom.users.christian.git;
 
   credentialHelper =
-    if pkgs.stdenv.isDarwin
-    then "${pkgs.gitFull}/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain"
-    else "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
+    if pkgs.stdenv.isDarwin then
+      "${pkgs.gitFull}/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain"
+    else
+      "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
 
 in
 
@@ -23,9 +29,7 @@ in
   config = mkIf cfg.enable {
     custom.programs.lazygit.enable = true;
 
-    home.packages = with pkgs; [
-      git-crypt
-    ];
+    home.packages = with pkgs; [ git-crypt ];
 
     programs.git = {
       enable = true;
@@ -84,7 +88,6 @@ in
         # Global/OSX
         ".DS_Store"
 
-
         # Community/Nix
         #
 
@@ -94,7 +97,6 @@ in
         # Ignore build outputs from performing a nix-build or `nix build` command
         "result"
         "result-*"
-
 
         # Global/Archives
         #
@@ -132,7 +134,6 @@ in
         "*.msp"
         "*.txz"
 
-
         # Global/Backup
         #
 
@@ -142,19 +143,16 @@ in
         "*.orig"
         "*.tmp"
 
-
         # Global/Diff
         #
 
         "*.patch"
         "*.diff"
 
-
         # Global/Ansible
         #
 
         "*.retry"
-
 
         # Global/Jetbrains
         #
@@ -237,13 +235,11 @@ in
         # Android studio 3.1+ serialized cache file
         ".idea/caches/build_file_checksums.ser"
 
-
         # Global/LibreOffice
         #
 
         # LibreOffice locks
         ".~lock.*#"
-
 
         # Global/SBT
         #
@@ -261,7 +257,6 @@ in
         ".cache"
         ".lib/"
 
-
         # Global/Vagrant
         #
 
@@ -270,7 +265,6 @@ in
 
         # Log files (if you are creating logs in debug mode, uncomment this)
         "*.log"
-
 
         # Global/Vim
         #
@@ -294,7 +288,6 @@ in
         "tags"
         # Persistent undo
         "[._]*.un~"
-
 
         # Global/VisualStudioCode
         #

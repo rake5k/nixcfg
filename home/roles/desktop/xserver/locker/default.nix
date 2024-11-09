@@ -1,4 +1,10 @@
-{ config, lib, inputs, pkgs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -28,11 +34,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [
-      cfg.package
-    ] ++ (with pkgs; [
-      playerctl
-    ]);
+    home.packages = [ cfg.package ] ++ (with pkgs; [ playerctl ]);
 
     services = {
       caffeine.enable = true;

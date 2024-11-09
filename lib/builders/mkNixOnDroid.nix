@@ -1,4 +1,11 @@
-{ inputs, pkgs, customLib, homeModules, name, ... }:
+{
+  inputs,
+  pkgs,
+  customLib,
+  homeModules,
+  name,
+  ...
+}:
 
 inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
@@ -21,6 +28,5 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
         inherit pkgs;
       };
     }
-  ]
-  ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
+  ] ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
 }

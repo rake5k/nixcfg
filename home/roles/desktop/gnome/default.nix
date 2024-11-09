@@ -25,7 +25,16 @@ in
 
       "org/gnome/desktop/input-sources" = {
         show-all-sources = true;
-        sources = [ (mkTuple [ "xkb" "de+neo_qwertz" ]) (mkTuple [ "xkb" "de+bone" ]) ];
+        sources = [
+          (mkTuple [
+            "xkb"
+            "de+neo_qwertz"
+          ])
+          (mkTuple [
+            "xkb"
+            "de+bone"
+          ])
+        ];
       };
 
       "org/gnome/desktop/wm/keybindings" = {

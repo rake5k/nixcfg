@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -14,7 +19,9 @@ in
     custom.base.non-nixos = {
       enable = lib.mkEnableOption "Config for non NixOS systems";
 
-      installNix = lib.mkEnableOption "Nix installation" // { default = true; };
+      installNix = lib.mkEnableOption "Nix installation" // {
+        default = true;
+      };
     };
   };
 

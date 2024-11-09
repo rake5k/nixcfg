@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -17,9 +22,7 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        lazygit
-      ];
+      packages = with pkgs; [ lazygit ];
 
       shellAliases = {
         lg = "lazygit";

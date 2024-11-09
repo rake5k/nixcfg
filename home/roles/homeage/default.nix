@@ -1,4 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 with lib;
 
@@ -6,10 +12,12 @@ let
 
   cfg = config.custom.roles.homeage;
 
-  mkHomeageFile = secret: nameValuePair secret {
-    source = "${cfg.secretsSourcePath}/${secret}.age";
-    symlinks = [ "${cfg.secretsPath}/${secret}" ];
-  };
+  mkHomeageFile =
+    secret:
+    nameValuePair secret {
+      source = "${cfg.secretsSourcePath}/${secret}.age";
+      symlinks = [ "${cfg.secretsPath}/${secret}" ];
+    };
 
 in
 

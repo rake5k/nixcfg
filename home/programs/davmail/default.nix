@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,21 +11,32 @@ let
 
   cfg = config.custom.programs.davmail;
 
-  configType = with types;
-    oneOf [ (attrsOf configType) str int bool ] // {
+  configType =
+    with types;
+    oneOf [
+      (attrsOf configType)
+      str
+      int
+      bool
+    ]
+    // {
       description = "davmail config type (str, int, bool or attribute set thereof)";
     };
 
   toStr = val: if isBool val then boolToString val else toString val;
 
-  linesForAttrs = attrs: concatMap
-    (name:
-      let value = attrs."${name}"; in
-      if isAttrs value
-      then map (line: name + "." + line) (linesForAttrs value)
-      else [ "${name}=${toStr value}" ]
-    )
-    (attrNames attrs);
+  linesForAttrs =
+    attrs:
+    concatMap (
+      name:
+      let
+        value = attrs."${name}";
+      in
+      if isAttrs value then
+        map (line: name + "." + line) (linesForAttrs value)
+      else
+        [ "${name}=${toStr value}" ]
+    ) (attrNames attrs);
 
   configFile = pkgs.writeText "davmail.properties" (concatStringsSep "\n" (linesForAttrs cfg.config));
 
@@ -106,4 +122,4 @@ in
 
     home.packages = [ pkgs.davmail ];
   };
-} 
+}

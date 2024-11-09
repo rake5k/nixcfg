@@ -1,4 +1,9 @@
-{ lib, pkgs, cfg, ... }:
+{
+  lib,
+  pkgs,
+  cfg,
+  ...
+}:
 
 with lib;
 
@@ -155,9 +160,11 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      ${optionalString (cfg.autoruns != {}) ''
-            ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
-      ''}
+      ${
+        optionalString (cfg.autoruns != { }) ''
+          ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
+        ''
+      }
 
   myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
     where
@@ -216,8 +223,7 @@ pkgs.writeText "xmonad.hs" ''
       , focusedBorderColor  = "${cfg.colorScheme.base}"
       , layoutHook          = myLayout      -- Use custom layouts
       , manageHook          = myManageHook  -- Match on certain windows
-      ${optionalString (cfg.autoruns != {})
-        ", startupHook         = myStartupHook"}
+      ${optionalString (cfg.autoruns != { }) ", startupHook         = myStartupHook"}
       }
     `additionalKeysP` myKeys
 

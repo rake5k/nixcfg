@@ -22,6 +22,8 @@ in
       enableOnBoot = false;
     };
 
-    users.users = genAttrs baseCfg.users (_: { extraGroups = [ "docker" ]; });
+    users.users = genAttrs baseCfg.users (_: {
+      extraGroups = [ "docker" ];
+    });
   };
 }

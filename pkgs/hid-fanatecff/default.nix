@@ -1,11 +1,13 @@
-{ stdenv
-, fetchFromGitHub
-, kernel
-, linuxConsoleTools
-, runtimeShell
+{
+  stdenv,
+  fetchFromGitHub,
+  kernel,
+  linuxConsoleTools,
+  runtimeShell,
 }:
 
-let moduledir = "lib/modules/${kernel.version}/kernel/drivers/hid";
+let
+  moduledir = "lib/modules/${kernel.version}/kernel/drivers/hid";
 in
 stdenv.mkDerivation rec {
   pname = "hid-fanatecff";
@@ -19,7 +21,10 @@ stdenv.mkDerivation rec {
     hash = "sha256-FZc69a2joiCi8pPxeJxhORaqa/ABRecPqDhDCc2GwL0=";
   };
 
-  hardeningDisable = [ "pic" "format" ];
+  hardeningDisable = [
+    "pic"
+    "format"
+  ];
   nativeBuildInputs = kernel.moduleBuildDependencies;
 
   patchPhase = ''

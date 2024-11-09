@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -7,7 +12,8 @@ let
   cfg = config.custom.roles.dev.intellij;
   ideaPackage =
     if cfg.ultimate then
-      pkgs.unstable.jetbrains.idea-ultimate else
+      pkgs.unstable.jetbrains.idea-ultimate
+    else
       pkgs.unstable.jetbrains.idea-community;
 
 in

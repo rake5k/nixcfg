@@ -7,10 +7,12 @@ let
   cfg = config.custom.programs.ssh;
 
   sshDirectory = "${config.home.homeDirectory}/.ssh";
-  mkHomeageFile = identity: nameValuePair identity {
-    source = "${config.custom.roles.homeage.secretsSourcePath}/${identity}.age";
-    symlinks = [ "${sshDirectory}/${identity}" ];
-  };
+  mkHomeageFile =
+    identity:
+    nameValuePair identity {
+      source = "${config.custom.roles.homeage.secretsSourcePath}/${identity}.age";
+      symlinks = [ "${sshDirectory}/${identity}" ];
+    };
 
 in
 

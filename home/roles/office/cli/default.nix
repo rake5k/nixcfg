@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -66,22 +71,26 @@ in
     };
 
     xdg.configFile = {
-      "khal/config".text = ''
-        [locale]
-        local_timezone = Europe/Zurich
-        default_timezone = Europe/Zurich
-        timeformat = %H:%M
-        dateformat = %d.%m.
-        longdateformat = %d.%m.%Y
-        datetimeformat = %d.%m. %H:%M
-        longdatetimeformat = %d.%m.%Y %H:%M
+      "khal/config".text =
+        ''
+          [locale]
+          local_timezone = Europe/Zurich
+          default_timezone = Europe/Zurich
+          timeformat = %H:%M
+          dateformat = %d.%m.
+          longdateformat = %d.%m.%Y
+          datetimeformat = %d.%m. %H:%M
+          longdatetimeformat = %d.%m.%Y %H:%M
 
-      '' + cfg.khal.extraConfig;
-      "vdirsyncer/config".text = ''
-        [general]
-        status_path = "${config.xdg.dataHome}/vdirsyncer/status/"
+        ''
+        + cfg.khal.extraConfig;
+      "vdirsyncer/config".text =
+        ''
+          [general]
+          status_path = "${config.xdg.dataHome}/vdirsyncer/status/"
 
-      '' + cfg.vdirsyncer.extraConfig;
+        ''
+        + cfg.vdirsyncer.extraConfig;
     };
   };
 }

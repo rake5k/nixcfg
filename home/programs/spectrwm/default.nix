@@ -19,7 +19,11 @@ in
     enable = mkEnableOption "Spectrwm window manager";
 
     modKey = mkOption {
-      type = types.enum [ "Mod1" "Mod2" "Mod4" ];
+      type = types.enum [
+        "Mod1"
+        "Mod2"
+        "Mod4"
+      ];
       default = "Mod4";
       description = ''
         The window manager mod key.
@@ -187,7 +191,7 @@ in
             # workspace_clamp         = 1
             # warp_focus              = 1
             # warp_pointer            = 1
-            
+
             # Window Decoration
             border_width            = 2
             color_focus             = white
@@ -196,15 +200,15 @@ in
             # color_unfocus_maximized = rgb:88/88/00
             region_padding          = 10
             tile_gap                = 10
-            
+
             # Region containment
             # Distance window must be dragged/resized beyond the region edge before it is
             # allowed outside the region.
             # boundary_width          = 50
-            
+
             # Remove window border when bar is disabled and there is only one window in workspace
             # disable_border          = 1
-            
+
             # Bar Settings
             # bar_enabled             = 1
             bar_border_width        = 4
@@ -230,25 +234,25 @@ in
             # window_name_enabled     = 0
             # verbose_layout          = 0
             # urgent_enabled          = 1
-            
+
             # Dialog box size ratio when using TRANSSZ quirk; 0.3 < dialog_ratio <= 1.0
             # dialog_ratio            = 0.6
-            
+
             # Split a non-RandR dual head setup into one region per monitor
             # (non-standard driver-based multihead is not seen by spectrwm)
             # region = screen[1]:1280x1024+0+0
             # region = screen[1]:1280x1024+1280+0
-            
+
             # Launch applications in a workspace of choice
             ${concatStringsSep "\n" (mapAttrsToList mkAutorun cfg.autoruns)}
-            
+
             # Customize workspace layout at start
             # format: ws[idx]:master_grow:master_add:stack_inc:always_raise:stack_mode
             layout = ws[2]:0:0:0:0:max
             layout = ws[3]:0:0:0:0:max
             layout = ws[6]:0:0:0:0:max
             layout = ws[9]:5:0:0:0:vertical
-            
+
             # Set workspace name at start
             name = ws[1]:1 
             name = ws[2]:2 
@@ -258,42 +262,44 @@ in
             name = ws[6]:6 
             name = ws[9]:9 
             name = ws[10]:10 
-            
+
             # Mod key, (Windows key is Mod4) (Apple key on OSX is Mod2)
             modkey = ${cfg.modKey}
-            
+
             # This allows you to include pre-defined key bindings for your keyboard layout.
             # keyboard_mapping = ~/.spectrwm_us.conf
             bind[rg_next] = MOD+Shift+l
             bind[rg_prev] = MOD+Shift+h
-            
+
             # PROGRAMS
-            
+
             # Validated default programs:
             program[lock]           = ${cfg.locker.lockerCmd}
             program[term]           = alacritty
             # program[menu]           = dmenu_run $dmenu_bottom -fn $bar_font -nb $bar_color -nf $bar_font_color -sb $bar_color_selected -sf $bar_font_color_selected
             # program[search]         = dmenu $dmenu_bottom -i -fn $bar_font -nb $bar_color -nf $bar_font_color -sb $bar_color_selected -sf $bar_font_color_selected
             # program[name_workspace] = dmenu $dmenu_bottom -p Workspace -fn $bar_font -nb $bar_color -nf $bar_font_color -sb $bar_color_selected -sf $bar_font_color_selected
-            
+
             # To disable validation of the above, free the respective binding(s):
             # bind[]    = MOD+Shift+Delete  # disable lock
             # bind[]    = MOD+Shift+Return  # disable term
             # bind[]    = MOD+p      # disable menu
-            
+
             # Optional default programs that will only be validated if you override:
             program[screenshot_all]     = ${config.xdg.configFile."${screenshotFile}".target} full
             program[screenshot_wind]    = ${config.xdg.configFile."${screenshotFile}".target} window
             bind[screenshot_all]        = Print
             bind[screenshot_wind]       = Shift+Print
-            ${concatStringsSep "\n" (optional (cfg.initscrScript != "") ''
-              program[initscr]            = ${config.xdg.configFile."${initscrFile}".target}
-            '')}
-            
+            ${concatStringsSep "\n" (
+              optional (cfg.initscrScript != "") ''
+                program[initscr]            = ${config.xdg.configFile."${initscrFile}".target}
+              ''
+            )}
+
             # EXAMPLE: Define 'firefox' action and bind to key.
             # program[firefox]    = firefox http://spectrwm.org/
             # bind[firefox]       = MOD+Shift+b
-            
+
             # QUIRKS
             # Default quirks, remove with: quirk[class:name] = NONE
             # IDEA-Quirks not working somehow...

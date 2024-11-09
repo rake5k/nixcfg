@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,9 +11,7 @@ let
 
   cfg = config.custom.roles.desktop.xserver.polybar;
 
-  package = pkgs.polybar.override {
-    pulseSupport = true;
-  };
+  package = pkgs.polybar.override { pulseSupport = true; };
 
 in
 
@@ -65,19 +68,35 @@ in
 
       monitors = {
         battery = mkEnableOption "Battery monitor";
-        cpu = mkEnableOption "CPU monitor" // { default = true; };
-        date = mkEnableOption "Date monitor" // { default = true; };
-        disk = mkEnableOption "Disk monitor" // { default = true; };
-        keyboard = mkEnableOption "Keyboard layout monitor" // { default = true; };
-        memory = mkEnableOption "Memory monitor" // { default = true; };
-        temperature = mkEnableOption "Temperature monitor" // { default = true; };
+        cpu = mkEnableOption "CPU monitor" // {
+          default = true;
+        };
+        date = mkEnableOption "Date monitor" // {
+          default = true;
+        };
+        disk = mkEnableOption "Disk monitor" // {
+          default = true;
+        };
+        keyboard = mkEnableOption "Keyboard layout monitor" // {
+          default = true;
+        };
+        memory = mkEnableOption "Memory monitor" // {
+          default = true;
+        };
+        temperature = mkEnableOption "Temperature monitor" // {
+          default = true;
+        };
         temperature-source = mkOption {
           type = types.string;
           default = "";
           description = "Temperature source path";
         };
-        volume = mkEnableOption "Volume monitor" // { default = true; };
-        weather = mkEnableOption "Weather monitor" // { default = true; };
+        volume = mkEnableOption "Volume monitor" // {
+          default = true;
+        };
+        weather = mkEnableOption "Weather monitor" // {
+          default = true;
+        };
       };
     };
   };
@@ -161,23 +180,25 @@ in
 
           # Modules
           module-margin = 1;
-          modules-left = with cfg.monitors;
+          modules-left =
+            with cfg.monitors;
             concatStringsSep " " (
-              [ "xworkspaces" ] ++
-              (if cpu then [ "cpu" ] else [ ]) ++
-              (if memory then [ "ram" ] else [ ]) ++
-              (if disk then [ "dsk" ] else [ ]) ++
-              (if temperature then [ "tmp" ] else [ ])
+              [ "xworkspaces" ]
+              ++ (if cpu then [ "cpu" ] else [ ])
+              ++ (if memory then [ "ram" ] else [ ])
+              ++ (if disk then [ "dsk" ] else [ ])
+              ++ (if temperature then [ "tmp" ] else [ ])
             );
           modules-center = "xwindow";
-          modules-right = with cfg.monitors;
+          modules-right =
+            with cfg.monitors;
             concatStringsSep " " (
-              (if weather then [ "wtr" ] else [ ]) ++
-              (if volume then [ "vol" ] else [ ]) ++
-              (if battery then [ "bat" ] else [ ]) ++
-              (if keyboard then [ "kbd" ] else [ ]) ++
-              (if date then [ "date" ] else [ ]) ++
-              [ "tray" ]
+              (if weather then [ "wtr" ] else [ ])
+              ++ (if volume then [ "vol" ] else [ ])
+              ++ (if battery then [ "bat" ] else [ ])
+              ++ (if keyboard then [ "kbd" ] else [ ])
+              ++ (if date then [ "date" ] else [ ])
+              ++ [ "tray" ]
             );
         };
 
@@ -422,7 +443,9 @@ in
     };
 
     xdg = {
-      configFile."polybar/weather-plugin.sh".text = import ./config/weather-plugin.nix { inherit lib pkgs; };
+      configFile."polybar/weather-plugin.sh".text = import ./config/weather-plugin.nix {
+        inherit lib pkgs;
+      };
     };
   };
 }

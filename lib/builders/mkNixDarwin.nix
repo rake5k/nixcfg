@@ -1,4 +1,12 @@
-{ inputs, system, pkgs, customLib, homeModules, name, ... }:
+{
+  inputs,
+  system,
+  pkgs,
+  customLib,
+  homeModules,
+  name,
+  ...
+}:
 
 inputs.darwin.lib.darwinSystem {
 
@@ -8,28 +16,28 @@ inputs.darwin.lib.darwinSystem {
     inherit homeModules inputs;
   };
 
-  modules = [
-    ./modules/nix
+  modules =
+    [
+      ./modules/nix
 
-    # Host config
-    "${inputs.self}/hosts/${name}"
+      # Host config
+      "${inputs.self}/hosts/${name}"
 
-    {
-      custom.base.hostname = name;
+      {
+        custom.base.hostname = name;
 
-      lib.custom = customLib;
+        lib.custom = customLib;
 
-      nixpkgs = {
-        inherit pkgs;
-      };
-    }
+        nixpkgs = {
+          inherit pkgs;
+        };
+      }
 
-    # Home-Manager
-    inputs.home-manager.darwinModules.home-manager
-    ./modules/home-manager
-    ./modules/home-manager-users
-  ]
-  ++ customLib.getRecursiveDefaultNixFileList ../../nix-darwin
-  ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nix-darwin";
+      # Home-Manager
+      inputs.home-manager.darwinModules.home-manager
+      ./modules/home-manager
+      ./modules/home-manager-users
+    ]
+    ++ customLib.getRecursiveDefaultNixFileList ../../nix-darwin
+    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nix-darwin";
 }
-

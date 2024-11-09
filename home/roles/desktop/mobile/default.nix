@@ -15,7 +15,5 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    services.poweralertd.enable = true;
-  };
+  config = mkIf cfg.enable { services.poweralertd.enable = true; };
 }

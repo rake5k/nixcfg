@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -20,8 +25,6 @@ in
       programs.syncthing.enable = true;
     };
 
-    home.packages = with pkgs; [
-      freetube
-    ];
+    home.packages = with pkgs; [ freetube ];
   };
 }

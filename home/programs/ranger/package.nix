@@ -1,10 +1,11 @@
 # https://github.com/realfolk/nix/blob/55a474544508546e70cb229235a3ff024315bd6d/lib/packages/ranger/default.nix
 
-{ lib
-, fetchFromGitHub
-, python3Packages
-, file
-, less
+{
+  lib,
+  fetchFromGitHub,
+  python3Packages,
+  file,
+  less,
 }:
 
 python3Packages.buildPythonApplication rec {
@@ -19,7 +20,12 @@ python3Packages.buildPythonApplication rec {
   LC_ALL = "en_US.UTF-8";
   doCheck = true;
 
-  propagatedBuildInputs = [ file python3Packages.astroid python3Packages.pylint python3Packages.pytest ];
+  propagatedBuildInputs = [
+    file
+    python3Packages.astroid
+    python3Packages.pylint
+    python3Packages.pytest
+  ];
   #++ lib.optionals imagePreviewSupport [ python3Packages.pillow ];
 
   preConfigure = ''

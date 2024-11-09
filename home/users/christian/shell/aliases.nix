@@ -58,7 +58,8 @@
   # Web
   wget = "wget -c";
   myip = "curl http://ipecho.net/plain; echo";
-} // lib.optionalAttrs (!stdenv.isDarwin) {
+}
+// lib.optionalAttrs (!stdenv.isDarwin) {
   # Safety nets
   chgrp = "chgrp --preserve-root";
   chmod = "chmod --preserve-root";
