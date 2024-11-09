@@ -48,6 +48,11 @@ in
       sessionVariables = {
         EDITOR = "vim";
       };
+
+      packages = with pkgs; [
+        nil
+        nixpkgs-fmt
+      ];
     };
 
     xdg.dataFile = {
@@ -57,6 +62,37 @@ in
 
     programs.neovim = {
       enable = true;
+
+      coc = {
+        enable = true;
+        settings = {
+          coc.preferences = {
+            formatOnSave = true;
+          };
+          semanticTokens = {
+            filetypes = [ "nix" ];
+          };
+          suggest = {
+            noselect = true;
+            enablePreselect = false;
+          };
+          languageserver = {
+            nix = {
+              command = "nil";
+              filetypes = [ "nix" ];
+              rootPatterns = [ "flake.nix" ];
+              settings = {
+                nil = {
+                  formatting = {
+                    command = [ "nixpkgs-fmt" ];
+                  };
+                };
+              };
+            };
+          };
+        };
+      };
+
       extraConfig = ''
         set clipboard=unnamedplus
         set number relativenumber
@@ -78,6 +114,7 @@ in
         set thesaurus+=~/.local/share/nvim/site/dict/openthesaurus.txt
         set thesaurus+=~/.local/share/nvim/site/dict/mthesaur.txt
       '';
+
       plugins = with pkgs.vimPlugins; [
         vim-nix
 
@@ -85,6 +122,7 @@ in
         tabular
         vim-markdown
       ];
+
       viAlias = true;
       vimAlias = true;
       vimdiffAlias = true;
