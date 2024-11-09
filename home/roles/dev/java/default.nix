@@ -40,5 +40,7 @@ in
         source = ./gradle;
       };
     };
+
+    programs.neovim.plugins = with pkgs.vimPlugins; [ coc-java ];
   };
 }
