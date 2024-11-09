@@ -148,15 +148,28 @@ in
         })
 
         vim.cmd("colorscheme onedark")
+
+        --------------
+        -- SURROUND --
+        --------------
+
+        require('nvim-surround').setup({
+          move_cursor = 'sticky'
+        })
       '';
 
       plugins = with pkgs.vimPlugins; [
         vim-nix
+
+        # Themes
         onedarkpro-nvim
 
         # Markdown
         tabular
         vim-markdown
+
+        # Misc
+        nvim-surround
       ];
 
       viAlias = true;
