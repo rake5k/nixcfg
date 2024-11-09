@@ -1,4 +1,10 @@
-{ config, lib, inputs, pkgs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -101,7 +107,9 @@ in
       enable = true;
       initExtra = ''
         ${getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-        ${optionalString (!cfg.grobi.enable) "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"}
+        ${optionalString (
+          !cfg.grobi.enable
+        ) "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"}
       '';
       numlock.enable = true;
     };

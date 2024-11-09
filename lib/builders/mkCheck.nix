@@ -1,4 +1,9 @@
-{ pkgs, name, args, ... }:
+{
+  pkgs,
+  name,
+  args,
+  ...
+}:
 
 pkgs.runCommand name { } ''
   ${args.script pkgs}

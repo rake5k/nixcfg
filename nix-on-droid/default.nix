@@ -1,4 +1,10 @@
-{ lib, config, inputs, pkgs, ... }:
+{
+  lib,
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -50,9 +56,7 @@ with lib;
 
     terminal.font =
       let
-        fontPackage = pkgs.nerdfonts.override {
-          fonts = [ "VictorMono" ];
-        };
+        fontPackage = pkgs.nerdfonts.override { fonts = [ "VictorMono" ]; };
         fontPath = "/share/fonts/truetype/NerdFonts/VictorMonoNerdFont-Regular.ttf";
       in
       fontPackage + fontPath;

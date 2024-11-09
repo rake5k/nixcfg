@@ -22,7 +22,10 @@ in
     custom = {
       programs.ssh = {
         enable = true;
-        identities = [ logseqSshKey logseqSshPubKey ];
+        identities = [
+          logseqSshKey
+          logseqSshPubKey
+        ];
       };
     };
 

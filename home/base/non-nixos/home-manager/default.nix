@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -17,9 +22,7 @@ in
   config = lib.mkIf cfg.enable {
 
     home = {
-      packages = with pkgs; [
-        home-manager
-      ];
+      packages = with pkgs; [ home-manager ];
 
       shellAliases = {
         hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}'";

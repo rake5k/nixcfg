@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -7,14 +12,16 @@ let
   cfg = config.custom.roles.multimedia.mpv;
 
   scripts = {
-    tv7 = pkgs.writeShellScriptBin "tv7"
-      ''
-        ${getExe pkgs.mpv} ${config.xdg.configFile."mpv/playlists".target}/TV7_default.m3u --script-opts=iptv=1
-      '';
-    tvsrg = pkgs.writeShellScriptBin "tvsrg"
-      ''
-        ${getExe pkgs.mpv} ${config.xdg.configFile."mpv/playlists".target}/srg-fhd-hls.m3u --script-opts=iptv=1
-      '';
+    tv7 = pkgs.writeShellScriptBin "tv7" ''
+      ${getExe pkgs.mpv} ${
+        config.xdg.configFile."mpv/playlists".target
+      }/TV7_default.m3u --script-opts=iptv=1
+    '';
+    tvsrg = pkgs.writeShellScriptBin "tvsrg" ''
+      ${getExe pkgs.mpv} ${
+        config.xdg.configFile."mpv/playlists".target
+      }/srg-fhd-hls.m3u --script-opts=iptv=1
+    '';
   };
 
 in

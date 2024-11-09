@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,9 +11,10 @@ let
 
   cfg = config.custom.roles.web.nextcloud-client;
   pkg =
-    if config.custom.base.non-nixos.enable
-    then (config.lib.custom.nixGLWrap pkgs.nextcloud-client)
-    else pkgs.nextcloud-client;
+    if config.custom.base.non-nixos.enable then
+      (config.lib.custom.nixGLWrap pkgs.nextcloud-client)
+    else
+      pkgs.nextcloud-client;
 
 in
 

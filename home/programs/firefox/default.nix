@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -156,44 +161,64 @@ in
             default = "Harke Search";
             engines = {
               "${engines.harke}" = {
-                urls = [{
-                  template = "https://search.harke.ch/search";
-                  params = [
-                    { name = "q"; value = "{searchTerms}"; }
-                  ];
-                }];
+                urls = [
+                  {
+                    template = "https://search.harke.ch/search";
+                    params = [
+                      {
+                        name = "q";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
                 icon = ./icons/search.harke.ch.svg;
               };
 
               "${engines.nixPkgs}" = {
-                urls = [{
-                  template = "https://search.nixos.org/packages";
-                  params = [
-                    { name = "query"; value = "{searchTerms}"; }
-                  ];
-                }];
+                urls = [
+                  {
+                    template = "https://search.nixos.org/packages";
+                    params = [
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = [ "@np" ];
               };
 
               "${engines.nixOpts}" = {
-                urls = [{
-                  template = "https://search.nixos.org/options";
-                  params = [
-                    { name = "query"; value = "{searchTerms}"; }
-                  ];
-                }];
+                urls = [
+                  {
+                    template = "https://search.nixos.org/options";
+                    params = [
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = [ "@no" ];
               };
 
               "${engines.nixWiki}" = {
-                urls = [{
-                  template = "https://nixos.wiki/index.php";
-                  params = [
-                    { name = "search"; value = "{searchTerms}"; }
-                  ];
-                }];
+                urls = [
+                  {
+                    template = "https://nixos.wiki/index.php";
+                    params = [
+                      {
+                        name = "search";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
                 iconUpdateURL = "https://nixos.wiki/favicon.png";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
                 definedAliases = [ "@nw" ];

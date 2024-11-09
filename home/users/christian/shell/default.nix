@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -69,7 +74,10 @@ in
         MANPAGER = "less -R --use-color -Dd+g -Du+b";
       };
 
-      shellAliases = import ./aliases.nix { inherit lib; inherit (pkgs) stdenv; };
+      shellAliases = import ./aliases.nix {
+        inherit lib;
+        inherit (pkgs) stdenv;
+      };
     };
 
     programs = {

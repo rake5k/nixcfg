@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -6,24 +11,23 @@ let
 
   cfg = config.custom.programs.kmonad;
 
-  mkService = kbd-dev: kbd-path:
-    {
-      name = "kmonad-${kbd-dev}";
-      value = {
-        Unit = {
-          Description = "KMonad Instance for: ${kbd-dev}";
-        };
-        Service = {
-          Type = "simple";
-          Restart = "always";
-          RestartSec = 10;
-          ExecStart = "${lib.getExe cfg.package} ${kbd-path}";
-        };
-        Install = {
-          WantedBy = [ "default.target" ];
-        };
+  mkService = kbd-dev: kbd-path: {
+    name = "kmonad-${kbd-dev}";
+    value = {
+      Unit = {
+        Description = "KMonad Instance for: ${kbd-dev}";
+      };
+      Service = {
+        Type = "simple";
+        Restart = "always";
+        RestartSec = 10;
+        ExecStart = "${lib.getExe cfg.package} ${kbd-path}";
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
       };
     };
+  };
 
 in
 

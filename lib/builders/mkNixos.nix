@@ -1,4 +1,12 @@
-{ inputs, system, pkgs, customLib, homeModules, name, ... }:
+{
+  inputs,
+  system,
+  pkgs,
+  customLib,
+  homeModules,
+  name,
+  ...
+}:
 
 inputs.nixpkgs.lib.nixosSystem {
 
@@ -8,28 +16,28 @@ inputs.nixpkgs.lib.nixosSystem {
     inherit homeModules inputs;
   };
 
-  modules = [
-    ./modules/nix
+  modules =
+    [
+      ./modules/nix
 
-    # Host config
-    "${inputs.self}/hosts/${name}"
+      # Host config
+      "${inputs.self}/hosts/${name}"
 
-    {
-      custom.base.hostname = name;
+      {
+        custom.base.hostname = name;
 
-      lib.custom = customLib;
+        lib.custom = customLib;
 
-      nixpkgs = {
-        inherit pkgs;
-      };
-    }
+        nixpkgs = {
+          inherit pkgs;
+        };
+      }
 
-    # Home-Manager
-    inputs.home-manager.nixosModules.home-manager
-    ./modules/home-manager
-    ./modules/home-manager-users
-  ]
-  ++ customLib.getRecursiveDefaultNixFileList ../../nixos
-  ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";
+      # Home-Manager
+      inputs.home-manager.nixosModules.home-manager
+      ./modules/home-manager
+      ./modules/home-manager-users
+    ]
+    ++ customLib.getRecursiveDefaultNixFileList ../../nixos
+    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";
 }
-

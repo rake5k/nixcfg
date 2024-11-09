@@ -1,4 +1,9 @@
-{ config, lib, inputs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 
 with lib;
 
@@ -33,15 +38,11 @@ in
 
   config = {
     age = {
-      secrets = mkMerge (builtins.map
-        (secret: {
-          "${secret}".file = "${cfg.secretsBasePath}/${secret}.age";
-        })
-        cfg.secrets);
+      secrets = mkMerge (
+        builtins.map (secret: { "${secret}".file = "${cfg.secretsBasePath}/${secret}.age"; }) cfg.secrets
+      );
 
-      identityPaths = [
-        "/root/.age/key.txt"
-      ];
+      identityPaths = [ "/root/.age/key.txt" ];
     };
   };
 }

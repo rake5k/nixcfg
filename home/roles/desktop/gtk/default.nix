@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -50,9 +55,7 @@ in
           gtk-xft-hintstyle = "hintfull";
           gtk-xft-rgba = "rgb";
         };
-        bookmarks = [
-          "file://${config.home.homeDirectory}/Nextcloud"
-        ];
+        bookmarks = [ "file://${config.home.homeDirectory}/Nextcloud" ];
       };
     };
   };

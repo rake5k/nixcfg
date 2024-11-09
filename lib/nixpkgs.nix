@@ -6,9 +6,7 @@ let
     allowAliases = false;
     allowUnfree = true;
     nvidia.acceptLicense = true;
-    permittedInsecurePackages = [
-      "electron-27.3.11"
-    ];
+    permittedInsecurePackages = [ "electron-27.3.11" ];
   };
 
 in
@@ -18,9 +16,7 @@ import inputs.nixpkgs {
 
   overlays =
     let
-      unstable = import inputs.nixpkgs-unstable {
-        inherit config system;
-      };
+      unstable = import inputs.nixpkgs-unstable { inherit config system; };
     in
     [
       (_final: _prev: {

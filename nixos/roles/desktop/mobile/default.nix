@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -38,29 +43,31 @@ in
       };
     };
 
-    networking.networkmanager.dispatcherScripts = [{
-      source = pkgs.writeText "99-disable-wireless-when-wired" ''
-        myname=''${0##*/}
-        log() { logger -p user.info -t "''${myname}[$$]" "$*"; }
-        IFACE=$1
-        ACTION=$2
+    networking.networkmanager.dispatcherScripts = [
+      {
+        source = pkgs.writeText "99-disable-wireless-when-wired" ''
+          myname=''${0##*/}
+          log() { logger -p user.info -t "''${myname}[$$]" "$*"; }
+          IFACE=$1
+          ACTION=$2
 
-        case ''${IFACE} in
-        eth*|usb*|en*)
-            case ''${ACTION} in
-                up)
-                    log "disabling wifi radio"
-                    rfkill block wifi
-                    ;;
-                down)
-                    log "enabling wifi radio"
-                    rfkill unblock wifi
-                    ;;
-            esac
-            ;;
-        esac
-      '';
-      type = "basic";
-    }];
+          case ''${IFACE} in
+          eth*|usb*|en*)
+              case ''${ACTION} in
+                  up)
+                      log "disabling wifi radio"
+                      rfkill block wifi
+                      ;;
+                  down)
+                      log "enabling wifi radio"
+                      rfkill unblock wifi
+                      ;;
+              esac
+              ;;
+          esac
+        '';
+        type = "basic";
+      }
+    ];
   };
 }

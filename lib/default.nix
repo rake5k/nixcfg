@@ -7,12 +7,16 @@ let
   forEachSystem = lib.genAttrs (import inputs.systems);
 
   pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
-  customLibFor = forEachSystem (system: import ./customLib.nix {
-    inherit lib inputs;
-    pkgs = pkgsFor."${system}";
-  });
+  customLibFor = forEachSystem (
+    system:
+    import ./customLib.nix {
+      inherit lib inputs;
+      pkgs = pkgsFor."${system}";
+    }
+  );
 
-  homeModulesFor = forEachSystem (system:
+  homeModulesFor = forEachSystem (
+    system:
     let
       customLib = customLibFor.${system};
     in
@@ -20,27 +24,35 @@ let
       inputs.homeage.homeManagerModules.homeage
       inputs.nix-index-database.hmModules.nix-index
 
-      {
-        lib.custom = customLib;
-      }
+      { lib.custom = customLib; }
     ]
     ++ customLib.getRecursiveDefaultNixFileList ../home
     ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
   );
 
-  nameValuePairWrapper = name: fn: system: lib.nameValuePair name (fn system);
+  nameValuePairWrapper =
+    name: fn: system:
+    lib.nameValuePair name (fn system);
 
-  wrapper = builder: name: args: system:
-    lib.nameValuePair
-      name
-      (import builder {
-        inherit inputs system name args;
+  wrapper =
+    builder: name: args: system:
+    lib.nameValuePair name (
+      import builder {
+        inherit
+          inputs
+          system
+          name
+          args
+          ;
         pkgs = pkgsFor."${system}";
         customLib = customLibFor."${system}";
         homeModules = homeModulesFor."${system}";
-      });
+      }
+    );
 
-  simpleWrapper = builder: system: name: wrapper builder name { } system;
+  simpleWrapper =
+    builder: system: name:
+    wrapper builder name { } system;
 
   buildersForSystem = system: builders: lib.listToAttrs (map (b: b system) builders);
 

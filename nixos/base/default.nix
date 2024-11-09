@@ -1,11 +1,21 @@
-{ lib, config, pkgs, ... } @ args:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}@args:
 
 let
 
   cfg = config.custom.base;
 
-  availableUsers = [ "christian" "demo" "gamer" ];
-  importUserModule = u:
+  availableUsers = [
+    "christian"
+    "demo"
+    "gamer"
+  ];
+  importUserModule =
+    u:
     let
       isEnabled = builtins.any (x: x == u) cfg.users;
       userConfig = ./users + "/${u}.nix";
@@ -45,9 +55,7 @@ in
       zsh.enable = true;
     };
 
-    security.sudo.package = pkgs.sudo.override {
-      withInsults = true;
-    };
+    security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
     services.logind.extraConfig = ''
       HandlePowerKey=ignore

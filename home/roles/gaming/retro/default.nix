@@ -13,7 +13,5 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    custom.programs.syncthing.enable = true;
-  };
+  config = lib.mkIf cfg.enable { custom.programs.syncthing.enable = true; };
 }

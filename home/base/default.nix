@@ -1,12 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   home = {
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
 
-    sessionPath = [
-      "$HOME/bin"
-    ];
+    sessionPath = [ "$HOME/bin" ];
 
     enableNixpkgsReleaseCheck = true;
   };

@@ -1,4 +1,10 @@
-{ config, lib, inputs, pkgs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -25,9 +31,7 @@ in
 
       rules = mkOption {
         type = with types; listOf attrs;
-        default = [
-          fallbackRule
-        ];
+        default = [ fallbackRule ];
         description = "Grobi rules";
       };
     };

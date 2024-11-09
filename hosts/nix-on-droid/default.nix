@@ -1,3 +1,1 @@
-{
-  system.stateVersion = import ./state-version.nix;
-}
+{ system.stateVersion = import ./state-version.nix; }

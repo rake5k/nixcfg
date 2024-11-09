@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -17,12 +22,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      signify
-    ];
+    environment.systemPackages = with pkgs; [ signify ];
 
     programs.adb.enable = true;
 
-    users.users = genAttrs baseCfg.users (_: { extraGroups = [ "adbusers" ]; });
+    users.users = genAttrs baseCfg.users (_: {
+      extraGroups = [ "adbusers" ];
+    });
   };
 }

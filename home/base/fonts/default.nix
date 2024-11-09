@@ -5,7 +5,5 @@ with pkgs;
 {
   fonts.fontconfig.enable = true;
 
-  home.packages = [
-    corefonts
-  ];
+  home.packages = [ corefonts ];
 }

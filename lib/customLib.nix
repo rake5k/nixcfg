@@ -1,15 +1,18 @@
-{ lib, pkgs, inputs }:
+{
+  lib,
+  pkgs,
+  inputs,
+}:
 
-inputs.flake-commons.lib
-  {
-    inherit lib pkgs;
-    rootPath = inputs.self;
-  } // {
+inputs.flake-commons.lib {
+  inherit lib pkgs;
+  rootPath = inputs.self;
+}
+// {
   # Wraps all binary files of the given `pkg` with `nixGL`
-  nixGLWrap = pkg: pkgs.runCommand
-    "${pkg.name}-nixgl-wrapped"
-    { meta.mainProgram = pkg.name; }
-    ''
+  nixGLWrap =
+    pkg:
+    pkgs.runCommand "${pkg.name}-nixgl-wrapped" { meta.mainProgram = pkg.name; } ''
       mkdir $out
       ln -s ${pkg}/* $out
       rm $out/bin
@@ -23,10 +26,9 @@ inputs.flake-commons.lib
     '';
 
   # Wraps the main program of the given `pkg` with `nixGL` and names the wrapper script as given `bin`
-  nixGLWrap' = pkg: bin: pkgs.runCommand
-    "${pkg.name}-nixgl-wrapped"
-    { meta.mainProgram = bin; }
-    ''
+  nixGLWrap' =
+    pkg: bin:
+    pkgs.runCommand "${pkg.name}-nixgl-wrapped" { meta.mainProgram = bin; } ''
       mkdir $out
       ln -s ${pkg}/* $out
       rm $out/bin

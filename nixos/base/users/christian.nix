@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -11,9 +16,7 @@ let
 in
 
 {
-  custom.base.agenix.secrets = [
-    secretSmb
-  ];
+  custom.base.agenix.secrets = [ secretSmb ];
 
   fileSystems =
     let
@@ -21,8 +24,20 @@ in
       fileserver = "sv-syno-01";
       fsType = "cifs";
       credentials = config.age.secrets."${secretSmb}".path;
-      automount_opts = [ "x-systemd.automount" "noauto" "x-systemd.idle-timeout=60" "x-systemd.device-timeout=5s" "x-systemd.mount-timeout=5s" ];
-      auth_opts = [ "uid=1000" "gid=100" "dir_mode=0700" "file_mode=0700" "credentials=${credentials}" ];
+      automount_opts = [
+        "x-systemd.automount"
+        "noauto"
+        "x-systemd.idle-timeout=60"
+        "x-systemd.device-timeout=5s"
+        "x-systemd.mount-timeout=5s"
+      ];
+      auth_opts = [
+        "uid=1000"
+        "gid=100"
+        "dir_mode=0700"
+        "file_mode=0700"
+        "credentials=${credentials}"
+      ];
       options = automount_opts ++ auth_opts;
     in
     {

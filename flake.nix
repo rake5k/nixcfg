@@ -90,11 +90,10 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... } @ inputs:
+  outputs =
+    { self, nixpkgs, ... }@inputs:
     let
-      nixcfgLib = import ./lib {
-        inherit inputs;
-      };
+      nixcfgLib = import ./lib { inherit inputs; };
       inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
       inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
     in
@@ -102,25 +101,18 @@
     {
       name = "nixcfg";
 
-      lib = { inputs }:
-        import ./lib { inputs = inputs // self.inputs; };
+      lib = { inputs }: import ./lib { inputs = inputs // self.inputs; };
 
-      darwinConfigurations = listToAttrs [
-        (mkNixDarwin aarch64-darwin "macos")
-      ];
+      darwinConfigurations = listToAttrs [ (mkNixDarwin aarch64-darwin "macos") ];
 
       homeConfigurations = listToAttrs [
         (mkHome x86_64-linux "christian@non-nixos")
         (mkHome x86_64-linux "demo@non-nixos")
       ];
 
-      nixosConfigurations = listToAttrs [
-        (mkNixos x86_64-linux "nixos")
-      ];
+      nixosConfigurations = listToAttrs [ (mkNixos x86_64-linux "nixos") ];
 
-      nixOnDroidConfigurations = listToAttrs [
-        (mkNixOnDroid aarch64-linux "nix-on-droid")
-      ];
+      nixOnDroidConfigurations = listToAttrs [ (mkNixOnDroid aarch64-linux "nix-on-droid") ];
 
       formatter = forEachSystem (system: nixpkgs.legacyPackages."${system}".nixfmt-rfc-style);
 
@@ -131,11 +123,12 @@
             _doNotClearPath = true;
             flakePath = "/home/\$(logname)/.nix-config";
           };
-          path = pkgs: with pkgs; [
-            git
-            hostname
-            jq
-          ];
+          path =
+            pkgs: with pkgs; [
+              git
+              hostname
+              jq
+            ];
         })
 
         (mkApp "nixos-install" {
@@ -143,30 +136,39 @@
           envs = {
             _doNotClearPath = true;
           };
-          path = pkgs: with pkgs; [
-            git
-            hostname
-            util-linux
-            parted
-            cryptsetup
-            lvm2
-          ];
+          path =
+            pkgs: with pkgs; [
+              git
+              hostname
+              util-linux
+              parted
+              cryptsetup
+              lvm2
+            ];
         })
       ];
 
-      checks = recursiveUpdate
-        (forEachSystem (system: import ./lib/checks { pkgs = pkgsFor."${system}"; flake = self; }))
-        ((mkForSystem aarch64-darwin [
-          (mkBuild "build-macos" self.darwinConfigurations.macos.system)
-        ]) // (mkForSystem x86_64-linux [
-          (mkBuild "build-christian@non-nixos" self.homeConfigurations."christian@non-nixos".activationPackage)
-          (mkBuild "build-demo@non-nixos" self.homeConfigurations."demo@non-nixos".activationPackage)
-          (mkBuild "build-nixos" self.nixosConfigurations.nixos.config.system.build.toplevel)
-        ]));
+      checks =
+        recursiveUpdate
+          (forEachSystem (
+            system:
+            import ./lib/checks {
+              pkgs = pkgsFor."${system}";
+              flake = self;
+            }
+          ))
+          (
+            (mkForSystem aarch64-darwin [ (mkBuild "build-macos" self.darwinConfigurations.macos.system) ])
+            // (mkForSystem x86_64-linux [
+              (mkBuild "build-christian@non-nixos"
+                self.homeConfigurations."christian@non-nixos".activationPackage
+              )
+              (mkBuild "build-demo@non-nixos" self.homeConfigurations."demo@non-nixos".activationPackage)
+              (mkBuild "build-nixos" self.nixosConfigurations.nixos.config.system.build.toplevel)
+            ])
+          );
 
-      devShells = mkForEachSystem [
-        (mkDevShell "default" { flake = self; })
-      ];
+      devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
 
       # Necessary for nix-tree
       # Run it using `nix-tree . --impure --derivation`

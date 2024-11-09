@@ -12,8 +12,6 @@
       autoUpdate = true;
       upgrade = true;
     };
-    casks = [
-      "alfred"
-    ];
+    casks = [ "alfred" ];
   };
 }

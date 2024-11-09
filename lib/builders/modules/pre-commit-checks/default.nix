@@ -1,4 +1,8 @@
-{ flake, system, pkgs }:
+{
+  flake,
+  system,
+  pkgs,
+}:
 
 let
 

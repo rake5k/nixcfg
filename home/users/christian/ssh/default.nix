@@ -15,7 +15,5 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    custom.programs.ssh.enable = true;
-  };
+  config = mkIf cfg.enable { custom.programs.ssh.enable = true; };
 }
