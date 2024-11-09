@@ -37,6 +37,7 @@ in
         ssh.enable = true;
         steam.enable = config.custom.roles.gaming.enable;
         vim.enable = true;
+        zed.enable = true;
       };
     };
   };
