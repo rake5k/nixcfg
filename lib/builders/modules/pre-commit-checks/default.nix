@@ -12,7 +12,7 @@ pre-commit-hooks.run {
   src = ./.;
   hooks = {
     # Nix
-    nixpkgs-fmt.enable = true;
+    nixfmt-rfc-style.enable = true;
     statix.enable = true;
 
     # Shell

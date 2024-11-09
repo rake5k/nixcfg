@@ -10,7 +10,7 @@
   an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
 * Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
-* Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixpkgs-fmt][nixpkgs-fmt]
+* Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixfmt][nixfmt]
 * Daily automatic flake input updates committed to master when CI passes
 
 ## Supported configurations
@@ -248,6 +248,6 @@ hm-switch
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
 [nixos-badge]: https://img.shields.io/badge/NixOS-23.11-blue.svg?logo=NixOS&logoColor=white
-[nixpkgs-fmt]: https://github.com/nix-community/nixpkgs-fmt
+[nixfmt]: https://github.com/NixOS/nixfmt
 [shellcheck]: https://github.com/koalaman/shellcheck
 [statix]: https://github.com/NerdyPepper/statix

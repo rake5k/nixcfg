@@ -122,7 +122,7 @@
         (mkNixOnDroid aarch64-linux "nix-on-droid")
       ];
 
-      formatter = forEachSystem (system: nixpkgs.legacyPackages."${system}".nixpkgs-fmt);
+      formatter = forEachSystem (system: nixpkgs.legacyPackages."${system}".nixfmt-rfc-style);
 
       apps = mkForEachSystem [
         (mkApp "setup" {
