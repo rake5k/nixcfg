@@ -11,10 +11,10 @@
     '';
 
   nixfmt = pkgs.runCommand "check-nixfmt"
-    { buildInputs = [ pkgs.nixpkgs-fmt ]; }
+    { buildInputs = [ pkgs.nixfmt-rfc-style ]; }
     ''
       mkdir $out
-      nixpkgs-fmt --check ${flake}
+      nixfmt --check ${flake}
     '';
 
   statix = pkgs.runCommand "check-statix"

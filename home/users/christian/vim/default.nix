@@ -51,7 +51,7 @@ in
 
       packages = with pkgs; [
         nil
-        nixpkgs-fmt
+        nixfmt-rfc-style
       ];
     };
 
@@ -84,7 +84,7 @@ in
               settings = {
                 nil = {
                   formatting = {
-                    command = [ "nixpkgs-fmt" ];
+                    command = [ "nixfmt" ];
                   };
                 };
               };
