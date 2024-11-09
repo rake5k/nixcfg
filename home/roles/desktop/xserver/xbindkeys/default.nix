@@ -28,10 +28,12 @@ let
 
   mkRcEntry = keymap:
     concatStringsSep "\n" (
-      mapAttrsToList (code: command: ''
-        "${command}"
-          ${code}
-      '') keymap
+      mapAttrsToList
+        (code: command: ''
+          "${command}"
+            ${code}
+        '')
+        keymap
     );
 
 in
