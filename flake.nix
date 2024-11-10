@@ -152,10 +152,13 @@
         recursiveUpdate
           (forEachSystem (
             system:
-            import ./lib/checks {
-              pkgs = pkgsFor."${system}";
-              flake = self;
-            }
+            let
+              commonsLib = inputs.flake-commons.lib {
+                pkgs = pkgsFor."${system}";
+                flake = self;
+              };
+            in
+            commonsLib.checks
           ))
           (
             (mkForSystem aarch64-darwin [ (mkBuild "build-macos" self.darwinConfigurations.macos.system) ])
