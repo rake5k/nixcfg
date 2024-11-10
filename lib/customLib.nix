@@ -6,7 +6,7 @@
 
 inputs.flake-commons.lib {
   inherit lib pkgs;
-  rootPath = inputs.self;
+  flake = inputs.self;
 }
 // {
   # Wraps all binary files of the given `pkg` with `nixGL`
