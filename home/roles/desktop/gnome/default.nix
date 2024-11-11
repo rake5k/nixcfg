@@ -70,6 +70,10 @@ in
         command = "gnome-system-monitor";
         name = "task-manager";
       };
+
+      "org/gnome/settings-daemon/plugins/power" = {
+        idle-brightness = 100;
+      };
     };
   };
 }
