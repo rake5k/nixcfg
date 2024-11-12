@@ -4,6 +4,7 @@ name: "Update inputs"
 on:  # yamllint disable-line rule:truthy
   schedule:
     - cron: "0 1 * * *"
+  workflow_dispatch:
 
 jobs:
   nix-update:
