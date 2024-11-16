@@ -21,14 +21,45 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        nil
-        nixfmt-rfc-style
-      ];
-    };
-
     programs.neovim = {
+      extraPackages =
+        with pkgs;
+        let
+          systemd-language-server = python3Packages.buildPythonPackage {
+            pname = "systemd-language-server";
+            version = "0.3.5";
+            format = "wheel";
+            src = fetchurl {
+              url = "https://files.pythonhosted.org/packages/72/38/4526913c9a2b314eec0deea826c0349b8790c6123c387e796c999cf25015/systemd_language_server-0.3.5.tar.gz";
+              hash = "sha256-D6EivoBduNvwqGuGGPcjetUJlYbcCzFZDptwj0WGD5w=";
+            };
+          };
+        in
+        [
+          # language servers
+          docker-compose-language-service
+          dockerfile-language-server-nodejs
+          efm-langserver
+          nil
+          systemd-language-server
+
+          # formatters
+          black
+          nixfmt-rfc-style
+          shfmt
+        ];
+
+      plugins = with pkgs.vimPlugins; [
+        coc-html
+        coc-java
+        coc-json
+        coc-markdownlint
+        coc-pyright
+        coc-sh
+        coc-tsserver
+        coc-vetur
+      ];
+
       coc = {
         enable = true;
         settings = {
@@ -39,6 +70,30 @@ in
             filetypes = [ "nix" ];
           };
           languageserver = {
+            dockerfile = {
+              command = "docker-langserver";
+              filetypes = [ "dockerfile" ];
+              args = [ "--stdio" ];
+            };
+            dockercompose = {
+              command = "docker-compose-langserver";
+              args = [ "--stdio" ];
+              filetypes = [ "dockercompose" ];
+              rootPatterns = [
+                ".git"
+                ".env"
+                "docker-compose.yml"
+                "compose.yml"
+              ];
+            };
+            efm = {
+              command = "efm-langserver";
+              args = [ ];
+              filetypes = [
+                "markdown"
+                "vim"
+              ];
+            };
             nix = {
               command = "nil";
               filetypes = [ "nix" ];
@@ -51,9 +106,34 @@ in
                 };
               };
             };
+            systemd-language-server = {
+              command = "systemd-language-server";
+              filetypes = [ "systemd" ];
+            };
+          };
+          java = {
+            enabled = true;
+          };
+          pyright = {
+            enable = true;
           };
         };
       };
+
+      extraConfig = ''
+        set shiftwidth=2 softtabstop=2 expandtab
+
+        """"""""""""""""""""
+        "" Docker Compose ""
+        """"""""""""""""""""
+
+        au FileType yaml if bufname("%") =~# "docker-compose.yml" | set ft=yaml.docker-compose | endif
+        au FileType yaml if bufname("%") =~# "compose.yml" | set ft=yaml.docker-compose | endif
+
+        let g:coc_filetype_map = {
+          \ 'yaml.docker-compose': 'dockercompose',
+          \ }
+      '';
 
       extraLuaConfig = ''
         ---------
@@ -131,6 +211,23 @@ in
 
         -- Symbol renaming
         keyset("n", "<leader>rn", "<Plug>(coc-rename)", {silent = true})
+      '';
+    };
+
+    xdg.configFile = {
+      "efm-langserver/config.yaml".text = ''
+        languages:
+          markdown:
+            lint-command: 'markdownlint -s'
+            lint-stdin: true
+            lint-formats:
+              - '%f:%l %m'
+              - '%f:%l:%c %m'
+              - '%f: %l: %m'
+
+          vim:
+            lint-command: 'vint -'
+            lint-stdin: true
       '';
     };
   };
