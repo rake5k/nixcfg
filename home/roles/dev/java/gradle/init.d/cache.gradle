@@ -2,7 +2,6 @@ gradle.settingsEvaluated { settings ->
   settings.buildCache {
     local {
       enabled = true
-      removeUnusedEntriesAfterDays = 30
     }
 
     remote(HttpBuildCache) {
