@@ -84,6 +84,7 @@ in
       "audio"
       "video"
       "scanner"
+      "dialout"
     ];
     initialPassword = "changeme";
     openssh.authorizedKeys.keys = [
