@@ -51,7 +51,10 @@ in
 
     programs = {
       nano.enable = false;
-      vim.defaultEditor = true;
+      vim = {
+        enable = true;
+        defaultEditor = true;
+      };
       zsh.enable = true;
     };
 

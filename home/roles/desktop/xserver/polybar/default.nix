@@ -87,7 +87,7 @@ in
           default = true;
         };
         temperature-source = mkOption {
-          type = types.string;
+          type = types.str;
           default = "";
           description = "Temperature source path";
         };
@@ -321,7 +321,7 @@ in
 
         "module/wtr" = {
           type = "custom/script";
-          exec = "${getExe pkgs.bash} ${config.xdg.configFile."polybar/weather-plugin.sh".target}";
+          exec = "${getExe pkgs.bash} ${config.xdg.configHome}/polybar/weather-plugin.sh";
           tail = false;
           interval = 600;
 

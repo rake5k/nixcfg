@@ -21,7 +21,7 @@ in
 
       package = mkOption {
         type = types.package;
-        default = pkgs._1password;
+        default = pkgs._1password-gui;
         description = "Password manager package";
       };
 

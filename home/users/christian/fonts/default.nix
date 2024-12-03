@@ -23,7 +23,9 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       google-fonts
-      ubuntu_font_family
+      ubuntu-classic
+      ubuntu-sans
+      ubuntu-sans-mono
     ];
   };
 }

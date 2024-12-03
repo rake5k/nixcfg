@@ -66,11 +66,10 @@ in
     };
 
     home.packages = with pkgs; [
-      gnome.gnome-characters
-      gnome.nautilus
-      gnome.pomodoro
-      gnome.seahorse
-      psensor
+      gnome-characters
+      gnome-pomodoro
+      nautilus
+      seahorse
     ];
 
     services.gnome-keyring.enable = true;
