@@ -48,7 +48,7 @@ in
         pandoc
         poppler_utils
         python3Packages.nbconvert
-        transmission
+        transmission_4
         trash-cli
         ueberzugpp
         unrar
