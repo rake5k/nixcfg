@@ -247,7 +247,7 @@ hm-switch
 [homeage]: https://github.com/jordanisaacs/homeage
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
-[nixos-badge]: https://img.shields.io/badge/NixOS-23.11-blue.svg?logo=NixOS&logoColor=white
+[nixos-badge]: https://img.shields.io/badge/NixOS-24.11-blue.svg?logo=NixOS&logoColor=white
 [nixfmt]: https://github.com/NixOS/nixfmt
 [shellcheck]: https://github.com/koalaman/shellcheck
 [statix]: https://github.com/NerdyPepper/statix
