@@ -160,11 +160,9 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      ${
-        optionalString (cfg.autoruns != { }) ''
-          ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
-        ''
-      }
+      ${optionalString (cfg.autoruns != { }) ''
+        ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
+      ''}
 
   myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
     where
