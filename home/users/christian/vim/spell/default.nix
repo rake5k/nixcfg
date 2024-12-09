@@ -7,19 +7,19 @@ let
   cfg = config.custom.users.christian.vim.spell;
 
   nvim-spell-de-utf8-dictionary = builtins.fetchurl {
-    url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
+    url = "https://ftp.vim.org/vim/runtime/spell/de.utf-8.spl";
     sha256 = "sha256:73c7107ea339856cdbe921deb92a45939c4de6eb9c07261da1b9dd19f683a3d1";
   };
   nvim-spell-de-utf8-suggestions = builtins.fetchurl {
-    url = "http://ftp.vim.org/vim/runtime/spell/de.utf-8.sug";
+    url = "https://ftp.vim.org/vim/runtime/spell/de.utf-8.sug";
     sha256 = "sha256:0j592ibsias7prm1r3dsz7la04ss5bmsba6l1kv9xn3353wyrl0k";
   };
   nvim-spell-en-utf8-dictionary = builtins.fetchurl {
-    url = "http://ftp.vim.org/vim/runtime/spell/en.utf-8.spl";
+    url = "https://ftp.vim.org/vim/runtime/spell/en.utf-8.spl";
     sha256 = "sha256:0w1h9lw2c52is553r8yh5qzyc9dbbraa57w9q0r9v8xn974vvjpy";
   };
   nvim-spell-en-utf8-suggestions = builtins.fetchurl {
-    url = "http://ftp.vim.org/vim/runtime/spell/en.utf-8.sug";
+    url = "https://ftp.vim.org/vim/runtime/spell/en.utf-8.sug";
     sha256 = "sha256:1v1jr4rsjaxaq8bmvi92c93p4b14x2y1z95zl7bjybaqcmhmwvjv";
   };
 
