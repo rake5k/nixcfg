@@ -26,6 +26,6 @@ import inputs.nixpkgs {
       })
 
       inputs.nixgl.overlays.default
-      inputs.nur.overlay
+      inputs.nur.overlays.default
     ];
 }
