@@ -23,7 +23,6 @@ in
   config = mkIf cfg.enable {
     custom.users.christian.vim = {
       coc.enable = true;
-      spell.enable = true;
       theme.enable = true;
     };
 
