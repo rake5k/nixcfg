@@ -26,6 +26,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    gtk.gtk3.bookmarks = [
+      "file://${config.home.homeDirectory}/Nextcloud"
+    ];
+
     home.packages = [ pkg ];
 
     services.nextcloud-client = {
