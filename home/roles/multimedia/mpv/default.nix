@@ -11,17 +11,13 @@ let
 
   cfg = config.custom.roles.multimedia.mpv;
 
+  mkIptvScript = playlistFile: ''
+    ${getExe pkgs.mpv} ${config.xdg.configHome}/mpv/playlists/${playlistFile} --script-opts=iptv=1
+  '';
+
   scripts = {
-    tv7 = pkgs.writeShellScriptBin "tv7" ''
-      ${getExe pkgs.mpv} ${
-        config.xdg.configFile."mpv/playlists".target
-      }/TV7_default.m3u --script-opts=iptv=1
-    '';
-    tvsrg = pkgs.writeShellScriptBin "tvsrg" ''
-      ${getExe pkgs.mpv} ${
-        config.xdg.configFile."mpv/playlists".target
-      }/srg-fhd-hls.m3u --script-opts=iptv=1
-    '';
+    tv7 = pkgs.writeShellScriptBin "tv7" (mkIptvScript "TV7_default.m3u");
+    tvsrg = pkgs.writeShellScriptBin "tvsrg" (mkIptvScript "srg-fhd-hls.m3u");
   };
 
 in
