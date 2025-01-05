@@ -11,6 +11,7 @@
       containers.enable = true;
       desktop.enable = true;
       gaming.enable = true;
+      impermanence.enable = true;
       printing.enable = true;
     };
   };
