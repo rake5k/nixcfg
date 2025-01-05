@@ -30,6 +30,9 @@ inputs.nixpkgs.lib.nixosSystem {
         };
       }
 
+      # Disko
+      inputs.disko.nixosModules.disko
+
       # Home-Manager
       inputs.home-manager.nixosModules.home-manager
       ./modules/home-manager
