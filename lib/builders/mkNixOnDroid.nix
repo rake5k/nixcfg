@@ -7,10 +7,22 @@
   ...
 }:
 
+let
+
+  nodPkgs = import inputs.nixpkgs {
+    inherit (pkgs) system;
+    overlays = [ inputs.nix-on-droid.overlays.default ] + pkgs.overlays;
+  };
+
+in
+
 inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
+  pkgs = nodPkgs;
+
   extraSpecialArgs = {
-    inherit homeModules inputs pkgs;
+    inherit homeModules inputs;
+    pkgs = nodPkgs;
   };
 
   modules = [
@@ -25,7 +37,7 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       lib.custom = customLib;
 
       nixpkgs = {
-        inherit pkgs;
+        pkgs = nodPkgs;
       };
     }
   ] ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
