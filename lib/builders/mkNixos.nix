@@ -33,6 +33,9 @@ inputs.nixpkgs.lib.nixosSystem {
       # Disko
       inputs.disko.nixosModules.disko
 
+      # Impermanence
+      inputs.impermanence.nixosModules.impermanence
+
       # Home-Manager
       inputs.home-manager.nixosModules.home-manager
       ./modules/home-manager
