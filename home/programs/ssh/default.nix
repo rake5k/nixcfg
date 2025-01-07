@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 
@@ -13,6 +18,8 @@ let
       source = "${config.custom.roles.homeage.secretsSourcePath}/${identity}.age";
       symlinks = [ "${sshDirectory}/${identity}" ];
     };
+
+  inherit (pkgs.stdenv) isLinux;
 
 in
 
@@ -34,6 +41,6 @@ in
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
 
-    services.ssh-agent.enable = true;
+    services.ssh-agent.enable = isLinux;
   };
 }

@@ -9,6 +9,8 @@ let
 
   nixSubstituters = import ../nix-commons/substituters.nix;
 
+  inherit (pkgs.stdenv) isDarwin;
+
 in
 
 {
@@ -19,7 +21,7 @@ in
       nix-config.flake = inputs.self;
     };
     settings = {
-      auto-optimise-store = lib.mkDefault true;
+      auto-optimise-store = lib.mkDefault (!isDarwin);
       experimental-features = [
         "nix-command"
         "flakes"

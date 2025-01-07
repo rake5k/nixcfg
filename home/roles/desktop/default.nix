@@ -11,6 +11,8 @@ let
 
   cfg = config.custom.roles.desktop;
 
+  inherit (pkgs.stdenv) isLinux;
+
 in
 
 {
@@ -57,21 +59,23 @@ in
     custom = {
       roles = {
         desktop = {
-          gtk.enable = true;
-          passwordManager.enable = true;
+          gtk.enable = isLinux;
+          passwordManager.enable = isLinux;
           terminal.enable = true;
           wiki.enable = true;
         };
       };
     };
 
-    home.packages = with pkgs; [
-      gnome-characters
-      gnome-pomodoro
-      nautilus
-      seahorse
-    ];
+    home.packages =
+      with pkgs;
+      optionals isLinux [
+        gnome-characters
+        gnome-pomodoro
+        nautilus
+        seahorse
+      ];
 
-    services.gnome-keyring.enable = true;
+    services.gnome-keyring.enable = isLinux;
   };
 }

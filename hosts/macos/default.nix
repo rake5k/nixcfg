@@ -1,5 +1,5 @@
 {
-  custom.base.users = [ "chr" ];
+  custom.base.users = [ "christian" ];
 
   # if you use zsh (the default on new macOS installations),
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes
@@ -14,4 +14,6 @@
     };
     casks = [ "alfred" ];
   };
+
+  system.stateVersion = 5;
 }

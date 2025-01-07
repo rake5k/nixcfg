@@ -36,7 +36,7 @@ in
       '';
     };
 
-    nixGL = {
+    nixGL = lib.mkIf isLinux {
       inherit (inputs.nixgl) packages;
       defaultWrapper = "mesa";
       installScripts = [ "mesa" ];
