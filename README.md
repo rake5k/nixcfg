@@ -236,8 +236,8 @@ sudo nixos-rebuild switch
 hm-switch
 ```
 
-[ci]: https://github.com/rake5k/nixcfg/actions/workflows/ci.yml
-[ci-badge]: https://github.com/rake5k/nixcfg/actions/workflows/ci.yml/badge.svg
+[ci]: https://garnix.io/repo/rake5k/nixcfg
+[ci-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Frake5k%2Fnixcfg%3Fbranch%3Dmaster
 [update]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml
 [update-badge]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml/badge.svg
 
