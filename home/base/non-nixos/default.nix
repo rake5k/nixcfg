@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  inputs,
   ...
 }:
 
@@ -33,6 +34,12 @@ in
       activation.report-changes = config.lib.dag.entryAnywhere ''
         ${lib.getExe pkgs.nix} store diff-closures $oldGenPath $newGenPath || true
       '';
+    };
+
+    nixGL = {
+      inherit (inputs.nixgl) packages;
+      defaultWrapper = "mesa";
+      installScripts = [ "mesa" ];
     };
 
     programs.zsh.envExtra = lib.mkAfter ''
