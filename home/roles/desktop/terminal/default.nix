@@ -12,11 +12,7 @@ let
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.terminal;
 
-  alacritty =
-    if config.custom.base.non-nixos.enable then
-      (hiPrio (config.lib.custom.nixGLWrap pkgs.alacritty))
-    else
-      pkgs.alacritty;
+  alacritty = config.lib.nixGL.wrap pkgs.alacritty;
 
 in
 

@@ -10,11 +10,7 @@ with lib;
 let
 
   cfg = config.custom.roles.web.nextcloud-client;
-  pkg =
-    if config.custom.base.non-nixos.enable then
-      (config.lib.custom.nixGLWrap pkgs.nextcloud-client)
-    else
-      pkgs.nextcloud-client;
+  pkg = config.lib.nixGL.wrap pkgs.nextcloud-client;
 
 in
 
