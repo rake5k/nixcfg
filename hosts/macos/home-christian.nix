@@ -1,3 +1,5 @@
+{ lib, ... }:
+
 {
   custom = {
     base.non-nixos.enable = true;
@@ -15,5 +17,8 @@
     };
   };
 
-  home.stateVersion = import ./state-version.nix;
+  home = {
+    homeDirectory = lib.mkForce "/Users/chrstian";
+    stateVersion = import ./state-version.nix;
+  };
 }

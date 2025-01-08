@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -11,8 +10,6 @@ let
 
   username = "christian";
   cfg = config.custom.users."${username}";
-
-  inherit (pkgs.stdenv) isDarwin;
 
 in
 
@@ -26,7 +23,6 @@ in
   config = mkIf cfg.enable {
     home = {
       username = mkDefault username;
-      homeDirectory = mkDefault (if isDarwin then "/Users/${username}" else "/home/${username}");
     };
 
     custom = {
