@@ -25,7 +25,6 @@ in
       programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
-        ranger.enable = true;
         zsh.enable = true;
       };
     };
@@ -86,6 +85,7 @@ in
       fzf.enable = true;
       jq.enable = true;
       starship.enable = true;
+      yazi.enable = true;
     };
   };
 }

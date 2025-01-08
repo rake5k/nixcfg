@@ -27,7 +27,7 @@ let
     XF86MonBrightnessDown = "brightnessctl set 10%-";
     XF86MonBrightnessUp = "brightnessctl set 10%+";
     XF86Calculator = "${terminalCfg.commandSpawnCmd} ${getExe pkgs.eva}";
-    XF86Explorer = "${terminalCfg.commandSpawnCmd} ${getExe pkgs.ranger}";
+    XF86Explorer = "${terminalCfg.commandSpawnCmd} ${getExe pkgs.yazi}";
     XF86HomePage = "xdg-open";
   };
 

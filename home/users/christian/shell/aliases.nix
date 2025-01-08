@@ -37,7 +37,7 @@
   grep = "rg";
 
   # File manager
-  rr = "ranger";
+  rr = "yazi";
 
   # Calendar shortcuts
   cal = "khal -v ERROR calendar 2>/dev/null";

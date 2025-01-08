@@ -20,7 +20,7 @@ in
   config = mkIf cfg.enable {
     custom.programs.spectrwm = {
       autoruns = {
-        "alacritty" = 1;
+        "kitty" = 1;
       };
       font = {
         inherit (desktopCfg.font) package xft;
