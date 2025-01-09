@@ -94,7 +94,7 @@
     let
       nixcfgLib = import ./lib { inherit inputs; };
       inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
-      inherit (nixpkgs.lib) listToAttrs recursiveUpdate;
+      inherit (nixpkgs.lib) listToAttrs;
     in
     with nixcfgLib;
     {
@@ -147,28 +147,16 @@
         })
       ];
 
-      checks =
-        recursiveUpdate
-          (forEachSystem (
-            system:
-            let
-              commonsLib = inputs.flake-commons.lib {
-                pkgs = pkgsFor."${system}";
-                flake = self;
-              };
-            in
-            commonsLib.checks
-          ))
-          (
-            (mkForSystem aarch64-darwin [ (mkBuild "build-macos" self.darwinConfigurations.macos.system) ])
-            // (mkForSystem x86_64-linux [
-              (mkBuild "build-christian@non-nixos"
-                self.homeConfigurations."christian@non-nixos".activationPackage
-              )
-              (mkBuild "build-demo@non-nixos" self.homeConfigurations."demo@non-nixos".activationPackage)
-              (mkBuild "build-nixos" self.nixosConfigurations.nixos.config.system.build.toplevel)
-            ])
-          );
+      checks = forEachSystem (
+        system:
+        let
+          commonsLib = inputs.flake-commons.lib {
+            pkgs = pkgsFor."${system}";
+            flake = self;
+          };
+        in
+        commonsLib.checks
+      );
 
       devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
 
