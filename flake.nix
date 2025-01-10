@@ -142,20 +142,11 @@
             ];
         })
 
-        (mkApp "nixos-install" {
-          file = "nixos-install.sh";
+        (mkApp "disko-install" {
+          file = "disko-install.sh";
           envs = {
             _doNotClearPath = true;
           };
-          path =
-            pkgs: with pkgs; [
-              git
-              hostname
-              util-linux
-              parted
-              cryptsetup
-              lvm2
-            ];
         })
       ];
 
