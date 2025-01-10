@@ -36,6 +36,9 @@ inputs.nixpkgs.lib.nixosSystem {
       # Impermanence
       inputs.impermanence.nixosModules.impermanence
 
+      # Secure Boot
+      inputs.lanzaboote.nixosModules.lanzaboote
+
       # Home-Manager
       inputs.home-manager.nixosModules.home-manager
       ./modules/home-manager
