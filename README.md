@@ -2,7 +2,6 @@
 
 [![NixOS][nixos-badge]][nixos]
 [![Build and Test][ci-badge]][ci]
-[![Update][update-badge]][update]
 
 ## Features
 
@@ -237,8 +236,6 @@ hm-switch
 ```
 
 [ci]: https://garnix.io/repo/rake5k/nixcfg
-[update]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml
-[update-badge]: https://github.com/rake5k/nixcfg/actions/workflows/update.yml/badge.svg
 [ci-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Frake5k%2Fnixcfg%3Fbranch%3Dmain
 
 [age]: https://age-encryption.org/
