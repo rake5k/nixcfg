@@ -2,10 +2,13 @@
   imports = [ ./hardware ];
 
   custom = {
-    base.users = [
-      "demo"
-      "christian"
-    ];
+    base = {
+      system.boot.secureBoot = true;
+      users = [
+        "demo"
+        "christian"
+      ];
+    };
     roles = {
       android.enable = true;
       containers.enable = true;
