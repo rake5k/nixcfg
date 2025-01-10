@@ -34,12 +34,6 @@ in
 
       # Runtimes
       wine
-
-      # Games
-      superTux
-      superTuxKart
-      wesnoth
-      zeroad
     ];
   };
 }
