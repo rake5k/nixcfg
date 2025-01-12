@@ -27,6 +27,8 @@ in
     security.pam.services.login.enableGnomeKeyring = true;
 
     services = {
+      udisks2.enable = true;
+
       xserver = {
         enable = true;
         desktopManager.xterm.enable = true;
