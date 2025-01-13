@@ -1,17 +1,64 @@
+{ config, lib, ... }:
+
+let
+
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
+
+  cfg = config.custom.base.system.network;
+
+in
+
 {
-  networking = {
-    firewall = {
-      enable = true;
-      allowPing = true;
+  options = {
+    custom.base.system.network = {
+      enable = mkEnableOption "Network config" // {
+        default = true;
+      };
+
+      wol = {
+        enable = mkEnableOption "Wake on LAN";
+
+        interface = mkOption {
+          type = types.str;
+          description = ''
+            Interface to listen for magic packets.
+          '';
+        };
+      };
     };
-    networkmanager.enable = true;
   };
 
-  programs.nm-applet.enable = true;
+  config = mkIf cfg.enable {
+    networking = {
+      firewall = {
+        enable = true;
+        allowPing = true;
+      };
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
+      interfaces = mkIf cfg.wol.enable {
+        ${cfg.wol.interface} = {
+          wakeOnLan = {
+            enable = true;
+            policy = [ "magic" ];
+          };
+        };
+      };
+
+      networkmanager.enable = true;
+      useDHCP = lib.mkDefault true;
+    };
+
+    programs.nm-applet.enable = true;
+
+    # Enable the OpenSSH daemon.
+    services.openssh = {
+      enable = true;
+      settings.PasswordAuthentication = false;
+    };
   };
 }
