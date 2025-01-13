@@ -83,6 +83,7 @@ in
         "/srv"
         "/.cache/nix/"
         "/etc/NetworkManager/system-connections"
+        "/etc/secureboot"
         "/var/cache/"
         "/var/db/sudo/"
         "/var/lib/"
