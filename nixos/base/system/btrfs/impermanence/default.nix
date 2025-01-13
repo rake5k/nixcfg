@@ -4,22 +4,23 @@
   ...
 }:
 
-with lib;
-
 let
 
-  cfg = config.custom.roles.impermanence;
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.custom.base.system.btrfs.impermanence;
 
 in
 
 {
   options = {
-    custom.roles.impermanence = with types; {
-      enable = mkEnableOption "Enable impermanence";
+    custom.base.system.btrfs.impermanence = {
+      enable = mkEnableOption "Enable impermanence using BTRFS snapshots";
     };
   };
 
   config = mkIf cfg.enable {
+
     security.sudo.extraConfig = ''
       # rollback results in sudo lectures after each reboot
       Defaults lecture = never
@@ -96,5 +97,7 @@ in
         "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
       ];
     };
+
+    fileSystems."/persist".neededForBoot = true;
   };
 }
