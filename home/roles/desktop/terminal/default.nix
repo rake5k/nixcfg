@@ -59,6 +59,10 @@ in
         name = desktopCfg.font.familyMono;
         size = 15;
       };
+      settings = {
+        background_opacity = 0.8;
+        background_blur = 64;
+      };
     };
   };
 }
