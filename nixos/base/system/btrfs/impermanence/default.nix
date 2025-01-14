@@ -6,7 +6,12 @@
 
 let
 
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    ;
 
   cfg = config.custom.base.system.btrfs.impermanence;
 
@@ -16,6 +21,23 @@ in
   options = {
     custom.base.system.btrfs.impermanence = {
       enable = mkEnableOption "Enable impermanence using BTRFS snapshots";
+
+      extraDirectories = mkOption {
+        default = [ ];
+        example = literalExpression ''["/var/lib/libvirt"]'';
+        description = ''
+          Additional directories in the root to link to persistent
+          storage.
+        '';
+      };
+
+      extraFiles = mkOption {
+        default = [ ];
+        example = literalExpression ''["/etc/nix/id_rsa"]'';
+        description = ''
+          Additional files in the root to link to persistent storage.
+        '';
+      };
     };
   };
 
@@ -36,7 +58,7 @@ in
       wantedBy = [ "initrd.target" ];
       # make sure it's done after encryption
       # i.e. LUKS/TPM process
-      after = [ "systemd-cryptsetup@enc.service" ];
+      after = [ "systemd-cryptsetup@cryptroot.service" ];
       # mount the root fs before clearing
       before = [ "sysroot.mount" ];
       unitConfig.DefaultDependencies = "no";
@@ -46,7 +68,7 @@ in
 
         # We first mount the btrfs root to /mnt
         # so we can manipulate btrfs subvolumes.
-        mount -o subvol=/ /dev/mapper/enc /mnt
+        mount -o subvol=/ /dev/mapper/cryptroot /mnt
         btrfs subvolume list -o /mnt/root
 
         # While we're tempted to just delete /root and create
@@ -63,13 +85,13 @@ in
         cut -f9 -d' ' |
         while read subvolume; do
           echo "deleting /$subvolume subvolume..."
-          # btrfs subvolume delete "/mnt/$subvolume"
+          btrfs subvolume delete "/mnt/$subvolume"
         done &&
         echo "deleting /root subvolume..." &&
-        # btrfs subvolume delete /mnt/root
+        btrfs subvolume delete /mnt/root
 
         echo "restoring blank /root subvolume..."
-        # btrfs subvolume snapshot /mnt/root-blank /mnt/root
+        btrfs subvolume snapshot /mnt/root-blank /mnt/root
 
         # Once we're done rolling back to a blank snapshot,
         # we can unmount /mnt and continue on the boot process.
@@ -80,14 +102,12 @@ in
     environment.persistence."/persist" = {
       hideMounts = true;
       directories = [
-        "/srv"
-        "/.cache/nix/"
         "/etc/NetworkManager/system-connections"
         "/etc/secureboot"
         "/var/cache/"
         "/var/db/sudo/"
         "/var/lib/"
-      ];
+      ] ++ cfg.extraDirectories;
       files = [
         "/etc/machine-id"
         "/etc/ssh/ssh_host_ed25519_key"
@@ -96,7 +116,7 @@ in
         "/etc/ssh/ssh_host_rsa_key.pub"
         "/etc/secrets/initrd/ssh_host_ed25519_key"
         "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
-      ];
+      ] ++ cfg.extraFiles;
     };
 
     fileSystems."/persist".neededForBoot = true;
