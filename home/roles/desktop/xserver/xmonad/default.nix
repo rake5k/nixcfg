@@ -10,6 +10,7 @@ with lib;
 let
 
   desktopCfg = config.custom.roles.desktop;
+  terminalCfg = desktopCfg.terminal;
   xCfg = desktopCfg.xserver;
   cfg = xCfg.xmonad;
 
@@ -138,11 +139,6 @@ in
         };
       };
 
-      terminalCmd = mkOption {
-        type = types.str;
-        description = "Command to spawn the default terminal emulator";
-      };
-
       wiki = {
         command = mkOption {
           type = types.str;
@@ -198,7 +194,14 @@ in
     xsession.windowManager.xmonad = {
       enable = true;
       enableContribAndExtras = true;
-      config = import ./xmonad.hs.nix { inherit lib pkgs cfg; };
+      config = import ./xmonad.hs.nix {
+        inherit
+          lib
+          pkgs
+          cfg
+          terminalCfg
+          ;
+      };
     };
   };
 }
