@@ -50,6 +50,7 @@ in
     networking.hostName = cfg.hostname;
 
     programs = {
+      git.enable = true;
       nano.enable = false;
       vim = {
         enable = true;
