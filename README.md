@@ -7,8 +7,10 @@
 
 * Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
   an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
+* Disk configuration using [Disko][disko]
 * Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
+* Secure boot support using [Lanzaboote][lanzaboote]
 * Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixfmt][nixfmt]
 * Daily automatic flake input updates committed to master when CI passes
 
@@ -135,15 +137,15 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
 export FLAKE=github:rake5k/nixcfg
-nix run $FLAKE#nixos-install -- <hostname> <disk> $FLAKE
+nix run $FLAKE#disko-install -- <hostname> $FLAKE [--disk <disk-name> /dev/by-id/<disk-id>]...
 ```
 
 Where:
 
 * `<hostname>` is your target machine's desired host name. Define it beforehand inside
   `nixosConfigurations` of `flake.nix`.
-* `<disk>` is your target drive to install NixOS on. Accepted values are `/dev/sda`, `/dev/nvme0n1`
-  or the like.
+* `<disk-name>`/`<disk-id>` for each drive to be managed by disko (at least the
+  name needs to be defined in `disko.devices.disk.<disk-name>` beforehand).
 
 This will completely *nuke* all the data on your `<disk>` device provided. Make sure to have a
 working backup from your data of all drives connected to your target machine.
@@ -240,8 +242,10 @@ hm-switch
 
 [age]: https://age-encryption.org/
 [agenix]: https://github.com/ryantm/agenix
+[disko]: https://github.com/nix-community/disko
 [home-manager]: https://nix-community.github.io/home-manager
 [homeage]: https://github.com/jordanisaacs/homeage
+[lanzaboote]: https://github.com/nix-community/lanzaboote
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
 [nixos-badge]: https://img.shields.io/badge/NixOS-24.11-blue.svg?logo=NixOS&logoColor=white
