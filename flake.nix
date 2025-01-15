@@ -4,20 +4,48 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nur.url = "github:nix-community/NUR";
+
+    flake-commons = {
+      url = "github:rake5k/flake-commons";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        pre-commit-hooks.follows = "pre-commit-hooks";
+      };
+    };
+
+    nur = {
+      url = "github:nix-community/NUR";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+
+    pre-commit-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-compat.follows = "flake-compat";
+      };
+    };
+
+    # Flake utils
 
     systems.url = "github:nix-systems/default";
+
+    flake-compat.url = "github:edolstra/flake-compat";
+
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs-unstable";
+    };
+
     flake-utils = {
       url = "github:numtide/flake-utils";
       inputs.systems.follows = "systems";
     };
 
-    disko = {
-      url = "github:nix-community/disko";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    impermanence.url = "github:nix-community/impermanence";
+    # Configuration types
 
     home-manager = {
       url = "github:nix-community/home-manager/release-24.11";
@@ -35,27 +63,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    pre-commit-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-      };
-    };
-
     # Modules
-
-    flake-commons = {
-      url = "github:rake5k/flake-commons";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        pre-commit-hooks.follows = "pre-commit-hooks";
-      };
-    };
 
     agenix = {
       url = "github:ryantm/agenix";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
+        home-manager.follows = "home-manager";
         systems.follows = "systems";
       };
     };
@@ -63,9 +77,15 @@
     agenix-cli = {
       url = "github:cole-h/agenix-cli";
       inputs = {
+        flake-compat.follows = "flake-compat";
         flake-utils.follows = "flake-utils";
         nixpkgs.follows = "nixpkgs-unstable";
       };
+    };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     homeage = {
@@ -73,9 +93,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence.url = "github:nix-community/impermanence";
+
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.1";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-compat.follows = "flake-compat";
+        flake-parts.follows = "flake-parts";
+        flake-utils.follows = "flake-utils";
+        pre-commit-hooks-nix.follows = "pre-commit-hooks";
+      };
     };
 
     nixgl = {
