@@ -2,6 +2,7 @@
   lib,
   pkgs,
   cfg,
+  terminalCfg,
   ...
 }:
 
@@ -42,7 +43,7 @@ pkgs.writeText "xmonad.hs" ''
   myModMask = ${cfg.modKey}Mask
 
   myTerminal :: String
-  myTerminal = "${cfg.terminalCmd}"
+  myTerminal = "${terminalCfg.spawnCmd}"
 
   myScratchpads :: [NamedScratchpad]
   myScratchpads =
@@ -56,7 +57,7 @@ pkgs.writeText "xmonad.hs" ''
     where
       center :: Rational -> Rational
       center ratio  = (1 - ratio)/2
-      spawnTerm     = myTerminal ++ " -t scratchpad"
+      spawnTerm     = myTerminal ++ " ${terminalCfg.titleArgPrefix}scratchpad"
       findTerm      = title =? "scratchpad"
       manageTerm    = customFloating $ W.RationalRect x y w h
         where
@@ -64,7 +65,7 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnCal    = myTerminal ++ " -t calendar -e khal interactive"
+      spawnCal    = myTerminal ++ " ${terminalCfg.titleArgPrefix}calendar ${terminalCfg.commandArgPrefix}khal interactive"
       findCal     = title =? "calendar"
       manageCal   = customFloating $ W.RationalRect x y w h
         where
@@ -72,7 +73,7 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnHtop     = myTerminal ++ " -t htop -e htop"
+      spawnHtop     = myTerminal ++ " ${terminalCfg.titleArgPrefix}htop ${terminalCfg.commandArgPrefix}htop"
       findHtop      = title =? "htop"
       manageHtop    = customFloating $ W.RationalRect x y w h
         where

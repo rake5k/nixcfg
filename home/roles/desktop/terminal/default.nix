@@ -33,10 +33,16 @@ in
         description = "Command to spawn the default terminal emulator";
       };
 
-      commandSpawnCmd = mkOption {
+      commandArgPrefix = mkOption {
         type = types.str;
-        default = "kitty --command";
-        description = "Command to spawn a shell command inside the default terminal emulator";
+        default = "";
+        description = "Command argument prefix to spawn a shell command inside the default terminal emulator";
+      };
+
+      titleArgPrefix = mkOption {
+        type = types.str;
+        default = "-T ";
+        description = "Window title argument prefix";
       };
     };
   };
