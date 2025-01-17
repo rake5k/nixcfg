@@ -68,6 +68,7 @@ in
       settings = {
         background_opacity = 0.8;
         background_blur = 64;
+        tab_bar_style = "powerline";
       };
     };
   };
