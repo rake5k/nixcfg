@@ -9,19 +9,15 @@ let
 
   cfg = config.custom.roles.nas;
 
-  inherit (lib)
-    getExe
-    mkEnableOption
-    mkIf
-    toUpper
-    ;
   inherit (config.custom.base) hostname;
+  inherit (config.lib.custom)
+    mkNtfyCommand
+    ntfyTokenSecret
+    ntfyUrlSecret
+    ;
+  inherit (lib) mkEnableOption mkIf toUpper;
 
   prettyHostname = "${toUpper hostname}";
-
-  ntfyTopic = "chris-alerts";
-  ntfyTokenSecret = "${config.custom.base.hostname}/ntfy-token";
-  ntfyUrlSecret = "${config.custom.base.hostname}/ntfy-url";
 
   ntfyWakeUpAction = {
     action = "view";
@@ -38,38 +34,21 @@ let
     clear = true;
   };
 
-  mkNtfyCommand =
-    body:
-    let
-      jsonBody = builtins.toJSON (body // { topic = ntfyTopic; });
-      bodyFile = pkgs.writeText "ntfyBody" jsonBody;
-    in
-    ''
-      ${getExe pkgs.curl} \
-        -H "Authorization:Bearer $(${pkgs.coreutils}/bin/cat ${
-          config.age.secrets.${ntfyTokenSecret}.path
-        })" \
-        -H "Markdown: yes" \
-        -H "Content-Type: application/json" \
-        -d @'${bodyFile}' \
-        "$(${pkgs.coreutils}/bin/cat ${config.age.secrets.${ntfyUrlSecret}.path})"
-    '';
-
-  notifySleep = mkNtfyCommand {
+  notifySleep = mkNtfyCommand config.age.secrets {
     title = "${prettyHostname} is going to save some power...";
     message = "See you later!";
     tags = [ "zzz" ];
     actions = [ ntfyWakeUpAction ];
   };
 
-  notifyShutdown = mkNtfyCommand {
+  notifyShutdown = mkNtfyCommand config.age.secrets {
     title = "${prettyHostname} is going to shut down...";
     message = "Bye bye!";
     tags = [ "electric_plug" ];
     actions = [ ntfyWakeUpAction ];
   };
 
-  notifyStartup = mkNtfyCommand {
+  notifyStartup = mkNtfyCommand config.age.secrets {
     title = "${prettyHostname} is ready to serve data";
     message = "Let's goo!";
     tags = [ "floppy_disk" ];
