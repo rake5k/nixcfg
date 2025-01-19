@@ -15,11 +15,10 @@ inputs.flake-commons.lib {
   rec {
     ntfyTokenSecret = "ntfy-token";
     ntfyUrlSecret = "ntfy-url";
+    ntfyTopic = "chris-alerts";
     mkNtfyCommand =
       secretsCfg: body:
       let
-        ntfyTopic = "chris-alerts";
-
         jsonBody = builtins.toJSON (body // { topic = ntfyTopic; });
         bodyFile = pkgs.writeText "ntfyBody" jsonBody;
       in

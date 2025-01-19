@@ -48,10 +48,6 @@ in
           tags = [ "dizzy" ];
         }}
       '';
-
-      # TODO:
-      # onFailure = [ "notify-failure@nixos-upgrade.service" ]
-      # onSuccess = [ "notify-success@nixos-upgrade.service" ]
     };
   };
 }
