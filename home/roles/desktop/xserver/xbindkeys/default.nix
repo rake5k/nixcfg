@@ -25,6 +25,7 @@ let
     XF86AudioStop = "playerctl stop";
     XF86Bluetooth = "${getExe pkgs.bash} -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\"";
     XF86Calculator = "${terminalCfg.spawnCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.eva}";
+    XF86Eject = "eject";
     XF86Explorer = "${terminalCfg.spawnCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.yazi}";
     XF86HomePage = "xdg-open";
     XF86MonBrightnessDown = "brightnessctl set 10%-";
