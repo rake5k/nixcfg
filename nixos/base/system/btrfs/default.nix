@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -16,6 +21,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.compsize ];
+
     services.btrfs.autoScrub = {
       enable = mkDefault true;
       fileSystems = [ "/" ];
