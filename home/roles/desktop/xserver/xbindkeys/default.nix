@@ -15,20 +15,20 @@ let
 
   defaultKeymap = {
     XF86AudioLowerVolume = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-";
-    XF86AudioRaiseVolume = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
-    XF86AudioMute = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
     XF86AudioMicMute = "wpctl set-source-mute @DEFAULT_SOURCE@ toggle";
-    XF86AudioPlay = "playerctl play-pause";
-    XF86AudioStop = "playerctl stop";
-    XF86AudioPause = "playerctl pause";
+    XF86AudioMute = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
     XF86AudioNext = "playerctl next";
+    XF86AudioPause = "playerctl pause";
+    XF86AudioPlay = "playerctl play-pause";
     XF86AudioPrev = "playerctl previous";
+    XF86AudioRaiseVolume = "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+    XF86AudioStop = "playerctl stop";
     XF86Bluetooth = "${getExe pkgs.bash} -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\"";
-    XF86MonBrightnessDown = "brightnessctl set 10%-";
-    XF86MonBrightnessUp = "brightnessctl set 10%+";
     XF86Calculator = "${terminalCfg.spawnCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.eva}";
     XF86Explorer = "${terminalCfg.spawnCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.yazi}";
     XF86HomePage = "xdg-open";
+    XF86MonBrightnessDown = "brightnessctl set 10%-";
+    XF86MonBrightnessUp = "brightnessctl set 10%+";
   };
 
   mkRcEntry =
