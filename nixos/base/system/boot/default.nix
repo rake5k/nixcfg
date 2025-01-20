@@ -21,6 +21,8 @@ in
     environment.systemPackages = lib.optionals cfg.secureBoot [ pkgs.sbctl ];
 
     boot = {
+      initrd.systemd.enable = true;
+
       lanzaboote = mkIf cfg.secureBoot {
         enable = true;
         pkiBundle = "/etc/secureboot";
