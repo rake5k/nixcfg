@@ -68,7 +68,7 @@ let
       -H "Markdown: yes" \
       -H "Tags: rotating_light" \
       -H "Title: ${prettyHostname} - Systemd unit \`''${1}\` failed" \
-      -d "$(${pkgs.systemd}/bin/journalctl --unit ''${1} --lines 5 --reverse --no-pager --boot | ${pkgs.coreutils}/bin/head -c 4095)" \
+      -d $'Journal tail:\n```\n'"$(${pkgs.systemd}/bin/journalctl --unit ''${1} --lines 10 --no-pager --boot | ${pkgs.coreutils}/bin/head -c 4065)"$'\n```' \
       "$(${pkgs.coreutils}/bin/cat ${secretsCfg.${ntfyUrlSecret}.path})${ntfyTopic}"
   '';
   notifyFailure = mkNtfyCommand config.age.secrets;
