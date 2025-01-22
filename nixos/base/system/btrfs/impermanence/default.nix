@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 
@@ -11,6 +12,7 @@ let
     mkEnableOption
     mkIf
     mkOption
+    readFile
     ;
 
   cfg = config.custom.base.system.btrfs.impermanence;
@@ -102,24 +104,52 @@ in
       };
     };
 
-    environment.persistence."/persist" = {
-      hideMounts = true;
-      directories = [
-        "/etc/NetworkManager/system-connections"
-        "/etc/secureboot"
-        "/var/cache/"
-        "/var/db/sudo/"
-        "/var/lib/"
-      ] ++ cfg.extraDirectories;
-      files = [
-        "/etc/machine-id"
-        "/etc/ssh/ssh_host_ed25519_key"
-        "/etc/ssh/ssh_host_ed25519_key.pub"
-        "/etc/ssh/ssh_host_rsa_key"
-        "/etc/ssh/ssh_host_rsa_key.pub"
-        "/etc/secrets/initrd/ssh_host_ed25519_key"
-        "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
-      ] ++ cfg.extraFiles;
+    environment = {
+      persistence."/persist" = {
+        hideMounts = true;
+        directories = [
+          "/etc/NetworkManager/system-connections"
+          "/etc/secureboot"
+          "/var/cache/"
+          "/var/db/sudo/"
+          "/var/lib/"
+        ] ++ cfg.extraDirectories;
+        files = [
+          "/etc/machine-id"
+          "/etc/ssh/ssh_host_ed25519_key"
+          "/etc/ssh/ssh_host_ed25519_key.pub"
+          "/etc/ssh/ssh_host_rsa_key"
+          "/etc/ssh/ssh_host_rsa_key.pub"
+          "/etc/secrets/initrd/ssh_host_ed25519_key"
+          "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
+        ] ++ cfg.extraFiles;
+      };
+
+      systemPackages = with pkgs; [
+        (writeShellApplication {
+          name = "fs-diff";
+          runtimeInputs = [
+            coreutils
+            gnused
+            btrfs-progs
+          ];
+          text = readFile ./fs-diff.sh;
+        })
+        (writeShellApplication {
+          name = "root-diff";
+          runtimeInputs = [
+            coreutils
+            gnused
+            btrfs-progs
+          ];
+          text = ''
+            sudo mkdir -p /mnt
+            sudo mount -o subvol=/ /dev/mapper/cryptroot /mnt
+            fs-diff
+            sudo umount /mnt
+          '';
+        })
+      ];
     };
 
     fileSystems."/persist".neededForBoot = true;
