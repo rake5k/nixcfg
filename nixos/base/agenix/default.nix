@@ -44,5 +44,7 @@ in
 
       identityPaths = [ "/root/.age/key.txt" ];
     };
+
+    custom.base.system.btrfs.impermanence.extraFiles = config.age.identityPaths;
   };
 }
