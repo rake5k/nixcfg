@@ -187,14 +187,13 @@ chsh -s /bin/zsh
 
 ### Make secrets available on new host
 
-The setup script will create the [age][age] keys needed and put them in the
-[.agenix.toml](.agenix.toml) file, where it then needs to be assigned to the appropriate groups.
-Push the updated `.agenix.toml` back to the git repository, pull it to an existing host and
+Add the host public key into the [.agenix.toml](.agenix.toml) file and assign it to the appropriate
+groups. Push the updated `.agenix.toml` back to the git repository, pull it to an existing host and
 re-key all the secrets with the command:
 
 ```shell
 # On NixOS:
-sudo agenix -i /root/.age/key.txt -i ~/.age/key.txt -r -vv
+sudo agenix -i /etc/ssh/ssh_host_ed25519_key -i ~/.age/key.txt -r -vv
 
 # On non-NixOS:
 agenix -i ~/.age/key.txt -r -vv
