@@ -5,11 +5,19 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.base.agenix;
+
+  inherit (lib)
+    mkMerge
+    mkOption
+    optionalString
+    types
+    ;
+
+  useImpermanence = config.custom.base.system.btrfs.impermanence.enable;
+  hostKeyFile = "/etc/ssh/ssh_host_ed25519_key";
 
 in
 
@@ -42,9 +50,14 @@ in
         builtins.map (secret: { "${secret}".file = "${cfg.secretsBasePath}/${secret}.age"; }) cfg.secrets
       );
 
-      identityPaths = [ "/root/.age/key.txt" ];
+      identityPaths = [
+        "${optionalString useImpermanence "/persist"}${hostKeyFile}"
+      ];
     };
 
-    custom.base.system.btrfs.impermanence.extraFiles = config.age.identityPaths;
+    programs.ssh.extraConfig = ''
+      Host code.harke.ch
+        IdentityFile ${hostKeyFile}
+    '';
   };
 }
