@@ -106,6 +106,11 @@
       };
     };
 
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     nixgl = {
       url = "github:nix-community/nixGL";
       inputs = {
@@ -114,10 +119,7 @@
       };
     };
 
-    nix-index-database = {
-      url = "github:nix-community/nix-index-database";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     # Misc
 
