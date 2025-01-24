@@ -54,10 +54,5 @@ in
         "${optionalString useImpermanence "/persist"}${hostKeyFile}"
       ];
     };
-
-    programs.ssh.extraConfig = ''
-      Host code.harke.ch
-        IdentityFile ${hostKeyFile}
-    '';
   };
 }
