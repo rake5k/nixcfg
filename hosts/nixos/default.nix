@@ -5,6 +5,7 @@
     base = {
       system.network.wol.interface = "enp4s0";
       users = [
+        "root"
         "demo"
         "christian"
       ];

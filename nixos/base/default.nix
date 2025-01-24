@@ -10,6 +10,7 @@ let
   cfg = config.custom.base;
 
   availableUsers = [
+    "root"
     "christian"
     "demo"
     "gamer"
