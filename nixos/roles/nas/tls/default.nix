@@ -92,7 +92,6 @@ in
         certificatesResolvers = {
           letsencrypt = {
             acme = {
-              caServer = "https://acme-staging-v02.api.letsencrypt.org/directory";
               email = "acme@harke.ch";
               storage = "/var/lib/traefik/cert.json";
               dnsChallenge = {
