@@ -51,6 +51,7 @@ in
       certs.${cfg.domain} = {
         inherit (cfg) domain;
         inherit (config.services.traefik) group;
+        dnsPropagationCheck = false;
         dnsProvider = "cloudflare";
         extraDomainNames = [ "*.${cfg.domain}" ];
         credentialFiles = {
