@@ -26,11 +26,11 @@ let
     clear = true;
   };
 
-  glancesPort = toString config.services.glances.port;
+  glancesHost = "glances.local.harke.ch";
   ntfyCheckStatusAction = {
     action = "view";
     label = "Check status";
-    url = "http://${hostname}:${glancesPort}/";
+    url = "https://${glancesHost}/";
     clear = true;
   };
 
@@ -83,6 +83,7 @@ in
       roles.nas = {
         plex.enable = true;
         syncthing.enable = true;
+        tls.enable = true;
       };
     };
 
@@ -161,9 +162,31 @@ in
       };
     };
 
-    services.glances = {
-      enable = true;
-      openFirewall = true;
+    services = {
+      glances = {
+        enable = true;
+        openFirewall = true;
+      };
+
+      traefik = {
+        dynamicConfigOptions = {
+          http = {
+            services = {
+              glances.loadBalancer.servers = [
+                { url = "http://localhost:${toString config.services.glances.port}"; }
+              ];
+            };
+
+            routers = {
+              glances = {
+                entryPoints = [ "websecure" ];
+                rule = "Host(`${glancesHost}`)";
+                service = "glances";
+              };
+            };
+          };
+        };
+      };
     };
   };
 }

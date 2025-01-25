@@ -16,10 +16,30 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.plex = {
-      enable = true;
-      dataDir = "/var/lib/plex";
-      openFirewall = true;
+    services = {
+      plex = {
+        enable = true;
+        dataDir = "/var/lib/plex";
+        openFirewall = true;
+      };
+
+      traefik = {
+        dynamicConfigOptions = {
+          http = {
+            services = {
+              plex.loadBalancer.servers = [ { url = "http://localhost:32400"; } ];
+            };
+
+            routers = {
+              plex = {
+                entryPoints = [ "websecure" ];
+                rule = "Host(`plex.local.harke.ch`)";
+                service = "plex";
+              };
+            };
+          };
+        };
+      };
     };
 
     virtualisation.oci-containers =
