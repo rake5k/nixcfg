@@ -77,6 +77,10 @@ in
           # Prevent "Host check error"
           # https://docs.syncthing.net/users/faq.html#why-do-i-get-host-check-error-in-the-gui-api
           gui.insecureSkipHostcheck = true;
+
+          options = {
+            urAccepted = -1;
+          };
         };
       };
 
