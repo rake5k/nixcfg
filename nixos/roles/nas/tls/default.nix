@@ -53,7 +53,6 @@ in
         inherit (config.services.traefik) group;
         dnsPropagationCheck = false;
         dnsProvider = "cloudflare";
-        extraDomainNames = [ "*.${cfg.domain}" ];
         credentialFiles = {
           CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets.${cloudflareDnsApiTokenSecret}.path;
         };
