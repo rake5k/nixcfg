@@ -32,7 +32,9 @@ in
   config = mkIf cfg.enable {
     custom = {
       base = {
-        agenix.secrets = [ cloudflareDnsApiTokenSecret ];
+        agenix.secrets = [
+          cloudflareDnsApiTokenSecret
+        ];
       };
     };
 
@@ -41,21 +43,9 @@ in
       443
     ];
 
-    security.acme = {
-      acceptTerms = true;
-      defaults = {
-        email = "acme@harke.ch";
-        server = "https://acme-staging-v02.api.letsencrypt.org/directory";
-      };
-
-      certs.${cfg.domain} = {
-        inherit (cfg) domain;
-        inherit (config.services.traefik) group;
-        dnsPropagationCheck = false;
-        dnsProvider = "cloudflare";
-        credentialFiles = {
-          CLOUDFLARE_DNS_API_TOKEN_FILE = config.age.secrets.${cloudflareDnsApiTokenSecret}.path;
-        };
+    systemd.services.traefik = {
+      serviceConfig = {
+        EnvironmentFile = [ config.age.secrets.${cloudflareDnsApiTokenSecret}.path ];
       };
     };
 
@@ -99,6 +89,21 @@ in
           dashboard = true;
         };
 
+        certificatesResolvers = {
+          letsencrypt = {
+            acme = {
+              caServer = "https://acme-staging-v02.api.letsencrypt.org/directory";
+              email = "acme@harke.ch";
+              storage = "/var/lib/traefik/cert.json";
+              dnsChallenge = {
+                provider = "cloudflare";
+                disablePropagationCheck = true;
+                delayBeforeCheck = "100s";
+              };
+            };
+          };
+        };
+
         entryPoints = {
           web = {
             address = ":80";
@@ -111,6 +116,15 @@ in
 
           websecure = {
             address = ":443";
+            http.tls = {
+              certResolver = "letsencrypt";
+              domains = [
+                {
+                  main = cfg.domain;
+                  sans = [ "*.${cfg.domain}" ];
+                }
+              ];
+            };
           };
         };
       };

@@ -35,6 +35,7 @@ in
                 entryPoints = [ "websecure" ];
                 rule = "Host(`plex.local.harke.ch`)";
                 service = "plex";
+                tls.certResolver = "letsencrypt";
               };
             };
           };

@@ -182,6 +182,7 @@ in
                 entryPoints = [ "websecure" ];
                 rule = "Host(`${glancesHost}`)";
                 service = "glances";
+                tls.certResolver = "letsencrypt";
               };
             };
           };
