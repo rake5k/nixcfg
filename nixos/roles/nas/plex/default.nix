@@ -59,10 +59,15 @@ in
     };
 
     users = {
-      users.threadfin = {
-        group = "threadfin";
-        isSystemUser = true;
-        uid = config.ids.uids.plex + 1;
+      users = {
+        # Grant access to render device (/dev/dri/renderD128).
+        plex.extraGroups = [ "render" ];
+
+        threadfin = {
+          group = "threadfin";
+          isSystemUser = true;
+          uid = config.ids.uids.plex + 1;
+        };
       };
       groups.threadfin = {
         gid = config.ids.gids.plex + 1;
