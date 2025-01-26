@@ -6,6 +6,8 @@ let
 
   cfg = config.custom.roles.nas.plex;
 
+  threadfinPort = "34400";
+
 in
 
 {
@@ -28,6 +30,7 @@ in
           http = {
             services = {
               plex.loadBalancer.servers = [ { url = "http://localhost:32400"; } ];
+              threadfin.loadBalancer.servers = [ { url = "http://localhost:${threadfinPort}"; } ];
             };
 
             routers = {
@@ -37,33 +40,49 @@ in
                 service = "plex";
                 tls.certResolver = "letsencrypt";
               };
+              threadfin = {
+                entryPoints = [ "websecure" ];
+                rule = "Host(`threadfin.local.harke.ch`)";
+                service = "threadfin";
+                tls.certResolver = "letsencrypt";
+              };
             };
           };
         };
       };
     };
 
+    users = {
+      users.threadfin = {
+        group = "threadfin";
+        isSystemUser = true;
+        uid = config.ids.uids.plex + 1;
+      };
+      groups.threadfin = {
+        gid = config.ids.gids.plex + 1;
+      };
+    };
+
     virtualisation.oci-containers =
       let
-        workdirBase = "/data/containers";
+        uidStr = toString config.users.users.threadfin.uid;
+        gidStr = toString config.users.groups.threadfin.gid;
       in
       {
         containers = {
           threadfin = {
             image = "fyb3roptik/threadfin:1.2.21";
-            ports = [
-              "34400:34400"
-            ];
+            ports = [ "127.0.0.1:${threadfinPort}:${threadfinPort}" ];
             environment = {
-              PUID = "1001";
-              PGID = "1001";
+              PUID = uidStr;
+              PGID = gidStr;
               TZ = "Europe/Zurich";
             };
+            user = "${uidStr}:${gidStr}";
             volumes = [
-              "./data/conf:/home/threadfin/conf"
-              "./data/playlists:/home/threadfin/playlists"
+              "/data/containers/threadfin/conf:/home/threadfin/conf"
+              "${toString ./threadfin/playlists}:/home/threadfin/playlists"
             ];
-            workdir = "${workdirBase}/threadfin";
           };
         };
       };

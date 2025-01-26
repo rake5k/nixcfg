@@ -1,0 +1,16 @@
+#EXTM3U
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/1102_SRF1.ch.png" "tvg-name="SRF1.ch" tvg-chno="1108" group-title="Deutsch", SRF 1 FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=ed7d7676-9b05-419a-99b4-5f993d238f80
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/1104_SRFzwei.ch.png" "tvg-name="SRFzwei.ch" tvg-chno="1110" group-title="Deutsch", SRF zwei FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=84b6cf07-7fb9-44df-9769-4ecc47100497
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/1106_SRFinfo.ch.png" "tvg-name="SRFinfo.ch" tvg-chno="1112" group-title="Deutsch", SRF info FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=c4fdba91-54a7-4b6e-876e-e16d8f90e375
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/2103_RTS1.ch.png" "tvg-name="RTS1.ch" tvg-chno="2109" group-title="Français", RTS 1 FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=be382348-42aa-488a-a73c-f8ef1f410872
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/2106_RTS2.ch.png" "tvg-name="RTS2.ch" tvg-chno="2112" group-title="Français", RTS 2 FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=c6786c12-83b5-4183-b705-61db667f829a
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/3104_RSILa1.ch.png" "tvg-name="RSILa1.ch" tvg-chno="3112" group-title="Italiano", RSI LA 1 FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=a2776d37-e7c5-4be2-8801-ac500e0917fd
+#EXTINF:0 tvg-logo="https://vtvapi03.sys.init7.net/media/logos/3108_RSILa2.ch.png" "tvg-name="RSILa2.ch" tvg-chno="3116" group-title="Italiano", RSI LA 2 FHD
+https://vtvapi03.sys.init7.net/api/live/?channel=eb0538fc-049a-4447-9d40-46809c5c54ef
+
