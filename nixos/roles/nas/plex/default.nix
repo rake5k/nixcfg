@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -23,6 +28,7 @@ in
         enable = true;
         dataDir = "/var/lib/plex";
         openFirewall = true;
+        package = pkgs.unstable.plex;
       };
 
       traefik = {
