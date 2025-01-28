@@ -82,7 +82,7 @@ in
       {
         containers = {
           threadfin = {
-            image = "fyb3roptik/threadfin:1.2.21";
+            image = "fyb3roptik/threadfin:1.2.26";
             ports = [ "127.0.0.1:${threadfinPort}:${threadfinPort}" ];
             environment = {
               PUID = uidStr;
