@@ -62,6 +62,7 @@ in
                 config.services.syncthing.settings.devices.pc-win10-chr.name
                 config.services.syncthing.settings.devices.malmok.name
                 config.services.syncthing.settings.devices.pixel-7a.name
+                config.services.syncthing.settings.devices.sv-syno-01.name
               ];
               path = "/data/syncthing/FreeTube";
             };
@@ -69,6 +70,7 @@ in
               enable = true;
               devices = [
                 config.services.syncthing.settings.devices.sirius-a.name
+                config.services.syncthing.settings.devices.sv-syno-01.name
               ];
               path = "/data/syncthing/RetroDeck";
             };
