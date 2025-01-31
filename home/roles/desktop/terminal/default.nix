@@ -63,7 +63,7 @@ in
       font = {
         inherit (desktopCfg.font) package;
         name = desktopCfg.font.familyMono;
-        size = 15;
+        size = 14;
       };
       settings = {
         background_opacity = 0.8;
