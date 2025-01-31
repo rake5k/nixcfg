@@ -64,6 +64,7 @@ in
                 config.services.syncthing.settings.devices.pixel-7a.name
                 config.services.syncthing.settings.devices.sv-syno-01.name
               ];
+              id = "jongs-ayrxt";
               path = "/data/syncthing/FreeTube";
             };
             RetroDeck = {
@@ -72,6 +73,7 @@ in
                 config.services.syncthing.settings.devices.sirius-a.name
                 config.services.syncthing.settings.devices.sv-syno-01.name
               ];
+              id = "gbpxu-zscyz";
               path = "/data/syncthing/RetroDeck";
             };
           };
