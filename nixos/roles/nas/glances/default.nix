@@ -17,12 +17,6 @@ let
     ;
   inherit (lib.generators) toINI;
 
-  package = pkgs.glances.overridePythonAttrs (prev: {
-    propagatedBuildInputs =
-      with pkgs.python3Packages;
-      (prev.propagatedBuildInputs or [ ]) ++ [ pymdstat ];
-  });
-
 in
 
 {
@@ -47,9 +41,6 @@ in
         diskio = {
           hide = "dm-.*,loop.*";
         };
-        raid = {
-          disable = false;
-        };
       };
 
       systemPackages = with pkgs; [ hddtemp ];
@@ -57,7 +48,6 @@ in
 
     services = {
       glances = {
-        inherit package;
         enable = true;
         openFirewall = true;
       };
