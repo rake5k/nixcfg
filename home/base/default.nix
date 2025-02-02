@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -15,9 +14,4 @@
   };
 
   news.display = "silent";
-
-  xdg.userDirs = lib.mkIf pkgs.stdenv.isLinux {
-    enable = true;
-    createDirectories = true;
-  };
 }

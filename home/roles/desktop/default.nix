@@ -77,5 +77,10 @@ in
       ];
 
     services.gnome-keyring.enable = isLinux;
+
+    xdg.userDirs = lib.mkIf isLinux {
+      enable = true;
+      createDirectories = true;
+    };
   };
 }
