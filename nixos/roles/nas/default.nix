@@ -73,7 +73,10 @@ in
 
         system = {
           boot.secureBoot = true;
-          btrfs.impermanence.enable = true;
+          btrfs = {
+            btrbk.enable = true;
+            impermanence.enable = true;
+          };
           luks.remoteUnlock = true;
           network.wol.enable = true;
         };
@@ -99,6 +102,34 @@ in
       '';
 
       powertop.enable = true;
+    };
+
+    services.btrbk.instances = {
+      data = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/data/snapshots";
+          volume."/data" = {
+            subvolume = {
+              "data" = { };
+              "plex" = { };
+              "syncthing" = { };
+            };
+          };
+        };
+      };
+
+      persist = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/snapshots";
+          subvolume = "/persist";
+        };
+      };
     };
 
     systemd.services = {
