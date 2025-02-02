@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
 
@@ -33,17 +28,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment = {
-      etc."glances/glances.conf".text = toINI { } {
-        global = {
-          check_update = false;
-        };
-        diskio = {
-          hide = "dm-.*,loop.*";
-        };
+    environment.etc."glances/glances.conf".text = toINI { } {
+      global = {
+        check_update = false;
       };
-
-      systemPackages = with pkgs; [ hddtemp ];
+      diskio = {
+        hide = "dm-.*,loop.*";
+      };
     };
 
     services = {
