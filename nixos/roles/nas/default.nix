@@ -97,6 +97,8 @@ in
       powerUpCommands = ''
         ${notifyStartup}
       '';
+
+      powertop.enable = true;
     };
 
     systemd.services = {
