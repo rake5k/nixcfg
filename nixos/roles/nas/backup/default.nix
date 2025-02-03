@@ -7,6 +7,7 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   inherit (config.custom.base.system.btrfs.btrbk) snapshotDir;
+  inherit (config.custom.base) hostname;
 
 in
 
@@ -35,23 +36,7 @@ in
     };
 
     services.btrbk.instances = {
-      data = {
-        onCalendar = "hourly";
-        settings = {
-          snapshot_preserve = "7d 4w 6m";
-          snapshot_preserve_min = "2d";
-          snapshot_dir = "/data${snapshotDir}";
-          volume."/data" = {
-            subvolume = {
-              "container" = { };
-              "home" = { };
-              "plex" = { };
-              "syncthing" = { };
-            };
-          };
-        };
-      };
-
+      # Remote root state backup to SSH (TODO)
       persist = {
         onCalendar = "hourly";
         settings = {
@@ -59,6 +44,44 @@ in
           snapshot_preserve_min = "2d";
           snapshot_dir = snapshotDir;
           subvolume = "/persist";
+        };
+      };
+
+      # Remote data backup to SSH (TODO)
+      data-remote = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/data${snapshotDir}";
+
+          volume."/data" = {
+            subvolume = {
+              "home" = { };
+            };
+          };
+        };
+      };
+
+      # Local backup to external disk
+      data-local = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/data${snapshotDir}";
+
+          target_preserve = "20d 10w 6m";
+          target_preserve_min = "no";
+
+          volume."/data" = {
+            target = "/mnt/btrbkusb/${hostname}";
+            subvolume = {
+              "container" = { };
+              "plex" = { };
+              "syncthing" = { };
+            };
+          };
         };
       };
     };
