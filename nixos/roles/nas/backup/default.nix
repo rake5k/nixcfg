@@ -23,6 +23,17 @@ in
       impermanence.extraDirectories = [ snapshotDir ];
     };
 
+    # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusb`
+    # see: https://wiki.nixos.org/wiki/Full_Disk_Encryption#Unlocking_secondary_drives
+    fileSystems."/mnt/btrbkusb" = {
+      device = "/dev/disk/by-label/btrbkusb";
+      fsType = "btrfs";
+      options = [
+        "compress=zstd"
+        "noatime"
+      ];
+    };
+
     services.btrbk.instances = {
       data = {
         onCalendar = "hourly";
