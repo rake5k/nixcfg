@@ -91,7 +91,7 @@ in
             };
             user = "${uidStr}:${gidStr}";
             volumes = [
-              "/data/containers/threadfin/conf:/home/threadfin/conf"
+              "/data/container/threadfin/conf:/home/threadfin/conf"
               "${toString ./threadfin/playlists}:/home/threadfin/playlists"
             ];
           };

@@ -18,7 +18,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.btrbk.enable = true;
+    custom.base.system.btrfs = {
+      btrbk.enable = true;
+      impermanence.extraDirectories = [ snapshotDir ];
+    };
 
     services.btrbk.instances = {
       data = {
@@ -29,7 +32,8 @@ in
           snapshot_dir = "/data${snapshotDir}";
           volume."/data" = {
             subvolume = {
-              "data" = { };
+              "container" = { };
+              "home" = { };
               "plex" = { };
               "syncthing" = { };
             };
@@ -47,5 +51,10 @@ in
         };
       };
     };
+
+    # Btrbk does not create snapshot directories automatically, so create one here.
+    systemd.tmpfiles.rules = [
+      "d ${snapshotDir} 0755 root root"
+    ];
   };
 }
