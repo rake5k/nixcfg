@@ -4,10 +4,12 @@ let
 
   cfg = config.custom.roles.nas.backup;
 
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkForce mkIf;
 
   inherit (config.custom.base.system.btrfs.btrbk) snapshotDir;
   inherit (config.custom.base) hostname;
+
+  btrbkId = "id_ed25519_btrbk";
 
 in
 
@@ -19,9 +21,19 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs = {
-      btrbk.enable = true;
-      impermanence.extraDirectories = [ snapshotDir ];
+
+    # Allow btrbk user to read ssh key file
+    age.secrets."${btrbkId}" = {
+      owner = mkForce "btrbk";
+      mode = mkForce "400";
+    };
+
+    custom.base = {
+      agenix.secrets = [ btrbkId ];
+      system.btrfs = {
+        btrbk.enable = true;
+        impermanence.extraDirectories = [ snapshotDir ];
+      };
     };
 
     # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusb`
@@ -36,18 +48,26 @@ in
     };
 
     services.btrbk.instances = {
-      # Remote root state backup to SSH (TODO)
+      # Remote root state backup to SSH
       persist = {
         onCalendar = "hourly";
         settings = {
-          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve = "7d 4w 6m 1y";
           snapshot_preserve_min = "2d";
           snapshot_dir = snapshotDir;
+
+          target_preserve = "20d 10w 6m";
+          target_preserve_min = "no";
+
+          ssh_identity = config.age.secrets."${btrbkId}".path;
+          ssh_user = "btrbk";
+
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
           subvolume = "/persist";
         };
       };
 
-      # Remote data backup to SSH (TODO)
+      # Remote data backup to SSH
       data-remote = {
         onCalendar = "hourly";
         settings = {
@@ -55,9 +75,18 @@ in
           snapshot_preserve_min = "2d";
           snapshot_dir = "/data${snapshotDir}";
 
+          target_preserve = "20d 10w 6m 1y";
+          target_preserve_min = "no";
+
+          ssh_identity = config.age.secrets."${btrbkId}".path;
+          ssh_user = "btrbk";
+
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
+
           volume."/data" = {
             subvolume = {
               "home" = { };
+              "photo" = { };
             };
           };
         };
