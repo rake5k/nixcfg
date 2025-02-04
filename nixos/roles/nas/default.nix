@@ -19,7 +19,10 @@ in
     custom = {
       base.system = {
         boot.secureBoot = true;
-        btrfs.impermanence.enable = true;
+        btrfs = {
+          enable = true;
+          impermanence.enable = true;
+        };
         luks.remoteUnlock = true;
         network.wol.enable = true;
       };
