@@ -62,6 +62,9 @@ in
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
 
+          # Synology Hack (https://github.com/digint/btrbk/issues/383#issuecomment-823808283)
+          compat = "ignore_receive_errors";
+
           target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
           subvolume = "/persist";
         };
@@ -80,6 +83,9 @@ in
 
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
+
+          # Synology Hack (https://github.com/digint/btrbk/issues/383#issuecomment-823808283)
+          compat = "ignore_receive_errors";
 
           target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
 
