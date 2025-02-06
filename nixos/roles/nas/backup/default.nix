@@ -58,6 +58,7 @@ in
 
           target_preserve = "20d 10w 6m";
           target_preserve_min = "no";
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
 
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
@@ -65,8 +66,11 @@ in
           # Synology Hack (https://github.com/digint/btrbk/issues/383#issuecomment-823808283)
           compat = "ignore_receive_errors";
 
-          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
-          subvolume = "/persist";
+          volume."/" = {
+            subvolume = {
+              persist = { };
+            };
+          };
         };
       };
 
@@ -80,14 +84,13 @@ in
 
           target_preserve = "20d 10w 6m 1y";
           target_preserve_min = "no";
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
 
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
 
           # Synology Hack (https://github.com/digint/btrbk/issues/383#issuecomment-823808283)
           compat = "ignore_receive_errors";
-
-          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
 
           volume."/data" = {
             subvolume = {
