@@ -94,8 +94,10 @@ in
 
           volume."/data" = {
             subvolume = {
+              "container" = { };
               "home" = { };
               "photo" = { };
+              "share" = { };
             };
           };
         };
@@ -115,7 +117,6 @@ in
           volume."/data" = {
             target = "/mnt/btrbkusb/${hostname}";
             subvolume = {
-              "container" = { };
               "plex" = { };
               "syncthing" = { };
             };
