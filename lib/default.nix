@@ -25,6 +25,8 @@ let
       inputs.nix-index-database.hmModules.nix-index
 
       { lib.custom = customLib; }
+
+      ./builders/modules/nix-home
     ]
     ++ customLib.getRecursiveDefaultNixFileList ../home
     ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
