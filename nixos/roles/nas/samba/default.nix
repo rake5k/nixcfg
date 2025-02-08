@@ -1,13 +1,20 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
   cfg = config.custom.roles.nas.samba;
 
   inherit (config.custom.base) hostname;
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) getExe mkEnableOption mkIf;
 
   shareBaseFolder = "/data/share";
+  recycleFolder = "${shareBaseFolder}/.recycle";
+  recycleFolderRetentionDays = 60;
   defaultValidUsers = [
     "christian"
     "sophie"
@@ -40,6 +47,15 @@ in
           ];
           "guest account" = "nobody";
           "map to guest" = "bad user";
+
+          # Enable recycle bin.
+          "vfs object" = "recycle";
+          "recycle:repository" = "${recycleFolder}/%S";
+          "recycle:keeptree" = "yes";
+          "recycle:versions" = "yes";
+          "recycle:touch" = "yes";
+          "recylce:exclude_dir" = "/tmp /TMP /temp /TEMP /public /cache /CACHE";
+          "recycle:exclude" = "*.TMP *.tmp *.temp ~$* *.log *.bak";
         };
 
         homes = {
@@ -92,9 +108,40 @@ in
       };
     };
 
-    systemd.tmpfiles.rules = [
-      "d ${shareBaseFolder}/private 0755 root root -"
-      "d ${shareBaseFolder}/public 0777 root root -"
-    ];
+    systemd = {
+      services.samba-recycle-cleanup = {
+        description = "Cleanup old files from the recycle bin";
+        script = ''
+          #!/usr/bin/env bash
+          recyclePath="${recycleFolder}"
+          maxStoreDays="${toString recycleFolderRetentionDays}"
+
+          # Delete files older than maxStoreDays
+          ${getExe pkgs.findutils} "$recyclePath" -type f -mtime +$maxStoreDays -print -delete
+
+          # Delete empty directories
+          ${getExe pkgs.findutils} "$recyclePath" -mindepth 1 -type d -empty -print -delete
+        '';
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+        };
+      };
+
+      timers.samba-recycle-cleanup = {
+        description = "Run samba-recycle-cleanup daily";
+        timerConfig = {
+          OnCalendar = "daily";
+          Persistent = true;
+        };
+        wantedBy = [ "timers.target" ];
+      };
+
+      tmpfiles.rules = [
+        "d ${shareBaseFolder}/private 0755 root root -"
+        "d ${shareBaseFolder}/public 0777 root root -"
+        "d ${recycleFolder} 0777 root root -"
+      ];
+    };
   };
 }
