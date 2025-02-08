@@ -18,7 +18,7 @@ in
   fileSystems =
     let
       target = "/mnt/home";
-      fileserver = "sv-syno-01";
+      fileserver = "hyperion";
       fsType = "cifs";
       credentials = config.age.secrets."${secretSmb}".path;
       automount_opts = [
@@ -39,13 +39,7 @@ in
     in
     {
       "${target}/home" = {
-        device = "//${fileserver}/home";
-        inherit fsType;
-        inherit options;
-      };
-
-      "${target}/music" = {
-        device = "//${fileserver}/music";
+        device = "//${fileserver}/christian";
         inherit fsType;
         inherit options;
       };
@@ -56,14 +50,20 @@ in
         inherit options;
       };
 
-      "${target}/public" = {
-        device = "//${fileserver}/public";
+      "${target}/plex" = {
+        device = "//${fileserver}/plex";
         inherit fsType;
         inherit options;
       };
 
-      "${target}/video" = {
-        device = "//${fileserver}/video";
+      "${target}/private" = {
+        device = "//${fileserver}/private";
+        inherit fsType;
+        inherit options;
+      };
+
+      "${target}/public" = {
+        device = "//${fileserver}/public";
         inherit fsType;
         inherit options;
       };
