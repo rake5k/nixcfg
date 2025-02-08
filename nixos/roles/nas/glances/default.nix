@@ -35,6 +35,9 @@ in
       diskio = {
         hide = "dm-.*,loop.*";
       };
+      fs = {
+        hide = "/etc/.*,/var/.*,/nix.*,/persist,/snapshots,/data/.*";
+      };
     };
 
     services = {
