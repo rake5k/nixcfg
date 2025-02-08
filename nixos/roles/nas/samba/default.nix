@@ -62,7 +62,7 @@ in
 
         plex = {
           comment = "Plex Media";
-          path = config.services.plex.dataDir;
+          path = "/data/plex";
           browsable = "yes";
           writable = "yes";
           "create mask" = "0644";
