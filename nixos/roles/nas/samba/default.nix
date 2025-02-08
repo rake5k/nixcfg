@@ -8,6 +8,10 @@ let
   inherit (lib) mkEnableOption mkIf;
 
   shareBaseFolder = "/data/share";
+  defaultValidUsers = [
+    "christian"
+    "sophie"
+  ];
 
 in
 
@@ -34,13 +38,10 @@ in
             "root"
             "admin"
           ];
-          "valid users" = [
-            "christian"
-            "sophie"
-          ];
           "guest account" = "nobody";
           "map to guest" = "bad user";
         };
+
         homes = {
           browseable = "no";
           writable = "yes";
@@ -48,6 +49,7 @@ in
           "directory mask" = "0700";
           "valid users" = "%S";
         };
+
         photo = {
           comment = "Photo Gallery";
           path = "/data/photo";
@@ -55,7 +57,9 @@ in
           writable = "yes";
           "create mask" = "0644";
           "directory mask" = "0755";
+          "valid users" = defaultValidUsers;
         };
+
         plex = {
           comment = "Plex Media";
           path = config.services.plex.dataDir;
@@ -63,7 +67,9 @@ in
           writable = "yes";
           "create mask" = "0644";
           "directory mask" = "0755";
+          "valid users" = defaultValidUsers;
         };
+
         private = {
           comment = "Private File Sharing";
           path = "${shareBaseFolder}/private";
@@ -71,7 +77,9 @@ in
           writable = "yes";
           "create mask" = "0644";
           "directory mask" = "0755";
+          "valid users" = defaultValidUsers;
         };
+
         public = {
           comment = "Public File Sharing";
           path = "${shareBaseFolder}/public";
