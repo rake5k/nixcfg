@@ -98,6 +98,7 @@ in
               "home" = { };
               "photo" = { };
               "share" = { };
+              "syncthing" = { };
             };
           };
         };
@@ -111,14 +112,13 @@ in
           snapshot_preserve_min = "2d";
           snapshot_dir = "/data${snapshotDir}";
 
-          target_preserve = "20d 10w 6m";
+          target_preserve = "7d";
           target_preserve_min = "no";
 
           volume."/data" = {
             target = "/mnt/btrbkusb/${hostname}";
             subvolume = {
               "plex" = { };
-              "syncthing" = { };
             };
           };
         };
