@@ -36,10 +36,10 @@ in
       };
     };
 
-    # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusb`
+    # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusbn`
     # see: https://wiki.nixos.org/wiki/Full_Disk_Encryption#Unlocking_secondary_drives
     fileSystems."/mnt/btrbkusb" = {
-      device = "/dev/disk/by-label/btrbkusb";
+      device = "/dev/disk/by-label/btrbkusb1";
       fsType = "btrfs";
       options = [
         "compress=zstd"
