@@ -28,6 +28,7 @@ in
       };
 
       roles.nas = {
+        ai.enable = true;
         backup.enable = true;
         glances.enable = true;
         power-notification.enable = true;
