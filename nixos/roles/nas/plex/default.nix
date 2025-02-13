@@ -23,6 +23,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.base.system.btrfs.impermanence.extraDirectories = [ config.services.plex.dataDir ];
+
     services = {
       plex = {
         enable = true;

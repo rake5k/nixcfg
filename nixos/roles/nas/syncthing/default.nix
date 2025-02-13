@@ -18,6 +18,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.base.system.btrfs.impermanence.extraDirectories = [ config.services.syncthing.dataDir ];
+
     services = {
       syncthing = {
         inherit guiAddress;
