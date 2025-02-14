@@ -45,7 +45,7 @@ in
         ${mkNtfyCommand config.age.secrets {
           title = "${prettyHostname} is starting to upgrade NixOS...";
           message = "Let's have a refresh!";
-          tags = [ "dizzy" ];
+          tags = [ "sparkles" ];
         }}
       '';
     };
