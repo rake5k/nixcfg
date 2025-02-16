@@ -9,13 +9,13 @@ with lib;
 
 let
 
-  cfg = config.custom.users.christian.fonts;
+  cfg = config.custom.roles.fonts;
 
 in
 
 {
   options = {
-    custom.users.christian.fonts = {
+    custom.roles.fonts = {
       enable = mkEnableOption "Fonts";
     };
   };

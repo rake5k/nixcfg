@@ -21,6 +21,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.roles.fonts.enable = true;
+
     home.packages = with pkgs; [ gimp ] ++ optionals pkgs.stdenv.isLinux [ sxiv ];
   };
 }
