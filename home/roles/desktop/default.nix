@@ -23,31 +23,25 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts.override { fonts = [ "VictorMono" ]; };
+          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
           description = "Font derivation";
         };
 
         family = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font";
+          default = "Monofur Nerd Font";
           description = "Font family";
-        };
-
-        familyMono = mkOption {
-          type = types.str;
-          default = "VictorMono Nerd Font Mono";
-          description = "Mono Font family";
         };
 
         pango = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font Bold 9";
+          default = "Monofur Nerd Font Bold 10";
           description = "Font config";
         };
 
         xft = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font:style=Bold:size=9:antialias=true";
+          default = "Monofur Nerd Font:style=Bold:size=10:antialias=true";
           description = "Font config";
         };
       };

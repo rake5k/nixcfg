@@ -44,12 +44,26 @@ in
         default = "-T ";
         description = "Window title argument prefix";
       };
+
+      font = {
+        package = mkOption {
+          type = types.package;
+          default = pkgs.nerdfonts.override { fonts = [ "ZedMono" ]; };
+          description = "Font derivation";
+        };
+
+        family = mkOption {
+          type = types.str;
+          default = "ZedMono Nerd Font Mono";
+          description = "Font family";
+        };
+      };
     };
   };
 
   config = mkIf cfg.enable {
     home = {
-      packages = [ desktopCfg.font.package ];
+      packages = [ cfg.font.package ];
 
       sessionVariables = {
         TERMINAL = cfg.spawnCmd;
@@ -61,9 +75,9 @@ in
       enable = true;
       package = kitty;
       font = {
-        inherit (desktopCfg.font) package;
-        name = desktopCfg.font.familyMono;
-        size = 14;
+        inherit (cfg.font) package;
+        name = cfg.font.family;
+        size = 13;
       };
       settings = {
         background_opacity = 0.8;

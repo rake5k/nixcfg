@@ -34,7 +34,7 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts;
+          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
           description = "Font derivation";
         };
       };
