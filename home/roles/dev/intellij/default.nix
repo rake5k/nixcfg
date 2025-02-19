@@ -43,7 +43,7 @@ in
 
       packages = with pkgs; [
         ideaPackage
-        (nerdfonts.override { fonts = [ "FiraCode" ]; })
+        fira-code
       ];
     };
   };
