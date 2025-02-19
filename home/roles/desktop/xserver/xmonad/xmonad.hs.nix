@@ -82,7 +82,7 @@ pkgs.writeText "xmonad.hs" ''
           x = center w
           y = center h
       spawnPavuCtl  = "pavucontrol"
-      findPavuCtl   = className =? "Pavucontrol"
+      findPavuCtl   = className =? "pavucontrol"
       managePavuCtl = customFloating $ W.RationalRect x y w h
         where
           w = (2/3)
