@@ -21,13 +21,13 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts;
+          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
           description = "Font derivation";
         };
 
         family = mkOption {
           type = types.str;
-          default = "VictorMono Nerd Font";
+          default = "Monofur Nerd Font";
           description = "Font family";
         };
       };
@@ -45,7 +45,7 @@ in
       iconTheme = {
         package = pkgs.paper-icon-theme;
         name = "Paper";
-        size = "16x16";
+        size = "32x32";
       };
       settings = {
         global = {

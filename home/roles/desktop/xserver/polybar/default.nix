@@ -12,6 +12,7 @@ let
   cfg = config.custom.roles.desktop.xserver.polybar;
 
   package = pkgs.polybar.override { pulseSupport = true; };
+  fontPackage = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
 
 in
 
@@ -50,7 +51,7 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts;
+          default = fontPackage;
           description = "Font derivation";
         };
 
