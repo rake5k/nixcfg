@@ -10,11 +10,7 @@ with lib;
 let
 
   cfg = config.custom.roles.dev.intellij;
-  ideaPackage =
-    if cfg.ultimate then
-      pkgs.unstable.jetbrains.idea-ultimate
-    else
-      pkgs.unstable.jetbrains.idea-community;
+  ideaPackage = if cfg.ultimate then pkgs.jetbrains.idea-ultimate else pkgs.jetbrains.idea-community;
 
 in
 
@@ -26,7 +22,7 @@ in
       ultimate = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to Install the Ultimate Edition, Community Edition otherwise.";
+        description = "Whether to install the Ultimate Edition, Community Edition otherwise.";
       };
     };
   };
