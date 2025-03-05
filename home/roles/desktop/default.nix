@@ -67,6 +67,7 @@ in
         gnome-characters
         gnome-pomodoro
         nautilus
+        quickemu
         seahorse
       ];
 
