@@ -11,14 +11,14 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "hid-fanatecff";
-  version = "0.0.2";
+  version = "0.1.2";
   name = "hid-fanatecff-${version}-${kernel.version}";
 
   src = fetchFromGitHub {
     owner = "gotzl";
     repo = "hid-fanatecff";
-    rev = "next";
-    hash = "sha256-FZc69a2joiCi8pPxeJxhORaqa/ABRecPqDhDCc2GwL0=";
+    rev = version;
+    sha256 = "IgttHptACDqX/4y6EMOJvmaVrg1PMgyO6oGkzmf2oW0=";
   };
 
   hardeningDisable = [
