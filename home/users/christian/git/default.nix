@@ -34,6 +34,7 @@ in
     programs.git = {
       enable = true;
       package = pkgs.gitFull;
+      difftastic.enable = true;
       lfs.enable = true;
       userName = "Christian Harke";
       userEmail = "christian@harke.ch";
