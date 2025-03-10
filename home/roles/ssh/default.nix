@@ -5,11 +5,18 @@
   ...
 }:
 
-with lib;
-
 let
 
-  cfg = config.custom.programs.ssh;
+  cfg = config.custom.roles.ssh;
+
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    listToAttrs
+    nameValuePair
+    types
+    ;
 
   sshDirectory = "${config.home.homeDirectory}/.ssh";
   mkHomeageFile =
@@ -25,7 +32,7 @@ in
 
 {
   options = {
-    custom.programs.ssh = {
+    custom.roles.ssh = {
       enable = mkEnableOption "SSH client";
 
       identities = mkOption {

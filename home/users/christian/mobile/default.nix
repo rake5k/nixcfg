@@ -1,13 +1,10 @@
 { config, lib, ... }:
 
-with lib;
-
 let
 
   cfg = config.custom.users.christian.mobile;
 
-  logseqSshKey = "id_logseq";
-  logseqSshPubKey = "${logseqSshKey}.pub";
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -19,14 +16,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom = {
-      programs.ssh = {
-        enable = true;
-        identities = [
-          logseqSshKey
-          logseqSshPubKey
-        ];
-      };
+    custom.roles.ssh = {
+      enable = true;
+      identities = [
+        "id_logseq"
+        "id_logseq.pub"
+      ];
     };
 
     home.file = {
