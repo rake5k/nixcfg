@@ -28,13 +28,7 @@ in
       mode = mkForce "400";
     };
 
-    custom.base = {
-      agenix.secrets = [ btrbkId ];
-      system.btrfs = {
-        btrbk.enable = true;
-        impermanence.extraDirectories = [ snapshotDir ];
-      };
-    };
+    custom.base.agenix.secrets = [ btrbkId ];
 
     # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusbn`
     # see: https://wiki.nixos.org/wiki/Full_Disk_Encryption#Unlocking_secondary_drives

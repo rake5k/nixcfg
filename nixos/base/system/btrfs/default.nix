@@ -21,6 +21,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.base.system.btrfs.btrbk.enable = true;
+
     environment.systemPackages = [ pkgs.compsize ];
 
     services.btrfs.autoScrub = {
