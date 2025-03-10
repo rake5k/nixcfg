@@ -17,6 +17,12 @@ in
     services.syncthing = {
       enable = true;
 
+      settings = {
+        options = {
+          urAccepted = -1;
+        };
+      };
+
       tray = {
         enable = true;
         command = "syncthingtray --wait";
