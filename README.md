@@ -129,9 +129,6 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 To install NixOS from the ISO of [nixos.org][nixos] on a fresh machine, run:
 
 ```shell
-# If nix version < 2.4, run:
-nix-shell -p nixFlakes
-
 sudo su # become root
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
