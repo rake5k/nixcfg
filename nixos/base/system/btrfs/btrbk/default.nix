@@ -39,5 +39,10 @@ in
         subvolume = "/home";
       };
     };
+
+    # Btrbk does not create snapshot directories automatically
+    systemd.tmpfiles.rules = [
+      "d ${cfg.snapshotDir} 0755 root root"
+    ];
   };
 }
