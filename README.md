@@ -134,18 +134,15 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
 export FLAKE=github:rake5k/nixcfg
-nix run $FLAKE#disko-install -- <hostname> $FLAKE [--disk <disk-name> /dev/by-id/<disk-id>]...
+nix run $FLAKE#disko-install -- <hostname> $FLAKE
 ```
 
-Where:
+Where `<hostname>` is your target machine's desired host name. Define it
+beforehand inside `nixosConfigurations` of `flake.nix`.
 
-* `<hostname>` is your target machine's desired host name. Define it beforehand inside
-  `nixosConfigurations` of `flake.nix`.
-* `<disk-name>`/`<disk-id>` for each drive to be managed by disko (at least the
-  name needs to be defined in `disko.devices.disk.<disk-name>` beforehand).
-
-This will completely *nuke* all the data on your `<disk>` device provided. Make sure to have a
-working backup from your data of all drives connected to your target machine.
+This will completely *nuke* all the data on your `<disk>` devices listed in the
+*disko* configuration. Make sure to have a working backup from your data of all
+drives connected to your target machine.
 
 **Warning:** Even if the script *should* ask you before committing any changes to your machine,
 it can unexpectedly cause great harm!

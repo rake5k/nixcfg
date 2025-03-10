@@ -37,5 +37,6 @@ generate_initrd_ssh_host_keys() {
 if _read_boolean "Do you want to DELETE ALL PARTITIONS and INSTALL NixOS now?" N; then
   generate_initrd_ssh_host_keys
 
-  nix run 'github:nix-community/disko/latest#disko-install' -- --flake "${FLAKE}#${HOSTNAME}" --write-efi-boot-entries "${@:3}"
+  nix run nixpkgs#disko -- --mode disko --flake "${FLAKE}#${HOSTNAME}"
+  nixos-install --no-channel-copy --no-root-password --write-efi-boot-entries --flake "${FLAKE}#${HOSTNAME}"
 fi
