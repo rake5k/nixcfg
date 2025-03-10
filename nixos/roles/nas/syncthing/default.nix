@@ -32,7 +32,7 @@ in
           devices = {
             altair = {
               addresses = [ "tcp://altair.home.local:22000" ];
-              id = "BOSJDVM-QMEQTKP-JSKLGT5-WLIBLRY-QFVJOKO-LMR3XNT-YXJA7OD-7LEJ3AA";
+              id = "5X2IF5F-VEV27CQ-B3SIGJH-AMCKBCJ-3D7N7MC-I4TNSCG-AKOGL4P-ABM2VQR";
             };
             malmok = {
               addresses = [ "tcp://10.0.10.2:22000" ];
