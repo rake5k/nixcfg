@@ -26,10 +26,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [
-      cfg.snapshotDir
-    ];
-
     services.btrbk.instances.home = {
       onCalendar = "hourly";
       settings = {
