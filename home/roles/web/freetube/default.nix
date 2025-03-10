@@ -5,11 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.web.freetube;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -21,9 +21,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom = {
-      programs.syncthing.enable = true;
-    };
+    custom.roles.syncthing.enable = true;
 
     home.packages = with pkgs; [ freetube ];
   };
