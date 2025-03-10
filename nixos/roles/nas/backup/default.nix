@@ -43,7 +43,7 @@ in
 
     services.btrbk.instances = {
       # Remote root state backup to SSH
-      persist = {
+      root-remote = {
         onCalendar = "hourly";
         settings = {
           snapshot_preserve = "7d 4w 6m 1y";
@@ -62,6 +62,7 @@ in
 
           volume."/" = {
             subvolume = {
+              home = { };
               persist = { };
             };
           };
