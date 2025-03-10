@@ -1,10 +1,10 @@
 { config, lib, ... }:
 
-with lib;
-
 let
 
   cfg = config.custom.users.christian.ssh;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -15,5 +15,9 @@ in
     };
   };
 
-  config = mkIf cfg.enable { custom.programs.ssh.enable = true; };
+  config = mkIf cfg.enable {
+    custom.roles.ssh = {
+      enable = true;
+    };
+  };
 }
