@@ -2,13 +2,13 @@
 
 let
 
-  cfg = config.custom.programs.syncthing;
+  cfg = config.custom.roles.syncthing;
 
 in
 
 {
   options = {
-    custom.programs.syncthing = {
+    custom.roles.syncthing = {
       enable = lib.mkEnableOption "Syncthing";
     };
   };
@@ -16,6 +16,7 @@ in
   config = lib.mkIf cfg.enable {
     services.syncthing = {
       enable = true;
+
       tray = {
         enable = true;
         command = "syncthingtray --wait";

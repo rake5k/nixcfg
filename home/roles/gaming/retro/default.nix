@@ -4,14 +4,18 @@ let
 
   cfg = config.custom.roles.gaming.retro;
 
+  inherit (lib) mkEnableOption mkIf;
+
 in
 
 {
   options = {
     custom.roles.gaming.retro = {
-      enable = lib.mkEnableOption "Retro gaming";
+      enable = mkEnableOption "Retro gaming";
     };
   };
 
-  config = lib.mkIf cfg.enable { custom.programs.syncthing.enable = true; };
+  config = mkIf cfg.enable {
+    custom.roles.syncthing.enable = true;
+  };
 }
