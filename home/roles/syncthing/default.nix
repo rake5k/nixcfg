@@ -18,6 +18,13 @@ in
       enable = true;
 
       settings = {
+        devices = {
+          hyperion = {
+            addresses = [ "tcp://hyperion.home.local:22000" ];
+            id = "HBOUOH2-BYJTO4T-BYBYO3W-KLSUIBY-RLOEC57-X7YIZGH-PKHEUFT-PJXMYAK";
+          };
+        };
+
         options = {
           urAccepted = -1;
         };
