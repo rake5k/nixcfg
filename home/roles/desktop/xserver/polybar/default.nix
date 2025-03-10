@@ -14,6 +14,8 @@ let
   package = pkgs.polybar.override { pulseSupport = true; };
   fontPackage = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
 
+  logsFolder = "${config.xdg.dataHome}/polybar/logs";
+
 in
 
 {
@@ -439,9 +441,13 @@ in
         # Launch polybar
         export MONITOR=$(${getExe package} -m | ${getExe pkgs.gnugrep} '(primary)' | ${getExe pkgs.gnused} -e 's/:.*$//g')
         echo "Running polybar on $MONITOR"
-        ${getExe package} top 2>${config.xdg.dataHome}/polybar/logs/top.log &
+        ${getExe package} top 2>${logsFolder}/top.log &
       '';
     };
+
+    systemd.user.tmpfiles.rules = [
+      "d ${logsFolder} 0755 ${config.home.username} users -"
+    ];
 
     xdg = {
       configFile."polybar/weather-plugin.sh".text = import ./config/weather-plugin.nix {
