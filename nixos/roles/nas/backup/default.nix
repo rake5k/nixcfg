@@ -52,7 +52,7 @@ in
 
           target_preserve = "20d 10w 6m";
           target_preserve_min = "no";
-          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}/root";
 
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
@@ -79,7 +79,7 @@ in
 
           target_preserve = "20d 10w 6m 1y";
           target_preserve_min = "no";
-          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}";
+          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}/data";
 
           ssh_identity = config.age.secrets."${btrbkId}".path;
           ssh_user = "btrbk";
