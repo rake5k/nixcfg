@@ -122,6 +122,7 @@ in
 
     # Btrbk does not create snapshot directories automatically
     systemd.tmpfiles.rules = [
+      "d ${snapshotDir} 0755 root root"
       "d /data${snapshotDir} 0755 root root"
     ];
   };
