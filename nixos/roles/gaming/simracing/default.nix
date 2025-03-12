@@ -59,9 +59,9 @@ let
       # by passing --axes 6 protopedal ensures availability of at least axis X, Y, Z, RX, RY and RZ
       # and similar for --buttons
       ${getExe protopedal} \
-        --name "$VIRTUAL_NAME" --vendor "$VIRTUAL_VENDOR" --product "$VIRTUAL_PRODUCT" \
-        --axis "$THROTTLE_AXIS" --min "$THROTTLE_MIN" --max "$THROTTLE_MAX" --source "$THROTTLE_AXIS_FROM" \
-        --axis "$BRAKE_AXIS" --min "$BRAKE_MIN" --max "$BRAKE_MAX" --source "$BRAKE_AXIS_FROM" \
+        --name "$VIRTUAL_NAME" --vendor $VIRTUAL_VENDOR --product $VIRTUAL_PRODUCT --axes 6 --buttons 1 \
+        --axis $THROTTLE_AXIS --min $THROTTLE_MIN --max $THROTTLE_MAX --source $THROTTLE_AXIS_FROM --invert \
+        --axis $BRAKE_AXIS --min $BRAKE_MIN --max $BRAKE_MAX --source $BRAKE_AXIS_FROM --invert \
         "$DEVICE"
     '';
   };
