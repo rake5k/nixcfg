@@ -31,6 +31,7 @@ in
         ai.enable = true;
         backup.enable = true;
         glances.enable = true;
+        library.enable = true;
         power-notification.enable = true;
         plex.enable = true;
         samba.enable = true;

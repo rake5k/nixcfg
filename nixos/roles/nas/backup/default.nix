@@ -91,6 +91,7 @@ in
             subvolume = {
               "container" = { };
               "home" = { };
+              "library" = { };
               "photo" = { };
               "share" = { };
               "syncthing" = { };
