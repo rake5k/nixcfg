@@ -12,10 +12,20 @@ let
   cfg = config.custom.roles.gaming.simracing;
 
   inherit (lib) getExe;
-  inherit (pkgs) callPackage writeShellApplication;
+  inherit (pkgs) callPackage writeShellApplication writeText;
 
   fanatecff = config.boot.kernelPackages.callPackage ../../../../pkgs/hid-fanatecff { };
   protopedal = callPackage ../../../../pkgs/protopedal { };
+
+  pedalBrakeCurveCsv = writeText "brake-curve" ''
+    # The CSV below (in a file) can be used for the --curve option in combination with --axis.
+    # It defines 3 lines for mapping input to output.
+    # E.g. when at 20% input protopedal reports 30%:
+    0.00	0.00
+    0.20	0.30
+    0.70	0.80
+    1.00	1.00
+  '';
 
   vrsPedalsVendor = "0483";
   vrsPedalsProduct = "A3BF";
@@ -64,7 +74,7 @@ let
       ${getExe protopedal} \
         --name "$VIRTUAL_NAME" --vendor $VIRTUAL_VENDOR --product $VIRTUAL_PRODUCT --axes 6 --buttons 1 \
         --axis $THROTTLE_AXIS --min $THROTTLE_MIN --max $THROTTLE_MAX --source $THROTTLE_AXIS_FROM --invert \
-        --axis $BRAKE_AXIS --min $BRAKE_MIN --max $BRAKE_MAX --source $BRAKE_AXIS_FROM --invert \
+        --axis $BRAKE_AXIS --min $BRAKE_MIN --max $BRAKE_MAX --source $BRAKE_AXIS_FROM --invert --curve "${pedalBrakeCurveCsv}" \
         "$DEVICE"
     '';
   };
