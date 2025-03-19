@@ -14,7 +14,7 @@ let
   inherit (lib) getExe;
   inherit (pkgs) callPackage writeShellApplication;
 
-  fanatecff = pkgs.linuxPackages.callPackage ../../../../pkgs/hid-fanatecff { };
+  fanatecff = config.boot.kernelPackages.callPackage ../../../../pkgs/hid-fanatecff { };
   protopedal = callPackage ../../../../pkgs/protopedal { };
 
   vrsPedalsSetup = writeShellApplication {
