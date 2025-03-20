@@ -34,6 +34,10 @@ in
 
       # Runtimes
       wine
+
+      # Tinkering
+      unstable.winetricks
+      unstable.protontricks
     ];
   };
 }
