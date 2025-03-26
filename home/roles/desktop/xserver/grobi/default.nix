@@ -6,16 +6,28 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.desktop.xserver.grobi;
 
-  fallbackRule = {
-    name = "Fallback";
-    configure_single = cfg.fallbackOutput;
-  };
+  inherit (lib)
+    getExe
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
+
+  mkEachSingleOutput =
+    outputs:
+    map (output: {
+      name = output;
+      outputs_connected = [ output ];
+      outputs_disconnected = lib.remove output outputs;
+      configure_single = output;
+      primary = output;
+      atomic = false;
+    }) outputs;
 
 in
 
@@ -24,14 +36,15 @@ in
     custom.roles.desktop.xserver.grobi = {
       enable = mkEnableOption "Grobi config";
 
-      fallbackOutput = mkOption {
-        type = types.str;
-        description = "Fallback output if no rule matches";
+      availableOutputs = mkOption {
+        type = with types; listOf str;
+        default = [ ];
+        description = "List of all outputs to be managed by grobi";
       };
 
       rules = mkOption {
         type = with types; listOf attrs;
-        default = [ fallbackRule ];
+        default = [ ];
         description = "Grobi rules";
       };
     };
@@ -47,9 +60,9 @@ in
 
     services.grobi = {
       enable = true;
-      rules = cfg.rules ++ [ fallbackRule ];
+      rules = cfg.rules ++ mkEachSingleOutput cfg.availableOutputs;
       executeAfter = [
-        "${lib.getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"
+        "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"
         "${pkgs.polybar}/bin/polybar-msg cmd restart"
       ];
     };
