@@ -121,28 +121,34 @@ in
             id = 3;
             name = "Work";
           };
+          work_admin = {
+            color = "purple";
+            icon = "briefcase";
+            id = 4;
+            name = "Work Admin";
+          };
           shopping = {
             color = "blue";
             icon = "cart";
-            id = 4;
+            id = 5;
             name = "Shopping";
           };
           banking = {
             color = "green";
             icon = "dollar";
-            id = 5;
+            id = 6;
             name = "Banking";
           };
           danger = {
             color = "red";
             icon = "fruit";
-            id = 6;
+            id = 7;
             name = "Danger Zone";
           };
           Facebook = {
             color = "toolbar";
             icon = "fence";
-            id = 7;
+            id = 8;
             name = "Facebook";
           };
         };
