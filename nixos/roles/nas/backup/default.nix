@@ -147,6 +147,7 @@ in
         openssh.authorizedKeys.keys = [
           ''command="${getExe pkgs.rrsync} -ro /",restrict ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiLHdmlF5pcDII9bOSyTRA+S8OhnSZRk8VFHl42Nnct''
         ];
+        useDefaultShell = true;
       };
       groups.backup.gid = 888;
     };
