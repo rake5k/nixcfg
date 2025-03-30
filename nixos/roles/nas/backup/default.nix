@@ -9,7 +9,12 @@ let
 
   cfg = config.custom.roles.nas.backup;
 
-  inherit (lib) mkEnableOption mkForce mkIf;
+  inherit (lib)
+    getExe
+    mkEnableOption
+    mkForce
+    mkIf
+    ;
 
   inherit (config.custom.base.system.btrfs.btrbk) snapshotDir;
   inherit (config.custom.base) hostname;
@@ -140,7 +145,7 @@ in
         uid = 887;
         packages = with pkgs; [ rsync ];
         openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiLHdmlF5pcDII9bOSyTRA+S8OhnSZRk8VFHl42Nnct"
+          ''command="${getExe pkgs.rrsync} -ro /",restrict ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiLHdmlF5pcDII9bOSyTRA+S8OhnSZRk8VFHl42Nnct''
         ];
       };
       groups.backup.gid = 888;
