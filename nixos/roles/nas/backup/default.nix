@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -126,5 +131,19 @@ in
       "d ${snapshotDir} 0755 root root"
       "d /data${snapshotDir} 0755 root root"
     ];
+
+    users = {
+      users."backup-synology" = {
+        description = "Synology Active Backup for Business";
+        group = "backup";
+        isSystemUser = true;
+        uid = 887;
+        packages = with pkgs; [ rsync ];
+        openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIiLHdmlF5pcDII9bOSyTRA+S8OhnSZRk8VFHl42Nnct"
+        ];
+      };
+      groups.backup.gid = 888;
+    };
   };
 }
