@@ -84,6 +84,10 @@ in
         workspaces-only-on-primary = true;
       };
 
+      "org/gnome/mutter/keybindings" = {
+        switch-monitor = [ "XF86Display" ];
+      };
+
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         binding = "<Shift><Super>Return";
         command = desktopCfg.terminal.spawnCmd;
