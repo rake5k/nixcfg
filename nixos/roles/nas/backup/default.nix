@@ -1,24 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
 
   cfg = config.custom.roles.nas.backup;
 
-  inherit (lib)
-    getExe
-    mkEnableOption
-    mkIf
-    ;
+  inherit (lib) mkEnableOption mkIf;
 
   inherit (config.custom.base.system.btrfs.btrbk) snapshotDir;
   inherit (config.custom.base) hostname;
 
-  borgId = "id_ed25519_borg";
+  backupId = "id_ed25519_backup";
 
 in
 
@@ -31,7 +22,26 @@ in
 
   config = mkIf cfg.enable {
 
-    custom.base.agenix.secrets = [ borgId ];
+    custom = {
+      base.agenix.secrets = [ backupId ];
+      roles.backup.rsync = {
+        enable = true;
+        jobs.backup = {
+          identityFile = config.age.secrets.${backupId}.path;
+          paths = [
+            "/home"
+            "/persist"
+            "/data/container"
+            "/data/home"
+            "/data/library"
+            "/data/photo"
+            "/data/share"
+            "/data/syncthing"
+          ];
+          target = "backup@sv-syno-01.home.local:/volume1/NetBackup/${hostname}";
+        };
+      };
+    };
 
     # Make sure a USB disk is available as `/dev/disk/by-label/btrbkusbn`
     # see: https://wiki.nixos.org/wiki/Full_Disk_Encryption#Unlocking_secondary_drives
@@ -44,96 +54,60 @@ in
       ];
     };
 
-    services = {
-      borgmatic = {
-        enable = true;
+    services.btrbk.instances = {
+      # Remote root state backup to SSH
+      root-remote = {
+        onCalendar = "hourly";
         settings = {
-          exclude_patterns = [
-            "/home/*/.cache"
-            "*/.vim*.tmp"
-          ];
-          exclude_if_present = [ ".nobackup" ];
-          keep_daily = 7;
-          keep_weekly = 4;
-          keep_monthly = 6;
-          keep_yearly = 1;
-          remote_path = "/usr/local/bin/borg";
-          ssh_command = "${getExe pkgs.openssh} -i ${config.age.secrets.${borgId}.path}";
-          unknown_unencrypted_repo_access_is_ok = true;
-          source_directories = [
-            "/home"
-            "/persist"
-            "/data/container"
-            "/data/home"
-            "/data/library"
-            "/data/photo"
-            "/data/share"
-            "/data/syncthing"
-          ];
-          repositories = [
-            {
-              label = "syno";
-              path = "ssh://borg@sv-syno-01.home.local/volume1/borg/hyperion";
-            }
-          ];
+          snapshot_preserve = "7d 4w 6m 1y";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = snapshotDir;
+
+          volume."/" = {
+            subvolume = {
+              home = { };
+              persist = { };
+            };
+          };
         };
       };
 
-      btrbk.instances = {
-        # Remote root state backup to SSH
-        root-remote = {
-          onCalendar = "hourly";
-          settings = {
-            snapshot_preserve = "7d 4w 6m 1y";
-            snapshot_preserve_min = "2d";
-            snapshot_dir = snapshotDir;
+      # Local data snapshots only
+      data-local = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/data${snapshotDir}";
 
-            volume."/" = {
-              subvolume = {
-                home = { };
-                persist = { };
-              };
+          volume."/data" = {
+            subvolume = {
+              "container" = { };
+              "home" = { };
+              "library" = { };
+              "photo" = { };
+              "share" = { };
+              "syncthing" = { };
             };
           };
         };
+      };
 
-        # Local data snapshots only
-        data-local = {
-          onCalendar = "hourly";
-          settings = {
-            snapshot_preserve = "7d 4w 6m";
-            snapshot_preserve_min = "2d";
-            snapshot_dir = "/data${snapshotDir}";
+      # Local backup to external disk
+      data-external = {
+        onCalendar = "hourly";
+        settings = {
+          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve_min = "2d";
+          snapshot_dir = "/data${snapshotDir}";
 
-            volume."/data" = {
-              subvolume = {
-                "container" = { };
-                "home" = { };
-                "library" = { };
-                "photo" = { };
-                "share" = { };
-                "syncthing" = { };
-              };
-            };
-          };
-        };
+          target_preserve = "7d";
+          target_preserve_min = "no";
 
-        # Local backup to external disk
-        data-external = {
-          onCalendar = "hourly";
-          settings = {
-            snapshot_preserve = "7d 4w 6m";
-            snapshot_preserve_min = "2d";
-            snapshot_dir = "/data${snapshotDir}";
-
-            target_preserve = "7d";
-            target_preserve_min = "no";
-
-            volume."/data" = {
-              target = "/mnt/btrbkusb/${hostname}";
-              subvolume = {
-                "plex" = { };
-              };
+          volume."/data" = {
+            target = "/mnt/btrbkusb/${hostname}";
+            subvolume = {
+              "plex" = { };
             };
           };
         };
