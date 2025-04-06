@@ -30,7 +30,6 @@ in
           identityFile = config.age.secrets.${backupId}.path;
           paths = [
             "/home"
-            "/persist"
             "/data/container"
             "/data/home"
             "/data/library"
