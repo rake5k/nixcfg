@@ -74,23 +74,14 @@ in
         };
       };
 
-      # Remote data backup to SSH
-      data-remote = {
+      # Local data snapshots only
+      # IMPORTANT: to be backed up to a remote location otherwise
+      data-local = {
         onCalendar = "hourly";
         settings = {
           snapshot_preserve = "7d 4w 6m";
           snapshot_preserve_min = "2d";
           snapshot_dir = "/data${snapshotDir}";
-
-          target_preserve = "20d 10w 6m 1y";
-          target_preserve_min = "no";
-          target = "ssh://sv-syno-01.home.local/volume1/btrbk/${hostname}/data";
-
-          ssh_identity = config.age.secrets."${btrbkId}".path;
-          ssh_user = "btrbk";
-
-          # Synology Hack (https://github.com/digint/btrbk/issues/383#issuecomment-823808283)
-          compat = "ignore_receive_errors";
 
           volume."/data" = {
             subvolume = {
@@ -106,7 +97,7 @@ in
       };
 
       # Local backup to external disk
-      data-local = {
+      data-external = {
         onCalendar = "hourly";
         settings = {
           snapshot_preserve = "7d 4w 6m";
