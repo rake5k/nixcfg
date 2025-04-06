@@ -10,6 +10,10 @@ with lib;
 let
 
   cfg = config.custom.roles.steambox;
+
+  inherit (config.custom.base) hostname;
+  backupId = "id_ed25519_backup";
+
   steam_autostart = pkgs.makeAutostartItem {
     name = "steam";
     package = pkgs.steam;
@@ -26,10 +30,21 @@ in
 
   config = mkIf cfg.enable {
     custom = {
+      base.agenix.secrets = [ backupId ];
       base.users = [ "gamer" ];
       roles = {
         gaming.enable = true;
         sound.enable = true;
+        backup.rsync = {
+          enable = true;
+          jobs.backup = {
+            identityFile = config.age.secrets.${backupId}.path;
+            paths = [
+              "/home"
+            ];
+            target = "backup@sv-syno-01.home.local:/volume1/NetBackup/${hostname}";
+          };
+        };
       };
     };
 

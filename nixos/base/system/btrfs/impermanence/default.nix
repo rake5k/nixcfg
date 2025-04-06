@@ -45,6 +45,8 @@ in
 
   config = mkIf cfg.enable {
 
+    custom.roles.backup.rsync.jobs.backup.paths = [ "/persist" ];
+
     security.sudo.extraConfig = ''
       # rollback results in sudo lectures after each reboot
       Defaults lecture = never
