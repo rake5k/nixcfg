@@ -122,7 +122,7 @@ let
       path = [ pkgs.rsync ];
       script = mkCmd [
         rsyncCmd
-        "--delete-after"
+        "--delete-after --delete-excluded"
         (mkIdentity value.identityFile)
         (mkExcludes value.excludes)
         (mkIncludes value.paths)
