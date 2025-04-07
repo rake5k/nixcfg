@@ -35,8 +35,7 @@ let
         default = [
           "/dev/*"
           "/home/*/.thumbnails/*"
-          "/home/*/.cache/mozilla/*"
-          "/home/*/.cache/chromium/*"
+          "/home/*/.cache/*"
           "/home/*/.local/share/Trash/*"
           "/media/*"
           "/mnt/*"
