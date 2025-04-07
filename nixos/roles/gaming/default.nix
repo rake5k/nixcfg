@@ -21,6 +21,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.roles.backup.rsync.jobs.backup.excludes = [
+      "/home/*/.steam*"
+      "/home/*/.local/share/Steam"
+    ];
+
     programs = {
       gamemode = {
         enable = true;
