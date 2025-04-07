@@ -87,6 +87,7 @@ let
         script = mkCmd [
           (getExe pkgs.rsync)
           "--archive --acls --xattrs --relative --hard-links --compress --delete-after --verbose"
+          "--rsync-path='rsync --fake-super'"
           (mkIdentity value.identityFile)
           (mkExcludes value.excludes)
           (mkIncludes value.paths)
