@@ -12,6 +12,7 @@ let
   inherit (lib)
     getExe
     mapAttrs'
+    mapAttrsToList
     mkEnableOption
     mkIf
     mkOption
@@ -69,35 +70,69 @@ let
     };
   };
 
-  mkEachService =
-    let
-      mkIdentity =
-        identityFile:
-        optionalString (identityFile != null) "--rsh='${getExe pkgs.openssh} -i ${identityFile}'";
-      mkExcludes = excludes: concatStringsSep " " (map (exclude: "--exclude '${exclude}'") excludes);
-      mkIncludes = concatStringsSep " ";
-      mkCmd = concatStringsSep " ";
-    in
-    mapAttrs' (
-      name: value:
-      nameValuePair "rsync-${name}" {
-        description = "Back up files using rsync";
-        serviceConfig.Type = "oneshot";
-        path = [ pkgs.rsync ];
-        script = mkCmd [
-          (getExe pkgs.rsync)
-          "--archive --acls --xattrs --relative --hard-links --compress --delete-after --verbose"
-          "--rsync-path='rsync --fake-super'"
+  mkIdentity =
+    identityFile:
+    optionalString (identityFile != null) "--rsh='${getExe pkgs.openssh} -i ${identityFile}'";
+  mkExcludes = excludes: concatStringsSep " " (map (exclude: "--exclude '${exclude}'") excludes);
+  mkIncludes = concatStringsSep " ";
+  mkCmd = concatStringsSep " ";
+  rsyncCmd = mkCmd [
+    (getExe pkgs.rsync)
+    "--archive --acls --xattrs --relative --hard-links --compress --delete-after --verbose"
+    "--rsync-path='rsync --fake-super'"
+  ];
+
+  mkEachRestoreScript = mapAttrsToList (
+    name: value:
+    with pkgs;
+    writeShellApplication (
+      let
+        restoreCmd = mkCmd [
+          "sudo"
+          rsyncCmd
           (mkIdentity value.identityFile)
-          (mkExcludes value.excludes)
-          (mkIncludes value.paths)
-          value.target
+          "\"${value.target}/.$1\""
+          "/"
         ];
-        startAt = "00:00";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
+      in
+      {
+        name = "rsync-${name}-restore";
+        runtimeInputs = [ rsync ];
+        text = ''
+          if [ $# -ne 1 ]; then
+            echo "Usage: $0 <restore-path>"
+            exit 1
+          fi
+
+          if [[ "$1" != /* ]]; then
+            echo "The restore path must start with '/'"
+            exit 1
+          fi
+
+          ${restoreCmd}
+        '';
       }
-    );
+    )
+  );
+
+  mkEachService = mapAttrs' (
+    name: value:
+    nameValuePair "rsync-${name}" {
+      description = "Back up files using rsync";
+      serviceConfig.Type = "oneshot";
+      path = [ pkgs.rsync ];
+      script = mkCmd [
+        rsyncCmd
+        (mkIdentity value.identityFile)
+        (mkExcludes value.excludes)
+        (mkIncludes value.paths)
+        value.target
+      ];
+      startAt = "00:00";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+    }
+  );
 
   mkEachTimer = mapAttrs' (
     name: _value:
@@ -125,7 +160,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.rsync ];
+    environment.systemPackages = [
+      pkgs.rsync
+    ] ++ mkEachRestoreScript cfg.jobs;
 
     systemd = {
       services = mkEachService cfg.jobs;
