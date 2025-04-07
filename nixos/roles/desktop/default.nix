@@ -27,6 +27,10 @@ in
           enable = true;
           jobs.backup = {
             identityFile = config.age.secrets.${backupId}.path;
+            excludes = [
+              "/home/*/code/*"
+              "/home/*/Nextcloud/*"
+            ];
             paths = [
               "/home"
             ];
