@@ -77,8 +77,8 @@ let
   mkCmd = concatStringsSep " ";
   rsyncCmd = mkCmd [
     (getExe pkgs.rsync)
-    "--archive --acls --xattrs --relative --hard-links --compress --delete-after --verbose"
     "--rsync-path='rsync --fake-super'"
+    "--archive --acls --xattrs --relative --hard-links --compress --verbose"
   ];
 
   mkEachRestoreScript = mapAttrsToList (
@@ -122,6 +122,7 @@ let
       path = [ pkgs.rsync ];
       script = mkCmd [
         rsyncCmd
+        "--delete-after"
         (mkIdentity value.identityFile)
         (mkExcludes value.excludes)
         (mkIncludes value.paths)
