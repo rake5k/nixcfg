@@ -21,6 +21,29 @@ let
     ;
   inherit (lib.strings) concatStringsSep optionalString;
 
+  defaultExcludes = [
+    "/dev/*"
+    "/home/*/.thumbnails/*"
+    "/home/*/.cache/*"
+    "/home/*/.local/share/Trash/*"
+    "/media/*"
+    "/mnt/*"
+    "/nix/store/*"
+    "/lost+found/"
+    "/persist/var/cache/*"
+    "/persist/var/lib/containers/storage/overlay*"
+    "/persist/var/lib/samba/*"
+    "/proc/*"
+    "/run/*"
+    "/sys/*"
+    "/tmp/*"
+    "/var/cache/*"
+    "/var/lib/containers/storage/overlay*"
+    "/var/lib/samba/*"
+    "/var/log/*"
+    "/var/tmp/*"
+  ];
+
   job = types.submodule {
     options = {
       identityFile = mkOption {
@@ -32,28 +55,7 @@ let
       excludes = mkOption {
         type = with types; listOf str;
         description = "Directories and files to be excluded";
-        default = [
-          "/dev/*"
-          "/home/*/.thumbnails/*"
-          "/home/*/.cache/*"
-          "/home/*/.local/share/Trash/*"
-          "/media/*"
-          "/mnt/*"
-          "/nix/store/*"
-          "/lost+found/"
-          "/persist/var/cache/*"
-          "/persist/var/lib/containers/storage/overlay*"
-          "/persist/var/lib/samba/*"
-          "/proc/*"
-          "/run/*"
-          "/sys/*"
-          "/tmp/*"
-          "/var/cache/*"
-          "/var/lib/containers/storage/overlay*"
-          "/var/lib/samba/*"
-          "/var/log/*"
-          "/var/tmp/*"
-        ];
+        default = defaultExcludes;
       };
 
       paths = mkOption {
@@ -72,7 +74,9 @@ let
   mkIdentity =
     identityFile:
     optionalString (identityFile != null) "--rsh='${getExe pkgs.openssh} -i ${identityFile}'";
-  mkExcludes = excludes: concatStringsSep " " (map (exclude: "--exclude '${exclude}'") excludes);
+  mkExcludes =
+    excludes:
+    concatStringsSep " " (map (exclude: "--exclude '${exclude}'") (defaultExcludes ++ excludes));
   mkIncludes = concatStringsSep " ";
   mkCmd = concatStringsSep " ";
   rsyncCmd = mkCmd [
