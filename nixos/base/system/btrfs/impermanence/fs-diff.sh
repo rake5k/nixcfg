@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
+# shellcheck disable=SC2148
 OLD_TRANSID=$(sudo btrfs subvolume find-new /mnt/root-blank 9999999)
 OLD_TRANSID=${OLD_TRANSID#transid marker was }
 
+# shellcheck disable=SC2312
 sudo btrfs subvolume find-new "/mnt/root" "${OLD_TRANSID}" |
   sed '$d' |
   cut -f17- -d' ' |
