@@ -71,8 +71,8 @@ in
           path = "/data/photo";
           browsable = "yes";
           writable = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
+          "create mask" = "0664";
+          "directory mask" = "0775";
           "valid users" = defaultValidUsers;
         };
 
@@ -81,8 +81,8 @@ in
           path = "/data/plex";
           browsable = "yes";
           writable = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
+          "create mask" = "0664";
+          "directory mask" = "0775";
           "valid users" = defaultValidUsers;
         };
 
@@ -91,8 +91,8 @@ in
           path = "${shareBaseFolder}/private";
           browsable = "yes";
           writable = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
+          "create mask" = "0660";
+          "directory mask" = "0770";
           "valid users" = defaultValidUsers;
         };
 
@@ -102,8 +102,8 @@ in
           browsable = "yes";
           writable = "yes";
           "guest ok" = "yes";
-          "create mask" = "0644";
-          "directory mask" = "0755";
+          "create mask" = "0666";
+          "directory mask" = "0777";
         };
       };
     };
@@ -138,7 +138,7 @@ in
       };
 
       tmpfiles.rules = [
-        "d ${shareBaseFolder}/private 0755 root root -"
+        "d ${shareBaseFolder}/private 0775 root root -"
         "d ${shareBaseFolder}/public 0777 root root -"
         "d ${recycleFolder} 0777 root root -"
       ];
