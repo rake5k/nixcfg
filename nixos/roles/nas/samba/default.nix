@@ -84,6 +84,8 @@ in
           "create mask" = "0664";
           "directory mask" = "0775";
           "valid users" = defaultValidUsers;
+          "force user" = "plex";
+          "force group" = "plex";
         };
 
         private = {
