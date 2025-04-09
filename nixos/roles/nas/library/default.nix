@@ -71,7 +71,7 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      "d ${cfg.libraryPath} 0755 root root -"
+      "d ${cfg.libraryPath} 0755 ${config.services.calibre-web.user} ${config.services.calibre-web.group} -"
     ];
   };
 }
