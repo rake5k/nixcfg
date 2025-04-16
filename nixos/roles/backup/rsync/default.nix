@@ -73,7 +73,9 @@ let
 
   mkIdentity =
     identityFile:
-    optionalString (identityFile != null) "--rsh='${getExe pkgs.openssh} -i ${identityFile}'";
+    optionalString (
+      identityFile != null
+    ) "--rsh='${getExe pkgs.openssh} -i ${identityFile} -o StrictHostKeyChecking=no'";
   mkExcludes =
     excludes:
     concatStringsSep " " (map (exclude: "--exclude '${exclude}'") (defaultExcludes ++ excludes));
