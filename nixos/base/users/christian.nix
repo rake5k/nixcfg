@@ -79,9 +79,10 @@ in
     extraGroups = [
       "wheel"
       "audio"
-      "video"
-      "scanner"
       "dialout"
+      "input"
+      "scanner"
+      "video"
     ];
     initialPassword = "changeme";
     openssh.authorizedKeys.keys = [
