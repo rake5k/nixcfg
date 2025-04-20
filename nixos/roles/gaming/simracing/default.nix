@@ -28,7 +28,7 @@ let
   '';
 
   vrsPedalsVendor = "0483";
-  vrsPedalsProduct = "A3BF";
+  vrsPedalsProduct = "a3bf";
   vrsPedalsSetupScript = "vrs-pedal-setup";
   vrsPedalsSetup = writeShellApplication {
     name = vrsPedalsSetupScript;
@@ -79,7 +79,7 @@ let
     '';
   };
 
-  decrementHex = hexValue: toHexString ((fromHexString hexValue) - 1);
+  decrementHex = hexValue: toLower (toHexString ((fromHexString hexValue) - 1));
 
 in
 
