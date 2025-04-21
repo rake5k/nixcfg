@@ -50,10 +50,6 @@ in
               addresses = [ ];
               id = "Z5CMWGO-QVYSG5A-ERDY57R-CZSI56V-6ZRRQ6U-WPA37ZL-DCT3MSZ-57MQWAW";
             };
-            sv-syno-01 = {
-              addresses = [ "tcp://sv-syno-01.home.local:22000" ];
-              id = "EEEGHSK-UVNRNLA-2TFEOEV-RHMALFK-T4IT65L-TIJB5EA-25UXOGH-J4ZURQ7";
-            };
           };
 
           folders = {
@@ -64,7 +60,6 @@ in
                 config.services.syncthing.settings.devices.pc-win10-chr.name
                 config.services.syncthing.settings.devices.malmok.name
                 config.services.syncthing.settings.devices.pixel-7a.name
-                config.services.syncthing.settings.devices.sv-syno-01.name
               ];
               id = "jongs-ayrxt";
               path = "/data/syncthing/FreeTube";
@@ -73,7 +68,6 @@ in
               enable = true;
               devices = [
                 config.services.syncthing.settings.devices.sirius-a.name
-                config.services.syncthing.settings.devices.sv-syno-01.name
               ];
               id = "gbpxu-zscyz";
               path = "/data/syncthing/RetroDeck";
