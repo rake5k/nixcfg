@@ -60,6 +60,7 @@ in
                 config.services.syncthing.settings.devices.pc-win10-chr.name
                 config.services.syncthing.settings.devices.malmok.name
                 config.services.syncthing.settings.devices.pixel-7a.name
+                config.services.syncthing.settings.devices.sirius-a.name
               ];
               id = "jongs-ayrxt";
               path = "/data/syncthing/FreeTube";
