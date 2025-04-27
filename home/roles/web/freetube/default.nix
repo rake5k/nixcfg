@@ -23,6 +23,6 @@ in
   config = mkIf cfg.enable {
     custom.roles.syncthing.enable = true;
 
-    home.packages = with pkgs; [ freetube ];
+    home.packages = with pkgs.unstable; [ freetube ];
   };
 }
