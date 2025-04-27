@@ -58,6 +58,11 @@ in
       };
     };
 
+    xdg.configFile."caffeine/whitelist.txt".text = ''
+      nix
+      rsync
+    '';
+
     # Update random lock image on login
     xsession.initExtra = ''
       ${lib.getExe pkgs.betterlockscreen} --update ${inputs.wallpapers} --fx dim &
