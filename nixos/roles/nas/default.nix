@@ -32,8 +32,9 @@ in
         backup.enable = true;
         glances.enable = true;
         library.enable = true;
-        power-notification.enable = true;
+        photos.enable = true;
         plex.enable = true;
+        power-notification.enable = true;
         samba.enable = true;
         syncthing.enable = true;
         tls.enable = true;
