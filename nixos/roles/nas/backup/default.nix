@@ -58,7 +58,7 @@ in
       root-remote = {
         onCalendar = "hourly";
         settings = {
-          snapshot_preserve = "7d 4w 6m 1y";
+          snapshot_preserve = "7d 4w";
           snapshot_preserve_min = "2d";
           snapshot_dir = snapshotDir;
 
@@ -75,7 +75,7 @@ in
       data-local = {
         onCalendar = "hourly";
         settings = {
-          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve = "7d";
           snapshot_preserve_min = "2d";
           snapshot_dir = "/data${snapshotDir}";
 
@@ -96,11 +96,11 @@ in
       data-external = {
         onCalendar = "hourly";
         settings = {
-          snapshot_preserve = "7d 4w 6m";
+          snapshot_preserve = "7d";
           snapshot_preserve_min = "2d";
           snapshot_dir = "/data${snapshotDir}";
 
-          target_preserve = "7d";
+          target_preserve = "7d 4w 6m 10y";
           target_preserve_min = "no";
 
           volume."/data" = {
