@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -36,6 +41,8 @@ in
     custom.base.system.btrfs.impermanence.extraDirectories = [
       "/var/lib/${config.services.postgresql.dataDir}"
     ];
+
+    environment.systemPackages = [ pkgs.immich-cli ];
 
     services = {
       immich = {
