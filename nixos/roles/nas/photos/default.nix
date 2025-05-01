@@ -42,7 +42,10 @@ in
         enable = true;
         openFirewall = true;
         mediaLocation = cfg.mediaPath;
-        settings.server.externalDomain = "https://${cfg.host}";
+        settings = {
+          machineLearning.facialRecognition.minFaces = 10;
+          server.externalDomain = "https://${cfg.host}";
+        };
       };
 
       traefik = {
