@@ -50,7 +50,7 @@ in
         openFirewall = true;
         mediaLocation = cfg.mediaPath;
         settings = {
-          machineLearning.facialRecognition.minFaces = 10;
+          machineLearning.facialRecognition.minFaces = 15;
           server.externalDomain = "https://${cfg.host}";
         };
       };
