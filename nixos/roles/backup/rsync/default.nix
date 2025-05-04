@@ -71,6 +71,21 @@ let
     };
   };
 
+  rsync-no24 =
+    with pkgs;
+    writeShellApplication {
+      name = "rsync-no24";
+      runtimeInputs = [ rsync ];
+      text = ''
+        ${getExe rsync} "$@"
+        e=$?
+        if test $e = 24; then
+            exit 0
+        fi
+        exit $e
+      '';
+    };
+
   mkIdentity =
     identityFile:
     optionalString (
@@ -82,7 +97,7 @@ let
   mkIncludes = concatStringsSep " ";
   mkCmd = concatStringsSep " ";
   rsyncCmd = mkCmd [
-    (getExe pkgs.rsync)
+    (getExe rsync-no24)
     "--rsync-path='rsync --fake-super'"
     "--archive --acls --xattrs --relative --hard-links --compress --verbose"
   ];
