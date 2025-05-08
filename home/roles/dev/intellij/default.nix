@@ -17,12 +17,16 @@ in
 {
   options = {
     custom.roles.dev.intellij = {
-      enable = mkEnableOption "IntelliJ";
+      enable = mkEnableOption "IntelliJ config";
+
+      install = mkEnableOption "Whether to install IntelliJ" // {
+        default = true;
+      };
 
       ultimate = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to install the Ultimate Edition, Community Edition otherwise.";
+        description = "If installing, select the Ultimate Edition, Community Edition otherwise.";
       };
     };
   };
@@ -37,10 +41,7 @@ in
         set nu rnu
       '';
 
-      packages = with pkgs; [
-        ideaPackage
-        fira-code
-      ];
+      packages = [ pkgs.fira-code ] ++ (optionals cfg.install [ ideaPackage ]);
     };
   };
 }
