@@ -30,5 +30,25 @@ inputs.flake-commons.lib {
           -d @'${bodyFile}' \
           "$(${pkgs.coreutils}/bin/cat ${secretsCfg.${ntfyUrlSecret}.path})"
       '';
+
+    mkWritableFile = config: name: opts: {
+      "${name}.hm-init" = opts // {
+        onChange = ''
+          rm -f ${config.home.file}/${name}
+          cp ${config.home.file}/${name}.hm-init ${config.home.file}/${name}
+          chmod u+w ${config.home.file}/${name}
+        '';
+      };
+    };
+
+    mkWritableConfigFile = config: name: opts: {
+      "${name}.hm-init" = opts // {
+        onChange = ''
+          rm -f ${config.xdg.configHome}/${name}
+          cp ${config.xdg.configHome}/${name}.hm-init ${config.xdg.configHome}/${name}
+          chmod u+w ${config.xdg.configHome}/${name}
+        '';
+      };
+    };
   }
 )
