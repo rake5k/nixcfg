@@ -6,11 +6,18 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.desktop.xserver.locker;
+
+  inherit (config.lib.custom) mkWritableConfigFile;
+  inherit (lib)
+    getExe
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
 in
 
@@ -27,7 +34,7 @@ in
 
       lockCmd = mkOption {
         type = types.str;
-        default = "${lib.getExe pkgs.betterlockscreen} --lock dim";
+        default = "${getExe pkgs.betterlockscreen} --lock dim";
         description = "Command to activate locker";
       };
     };
@@ -58,14 +65,16 @@ in
       };
     };
 
-    xdg.configFile."caffeine/whitelist.txt".text = ''
-      nix
-      rsync
-    '';
+    xdg.configFile = mkWritableConfigFile config "caffeine/whitelist.txt" {
+      text = ''
+        nix
+        rsync
+      '';
+    };
 
     # Update random lock image on login
     xsession.initExtra = ''
-      ${lib.getExe pkgs.betterlockscreen} --update ${inputs.wallpapers} --fx dim &
+      ${getExe pkgs.betterlockscreen} --update ${inputs.wallpapers} --fx dim &
     '';
   };
 }
