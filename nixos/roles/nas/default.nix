@@ -36,6 +36,7 @@ in
         plex.enable = true;
         power-notification.enable = true;
         samba.enable = true;
+        sunshine.enable = true;
         syncthing.enable = true;
         tls.enable = true;
       };
