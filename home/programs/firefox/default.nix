@@ -98,7 +98,7 @@ in
       };
 
       profiles."ztbvdcs8.default" = {
-        inherit (cfg) extensions;
+        extensions.packages = cfg.extensions;
 
         isDefault = true;
 
@@ -225,15 +225,15 @@ in
                     ];
                   }
                 ];
-                iconUpdateURL = "https://nixos.wiki/favicon.png";
+                icon = "https://nixos.wiki/favicon.png";
                 updateInterval = 24 * 60 * 60 * 1000; # every day
                 definedAliases = [ "@nw" ];
               };
 
               "Amazon.de".metaData.hidden = true;
-              "Bing".metaData.hidden = true;
-              "eBay".metaData.hidden = true;
-              "Google".metaData.hidden = true;
+              bing.metaData.hidden = true;
+              ebay.metaData.hidden = true;
+              google.metaData.hidden = true;
             };
             force = true;
             order = with engines; [

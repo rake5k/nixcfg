@@ -28,7 +28,7 @@ in
     ];
 
     programs.k9s.enable = true;
-    programs.zsh.initExtra = ''
+    programs.zsh.initContent = ''
       # kubectl autocompletion
       source <(kubectl completion zsh)
     '';

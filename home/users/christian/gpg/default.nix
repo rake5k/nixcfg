@@ -25,6 +25,6 @@ in
   config = mkIf cfg.enable {
     programs.gpg.enable = true;
 
-    services.gpg-agent.pinentryPackage = pinentryPkg;
+    services.gpg-agent.pinentry.package = pinentryPkg;
   };
 }

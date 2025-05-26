@@ -51,7 +51,7 @@ in
           share = true;
           size = historySize;
         };
-      initExtra = ''
+      initContent = ''
         # Fix for https://superuser.com/questions/997593/why-does-zsh-insert-a-when-i-press-the-delete-key
         bindkey "^[[3~" delete-char
         # Fix for https://stackoverflow.com/questions/43249043/bind-delete-key-in-vi-mode

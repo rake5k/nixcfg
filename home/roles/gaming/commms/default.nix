@@ -21,7 +21,7 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       discord
-      teamspeak5_client
+      teamspeak6-client
     ];
   };
 }

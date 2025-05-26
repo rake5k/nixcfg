@@ -23,7 +23,7 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
+          default = pkgs.nerd-fonts.monofur;
           description = "Font derivation";
         };
 

@@ -194,7 +194,7 @@ in
     xsession.windowManager.xmonad = {
       enable = true;
       extraPackages = haskellPackages: [
-        haskellPackages.xmonad-contrib_0_18_1
+        haskellPackages.xmonad-contrib
         haskellPackages.xmonad-extras
       ];
       config = import ./xmonad.hs.nix {

@@ -48,7 +48,7 @@ in
       font = {
         package = mkOption {
           type = types.package;
-          default = pkgs.nerdfonts.override { fonts = [ "ZedMono" ]; };
+          default = pkgs.nerd-fonts.zed-mono;
           description = "Font derivation";
         };
 
