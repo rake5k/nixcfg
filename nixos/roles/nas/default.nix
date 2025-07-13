@@ -36,7 +36,10 @@ in
         plex.enable = true;
         power-notification.enable = true;
         samba.enable = true;
-        sunshine.enable = true;
+        steam-headless = {
+          enable = true;
+          services.steam-headless.port = 8084;
+        };
         syncthing.enable = true;
         tls.enable = true;
       };
