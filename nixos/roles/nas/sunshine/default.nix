@@ -34,6 +34,7 @@ in
       allowedTCPPorts = [
         47984
         47989
+        47990 # web config ui
         48010
       ];
       allowedUDPPorts = [
@@ -72,10 +73,10 @@ in
               TZ = "Europe/Zurich";
             };
             user = "${uidStr}:${gidStr}";
-            volumes = [
-              "${cfg.dataPath}/config:/config"
-              "${cfg.dataPath}/steam:/steam"
-            ];
+            # volumes = [
+            #   "${cfg.dataPath}/config:/config"
+            #   "${cfg.dataPath}/steam:/steam"
+            # ];
             extraOptions = [
               "--gpus=all"
               "--network=host"
