@@ -55,6 +55,7 @@ in
       xserver = {
         enable = true;
         desktopManager.xterm.enable = true;
+        displayManager.lightdm.greeters.slick.enable = true;
         serverFlagsSection = ''
           Option "BlankTime" "0"
           Option "StandbyTime" "0"
