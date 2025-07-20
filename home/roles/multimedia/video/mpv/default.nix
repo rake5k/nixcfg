@@ -9,7 +9,7 @@ with lib;
 
 let
 
-  cfg = config.custom.roles.multimedia.mpv;
+  cfg = config.custom.roles.multimedia.video.mpv;
 
   mkIptvScript = playlistFile: ''
     ${getExe pkgs.mpv} ${config.xdg.configHome}/mpv/playlists/${playlistFile} --script-opts=iptv=1
@@ -24,7 +24,7 @@ in
 
 {
   options = {
-    custom.roles.multimedia.mpv = {
+    custom.roles.multimedia.video.mpv = {
       enable = mkEnableOption "MPV";
     };
   };
