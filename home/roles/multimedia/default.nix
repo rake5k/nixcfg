@@ -24,14 +24,12 @@ in
     home = {
       packages = with pkgs; [
         blueberry
-        easyeffects
-        plex-media-player
-        spotifywm
       ];
     };
 
-    custom.roles.multimedia.mpv.enable = true;
-
-    services.easyeffects.enable = true;
+    custom.roles.multimedia = {
+      music.enable = true;
+      video.enable = true;
+    };
   };
 }
