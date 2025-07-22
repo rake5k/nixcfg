@@ -9,6 +9,8 @@ let
 
   cfg = config.custom.roles.gaming.minecraft;
 
+  prismlauncher = config.lib.nixGL.wrap pkgs.prismlauncher;
+
 in
 
 {
@@ -19,9 +21,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = [
       prismlauncher
-      jre8
+      pkgs.jre8
     ];
   };
 }
