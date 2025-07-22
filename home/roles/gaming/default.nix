@@ -38,6 +38,9 @@ in
       # Tinkering
       unstable.winetricks
       unstable.protontricks
+
+      # Streaming
+      moonlight-qt
     ];
   };
 }
