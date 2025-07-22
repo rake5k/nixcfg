@@ -5,11 +5,13 @@
   ...
 }:
 
-with lib;
-
 let
 
+  inherit (lib) mkEnableOption mkIf;
+
   cfg = config.custom.roles.multimedia.video;
+
+  plex = config.lib.nixGL.wrap pkgs.plex-media-player;
 
 in
 
@@ -22,8 +24,8 @@ in
 
   config = mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        plex-media-player
+      packages = [
+        plex
       ];
     };
 
