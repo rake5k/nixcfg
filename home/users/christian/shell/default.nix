@@ -25,6 +25,7 @@ in
       programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
+        gnutils.enable = true;
         zsh.enable = true;
       };
     };
@@ -42,18 +43,6 @@ in
 
         # Make sure to have the right version in $PATH
         less
-
-        # GNU utils
-        coreutils
-        gawk
-        gnugrep
-        gnupg
-        gnused
-        gnutar
-
-        # GNU util replacements
-        fd # ultra-fast find
-        ripgrep
 
         curl
         eva
