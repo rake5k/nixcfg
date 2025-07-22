@@ -5,9 +5,9 @@
   ...
 }:
 
-with lib;
-
 let
+
+  inherit (lib) mkEnableOption mkIf;
 
   cfg = config.custom.roles.gaming;
 
@@ -24,6 +24,7 @@ in
     custom.roles.gaming = {
       comms.enable = true;
       mangohud.enable = true;
+      streaming.enable = true;
     };
 
     home.packages = with pkgs; [
@@ -38,9 +39,6 @@ in
       # Tinkering
       unstable.winetricks
       unstable.protontricks
-
-      # Streaming
-      moonlight-qt
     ];
   };
 }
