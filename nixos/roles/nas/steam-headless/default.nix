@@ -132,7 +132,12 @@ in
       pull = "always";
 
       volumes = [
+        # The location of your home directory.
         "${cfg.dataPath}/home:/home/default:rw"
+
+        # The location where all games should be installed.
+        # This path needs to be set as a library path in Steam after logging in.
+        # Otherwise, Steam will store games in the home directory above.
         "${cfg.dataPath}/games:/mnt/games:rw"
       ];
     };
