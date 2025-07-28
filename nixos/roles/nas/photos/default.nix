@@ -47,6 +47,8 @@ in
     services = {
       immich = {
         enable = true;
+        # `null` will give access to all devices:
+        accelerationDevices = null;
         openFirewall = true;
         mediaLocation = cfg.mediaPath;
         settings = {
@@ -79,6 +81,11 @@ in
 
     systemd.tmpfiles.rules = [
       "d ${cfg.mediaPath} 0755 ${config.services.immich.user} ${config.services.immich.group} -"
+    ];
+
+    users.users."${config.services.immich.user}".extraGroups = [
+      "video"
+      "render"
     ];
   };
 }
