@@ -80,6 +80,7 @@ in
       hostname = "steam-headless";
 
       extraOptions = [
+        "--pull=always"
         "--gpus=all"
         "--security-opt=apparmor=unconfined"
         "--security-opt=seccomp=unconfined"
