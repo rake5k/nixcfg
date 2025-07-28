@@ -84,13 +84,18 @@ in
       {
         containers = {
           threadfin = {
-            image = "fyb3roptik/threadfin:1.2.26";
+            image = "fyb3roptik/threadfin:1.2.35-nvidia";
             ports = [ "127.0.0.1:${threadfinPort}:${threadfinPort}" ];
             environment = {
               PUID = uidStr;
               PGID = gidStr;
               TZ = "Europe/Zurich";
+              NVIDIA_DRIVER_CAPABILITIES = "all";
+              NVIDIA_VISIBLE_DEVICES = "all";
             };
+            extraOptions = [
+              "--gpus=all"
+            ];
             user = "${uidStr}:${gidStr}";
             volumes = [
               "/data/container/threadfin/conf:/home/threadfin/conf"
