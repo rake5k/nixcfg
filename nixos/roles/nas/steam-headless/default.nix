@@ -72,33 +72,17 @@ in
     virtualisation.oci-containers.containers.steam-headless = {
       image = "josh5/steam-headless:latest";
 
-      # lol, --network=host because I can't be bothered to find all the ports anymore
-      ports = [
-
-      ];
-
       hostname = "steam-headless";
 
-      extraOptions = [
-        "--pull=always"
-        "--gpus=all"
-        "--security-opt=apparmor=unconfined"
-        "--security-opt=seccomp=unconfined"
-        "--device=/dev/uinput"
-        "--device=/dev/fuse"
-        "--device-cgroup-rule=c 13:* rmw"
-        "--cap-add=NET_ADMIN"
-        "--cap-add=SYS_ADMIN"
-        "--cap-add=SYS_NICE"
-        "--ipc=host"
-        "--add-host=steam-headless:127.0.0.1"
-        "--network=host"
-        "--memory=8g"
-      ];
+      capabilities = {
+        NET_ADMIN = true;
+        SYS_ADMIN = true;
+        SYS_NICE = true;
+      };
 
-      volumes = [
-        "${cfg.dataPath}/home:/home/default:rw"
-        "${cfg.dataPath}/games:/mnt/games:rw"
+      devices = [
+        "/dev/fuse"
+        "/dev/uinput"
       ];
 
       # https://github.com/Steam-Headless/docker-steam-headless/blob/master/docs/compose-files/.env
@@ -125,6 +109,32 @@ in
         UMASK = "000";
         USER_PASSWORD = "password";
       };
+
+      extraOptions = [
+        "--gpus=all"
+        "--security-opt=apparmor=unconfined"
+        "--security-opt=seccomp=unconfined"
+        "--device-cgroup-rule=c 13:* rmw"
+        "--ipc=host"
+        "--add-host=steam-headless:127.0.0.1"
+        "--memory=8g"
+      ];
+
+      networks = [
+        "host"
+      ];
+
+      # lol, --network=host because I can't be bothered to find all the ports anymore
+      ports = [
+
+      ];
+
+      pull = "always";
+
+      volumes = [
+        "${cfg.dataPath}/home:/home/default:rw"
+        "${cfg.dataPath}/games:/mnt/games:rw"
+      ];
     };
 
     networking.firewall = {
