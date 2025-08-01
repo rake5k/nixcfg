@@ -71,6 +71,24 @@ in
 
   nix.settings.trusted-users = [ username ];
 
+  # see: https://wiki.archlinux.org/title/LightDM#Changing_your_avatar
+  system.activationScripts."setavatar-${username}".text = ''
+    icon="/var/lib/AccountsService/icons/${username}.png"
+    user="/var/lib/AccountsService/users/${username}"
+    cp ${
+      (builtins.fetchurl {
+        url = "https://github.com/rake5k.png?size=96";
+        sha256 = "15372gqfda7qkinyi1l5cgay4s66da59l9kq9x34cx30j1cw1ci6";
+      })
+    } "$icon"
+
+    if ! grep "Icon=$icon" "$user" -xq; then
+      echo "Icon=$icon" >> "$user"
+    fi
+
+    chmod 0644 $icon
+  '';
+
   users.users."${username}" = {
     shell = pkgs.zsh;
     name = username;
