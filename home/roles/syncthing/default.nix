@@ -26,6 +26,8 @@ in
         };
 
         options = {
+          globalAnnounceEnabled = false;
+          relaysEnabled = false;
           urAccepted = -1;
         };
       };
