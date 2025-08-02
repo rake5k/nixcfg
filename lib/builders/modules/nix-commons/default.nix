@@ -28,6 +28,7 @@ in
         "flakes"
       ];
       log-lines = 30;
-    } // nixSubstituters;
+    }
+    // nixSubstituters;
   };
 }

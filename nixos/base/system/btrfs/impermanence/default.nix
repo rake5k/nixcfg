@@ -115,7 +115,8 @@ in
           "/var/cache/"
           "/var/db/sudo/"
           "/var/lib/"
-        ] ++ cfg.extraDirectories;
+        ]
+        ++ cfg.extraDirectories;
         files = [
           "/etc/machine-id"
           "/etc/ssh/ssh_host_ed25519_key"
@@ -124,7 +125,8 @@ in
           "/etc/ssh/ssh_host_rsa_key.pub"
           "/etc/secrets/initrd/ssh_host_ed25519_key"
           "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
-        ] ++ cfg.extraFiles;
+        ]
+        ++ cfg.extraFiles;
       };
 
       systemPackages = with pkgs; [

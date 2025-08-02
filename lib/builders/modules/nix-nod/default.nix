@@ -13,5 +13,6 @@ lib.recursiveUpdate nixCommons {
     settings = {
       auto-optimise-store = false;
     };
-  } // nixSubstituters;
+  }
+  // nixSubstituters;
 }

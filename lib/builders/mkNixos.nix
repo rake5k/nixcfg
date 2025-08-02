@@ -13,37 +13,36 @@ inputs.nixpkgs.lib.nixosSystem {
     inherit homeModules inputs;
   };
 
-  modules =
-    [
-      ./modules/nix
+  modules = [
+    ./modules/nix
 
-      # Host config
-      "${inputs.self}/hosts/${name}"
+    # Host config
+    "${inputs.self}/hosts/${name}"
 
-      {
-        custom.base.hostname = name;
+    {
+      custom.base.hostname = name;
 
-        lib.custom = customLib;
+      lib.custom = customLib;
 
-        nixpkgs = {
-          inherit pkgs;
-        };
-      }
+      nixpkgs = {
+        inherit pkgs;
+      };
+    }
 
-      # Disko
-      inputs.disko.nixosModules.disko
+    # Disko
+    inputs.disko.nixosModules.disko
 
-      # Impermanence
-      inputs.impermanence.nixosModules.impermanence
+    # Impermanence
+    inputs.impermanence.nixosModules.impermanence
 
-      # Secure Boot
-      inputs.lanzaboote.nixosModules.lanzaboote
+    # Secure Boot
+    inputs.lanzaboote.nixosModules.lanzaboote
 
-      # Home-Manager
-      inputs.home-manager.nixosModules.home-manager
-      ./modules/home-manager
-      ./modules/home-manager-users
-    ]
-    ++ customLib.getRecursiveDefaultNixFileList ../../nixos
-    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";
+    # Home-Manager
+    inputs.home-manager.nixosModules.home-manager
+    ./modules/home-manager
+    ./modules/home-manager-users
+  ]
+  ++ customLib.getRecursiveDefaultNixFileList ../../nixos
+  ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/nixos";
 }
