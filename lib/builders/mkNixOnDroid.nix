@@ -40,5 +40,6 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
         pkgs = nodPkgs;
       };
     }
-  ] ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
+  ]
+  ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
 }

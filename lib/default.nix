@@ -22,7 +22,7 @@ let
     in
     [
       inputs.homeage.homeManagerModules.homeage
-      inputs.nix-index-database.hmModules.nix-index
+      inputs.nix-index-database.homeModules.nix-index
 
       { lib.custom = customLib; }
 

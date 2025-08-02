@@ -185,7 +185,8 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = [
       pkgs.rsync
-    ] ++ mkEachRestoreScript cfg.jobs;
+    ]
+    ++ mkEachRestoreScript cfg.jobs;
 
     systemd = {
       services = mkEachService cfg.jobs;

@@ -161,6 +161,12 @@
             _doNotClearPath = true;
             flakePath = "/home/\$(logname)/.nix-config";
           };
+          meta = {
+            description = "Setup script for applying this system configuration";
+            license = licenses.mit;
+            maintainers = with maintainers; [ rake5k ];
+            platforms = platforms.all;
+          };
           path =
             pkgs: with pkgs; [
               git
@@ -173,6 +179,12 @@
           file = "disko-install.sh";
           envs = {
             _doNotClearPath = true;
+          };
+          meta = {
+            description = "Installation script including disk partitioning";
+            license = licenses.mit;
+            maintainers = with maintainers; [ rake5k ];
+            platforms = platforms.all;
           };
         })
       ];
