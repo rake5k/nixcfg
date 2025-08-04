@@ -10,7 +10,7 @@
 let
 
   nodPkgs = import inputs.nixpkgs {
-    inherit (pkgs) system;
+    inherit (pkgs) config system;
     overlays = [ inputs.nix-on-droid.overlays.default ] ++ pkgs.overlays;
   };
 
@@ -35,11 +35,10 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       custom.base.hostname = name;
 
       lib.custom = customLib;
-
-      nixpkgs = {
-        pkgs = nodPkgs;
-      };
     }
+
+    # Home-Manager
+    ./modules/home-manager
   ]
   ++ customLib.getRecursiveDefaultNixFileList ../../nix-on-droid;
 }

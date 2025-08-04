@@ -56,7 +56,7 @@ in
 
     terminal.font =
       let
-        fontPackage = pkgs.nerdfonts.override { fonts = [ "ZedMono" ]; };
+        fontPackage = pkgs.nerd-fonts.zed-mono;
         fontPath = "/share/fonts/truetype/NerdFonts/ZedMonoNerdFont-Regular.ttf";
       in
       fontPackage + fontPath;
