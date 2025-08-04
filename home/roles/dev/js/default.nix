@@ -11,6 +11,8 @@ let
 
   cfg = config.custom.roles.dev.js;
 
+  inherit (pkgs.stdenv) isLinux;
+
 in
 
 {
@@ -30,8 +32,8 @@ in
       };
     };
 
-    home.packages = [
-      pkgs.spidermonkey_91 # REPL
+    home.packages = optionals isLinux [
+      pkgs.spidermonkey_128 # REPL
     ];
   };
 }
