@@ -10,9 +10,9 @@ let
 
   cfg = config.custom.base;
 
-in
+  inherit (lib) mkOption types;
 
-with lib;
+in
 
 {
   options = {
