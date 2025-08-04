@@ -1,4 +1,4 @@
-{ lib, config, ... }:
+{ lib, ... }:
 
 {
   options = with lib; {
@@ -14,10 +14,5 @@
         description = "List of user names.";
       };
     };
-  };
-
-  config = {
-    # Make sure the nix daemon always runs
-    services.nix-daemon.enable = true;
   };
 }
