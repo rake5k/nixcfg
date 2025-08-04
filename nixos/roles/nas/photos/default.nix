@@ -44,6 +44,20 @@ in
 
     environment.systemPackages = [ pkgs.immich-cli ];
 
+    fileSystems = {
+      "/mnt/syno-photo" = {
+        device = "sv-syno-01:/volume1/photo";
+        fsType = "nfs";
+        options = [
+          "x-systemd.automount"
+          "noauto"
+          "x-systemd.idle-timeout=60"
+          "x-systemd.device-timeout=5s"
+          "x-systemd.mount-timeout=5s"
+        ];
+      };
+    };
+
     services = {
       immich = {
         enable = true;
