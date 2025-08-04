@@ -11,7 +11,7 @@ let
 
   nodPkgs = import inputs.nixpkgs {
     inherit (pkgs) system;
-    overlays = [ inputs.nix-on-droid.overlays.default ] + pkgs.overlays;
+    overlays = [ inputs.nix-on-droid.overlays.default ] ++ pkgs.overlays;
   };
 
 in
