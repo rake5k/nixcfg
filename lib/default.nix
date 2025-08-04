@@ -3,8 +3,9 @@
 let
 
   inherit (inputs.nixpkgs) lib;
+  inherit (inputs.nixpkgs.lib) genAttrs nameValuePair listToAttrs;
 
-  forEachSystem = lib.genAttrs (import inputs.systems);
+  forEachSystem = genAttrs (import inputs.systems);
 
   pkgsFor = forEachSystem (system: import ./nixpkgs.nix { inherit inputs system; });
   customLibFor = forEachSystem (
@@ -34,11 +35,11 @@ let
 
   nameValuePairWrapper =
     name: fn: system:
-    lib.nameValuePair name (fn system);
+    nameValuePair name (fn system);
 
   wrapper =
     builder: name: args: system:
-    lib.nameValuePair name (
+    nameValuePair name (
       import builder {
         inherit
           inputs
@@ -56,7 +57,7 @@ let
     builder: system: name:
     wrapper builder name { } system;
 
-  buildersForSystem = system: builders: lib.listToAttrs (map (b: b system) builders);
+  buildersForSystem = system: builders: listToAttrs (map (b: b system) builders);
 
 in
 
