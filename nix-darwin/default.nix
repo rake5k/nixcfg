@@ -15,4 +15,8 @@
       };
     };
   };
+
+  config = {
+    system.primaryUser = "christian";
+  };
 }
