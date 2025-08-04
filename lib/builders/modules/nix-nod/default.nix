@@ -1,18 +1,28 @@
-{ lib, ... }@args:
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 
 let
 
-  nixCommons = import ../nix-commons args;
   nixSubstituters = import ../nix-commons/substituters.nix;
+
+  inherit (lib) mkDefault;
 
 in
 
-lib.recursiveUpdate nixCommons {
+{
   nix = {
+    package = mkDefault pkgs.nix;
     nixPath = [ "nixpkgs=flake:nixpkgs" ];
-    settings = {
-      auto-optimise-store = false;
+    registry = {
+      nixpkgs.flake = inputs.nixpkgs;
+      nix-config.flake = inputs.self;
     };
-  }
-  // nixSubstituters;
+
+    inherit (nixSubstituters) substituters;
+    trustedPublicKeys = nixSubstituters.trusted-public-keys;
+  };
 }

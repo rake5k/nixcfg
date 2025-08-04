@@ -7,7 +7,7 @@
 
 let
 
-  nixSubstituters = import ../nix-commons/substituters.nix;
+  nixSubstituters = import ./substituters.nix;
 
   inherit (lib) mkDefault;
   inherit (pkgs.stdenv) isDarwin;
