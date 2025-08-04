@@ -48,11 +48,15 @@ in
       };
     };
 
-    home.packages = with pkgs; [
-      bind
-      protonmail-desktop
-      wget
-    ];
+    home.packages =
+      with pkgs;
+      [
+        bind
+        wget
+      ]
+      ++ (optionals isLinux [
+        protonmail-desktop
+      ]);
 
     programs.chromium = {
       enable = isLinux;
