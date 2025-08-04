@@ -6,6 +6,9 @@ let
     allowAliases = false;
     allowUnfree = true;
     nvidia.acceptLicense = true;
+    permittedInsecurePackages = [
+      "broadcom-sta-6.30.223.271-57-6.6.100"
+    ];
   };
 
 in
