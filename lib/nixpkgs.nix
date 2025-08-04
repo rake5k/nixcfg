@@ -6,7 +6,6 @@ let
     allowAliases = false;
     allowUnfree = true;
     nvidia.acceptLicense = true;
-    permittedInsecurePackages = [ "electron-27.3.11" ];
   };
 
 in
