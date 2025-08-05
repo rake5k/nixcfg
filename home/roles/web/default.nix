@@ -5,12 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.web;
 
+  inherit (lib) mkEnableOption mkIf optionals;
   inherit (pkgs.stdenv) isLinux;
 
 in
