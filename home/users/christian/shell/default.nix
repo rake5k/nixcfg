@@ -5,11 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.users.christian.shell;
+
+  inherit (lib) mkEnableOption mkIf readFile;
 
 in
 
@@ -56,6 +56,17 @@ in
         texlive.combined.scheme-small
         trash-cli
         unzip
+
+        (writeShellApplication {
+          name = "sbb";
+          runtimeInputs = [
+            coreutils
+            curl
+            jq
+            miller
+          ];
+          text = readFile ./scripts/sbb.sh;
+        })
       ];
 
       sessionVariables = {
