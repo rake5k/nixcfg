@@ -77,6 +77,8 @@ in
         inherit lib;
         inherit (pkgs) stdenv;
       };
+
+      shell.enableZshIntegration = true;
     };
 
     programs = {
