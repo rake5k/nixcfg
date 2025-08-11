@@ -23,8 +23,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    home.packages = [ pkgs.gcr ];
     programs.gpg.enable = true;
 
-    services.gpg-agent.pinentry.package = pinentryPkg;
+    services.gpg-agent = {
+      enable = true;
+      pinentry.package = pinentryPkg;
+    };
   };
 }
