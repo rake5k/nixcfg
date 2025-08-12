@@ -113,7 +113,7 @@
     nixgl = {
       url = "github:nix-community/nixGL";
       inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
+        nixpkgs.follows = "nixpkgs";
         flake-utils.follows = "flake-utils";
       };
     };
