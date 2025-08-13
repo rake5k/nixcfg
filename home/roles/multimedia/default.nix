@@ -28,6 +28,7 @@ in
     };
 
     custom.roles.multimedia = {
+      books.enable = true;
       music.enable = true;
       video.enable = true;
     };
