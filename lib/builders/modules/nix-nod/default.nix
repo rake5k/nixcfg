@@ -22,7 +22,11 @@ in
       nix-config.flake = inputs.self;
     };
 
-    inherit (nixSubstituters) substituters;
-    trustedPublicKeys = nixSubstituters.trusted-public-keys;
+    substituters = nixSubstituters.substituters ++ [
+      "https://nix-on-droid.cachix.org"
+    ];
+    trustedPublicKeys = nixSubstituters.trusted-public-keys ++ [
+      "nix-on-droid.cachix.org-1:56snoMJTXmDRC1Ei24CmKoUqvHJ9XCp+nidK7qkMQrU="
+    ];
   };
 }
