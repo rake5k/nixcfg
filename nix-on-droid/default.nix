@@ -10,7 +10,7 @@ let
 
   cfg = config.custom.base;
 
-  inherit (lib) mkOption types;
+  inherit (lib) hiPrio mkOption types;
 
 in
 
@@ -38,7 +38,7 @@ in
       packages = with pkgs; [
         diffutils
         findutils
-        git
+        (hiPrio git)
         gnugrep
         hostname
         man
