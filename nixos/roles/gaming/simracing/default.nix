@@ -5,13 +5,18 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.gaming.simracing;
 
-  inherit (lib) getExe;
+  inherit (lib)
+    fromHexString
+    getExe
+    mkEnableOption
+    mkIf
+    toHexString
+    toLower
+    ;
   inherit (pkgs) callPackage writeShellApplication writeText;
 
   fanatecff = config.boot.kernelPackages.callPackage ../../../../pkgs/hid-fanatecff { };
@@ -95,10 +100,6 @@ in
       extraModulePackages = [ fanatecff ];
       kernelModules = [ "hid-fanatec" ];
     };
-
-    environment.systemPackages = [
-      vrsPedalsSetup
-    ];
 
     services.udev = {
       packages = [ fanatecff ];
