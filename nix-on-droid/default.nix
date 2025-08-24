@@ -57,7 +57,7 @@ in
     terminal.font =
       let
         fontPackage = pkgs.nerd-fonts.zed-mono;
-        fontPath = "/share/fonts/truetype/NerdFonts/ZedMonoNerdFont-Regular.ttf";
+        fontPath = "/share/fonts/truetype/NerdFonts/ZedMono/ZedMonoNerdFont-Regular.ttf";
       in
       fontPackage + fontPath;
 
