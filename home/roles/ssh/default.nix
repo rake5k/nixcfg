@@ -46,6 +46,8 @@ in
   config = mkIf cfg.enable {
     custom.roles.homeage.enable = true;
 
+    home.packages = with pkgs; [ openssh ];
+
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
 
     services.ssh-agent.enable = isLinux;

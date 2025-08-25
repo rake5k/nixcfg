@@ -56,6 +56,7 @@ in
         texlive.combined.scheme-small
         trash-cli
         unzip
+        util-linux
 
         (writeShellApplication {
           name = "sbb";
