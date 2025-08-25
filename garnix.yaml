@@ -1,4 +1,12 @@
 ---
 builds:
   exclude:
-    - "packages.*.*"
+    # nix-on-droid cannot be built in pure evaluation mode currently
+    - "checks.aarch64-linux.build"
+    - "packages.*"
+  include:
+    - "checks.*"
+    - "devShells.*"
+    - "darwinConfigurations.*"
+    - "homeConfigurations.*"
+    - "nixosConfigurations.*"

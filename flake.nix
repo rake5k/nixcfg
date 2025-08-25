@@ -133,9 +133,27 @@
     let
       nixcfgLib = import ./lib { inherit inputs; };
       inherit (inputs.flake-utils.lib.system) aarch64-darwin aarch64-linux x86_64-linux;
-      inherit (nixpkgs.lib) listToAttrs;
+      inherit (nixpkgs.lib)
+        licenses
+        listToAttrs
+        maintainers
+        platforms
+        recursiveUpdate
+        ;
+      inherit (nixcfgLib)
+        forEachSystem
+        mkApp
+        mkBuild
+        mkDevShell
+        mkForSystem
+        mkForEachSystem
+        mkHome
+        mkNixDarwin
+        mkNixOnDroid
+        mkNixos
+        pkgsFor
+        ;
     in
-    with nixcfgLib;
     {
       name = "nixcfg";
 
@@ -189,24 +207,32 @@
         })
       ];
 
-      checks = forEachSystem (
-        system:
-        let
-          commonsLib = inputs.flake-commons.lib {
-            pkgs = pkgsFor."${system}";
-            flake = self;
-          };
-        in
-        commonsLib.checks
-      );
+      checks =
+        recursiveUpdate
+          (forEachSystem (
+            system:
+            let
+              commonsLib = inputs.flake-commons.lib {
+                pkgs = pkgsFor."${system}";
+                flake = self;
+              };
+            in
+            commonsLib.checks
+          ))
+          (
+            mkForSystem aarch64-linux [
+              (mkBuild "build" self.packages.aarch64-linux.default)
+            ]
+          );
 
       devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
 
       # Necessary for nix-tree
       # Run it using `nix-tree . --impure --derivation`
       packages = {
-        x86_64-linux.default = self.nixosConfigurations.nixos.config.system.build.toplevel;
         aarch64-darwin.default = self.darwinConfigurations.macos.system;
+        aarch64-linux.default = self.nixOnDroidConfigurations.nix-on-droid.activationPackage;
+        x86_64-linux.default = self.nixosConfigurations.nixos.config.system.build.toplevel;
       };
     };
 }
