@@ -25,6 +25,14 @@ in
   };
 
   config = {
+    android-integration = {
+      am.enable = true;
+      termux-open.enable = true;
+      termux-open-url.enable = true;
+      termux-reload-settings.enable = true;
+      termux-setup-storage.enable = true;
+    };
+
     environment = {
       etcBackupExtension = ".nod-bak";
       motd = ''
