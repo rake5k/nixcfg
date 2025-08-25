@@ -16,6 +16,7 @@ let
 in
 
 {
+  inherit (args) meta;
   type = "app";
   program = "${script}/bin/${name}";
 }
