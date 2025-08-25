@@ -41,7 +41,7 @@ in
       '';
     };
 
-    nixGL = mkIf isLinux {
+    nixGL = mkIf (isLinux && !config.custom.roles.mobile.enable) {
       inherit (inputs.nixgl) packages;
       defaultWrapper = "mesa";
       installScripts = [ "mesa" ];

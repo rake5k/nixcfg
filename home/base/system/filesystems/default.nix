@@ -1,6 +1,18 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
-lib.mkIf pkgs.stdenv.isLinux {
+let
+
+  inherit (lib) mkIf;
+  inherit (pkgs.stdenv) isLinux;
+
+in
+
+mkIf (isLinux && !config.custom.roles.mobile.enable) {
   home.packages = with pkgs; [
     parted
     exfat
