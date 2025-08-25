@@ -33,5 +33,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable { custom.programs.logseq.enable = true; };
+  config = mkIf cfg.enable {
+    home.packages = [ pkgs.logseq ];
+  };
 }
