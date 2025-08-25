@@ -12,11 +12,11 @@
   ([homeage][homeage]) with [age][age]
 * Secure boot support using [Lanzaboote][lanzaboote]
 * Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixfmt][nixfmt]
-* Daily automatic flake input updates committed to master when CI passes
+* Weekly automatic flake input updates committed to master when CI passes
 
 ## Supported configurations
 
-* [NixOnDroid][nix-on-droid]-managed
+* [Nix-on-Droid][nix-on-droid]-managed
   * `nix-on-droid`
 * [NixOS][nixos]-managed
   * `nixos-vm`
@@ -175,6 +175,12 @@ nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 
 # set login shell
 chsh -s /bin/zsh
+```
+
+#### Nix-on-Droid setup
+
+```bash
+nix-on-droid switch --flake github:rake5k/nixcfg#<hostname>
 ```
 
 ## Secrets management
