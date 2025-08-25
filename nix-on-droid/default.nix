@@ -10,7 +10,7 @@ let
 
   cfg = config.custom.base;
 
-  inherit (lib) hiPrio mkOption types;
+  inherit (lib) mkOption types;
 
 in
 
@@ -42,21 +42,6 @@ in
         /_//_/_//_\_\    \___/_//_/    \_,_/_/  \___/_/\_,_/
 
       '';
-
-      packages = with pkgs; [
-        diffutils
-        findutils
-        (hiPrio git)
-        gnugrep
-        hostname
-        man
-        openssh
-        unixtools.nettools
-        unixtools.ping
-        unixtools.procps
-        unixtools.whereis
-        vim
-      ];
     };
 
     home-manager.config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
