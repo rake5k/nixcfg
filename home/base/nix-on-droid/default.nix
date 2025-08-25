@@ -3,7 +3,6 @@
 let
 
   cfg = config.custom.base.nix-on-droid;
-  flakeBaseDir = config.home.homeDirectory + "/.nix-config";
 
   inherit (lib)
     mkEnableOption
@@ -18,6 +17,12 @@ in
   options = {
     custom.base.nix-on-droid = {
       enable = mkEnableOption "Nix-on-Droid";
+
+      flake = mkOption {
+        type = types.str;
+        default = "github:rake5k/nixcfg";
+        description = "Flake URI of the Nix-on-Droid configuration to build.";
+      };
     };
   };
 
@@ -26,7 +31,7 @@ in
 
     home = {
       shellAliases = {
-        nod-switch = "nix-on-droid switch --flake '${flakeBaseDir}'";
+        nod-switch = "nix-on-droid switch --flake '${cfg.flake}'";
       };
     };
   };
