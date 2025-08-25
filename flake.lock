@@ -258,11 +258,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756056107,
-        "narHash": "sha256-DotXt5P6jdpTCWJaOWe004fVuPSZ93QH/p7ixuyqO0E=",
+        "lastModified": 1756128440,
+        "narHash": "sha256-LK5EqxCREw5KNIQfulE0mmQtYUSlvjAiVyuh0KtEc4M=",
         "owner": "rake5k",
         "repo": "homeage",
-        "rev": "b66e731f7cabecd9c724006344d59c6433293e09",
+        "rev": "4af282e00f637266e01eba90734576d5a88884f8",
         "type": "github"
       },
       "original": {
