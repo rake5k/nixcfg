@@ -24,6 +24,7 @@ let
     [
       inputs.homeage.homeManagerModules.homeage
       inputs.nix-index-database.homeModules.nix-index
+      inputs.stylix.homeModules.stylix
 
       { lib.custom = customLib; }
 
