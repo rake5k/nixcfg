@@ -47,12 +47,32 @@ in
     home-manager.config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
     nix.package = pkgs.nix;
 
-    terminal.font =
-      let
-        fontPackage = pkgs.nerd-fonts.zed-mono;
-        fontPath = "/share/fonts/truetype/NerdFonts/ZedMono/ZedMonoNerdFont-Regular.ttf";
-      in
-      fontPackage + fontPath;
+    stylix = {
+      enable = true;
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+      fonts = {
+        serif = {
+          package = pkgs.dejavu_fonts;
+          name = "DejaVu Serif";
+        };
+
+        sansSerif = {
+          package = pkgs.nerd-fonts.monofur;
+          name = "Monofur Nerd Font";
+        };
+
+        monospace = {
+          package = pkgs.nerd-fonts.zed-mono;
+          name = "ZedMono Nerd Font Mono";
+        };
+
+        emoji = {
+          package = pkgs.noto-fonts-color-emoji;
+          name = "Noto Color Emoji";
+        };
+      };
+      polarity = "dark";
+    };
 
     time.timeZone = "Europe/Zurich";
 
