@@ -27,9 +27,6 @@ in
         package = pkgs.paper-icon-theme;
         name = "Paper";
       };
-      theme = {
-        name = "Adwaita-dark";
-      };
       gtk2.extraConfig = ''
         gtk-toolbar-style=GTK_TOOLBAR_BOTH
         gtk-toolbar-icon-size=GTK_ICON_SIZE_LARGE_TOOLBAR
@@ -40,7 +37,8 @@ in
         gtk-xft-antialias=1
         gtk-xft-hinting=1
         gtk-xft-hintstyle=hintfull
-        gtk-xft-rgba=rgb'';
+        gtk-xft-rgba=rgb
+      '';
       gtk3.extraConfig = {
         gtk-application-prefer-dark-theme = 1;
         gtk-toolbar-style = "GTK_TOOLBAR_BOTH";

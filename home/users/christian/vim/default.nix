@@ -23,7 +23,6 @@ in
   config = mkIf cfg.enable {
     custom.users.christian.vim = {
       coc.enable = true;
-      theme.enable = true;
     };
 
     home = {
@@ -35,12 +34,16 @@ in
     programs.neovim = {
       enable = true;
 
-      extraConfig = ''
-        set clipboard=unnamedplus
-        set number relativenumber
-      '';
-
       extraLuaConfig = ''
+        vim.opt.clipboard = 'unnamedplus'
+        vim.opt.cursorline = true
+        vim.opt.relativenumber = true
+        vim.opt.number = true
+        vim.opt.foldmethod = 'marker'
+        vim.opt.splitright = true
+        vim.opt.splitbelow = true
+        vim.opt.linebreak = true
+
         --------------
         -- SURROUND --
         --------------

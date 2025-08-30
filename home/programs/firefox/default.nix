@@ -11,6 +11,8 @@ let
 
   cfg = config.custom.programs.firefox;
 
+  defaultProfile = "ztbvdcs8.default";
+
 in
 
 {
@@ -97,7 +99,7 @@ in
         };
       };
 
-      profiles."ztbvdcs8.default" = {
+      profiles."${defaultProfile}" = {
         extensions.packages = cfg.extensions;
 
         isDefault = true;
@@ -245,5 +247,7 @@ in
           };
       };
     };
+
+    stylix.targets.firefox.profileNames = [ defaultProfile ];
   };
 }
