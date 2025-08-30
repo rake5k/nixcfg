@@ -66,6 +66,7 @@ in
           name = "Noto Color Emoji";
         };
       };
+      polarity = "dark";
     };
   };
 }
