@@ -118,6 +118,15 @@
       };
     };
 
+    stylix = {
+      url = "github:nix-community/stylix/release-25.05";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs";
+        systems.follows = "systems";
+      };
+    };
+
     # Misc
 
     wallpapers = {
