@@ -26,6 +26,7 @@ in
       users.christian.shell = {
         direnv.enable = true;
         gnutils.enable = true;
+        yazi.enable = true;
         zsh.enable = true;
       };
     };
@@ -87,6 +88,7 @@ in
       eza.enable = true;
       fzf.enable = true;
       jq.enable = true;
+
       starship = {
         enable = true;
         settings = {
@@ -103,7 +105,6 @@ in
           };
         };
       };
-      yazi.enable = true;
     };
   };
 }
