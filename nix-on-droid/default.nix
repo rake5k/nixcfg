@@ -50,23 +50,6 @@ in
     stylix = {
       enable = true;
       base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
-      fonts = {
-        serif = {
-          package = pkgs.dejavu_fonts;
-          name = "DejaVu Serif";
-        };
-
-        sansSerif = {
-          package = pkgs.nerd-fonts.monofur;
-          name = "Monofur Nerd Font";
-        };
-
-        monospace = {
-          package = pkgs.nerd-fonts.zed-mono;
-          name = "ZedMono Nerd Font Mono";
-        };
-      };
-      polarity = "dark";
     };
 
     time.timeZone = "Europe/Zurich";
