@@ -27,6 +27,7 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
 
   modules = [
     inputs.stylix.nixOnDroidModules.stylix
+    inputs.stylix.homeModules.stylix
 
     ./modules/nix-nod
 
