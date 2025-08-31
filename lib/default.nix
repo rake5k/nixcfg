@@ -27,8 +27,6 @@ let
       inputs.stylix.homeModules.stylix
 
       { lib.custom = customLib; }
-
-      ./builders/modules/nix-home
     ]
     ++ customLib.getRecursiveDefaultNixFileList ../home
     ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
