@@ -16,22 +16,6 @@ let
     }
   );
 
-  homeModulesFor = forEachSystem (
-    system:
-    let
-      customLib = customLibFor.${system};
-    in
-    [
-      inputs.homeage.homeManagerModules.homeage
-      inputs.nix-index-database.homeModules.nix-index
-      inputs.stylix.homeModules.stylix
-
-      { lib.custom = customLib; }
-    ]
-    ++ customLib.getRecursiveDefaultNixFileList ../home
-    ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home"
-  );
-
   nameValuePairWrapper =
     name: fn: system:
     nameValuePair name (fn system);
@@ -48,7 +32,6 @@ let
           ;
         pkgs = pkgsFor."${system}";
         customLib = customLibFor."${system}";
-        homeModules = homeModulesFor."${system}";
       }
     );
 

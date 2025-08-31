@@ -2,7 +2,6 @@
   inputs,
   pkgs,
   customLib,
-  homeModules,
   name,
   ...
 }:
@@ -21,7 +20,7 @@ inputs.nix-on-droid.lib.nixOnDroidConfiguration {
   pkgs = nodPkgs;
 
   extraSpecialArgs = {
-    inherit homeModules inputs;
+    inherit inputs;
     pkgs = nodPkgs;
   };
 

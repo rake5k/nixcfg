@@ -3,7 +3,6 @@
   system,
   pkgs,
   customLib,
-  homeModules,
   name,
   ...
 }:
@@ -13,7 +12,7 @@ inputs.darwin.lib.darwinSystem {
   inherit system;
 
   specialArgs = {
-    inherit homeModules inputs;
+    inherit inputs;
   };
 
   modules = [

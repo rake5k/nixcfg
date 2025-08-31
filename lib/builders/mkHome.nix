@@ -1,8 +1,8 @@
 {
   inputs,
-  pkgs,
-  homeModules,
   name,
+  pkgs,
+  customLib,
   ...
 }:
 
@@ -25,8 +25,16 @@ inputs.home-manager.lib.homeManagerConfiguration {
   };
 
   modules = [
+    inputs.homeage.homeManagerModules.homeage
+    inputs.nix-index-database.homeModules.nix-index
+    inputs.stylix.homeModules.stylix
+
+    { lib.custom = customLib; }
+
     ./modules/nix-home
+
     "${inputs.self}/hosts/${hostname}/home-${username}.nix"
   ]
-  ++ homeModules;
+  ++ customLib.getRecursiveDefaultNixFileList ../../home
+  ++ customLib.getRecursiveDefaultNixFileList "${inputs.self}/home";
 }

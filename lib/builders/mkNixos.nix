@@ -2,7 +2,6 @@
   inputs,
   pkgs,
   customLib,
-  homeModules,
   name,
   ...
 }:
@@ -10,7 +9,7 @@
 inputs.nixpkgs.lib.nixosSystem {
 
   specialArgs = {
-    inherit homeModules inputs;
+    inherit inputs;
   };
 
   modules = [

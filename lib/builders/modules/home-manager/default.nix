@@ -1,4 +1,4 @@
-{ homeModules, inputs, ... }:
+{ inputs, ... }:
 
 {
   home-manager = {
@@ -8,6 +8,5 @@
     extraSpecialArgs = {
       inherit inputs;
     };
-    sharedModules = homeModules;
   };
 }
