@@ -4,8 +4,9 @@ let
 
   baseCfg = config.custom.base;
 
-  importHmUser = u: import (config.lib.custom.mkHostPath baseCfg.hostname "/home-${u}.nix");
-  hmUsers = lib.genAttrs baseCfg.users importHmUser;
+  hmUsers = lib.genAttrs baseCfg.users (u: {
+    imports = [ (config.lib.custom.mkHostPath baseCfg.hostname "/home-${u}.nix") ];
+  });
 
 in
 
