@@ -65,11 +65,6 @@ in
           package = pkgs.nerd-fonts.zed-mono;
           name = "ZedMono Nerd Font Mono";
         };
-
-        emoji = {
-          package = pkgs.noto-fonts-color-emoji;
-          name = "Noto Color Emoji";
-        };
       };
       polarity = "dark";
     };
