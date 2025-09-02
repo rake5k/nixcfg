@@ -5,8 +5,8 @@ builds:
     - "checks.aarch64-linux.build"
     - "packages.*"
   include:
-    - "checks.*"
-    - "devShells.*"
+    - "checks.*.*"
+    - "devShells.*.*"
     - "darwinConfigurations.*"
     - "homeConfigurations.*"
     - "nixosConfigurations.*"
