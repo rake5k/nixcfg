@@ -5,11 +5,18 @@
   ...
 }:
 
-with lib;
-
 let
 
-  cfg = config.custom.base.non-nixos.home-manager.autoUpgrade;
+  hmCfg = config.custom.base.non-nixos.home-manager;
+  cfg = hmCfg.autoUpgrade;
+
+  inherit (lib)
+    getExe
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
 in
 
@@ -35,7 +42,7 @@ in
 
       flake = mkOption {
         type = types.str;
-        default = "github:rake5k/nixcfg";
+        default = hmCfg.flake;
         description = "Flake URI of the Home-Manager configuration to build.";
       };
     };
