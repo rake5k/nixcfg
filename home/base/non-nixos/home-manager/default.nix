@@ -8,25 +8,37 @@
 let
 
   cfg = config.custom.base.non-nixos.home-manager;
-  flakeBaseDir = config.home.homeDirectory + "/.nix-config";
 
+  inherit (lib)
+    getExe
+    mkIf
+    mkEnableOption
+    mkOption
+    types
+    ;
 in
 
 {
   options = {
     custom.base.non-nixos.home-manager = {
-      enable = lib.mkEnableOption "Config for non NixOS systems";
+      enable = mkEnableOption "Config for non NixOS systems";
+
+      flake = mkOption {
+        type = types.str;
+        default = "github:rake5k/nixcfg";
+        description = "Flake URI of the Nix-on-Droid configuration to build.";
+      };
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
 
     home = {
       packages = with pkgs; [ home-manager ];
 
       shellAliases = {
-        hm-switch = "home-manager switch -b hm-bak --impure --flake '${flakeBaseDir}'";
-        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${lib.getExe pkgs.nix} store diff-closures";
+        hm-switch = "home-manager switch -b hm-bak --impure --flake '${cfg.flake}'";
+        hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nix} store diff-closures";
       };
     };
   };
