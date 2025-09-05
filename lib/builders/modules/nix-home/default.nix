@@ -9,6 +9,7 @@
 let
 
   nixCommons = import ../nix-commons { inherit lib inputs pkgs; };
+  nixSubstituters = import ../nix-commons/substituters.nix;
 
   nixAccessTokensSecret = "nix-access-tokens";
 
@@ -29,6 +30,7 @@ in
         "nix-command"
         "flakes"
       ];
-    };
+    }
+    // nixSubstituters;
   };
 }
