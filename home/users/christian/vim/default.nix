@@ -51,6 +51,18 @@ in
         require('nvim-surround').setup({
           move_cursor = 'sticky'
         })
+
+        ----------------
+        -- TREESITTER --
+        ----------------
+
+        require('nvim-treesitter.configs').setup({
+          highlight = {
+            enable = true,
+            additional_vim_regex_highlighting = true,
+          },
+          indent = { enable = true },
+        })
       '';
 
       plugins = with pkgs.vimPlugins; [
@@ -62,6 +74,7 @@ in
 
         # Misc
         nvim-surround
+        nvim-treesitter.withAllGrammars
       ];
 
       viAlias = true;

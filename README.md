@@ -27,7 +27,7 @@ See [flake.nix](flake.nix) for more information like `system`.
 
 ## Structure
 
-```noformat
+```text
 📂 .
 ├──🔒 flake.lock    -- flake lockfile
 ├── ❄ flake.nix     -- flake definition
@@ -128,7 +128,7 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 
 To install NixOS from the ISO of [nixos.org][nixos] on a fresh machine, run:
 
-```shell
+```bash
 sudo su # become root
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
@@ -151,7 +151,7 @@ After rebooting proceed with the [next section](#nixos-config-setup).
 
 #### NixOS config setup
 
-```shell
+```bash
 sudo nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 ```
 
@@ -159,7 +159,7 @@ sudo nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 
 #### Nix installation
 
-```shell
+```bash
 # install Nix
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
@@ -169,7 +169,7 @@ sh <(curl -L https://nixos.org/nix/install) --no-channel-add --no-modify-profile
 
 #### Nix config setup
 
-```shell
+```bash
 # Set up this Nix configuration
 nix run github:rake5k/nixcfg#setup -- https://github.com/rake5k/nixcfg.git
 
@@ -191,7 +191,7 @@ Add the host public key into the [.agenix.toml](.agenix.toml) file and assign it
 groups. Push the updated `.agenix.toml` back to the git repository, pull it to an existing host and
 re-key all the secrets with the command:
 
-```shell
+```bash
 # On NixOS:
 sudo agenix -i /etc/ssh/ssh_host_ed25519_key -i ~/.age/key.txt -r -vv
 
@@ -204,7 +204,7 @@ config for decrypting them.
 
 ### Updating secrets
 
-```shell
+```bash
 # First decrypt current secret
 age --decrypt -i ~/.age/key.txt -o tmpfile < ./secrets/<secretfile>.age
 
@@ -228,7 +228,7 @@ config.
 
 ## Rebuilding
 
-```shell
+```bash
 # On NixOS
 sudo nixos-rebuild switch
 
