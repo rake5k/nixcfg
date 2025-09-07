@@ -118,6 +118,11 @@
       };
     };
 
+    nvidia-patch = {
+      url = "github:icewind1991/nvidia-patch-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:nix-community/stylix/release-25.05";
       inputs = {
