@@ -37,6 +37,12 @@ in
             "/data/share"
             "/data/syncthing"
           ];
+          excludes = [
+            "/data/container/steam-headless/games"
+            "/data/container/steam-headless/home/*/.thumbnails/*"
+            "/data/container/steam-headless/home/*/.cache/*"
+            "/data/container/steam-headless/home/*/.local/share/Trash/*"
+          ];
           target = "backup@sv-syno-01.home.local:/volume1/NetBackup/${hostname}";
         };
       };
