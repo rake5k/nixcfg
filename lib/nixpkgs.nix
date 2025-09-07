@@ -28,5 +28,6 @@ import inputs.nixpkgs {
       })
 
       inputs.nur.overlays.default
+      inputs.nvidia-patch.overlays.default
     ];
 }
