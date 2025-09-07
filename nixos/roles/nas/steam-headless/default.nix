@@ -78,9 +78,7 @@ in
         NET_ADMIN = true;
         SYS_ADMIN = true;
         SYS_NICE = true;
-        CAP_SYS_TIME = true;
-        CAP_SYS_NICE = true;
-        CAP_SETFCAP = true;
+        SYS_TIME = true;
       };
 
       devices = [
