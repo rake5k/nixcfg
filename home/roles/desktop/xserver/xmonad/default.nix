@@ -157,16 +157,10 @@ in
       roles.desktop.xserver = {
         dmenu = {
           enable = true;
-          font = {
-            inherit (desktopCfg.font) package;
-          };
         };
 
         dunst = {
           enable = true;
-          font = {
-            inherit (desktopCfg.font) package family;
-          };
         };
 
         picom.enable = !cfg.lightweight;

@@ -17,27 +17,12 @@ in
   options = {
     custom.roles.desktop.xserver.dunst = {
       enable = mkEnableOption "Dunst desktop notification daemon";
-
-      font = {
-        package = mkOption {
-          type = types.package;
-          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
-          description = "Font derivation";
-        };
-
-        family = mkOption {
-          type = types.str;
-          default = "Monofur Nerd Font";
-          description = "Font family";
-        };
-      };
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       libnotify
-      cfg.font.package
     ];
 
     services.dunst = {
