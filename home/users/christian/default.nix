@@ -45,6 +45,11 @@ in
     stylix = {
       enable = true;
       base16Scheme = "${pkgs.base16-schemes}/share/themes/nord.yaml";
+      cursor = {
+        package = pkgs.volantes-cursors;
+        name = "volantes_cursors";
+        size = 22;
+      };
       fonts = {
         serif = {
           package = pkgs.dejavu_fonts;
