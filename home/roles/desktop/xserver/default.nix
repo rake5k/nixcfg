@@ -55,7 +55,6 @@ in
       roles = {
         desktop = {
           xserver = {
-            cursors.enable = true;
             locker.enable = true;
             redshift.enable = true;
             xbindkeys.enable = true;
