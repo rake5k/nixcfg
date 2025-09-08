@@ -30,21 +30,12 @@ in
   options = {
     custom.roles.desktop.xserver.dmenu = {
       enable = mkEnableOption "Dmenu launcher";
-
-      font = {
-        package = mkOption {
-          type = types.package;
-          default = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
-          description = "Font derivation";
-        };
-      };
     };
   };
 
   config = mkIf cfg.enable {
     home.packages = [
       dmenuPatched
-      cfg.font.package
     ];
   };
 }
