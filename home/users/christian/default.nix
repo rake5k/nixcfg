@@ -71,6 +71,9 @@ in
           name = "Noto Color Emoji";
         };
       };
+      opacity = {
+        terminal = 0.8;
+      };
       polarity = "dark";
     };
   };
