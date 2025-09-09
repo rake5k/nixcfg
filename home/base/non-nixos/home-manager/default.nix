@@ -37,7 +37,7 @@ in
       packages = with pkgs; [ home-manager ];
 
       shellAliases = {
-        hm-switch = "home-manager switch -b hm-bak --impure --flake '${cfg.flake}'";
+        hm-switch = "home-manager switch -b hm-bak --flake '${cfg.flake}'";
         hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nix} store diff-closures";
       };
     };
