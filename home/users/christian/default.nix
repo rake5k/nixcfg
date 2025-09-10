@@ -5,12 +5,12 @@
   ...
 }:
 
-with lib;
-
 let
 
   username = "christian";
   cfg = config.custom.users."${username}";
+
+  inherit (lib) mkDefault mkEnableOption mkIf;
 
 in
 
@@ -27,7 +27,17 @@ in
     };
 
     custom = {
-      roles.homeage.enable = true;
+      roles = {
+        desktop = {
+          autoruns = {
+            "${config.custom.roles.desktop.terminal.spawnCmd}" = 1;
+            "blueberry-tray" = 1;
+            "nm-applet" = 1;
+            "parcellite" = 1;
+          };
+        };
+        homeage.enable = true;
+      };
 
       users."${username}" = {
         git.enable = true;

@@ -2,15 +2,22 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }:
-
-with lib;
 
 let
 
   cfg = config.custom.roles.desktop;
 
+  inherit (lib)
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    optionals
+    types
+    ;
   inherit (pkgs.stdenv) isLinux;
 
 in
@@ -20,30 +27,25 @@ in
     custom.roles.desktop = {
       enable = mkEnableOption "Desktop";
 
-      font = {
-        package = mkOption {
-          type = types.package;
-          default = pkgs.nerd-fonts.monofur;
-          description = "Font derivation";
-        };
+      autoruns = mkOption {
+        type = with types; attrsOf int;
+        default = { };
+        description = ''
+          Applications to be launched in a workspace of choice.
+        '';
+        example = literalExpression ''
+          {
+            "firefox" = 1;
+            "slack" = 2;
+            "spotify" = 3;
+          }
+        '';
+      };
 
-        family = mkOption {
-          type = types.str;
-          default = "Monofur Nerd Font";
-          description = "Font family";
-        };
-
-        pango = mkOption {
-          type = types.str;
-          default = "Monofur Nerd Font Bold 10";
-          description = "Font config";
-        };
-
-        xft = mkOption {
-          type = types.str;
-          default = "Monofur Nerd Font:style=Bold:size=10:antialias=true";
-          description = "Font config";
-        };
+      wallpapersDir = mkOption {
+        type = types.path;
+        default = inputs.wallpapers;
+        description = "Path to the wallpaper images";
       };
     };
   };
@@ -56,7 +58,13 @@ in
           gtk.enable = isLinux;
           passwordManager.enable = isLinux;
           terminal.enable = true;
+          wayland = {
+            inherit (cfg) autoruns wallpapersDir;
+          };
           wiki.enable = true;
+          xserver = {
+            inherit (cfg) autoruns wallpapersDir;
+          };
         };
       };
     };
@@ -73,7 +81,7 @@ in
 
     services.gnome-keyring.enable = isLinux;
 
-    xdg.userDirs = lib.mkIf isLinux {
+    xdg.userDirs = mkIf isLinux {
       enable = true;
       createDirectories = true;
     };

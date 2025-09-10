@@ -11,31 +11,24 @@ let
   terminalCfg = desktopCfg.terminal;
   cfg = desktopCfg.wayland.river;
 
-  nixGLWrap = pkg: if config.custom.base.non-nixos.enable then config.lib.nixGL.wrap pkg else pkg;
-
-  package = nixGLWrap pkgs.river;
-  launcherPackage = nixGLWrap pkgs.fuzzel;
+  inherit (config.lib) nixGL;
+  package = nixGL.wrap pkgs.river;
+  launcherPackage = nixGL.wrap pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
-
-  # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
-  # On non-NixOS: install `swaylock` from the distribution's repository.
-  # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
-  lockCmd = "swaylock -f";
 
   PATH = "${config.home.homeDirectory}/.nix-profile/bin:/nix/var/nix/profiles/default/bin:${config.home.homeDirectory}/bin:$PATH";
 
   waybarModulesPath = config.xdg.configFile."waybar/modules".target;
 
-  inherit (lib) mkEnableOption mkIf getExe;
+  inherit (lib) getExe mkIf;
+  inherit (config.lib.custom) mkWindowManagerOptions;
 
 in
 
 {
   options = {
-    custom.roles.desktop.wayland.river = {
-      enable = mkEnableOption "River window manager";
-    };
+    custom.roles.desktop.wayland.river = mkWindowManagerOptions "River";
   };
 
   config = mkIf cfg.enable {
@@ -381,7 +374,7 @@ in
 
             # Destructive key strokes
             "Super+Shift C" = "close";
-            "Super+Shift Delete" = "spawn '${lockCmd}'";
+            "Super+Shift Delete" = "spawn '${cfg.lockerCfg.lockerCmd}'";
             "Super+Shift Q" = "exit";
             "Super Q" = "spawn ${config.xdg.configHome}/river/init";
 
@@ -447,6 +440,8 @@ in
       };
 
       extraConfig = ''
+        ${getExe pkgs.swaybg} -i $(find ${cfg.wallpapersDir} -type f | ${pkgs.coreutils}/bin/shuf -n1) -m fill &
+
         ${pkgs.river}/bin/riverctl default-layout rivertile
         ${pkgs.river}/bin/rivertile -view-padding 6 -outer-padding 6 &
 
