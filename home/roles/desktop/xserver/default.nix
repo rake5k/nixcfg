@@ -1,17 +1,33 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
-
-with lib;
 
 let
 
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.xserver;
+
+  inherit (lib)
+    getExe
+    literalExpression
+    mkEnableOption
+    mkIf
+    mkOption
+    optionalString
+    types
+    ;
+
+  wallpaperCmd = "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${cfg.wallpapersDir}";
+
+  screenshotCfg = {
+    package = pkgs.scrot;
+    screenshotCmdFull = "${./scripts/screenshot.sh} full";
+    screenshotCmdSelect = "${./scripts/screenshot.sh} select";
+    screenshotCmdWindow = "${./scripts/screenshot.sh} window";
+  };
 
 in
 
@@ -20,67 +36,57 @@ in
     custom.roles.desktop.xserver = {
       enable = mkEnableOption "X Server";
 
-      colorScheme = {
-        foreground = mkOption {
-          type = types.str;
-          default = "#BBBBBB";
-        };
+      autoruns = mkOption {
+        type = with types; attrsOf int;
+        default = { };
+        description = ''
+          Applications to be launched in a workspace of choice.
+        '';
+        example = literalExpression ''
+          {
+            "firefox" = 1;
+            "slack" = 2;
+            "spotify" = 3;
+          }
+        '';
+      };
 
-        background = mkOption {
-          type = types.str;
-          default = "#000000";
-        };
-
-        base = mkOption {
-          type = types.str;
-          default = "#6586c8";
-        };
-
-        accent = mkOption {
-          type = types.str;
-          default = "#FF7F00";
-        };
-
-        warn = mkOption {
-          type = types.str;
-          default = "#FF5555";
-        };
+      wallpapersDir = mkOption {
+        type = types.path;
+        description = "Path to the wallpaper images";
       };
     };
   };
 
   config = mkIf cfg.enable {
 
-    custom = {
-      roles = {
-        desktop = {
-          xserver = {
-            locker.enable = true;
-            redshift.enable = true;
-            xbindkeys.enable = true;
+    custom.roles.desktop.xserver = {
+      grobi = {
+        enable = true;
+        inherit wallpaperCmd;
+      };
+      launcher.enable = true;
+      locker = {
+        enable = true;
+        inherit (cfg) wallpapersDir;
+      };
+      redshift.enable = true;
+      xbindkeys.enable = true;
 
-            xmonad = {
-              inherit (cfg) colorScheme;
+      xmonad = {
+        inherit screenshotCfg wallpaperCmd;
+        inherit (cfg) autoruns;
 
-              enable = true;
-              autoruns = {
-                "${desktopCfg.terminal.spawnCmd}" = 1;
-                "blueberry-tray" = 1;
-                "nm-applet" = 1;
-                "parcellite" = 1;
-                "steam -silent" = 8;
-              };
-              launcherCmd = "dmenu_run -c -i -fn \"${desktopCfg.font.family}:style=Bold:size=20:antialias=true\" -l 8 -nf \"#C5C8C6\" -sb \"#373B41\" -sf \"#C5C8C6\" -p \"run:\"";
-              passwordManager = {
-                command = mkDefault "1password";
-                wmClassName = mkDefault "1Password";
-              };
-              wiki = {
-                command = mkDefault "logseq";
-                wmClassName = mkDefault "Logseq";
-              };
-            };
-          };
+        enable = true;
+        launcherCfg = { inherit (cfg.launcher) package launcherCmd; };
+        lockerCfg = { inherit (cfg.locker) package lockerCmd; };
+        terminalCfg = {
+          inherit (desktopCfg.terminal)
+            package
+            spawnCmd
+            commandArgPrefix
+            titleArgPrefix
+            ;
         };
       };
     };
@@ -104,10 +110,8 @@ in
     xsession = {
       enable = true;
       initExtra = ''
-        ${getBin pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
-        ${optionalString (
-          !cfg.grobi.enable
-        ) "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"}
+        ${pkgs.dbus}/bin/dbus-update-activation-environment --systemd --all
+        ${optionalString (!cfg.grobi.enable) cfg.wallpaperCmd}
       '';
       numlock.enable = true;
     };

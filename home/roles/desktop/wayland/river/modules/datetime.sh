@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-echo " $(date '+%H:%M')"
+datetime=$(date '+%H:%M')
+echo " ${datetime}"
