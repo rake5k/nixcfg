@@ -1,14 +1,27 @@
 {
   lib,
   pkgs,
-  cfg,
+  autoruns,
+  colorScheme,
+  launcherCmd,
+  lockerCmd,
+  modKey,
+  passwordManager,
+  screenshotCfg,
   terminalCfg,
-  ...
+  volumeCtl,
+  wiki,
 }:
 
-with lib;
-
 let
+
+  inherit (lib)
+    concatStringsSep
+    getExe
+    optionalString
+    mapAttrsToList
+    replaceStrings
+    ;
 
   escapeHaskellString = arg: replaceStrings [ "\"" ] [ "\\\"" ] (toString arg);
   mkAutorun = n: v: "spawnOnOnce \"${toString v}\" \"${n}\"";
@@ -40,10 +53,7 @@ pkgs.writeText "xmonad.hs" ''
   import qualified XMonad.StackSet as W
 
   myModMask :: KeyMask
-  myModMask = ${cfg.modKey}Mask
-
-  myTerminal :: String
-  myTerminal = "${terminalCfg.spawnCmd}"
+  myModMask = ${modKey}Mask
 
   myScratchpads :: [NamedScratchpad]
   myScratchpads =
@@ -57,7 +67,7 @@ pkgs.writeText "xmonad.hs" ''
     where
       center :: Rational -> Rational
       center ratio  = (1 - ratio)/2
-      spawnTerm     = myTerminal ++ " ${terminalCfg.titleArgPrefix}scratchpad"
+      spawnTerm     = "${terminalCfg.spawnCmd} ${terminalCfg.titleArgPrefix}scratchpad"
       findTerm      = title =? "scratchpad"
       manageTerm    = customFloating $ W.RationalRect x y w h
         where
@@ -65,7 +75,7 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnCal    = myTerminal ++ " ${terminalCfg.titleArgPrefix}calendar ${terminalCfg.commandArgPrefix}khal interactive"
+      spawnCal    = "${terminalCfg.spawnCmd} ${terminalCfg.titleArgPrefix}calendar ${terminalCfg.commandArgPrefix}khal interactive"
       findCal     = title =? "calendar"
       manageCal   = customFloating $ W.RationalRect x y w h
         where
@@ -73,7 +83,7 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnHtop     = myTerminal ++ " ${terminalCfg.titleArgPrefix}htop ${terminalCfg.commandArgPrefix}htop"
+      spawnHtop     = "${terminalCfg.spawnCmd} ${terminalCfg.titleArgPrefix}htop ${terminalCfg.commandArgPrefix}htop"
       findHtop      = title =? "htop"
       manageHtop    = customFloating $ W.RationalRect x y w h
         where
@@ -81,24 +91,24 @@ pkgs.writeText "xmonad.hs" ''
           h = (3/4)
           x = center w
           y = center h
-      spawnPavuCtl  = "pavucontrol"
-      findPavuCtl   = className =? "pavucontrol"
+      spawnPavuCtl  = "${volumeCtl.spawnCmd}"
+      findPavuCtl   = className =? "${volumeCtl.wmClassName}"
       managePavuCtl = customFloating $ W.RationalRect x y w h
         where
           w = (2/3)
           h = (3/4)
           x = center w
           y = center h
-      spawnPwManager  = "${cfg.passwordManager.command}"
-      findPwManager   = className =? "${cfg.passwordManager.wmClassName}"
+      spawnPwManager  = "${passwordManager.spawnCmd}"
+      findPwManager   = className =? "${passwordManager.wmClassName}"
       managePwManager = customFloating $ W.RationalRect x y w h
         where
           w = (2/3)
           h = (3/4)
           x = center w
           y = center h
-      spawnWiki  = "${cfg.wiki.command}"
-      findWiki   = className =? "${cfg.wiki.wmClassName}"
+      spawnWiki  = "${wiki.spawnCmd}"
+      findWiki   = className =? "${wiki.wmClassName}"
       manageWiki = customFloating $ W.RationalRect x y w h
         where
           w = (4/5)
@@ -161,8 +171,8 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      ${optionalString (cfg.autoruns != { }) ''
-        ${concatStringsSep "\n    " (mapAttrsToList mkAutorun cfg.autoruns)}
+      ${optionalString (autoruns != { }) ''
+        ${concatStringsSep "\n    " (mapAttrsToList mkAutorun autoruns)}
       ''}
 
   myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
@@ -185,13 +195,13 @@ pkgs.writeText "xmonad.hs" ''
 
   myKeys :: [(String, X ())]
   myKeys =
-    [ ("M-S-<Delete>",  spawn "${escapeHaskellString cfg.locker.lockCmd}")
-    , ("M-s",           unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}")
-    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdSelect}")
-    , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdFull}")
-    , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdWindow}")
-    , ("C-S-<Print>",   unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString cfg.screenshot.runCmdSelect}")
-    , ("M-p",           spawn "${escapeHaskellString cfg.launcherCmd}")
+    [ ("M-S-<Delete>",  spawn "${escapeHaskellString lockerCmd}")
+    , ("M-s",           unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdFull}")
+    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdSelect}")
+    , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdFull}")
+    , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdWindow}")
+    , ("C-S-<Print>",   unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdSelect}")
+    , ("M-p",           spawn "${escapeHaskellString launcherCmd}")
     , ("M-f",           toggleFull)
 
     -- Cycling workspaces
@@ -216,13 +226,13 @@ pkgs.writeText "xmonad.hs" ''
 
   myConfig = def
       { modMask             = myModMask     -- Rebind Mod key
-      , terminal            = myTerminal
+      , terminal            = ${terminalCfg.spawnCmd}
       , borderWidth         = 2
-      , normalBorderColor   = "${cfg.colorScheme.foreground}"
-      , focusedBorderColor  = "${cfg.colorScheme.base}"
+      , normalBorderColor   = "${colorScheme.foreground}"
+      , focusedBorderColor  = "${colorScheme.base}"
       , layoutHook          = myLayout      -- Use custom layouts
       , manageHook          = myManageHook  -- Match on certain windows
-      ${optionalString (cfg.autoruns != { }) ", startupHook         = myStartupHook"}
+      ${optionalString (autoruns != { }) ", startupHook         = myStartupHook"}
       }
     `additionalKeysP` myKeys
 
