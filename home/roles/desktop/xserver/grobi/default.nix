@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -11,7 +10,6 @@ let
   cfg = config.custom.roles.desktop.xserver.grobi;
 
   inherit (lib)
-    getExe
     mkEnableOption
     mkIf
     mkOption
@@ -47,6 +45,11 @@ in
         default = [ ];
         description = "Grobi rules";
       };
+
+      wallpaperCmd = mkOption {
+        type = types.str;
+        description = "Command to set the wallpaper";
+      };
     };
   };
 
@@ -62,7 +65,7 @@ in
       enable = true;
       rules = cfg.rules ++ mkEachSingleOutput cfg.availableOutputs;
       executeAfter = [
-        "${getExe pkgs.feh} --no-fehbg --bg-fill --randomize ${inputs.wallpapers}"
+        cfg.wallpaperCmd
         "${pkgs.polybar}/bin/polybar-msg cmd restart"
       ];
     };

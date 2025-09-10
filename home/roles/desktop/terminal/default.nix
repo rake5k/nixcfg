@@ -5,14 +5,18 @@
   ...
 }:
 
-with lib;
-
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.terminal;
+  cfg = config.custom.roles.desktop.terminal;
 
   kitty = config.lib.nixGL.wrap pkgs.kitty;
+
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
 in
 
