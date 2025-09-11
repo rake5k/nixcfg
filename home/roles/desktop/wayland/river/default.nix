@@ -307,9 +307,10 @@ in
 
       enable = true;
 
-      #extraSessionVariables = {
-      #  inherit PATH;
-      #};
+      extraSessionVariables = {
+        inherit PATH;
+        XDG_CURRENT_DESKTOP = "river";
+      };
 
       /*
         # Super+Alt+Control+{H,J,K,L} to snap views to screen edges
@@ -504,6 +505,10 @@ in
         ${pkgs.river}/bin/riverctl map normal Super 0 set-focused-tags $all_tags
         ${pkgs.river}/bin/riverctl map normal Super+Shift 0 set-view-tags $all_tags
 
+        systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+        dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
+        systemctl --user restart xdg-desktop-portal
+
         killall .waybar-wrapped
         ${getExe pkgs.waybar} &
       '';
@@ -513,6 +518,27 @@ in
       "waybar/modules" = {
         recursive = true;
         source = ./modules;
+      };
+    };
+
+    xdg = {
+      portal = {
+        enable = true;
+
+        config = {
+          river = {
+            default = [ "gtk" ];
+            "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+            "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+          };
+        };
+        extraPortals =
+          with pkgs;
+          map nixGL.wrap [
+            xdg-desktop-portal
+            xdg-desktop-portal-wlr
+            xdg-desktop-portal-gtk
+          ];
       };
     };
   };
