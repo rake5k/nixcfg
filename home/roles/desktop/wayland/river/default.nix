@@ -181,9 +181,10 @@ in
 
       enable = true;
 
-      #extraSessionVariables = {
-      #  inherit PATH;
-      #};
+      extraSessionVariables = {
+        inherit PATH;
+        XDG_CURRENT_DESKTOP = "river";
+      };
 
       /*
         # Super+Alt+Control+{H,J,K,L} to snap views to screen edges
@@ -385,6 +386,24 @@ in
       "waybar/modules" = {
         recursive = true;
         source = ./modules;
+      };
+    };
+
+    xdg = {
+      portal = {
+        enable = true;
+
+        config = {
+          river = {
+            default = [ "gtk" ];
+            "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+            "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+          };
+        };
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-wlr
+          xdg-desktop-portal-gtk
+        ];
       };
     };
   };
