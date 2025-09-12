@@ -97,6 +97,7 @@ in
       mupdf
       parcellite
       xclip
+      xorg.xrandr
       xzoom
     ];
 

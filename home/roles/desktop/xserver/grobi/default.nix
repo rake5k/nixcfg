@@ -56,7 +56,6 @@ in
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       grobi
-      xorg.xrandr
     ];
 
     programs.feh.enable = true;
