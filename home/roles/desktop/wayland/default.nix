@@ -47,21 +47,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.roles.desktop.wayland.river = {
-      enable = true;
-      inherit (cfg) autoruns wallpapersDir;
-      lockerCfg = {
-        package = pkgs.swaylock;
+    custom.roles.desktop.wayland = {
+      kanshi.enable = true;
+      river = {
+        enable = true;
+        inherit (cfg) autoruns wallpapersDir;
 
-        # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
-        # On non-NixOS: install `swaylock` from the distribution's repository.
-        # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
-        lockerCmd = "swaylock -f";
+        lockerCfg = {
+          package = pkgs.swaylock;
+
+          # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
+          # On non-NixOS: install `swaylock` from the distribution's repository.
+          # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
+          lockerCmd = "swaylock -f";
+        };
       };
     };
 
     home.packages = with pkgs; [
       wl-clipboard
+      wlr-randr
     ];
 
     xsession.enable = true;
