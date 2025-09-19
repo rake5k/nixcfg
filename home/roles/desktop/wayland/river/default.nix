@@ -435,9 +435,7 @@ in
 
         set-cursor-warp = "on-output-change";
 
-        spawn = [
-          terminalCmd
-        ];
+        spawn = map (x: x.command) cfg.autoruns;
       };
 
       extraConfig = ''

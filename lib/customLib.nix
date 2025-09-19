@@ -17,6 +17,16 @@ inputs.flake-commons.lib {
       mkOption
       types
       ;
+
+    autorunType = types.submodule {
+      options = {
+        command = mkOption { type = types.str; };
+        workspace = mkOption {
+          type = types.int;
+          default = 1;
+        };
+      };
+    };
   in
   rec {
     ntfyTokenSecret = "ntfy-token";
@@ -37,6 +47,7 @@ inputs.flake-commons.lib {
           "$(${pkgs.coreutils}/bin/cat ${secretsCfg.${ntfyUrlSecret}.path})"
       '';
 
+    inherit autorunType;
     mkWindowManagerOptions = name: {
       enable = mkEnableOption "${name} window manager";
 
@@ -52,17 +63,17 @@ inputs.flake-commons.lib {
       };
 
       autoruns = mkOption {
-        type = with types; attrsOf int;
-        default = { };
+        type = types.listOf autorunType;
+        default = [ ];
         description = ''
           Applications to be launched in a workspace of choice.
         '';
         example = literalExpression ''
-          {
-            "firefox" = 1;
-            "slack" = 2;
-            "spotify" = 3;
-          }
+          [
+            { command = "firefox"; workspace = 1; }
+            { command = "slack"; workspace = 2; }
+            { command = "spotify"; workspace= 3; }
+          ]
         '';
       };
 

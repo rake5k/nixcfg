@@ -1,15 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
 
   cfg = config.custom.roles.multimedia;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -21,12 +16,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = with pkgs; [
-        blueberry
-      ];
-    };
-
     custom.roles.multimedia = {
       books.enable = true;
       music.enable = true;
