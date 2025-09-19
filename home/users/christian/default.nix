@@ -10,7 +10,12 @@ let
   username = "christian";
   cfg = config.custom.users."${username}";
 
-  inherit (lib) mkDefault mkEnableOption mkIf;
+  inherit (lib)
+    getExe
+    mkDefault
+    mkEnableOption
+    mkIf
+    ;
 
 in
 
@@ -29,12 +34,16 @@ in
     custom = {
       roles = {
         desktop = {
-          autoruns = {
-            "${config.custom.roles.desktop.terminal.spawnCmd}" = 1;
-            "blueberry-tray" = 1;
-            "nm-applet" = 1;
-            "parcellite" = 1;
-          };
+          autoruns = [
+            {
+              command = "${config.custom.roles.desktop.terminal.spawnCmd}";
+              workspace = 1;
+            }
+            {
+              command = "${getExe pkgs.networkmanagerapplet}";
+              workspace = 1;
+            }
+          ];
         };
         homeage.enable = true;
       };

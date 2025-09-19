@@ -37,17 +37,26 @@ in
       enable = mkEnableOption "X Server";
 
       autoruns = mkOption {
-        type = with types; attrsOf int;
-        default = { };
+        type = types.listOf config.lib.custom.autorunType;
+        default = [
+          {
+            command = "${pkgs.blueberry}/bin/blueberry-tray";
+            workspace = 1;
+          }
+          {
+            command = "${getExe pkgs.parcellite}";
+            workspace = 1;
+          }
+        ];
         description = ''
           Applications to be launched in a workspace of choice.
         '';
         example = literalExpression ''
-          {
-            "firefox" = 1;
-            "slack" = 2;
-            "spotify" = 3;
-          }
+          [
+            { command = "firefox"; workspace = 1; }
+            { command = "slack"; workspace = 2; }
+            { command = "spotify"; workspace= 3; }
+          ]
         '';
       };
 
@@ -95,7 +104,6 @@ in
       peek
       gifski
       mupdf
-      parcellite
       xclip
       xorg.xrandr
       xzoom

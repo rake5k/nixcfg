@@ -12,6 +12,7 @@ let
   kitty = config.lib.nixGL.wrap pkgs.kitty;
 
   inherit (lib)
+    getExe
     mkEnableOption
     mkIf
     mkOption
@@ -33,7 +34,7 @@ in
 
       spawnCmd = mkOption {
         type = types.str;
-        default = "kitty";
+        default = "${getExe cfg.package}";
         description = "Command to spawn the default terminal emulator";
       };
 
