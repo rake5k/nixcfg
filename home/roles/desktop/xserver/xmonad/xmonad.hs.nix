@@ -18,13 +18,13 @@ let
   inherit (lib)
     concatStringsSep
     getExe
+    map
     optionalString
-    mapAttrsToList
     replaceStrings
     ;
 
   escapeHaskellString = arg: replaceStrings [ "\"" ] [ "\\\"" ] (toString arg);
-  mkAutorun = n: v: "spawnOnOnce \"${toString v}\" \"${n}\"";
+  mkAutorun = { command, workspace }: "spawnOnOnce \"${toString workspace}\" \"${command}\"";
 
 in
 
@@ -171,8 +171,8 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      ${optionalString (autoruns != { }) ''
-        ${concatStringsSep "\n    " (mapAttrsToList mkAutorun autoruns)}
+      ${optionalString (autoruns != [ ]) ''
+        ${concatStringsSep "\n    " (map mkAutorun autoruns)}
       ''}
 
   myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
