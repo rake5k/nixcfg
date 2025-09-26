@@ -176,7 +176,6 @@
       darwinConfigurations = listToAttrs [ (mkNixDarwin aarch64-darwin "macos") ];
 
       homeConfigurations = listToAttrs [
-        (mkHome x86_64-linux "christian@non-nixos")
         (mkHome x86_64-linux "demo@non-nixos")
       ];
 
@@ -246,7 +245,11 @@
       packages = {
         aarch64-darwin.default = self.darwinConfigurations.macos.system;
         aarch64-linux.default = self.nixOnDroidConfigurations.nix-on-droid.activationPackage;
-        x86_64-linux.default = self.nixosConfigurations.nixos.config.system.build.toplevel;
+        x86_64-linux = {
+          default = self.packages.x86_64-linux.nixos;
+          nixos = self.nixosConfigurations.nixos.config.system.build.toplevel;
+          non-nixos-demo = self.homeConfigurations."demo@non-nixos".activationPackage;
+        };
       };
     };
 }

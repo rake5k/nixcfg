@@ -1,12 +1,8 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 let
 
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) hasAttr mkEnableOption mkIf;
 
   cfg = config.custom.base.system.luks;
 
@@ -24,7 +20,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    boot.initrd = mkIf cfg.remoteUnlock {
+    boot.initrd = mkIf (cfg.remoteUnlock && (hasAttr "christian" config.users.users)) {
       availableKernelModules = [ "r8169" ];
       network = {
         enable = true;
