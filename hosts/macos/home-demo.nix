@@ -3,7 +3,6 @@
 {
   custom = {
     base.non-nixos.enable = true;
-    users.christian.enable = true;
 
     roles = {
       containers.enable = true;
@@ -15,10 +14,12 @@
       ops.enable = true;
       web.enable = true;
     };
+
+    users.demo.enable = true;
   };
 
   home = {
-    homeDirectory = lib.mkForce "/Users/chrstian";
+    homeDirectory = lib.mkForce "/Users/demo";
     stateVersion = import ./state-version.nix;
   };
 }

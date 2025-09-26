@@ -4,10 +4,7 @@
   custom = {
     base = {
       system.network.wol.interface = "enp4s0";
-      users = [
-        "demo"
-        "christian"
-      ];
+      users = [ "demo" ];
     };
 
     roles = {

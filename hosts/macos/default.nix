@@ -1,5 +1,5 @@
 {
-  custom.base.users = [ "christian" ];
+  custom.base.users = [ "demo" ];
 
   # if you use zsh (the default on new macOS installations),
   # you'll need to enable this so nix-darwin creates a zshrc sourcing needed environment changes

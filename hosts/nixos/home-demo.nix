@@ -1,7 +1,7 @@
 {
   custom = {
-    users.demo.enable = true;
     roles.desktop.enable = true;
+    users.demo.enable = true;
   };
 
   home.stateVersion = import ./state-version.nix;

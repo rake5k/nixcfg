@@ -3,32 +3,18 @@
   config,
   pkgs,
   ...
-}@args:
+}:
 
 let
 
   cfg = config.custom.base;
 
-  availableUsers = [
-    "christian"
-    "demo"
-    "gamer"
-  ];
-  importUserModule =
-    u:
-    let
-      isEnabled = builtins.any (x: x == u) cfg.users;
-      userConfig = ./users + "/${u}.nix";
-    in
-    lib.mkIf isEnabled (import userConfig args);
-  importUserModules = map importUserModule availableUsers;
+  inherit (lib) mkOption types;
 
 in
 
 {
-  imports = importUserModules;
-
-  options = with lib; {
+  options = {
     custom.base = {
       hostname = mkOption {
         type = types.str;
@@ -36,7 +22,7 @@ in
       };
 
       users = mkOption {
-        type = types.listOf (types.enum availableUsers);
+        type = with types; listOf str;
         default = [ ];
         description = "List of user names.";
       };

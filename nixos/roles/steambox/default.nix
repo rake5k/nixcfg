@@ -5,11 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.steambox;
+
+  inherit (lib) mkEnableOption mkIf;
 
   inherit (config.custom.base) hostname;
   backupId = "id_ed25519_backup";
@@ -18,6 +18,8 @@ let
     name = "steam";
     package = pkgs.steam;
   };
+
+  username = "gamer";
 
 in
 
@@ -81,6 +83,12 @@ in
         enable = true;
         desktopManager.plasma5.enable = true;
       };
+    };
+
+    users.users."${username}" = {
+      name = username;
+      isNormalUser = true;
+      password = "";
     };
   };
 }
