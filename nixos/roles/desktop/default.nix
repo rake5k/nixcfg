@@ -1,10 +1,15 @@
-{ config, lib, ... }:
-
-with lib;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
   cfg = config.custom.roles.desktop;
+
+  inherit (lib) mkEnableOption mkIf;
 
   inherit (config.custom.base) hostname;
   backupId = "id_ed25519_backup";
@@ -55,6 +60,10 @@ in
       xserver = {
         enable = true;
         desktopManager.xterm.enable = true;
+        displayManager.lightdm = {
+          greeter.package = pkgs.unstable.lightdm-slick-greeter.xgreeters;
+          greeters.slick.enable = true;
+        };
         serverFlagsSection = ''
           Option "BlankTime" "0"
           Option "StandbyTime" "0"
