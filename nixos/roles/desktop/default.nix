@@ -59,7 +59,7 @@ in
 
       xserver = {
         enable = true;
-        desktopManager.xterm.enable = true;
+        desktopManager.cinnamon.enable = true;
         displayManager.lightdm = {
           greeter.package = pkgs.unstable.lightdm-slick-greeter.xgreeters;
           greeters.slick.enable = true;
