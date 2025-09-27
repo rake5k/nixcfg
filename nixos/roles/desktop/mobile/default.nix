@@ -29,7 +29,6 @@ in
       };
 
       thermald.enable = true;
-      tlp.enable = true;
       upower.enable = true;
 
       # Touchpad settings
