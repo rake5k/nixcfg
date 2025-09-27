@@ -25,7 +25,6 @@ in
       programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
-        gnutils.enable = true;
         yazi.enable = true;
         zsh.enable = true;
       };

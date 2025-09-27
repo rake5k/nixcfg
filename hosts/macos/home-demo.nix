@@ -1,6 +1,8 @@
-{ lib, ... }:
+{ inputs, lib, ... }:
 
 {
+  imports = [ "${inputs.self}/users/demo" ];
+
   custom = {
     base.non-nixos.enable = true;
 
@@ -14,8 +16,6 @@
       ops.enable = true;
       web.enable = true;
     };
-
-    users.demo.enable = true;
   };
 
   home = {

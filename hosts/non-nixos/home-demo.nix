@@ -1,4 +1,8 @@
+{ inputs, ... }:
+
 {
+  imports = [ "${inputs.self}/users/demo" ];
+
   custom = {
     base.non-nixos = {
       enable = true;
@@ -9,8 +13,6 @@
       desktop.enable = true;
       web.enable = true;
     };
-
-    users.demo.enable = true;
   };
 
   home.stateVersion = import ./state-version.nix;
