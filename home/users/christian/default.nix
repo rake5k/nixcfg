@@ -5,12 +5,14 @@
   ...
 }:
 
-with lib;
-
 let
 
   username = "christian";
   cfg = config.custom.users."${username}";
+
+  inherit (lib) mkDefault mkEnableOption mkIf;
+
+  nixAccessTokensSecret = "nix-access-tokens";
 
 in
 
@@ -27,7 +29,10 @@ in
     };
 
     custom = {
-      roles.homeage.enable = true;
+      roles.homeage = {
+        enable = true;
+        secrets = [ nixAccessTokensSecret ];
+      };
 
       users."${username}" = {
         git.enable = true;
@@ -40,6 +45,12 @@ in
         vim.enable = true;
         zed.enable = true;
       };
+    };
+
+    nix = {
+      extraOptions = ''
+        !include ${config.custom.roles.homeage.secretsPath}/${nixAccessTokensSecret}
+      '';
     };
 
     stylix = {
