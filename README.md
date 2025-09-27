@@ -134,6 +134,7 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" > ~/.config/nix/nix.conf
 
 export FLAKE=github:rake5k/nixcfg
+export NIX_CONFIG="extra-access-tokens = github.com=github_pat_**********************************************************************************"
 nix run $FLAKE#disko-install -- <hostname> $FLAKE
 ```
 
