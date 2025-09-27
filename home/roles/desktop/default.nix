@@ -5,12 +5,17 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.desktop;
 
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    optionals
+    types
+    ;
   inherit (pkgs.stdenv) isLinux;
 
 in
@@ -50,26 +55,7 @@ in
 
   config = mkIf cfg.enable {
 
-    custom = {
-      roles = {
-        desktop = {
-          gtk.enable = isLinux;
-          passwordManager.enable = isLinux;
-          terminal.enable = true;
-          wiki.enable = true;
-        };
-      };
-    };
-
-    home.packages =
-      with pkgs;
-      optionals isLinux [
-        gnome-characters
-        gnome-pomodoro
-        nautilus
-        quickemu
-        seahorse
-      ];
+    home.packages = with pkgs; optionals isLinux [ seahorse ];
 
     services.gnome-keyring.enable = isLinux;
 

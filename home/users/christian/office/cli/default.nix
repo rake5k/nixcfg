@@ -36,6 +36,26 @@ in
       ];
 
       office.cli = {
+        khal.extraConfig = ''
+          [calendars]
+
+          [[private]]
+          path = ${calendarsPath}/nextcloud/personal
+          color = dark red
+
+          [[family]]
+          path = ${calendarsPath}/nextcloud/family
+          color = light blue
+
+          [[birthdays]]
+          path = ${calendarsPath}/nextcloud/contact_birthdays
+          color = light magenta
+
+          [default]
+          highlight_event_days = True
+          default_calendar = private
+        '';
+
         vdirsyncer.extraConfig = ''
           # CALDAV HOME
 

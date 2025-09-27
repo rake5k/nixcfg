@@ -5,17 +5,17 @@
   ...
 }:
 
-with lib;
-
 let
 
-  cfg = config.custom.users.christian.shell.gnutils;
+  cfg = config.custom.shell.gnutils;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
 {
   options = {
-    custom.users.christian.shell.gnutils = {
+    custom.shell.gnutils = {
       enable = mkEnableOption "GNU utils and replacements";
     };
   };
