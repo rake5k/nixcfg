@@ -7,7 +7,7 @@
 
 let
 
-  cfg = config.custom.shell.gnutils;
+  cfg = config.custom.roles.shell.gnutils;
 
   inherit (lib) mkEnableOption mkIf;
 
@@ -15,7 +15,7 @@ in
 
 {
   options = {
-    custom.shell.gnutils = {
+    custom.roles.shell.gnutils = {
       enable = mkEnableOption "GNU utils and replacements";
     };
   };
