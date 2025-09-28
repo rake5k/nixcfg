@@ -17,6 +17,7 @@ let
   recycleFolderRetentionDays = 60;
   defaultValidUsers = [
     "christian"
+    "johan"
     "sophie"
   ];
 
