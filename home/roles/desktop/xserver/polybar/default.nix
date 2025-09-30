@@ -105,6 +105,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom.roles.homeage = {
+      enable = true;
+      secrets = [ "owm-key" ];
+    };
+
     home = {
       packages = with pkgs; [
         font-awesome
