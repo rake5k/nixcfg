@@ -25,10 +25,12 @@ let
   pedalBrakeCurveCsv = writeText "brake-curve" ''
     # The CSV below (in a file) can be used for the --curve option in combination with --axis.
     # It defines 3 lines for mapping input to output.
-    # E.g. when at 20% input protopedal reports 30%:
+    # E.g. when at 20% input protopedal reports 18%:
     0.00	0.00
-    0.20	0.30
-    0.70	0.80
+    0.20	0.18
+    0.40	0.36
+    0.60	0.54
+    0.80	0.72
     1.00	1.00
   '';
 
