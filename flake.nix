@@ -138,6 +138,7 @@
       type = "gitlab";
       owner = "rake5k";
       repo = "wallpapers";
+      rev = "e8e0b8e7a9077ddc6a8b94bf7dc118e3fae65772";
       flake = false;
     };
   };
