@@ -34,7 +34,7 @@ in
       steam
 
       # Runtimes
-      wine
+      wineWowPackages.stable
 
       # Tinkering
       unstable.winetricks
