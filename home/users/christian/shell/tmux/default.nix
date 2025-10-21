@@ -1,16 +1,16 @@
 { config, lib, ... }:
 
-with lib;
-
 let
 
-  cfg = config.custom.programs.tmux;
+  cfg = config.custom.users.christian.shell.tmux;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
 {
   options = {
-    custom.programs.tmux = {
+    custom.users.christian.shell.tmux = {
       enable = mkEnableOption "Tmux";
     };
   };

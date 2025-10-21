@@ -22,9 +22,9 @@ in
 
   config = mkIf cfg.enable {
     custom = {
-      programs.tmux.enable = true;
       users.christian.shell = {
         direnv.enable = true;
+        tmux.enable = true;
         yazi.enable = true;
         zsh.enable = true;
       };
