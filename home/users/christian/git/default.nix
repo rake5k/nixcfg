@@ -5,8 +5,6 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.users.christian.git;
@@ -16,6 +14,8 @@ let
       "${pkgs.gitFull}/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain"
     else
       "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";
+
+  inherit (lib) mkDefault mkEnableOption mkIf;
 
 in
 
@@ -37,7 +37,7 @@ in
       difftastic.enable = true;
       lfs.enable = true;
       userName = "Christian Harke";
-      userEmail = "christian@harke.ch";
+      userEmail = mkDefault "christian@harke.ch";
       signing.key = "630966F4";
 
       aliases = {
