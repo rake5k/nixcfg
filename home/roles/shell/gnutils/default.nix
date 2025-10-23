@@ -36,6 +36,10 @@ in
         fd # ultra-fast find
         ripgrep
       ];
+
+      shellAliases = {
+        grep = "rg";
+      };
     };
   };
 }

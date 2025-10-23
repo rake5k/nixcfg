@@ -34,7 +34,6 @@
 
   # File reading
   cat = "bat";
-  grep = "rg";
 
   # File manager
   rr = "yazi";
