@@ -54,7 +54,10 @@ in
 
     home.packages = with pkgs; optionals isLinux [ seahorse ];
 
-    services.gnome-keyring.enable = isLinux;
+    services = {
+      gnome-keyring.enable = isLinux;
+      network-manager-applet.enable = true;
+    };
 
     xdg.userDirs = mkIf isLinux {
       enable = true;

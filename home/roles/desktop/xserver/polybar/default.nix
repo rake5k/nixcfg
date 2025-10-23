@@ -113,7 +113,6 @@ in
     home = {
       packages = with pkgs; [
         font-awesome
-        networkmanagerapplet
         pasystray
       ];
     };
