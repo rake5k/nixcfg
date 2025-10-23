@@ -7,7 +7,8 @@
 
 let
 
-  cfg = config.custom.roles.desktop.wayland;
+  desktopCfg = config.custom.roles.desktop;
+  cfg = desktopCfg.wayland;
 
   inherit (lib)
     literalExpression
@@ -26,7 +27,7 @@ in
 
       autoruns = mkOption {
         type = types.listOf config.lib.custom.autorunType;
-        default = [ ];
+        default = desktopCfg.autoruns;
         description = ''
           Applications to be launched in a workspace of choice.
         '';
@@ -42,6 +43,7 @@ in
       wallpapersDir = mkOption {
         type = types.path;
         description = "Path to the wallpaper images";
+        default = desktopCfg.wallpapersDir;
       };
     };
   };

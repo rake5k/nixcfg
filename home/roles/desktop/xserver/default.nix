@@ -47,7 +47,8 @@ in
             command = "${getExe pkgs.parcellite}";
             workspace = 1;
           }
-        ];
+        ]
+        ++ desktopCfg.autoruns;
         description = ''
           Applications to be launched in a workspace of choice.
         '';
@@ -63,6 +64,7 @@ in
       wallpapersDir = mkOption {
         type = types.path;
         description = "Path to the wallpaper images";
+        default = desktopCfg.wallpaper;
       };
     };
   };
