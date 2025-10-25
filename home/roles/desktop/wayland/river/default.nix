@@ -24,6 +24,8 @@ let
   inherit (lib) getExe mkIf;
   inherit (config.lib.custom) mkWindowManagerOptions;
 
+  mkTag = tag: "$((1 << (${tag} - 1)))";
+
 in
 
 {
@@ -423,6 +425,20 @@ in
           "-app-id" = {
             # Fix app borders
             "*" = "ssd";
+
+            # App-specific rules
+            "firefox".tags = mkTag "3";
+            "firefox_firefox".tags = mkTag "3";
+            "chromium".tags = mkTag "3";
+            "chromium-browser".tags = mkTag "3";
+            "jetbrains-idea".tags = mkTag "2";
+            "org.keepassxc.KeePassXC".tags = mkTag "7";
+            "kitty".tags = mkTag "1";
+            "Logseq".tags = mkTag "6";
+            "org.gnome.Evolution".tags = mkTag "5";
+          };
+          "-title" = {
+            "'Microsoft Teams*'".tags = mkTag "4";
           };
         };
 
