@@ -336,9 +336,6 @@ in
 
         # Make all views with an app-id that starts with "float" and title "foo" start floating.
         riverctl rule-add -app-id 'float*' -title 'foo' float
-
-        # Make all views with app-id "bar" and any title use client-side decorations
-        riverctl rule-add -app-id "bar" csd
       */
 
       settings = {
@@ -422,16 +419,12 @@ in
           };
         };
 
-        #rule-add = {
-        #  "-app-id" = {
-        #    "'bar'" = "csd";
-        #    "'float*'" = {
-        #      "-title" = {
-        #        "'foo'" = "float";
-        #      };
-        #    };
-        #  };
-        #};
+        rule-add = {
+          "-app-id" = {
+            # Fix app borders
+            "*" = "ssd";
+          };
+        };
 
         set-cursor-warp = "on-output-change";
 
