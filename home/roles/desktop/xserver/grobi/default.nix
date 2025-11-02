@@ -48,6 +48,7 @@ in
 
       wallpaperCmd = mkOption {
         type = types.str;
+        default = "echo 'No command for setting the wallpaper provided.'";
         description = "Command to set the wallpaper";
       };
     };
