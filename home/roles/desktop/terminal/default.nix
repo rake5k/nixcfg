@@ -5,14 +5,19 @@
   ...
 }:
 
-with lib;
-
 let
 
-  desktopCfg = config.custom.roles.desktop;
-  cfg = desktopCfg.terminal;
+  cfg = config.custom.roles.desktop.terminal;
 
   kitty = config.lib.nixGL.wrap pkgs.kitty;
+
+  inherit (lib)
+    getExe
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
 in
 
@@ -29,7 +34,7 @@ in
 
       spawnCmd = mkOption {
         type = types.str;
-        default = "kitty";
+        default = "${getExe cfg.package}";
         description = "Command to spawn the default terminal emulator";
       };
 
