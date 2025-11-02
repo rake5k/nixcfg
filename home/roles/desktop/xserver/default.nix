@@ -64,7 +64,7 @@ in
       wallpapersDir = mkOption {
         type = types.path;
         description = "Path to the wallpaper images";
-        default = desktopCfg.wallpaper;
+        default = desktopCfg.wallpapersDir;
       };
     };
   };
