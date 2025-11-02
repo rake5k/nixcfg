@@ -226,7 +226,7 @@ pkgs.writeText "xmonad.hs" ''
 
   myConfig = def
       { modMask             = myModMask     -- Rebind Mod key
-      , terminal            = ${terminalCfg.spawnCmd}
+      , terminal            = "${terminalCfg.spawnCmd}"
       , borderWidth         = 2
       , normalBorderColor   = "${colorScheme.foreground}"
       , focusedBorderColor  = "${colorScheme.base}"
