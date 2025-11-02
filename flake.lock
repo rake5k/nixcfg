@@ -704,15 +704,16 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1761233928,
-        "narHash": "sha256-JdAYipCTwtpOjUmH6sWc0J7vBbak3BAidojcrOmQsRY=",
-        "owner": "icewind1991",
+        "lastModified": 1762094214,
+        "narHash": "sha256-b9A2l7UeNIfpdGD4T7fuE0Mlr7DB/fdDG3DBZ9GjYvE=",
+        "owner": "rake5k",
         "repo": "nvidia-patch-nixos",
-        "rev": "f66229ae0c051e4523919d0339f680e404a6dc78",
+        "rev": "6f769d8e418725507545f11947c35d79a7173e77",
         "type": "github"
       },
       "original": {
-        "owner": "icewind1991",
+        "owner": "rake5k",
+        "ref": "add-570.195.03",
         "repo": "nvidia-patch-nixos",
         "type": "github"
       }

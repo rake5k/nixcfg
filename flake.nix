@@ -119,7 +119,7 @@
     };
 
     nvidia-patch = {
-      url = "github:icewind1991/nvidia-patch-nixos";
+      url = "github:rake5k/nvidia-patch-nixos/add-570.195.03";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
