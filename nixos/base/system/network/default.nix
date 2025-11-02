@@ -53,8 +53,6 @@ in
       useDHCP = lib.mkDefault true;
     };
 
-    programs.nm-applet.enable = config.custom.roles.desktop.enable;
-
     # Enable the OpenSSH daemon.
     services.openssh = {
       enable = true;

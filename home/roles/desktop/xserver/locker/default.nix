@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
   ...
 }:
@@ -32,10 +31,15 @@ in
         description = "Locker package to use";
       };
 
-      lockCmd = mkOption {
+      lockerCmd = mkOption {
         type = types.str;
         default = "${getExe pkgs.betterlockscreen} --lock dim";
         description = "Command to activate locker";
+      };
+
+      wallpapersDir = mkOption {
+        type = types.path;
+        description = "Path to the wallpaper images";
       };
     };
   };
@@ -53,7 +57,7 @@ in
         timers = [
           {
             delay = 600;
-            command = cfg.lockCmd;
+            command = cfg.lockerCmd;
           }
           {
             delay = 300;
@@ -74,7 +78,7 @@ in
 
     # Update random lock image on login
     xsession.initExtra = ''
-      ${getExe pkgs.betterlockscreen} --update ${inputs.wallpapers} --fx dim &
+      ${getExe pkgs.betterlockscreen} --update ${cfg.wallpapersDir} --fx dim &
     '';
   };
 }
