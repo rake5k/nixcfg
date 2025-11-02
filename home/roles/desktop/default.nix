@@ -56,7 +56,7 @@ in
 
     services = {
       gnome-keyring.enable = isLinux;
-      network-manager-applet.enable = true;
+      network-manager-applet.enable = isLinux;
     };
 
     xdg.userDirs = mkIf isLinux {
