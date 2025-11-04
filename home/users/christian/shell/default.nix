@@ -41,9 +41,6 @@ in
         lolcat
         toilet
 
-        # Make sure to have the right version in $PATH
-        less
-
         curl
         eva
         file
@@ -51,8 +48,6 @@ in
         gron
         killall
         neofetch
-        pandoc
-        texlive.combined.scheme-small
         trash-cli
         unzip
         util-linux
@@ -88,6 +83,12 @@ in
       fzf.enable = true;
       htop.enable = true;
       jq.enable = true;
+      less.enable = true;
+      pandoc.enable = true;
+      texlive = {
+        enable = true;
+        packageSet = pkgs.texlivePackages.scheme-small;
+      };
 
       starship = {
         enable = true;
