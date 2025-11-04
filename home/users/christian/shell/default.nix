@@ -85,10 +85,6 @@ in
       jq.enable = true;
       less.enable = true;
       pandoc.enable = true;
-      texlive = {
-        enable = true;
-        packageSet = pkgs.texlivePackages.scheme-small;
-      };
 
       starship = {
         enable = true;
