@@ -59,7 +59,7 @@ pkgs.writeText "xmonad.hs" ''
   myScratchpads =
     [ NS "terminal" spawnTerm findTerm manageTerm
     , NS "calendar" spawnCal findCal manageCal
-    , NS "htop" spawnHtop findHtop manageHtop
+    , NS "btop" spawnTop findTop manageTop
     , NS "pavucontrol" spawnPavuCtl findPavuCtl managePavuCtl
     , NS "pwmanager" spawnPwManager findPwManager managePwManager
     , NS "wiki" spawnWiki findWiki manageWiki
@@ -83,9 +83,9 @@ pkgs.writeText "xmonad.hs" ''
           h = (5/6)
           x = center w
           y = center h
-      spawnHtop     = "${terminalCfg.spawnCmd} ${terminalCfg.titleArgPrefix}htop ${terminalCfg.commandArgPrefix}htop"
-      findHtop      = title =? "htop"
-      manageHtop    = customFloating $ W.RationalRect x y w h
+      spawnTop     = "${terminalCfg.spawnCmd} ${terminalCfg.titleArgPrefix}btop ${terminalCfg.commandArgPrefix}btop"
+      findTop      = title =? "btop"
+      manageTop    = customFloating $ W.RationalRect x y w h
         where
           w = (2/3)
           h = (3/4)
@@ -214,7 +214,7 @@ pkgs.writeText "xmonad.hs" ''
     -- ScratchPads
     , ("M-C-<Return>",  namedScratchpadAction myScratchpads "terminal")
     , ("M-C-k",         namedScratchpadAction myScratchpads "calendar")
-    , ("M-C-t",         namedScratchpadAction myScratchpads "htop")
+    , ("M-C-t",         namedScratchpadAction myScratchpads "btop")
     , ("M-C-v",         namedScratchpadAction myScratchpads "pavucontrol")
     , ("M-C-p",         namedScratchpadAction myScratchpads "pwmanager")
     , ("M-C-w",         namedScratchpadAction myScratchpads "wiki")

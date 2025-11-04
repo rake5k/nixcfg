@@ -49,7 +49,6 @@ in
         file
         glow
         gron
-        htop
         killall
         neofetch
         pandoc
@@ -84,8 +83,10 @@ in
 
     programs = {
       bat.enable = true;
+      btop.enable = true;
       eza.enable = true;
       fzf.enable = true;
+      htop.enable = true;
       jq.enable = true;
 
       starship = {
