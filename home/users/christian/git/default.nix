@@ -60,10 +60,6 @@ in
 
       extraConfig = {
         credential.helper = credentialHelper;
-        maintenance.repo = [
-          "${config.home.homeDirectory}/.nix-config"
-          "${config.home.homeDirectory}/code/nixcfg"
-        ];
       };
 
       ignores = [
@@ -306,67 +302,6 @@ in
         # Built Visual Studio Code Extensions
         "*.vsix"
       ];
-    };
-
-    systemd.user = {
-      services = {
-        "git-maintenance@" = {
-          Unit = {
-            Description = "Optimize Git repositories data";
-          };
-          Service = {
-            Type = "oneshot";
-            ExecStart = "\"${pkgs.git}/libexec/git-core/git\" --exec-path=\"${pkgs.git}/libexec/git-core\" for-each-repo --config=maintenance.repo maintenance run --schedule=%i";
-            LockPersonality = "yes";
-            MemoryDenyWriteExecute = "yes";
-            NoNewPrivileges = "yes";
-            RestrictAddressFamilies = "AF_UNIX AF_INET AF_INET6 AF_VSOCK";
-            RestrictNamespaces = "yes";
-            RestrictRealtime = "yes";
-            RestrictSUIDSGID = "yes";
-            SystemCallArchitectures = "native";
-            SystemCallFilter = "@system-service";
-          };
-        };
-      };
-      timers = {
-        "git-maintenance@daily" = {
-          Unit = {
-            Description = "Optimize Git repositories data";
-          };
-          Timer = {
-            OnCalendar = "Tue..Sun *-*-* 0:27:00";
-            Persistent = "true";
-          };
-          Install = {
-            WantedBy = [ "timers.target" ];
-          };
-        };
-        "git-maintenance@hourly" = {
-          Unit = {
-            Description = "Optimize Git repositories data";
-          };
-          Timer = {
-            OnCalendar = "*-*-* 1..23:27:00";
-            Persistent = "true";
-          };
-          Install = {
-            WantedBy = [ "timers.target" ];
-          };
-        };
-        "git-maintenance@weekly" = {
-          Unit = {
-            Description = "Optimize Git repositories data";
-          };
-          Timer = {
-            OnCalendar = "Mon 0:27:00";
-            Persistent = "true";
-          };
-          Install = {
-            WantedBy = [ "timers.target" ];
-          };
-        };
-      };
     };
   };
 }
