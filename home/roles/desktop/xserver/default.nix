@@ -103,20 +103,10 @@ in
     };
 
     home.packages = with pkgs; [
-      peek
-      gifski
-      mupdf
       xclip
       xorg.xrandr
       xzoom
     ];
-
-    xdg = {
-      mime.enable = true;
-      mimeApps.defaultApplications = {
-        "inode/directory" = "org.gnome.Nautilus.desktop";
-      };
-    };
 
     xsession = {
       enable = true;
