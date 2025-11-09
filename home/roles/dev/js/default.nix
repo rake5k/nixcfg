@@ -5,12 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.dev.js;
 
+  inherit (lib) mkEnableOption mkIf optionals;
   inherit (pkgs.stdenv) isLinux;
 
 in
@@ -24,7 +23,7 @@ in
 
   config = mkIf cfg.enable {
     custom = {
-      programs.firefox = mkIf config.custom.programs.firefox.enable {
+      programs.firefox = {
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           react-devtools
           vue-js-devtools

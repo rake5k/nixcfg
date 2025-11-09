@@ -33,8 +33,6 @@ in
           localcdn
           multi-account-containers
           onepassword-password-manager
-          persistentpin
-          proton-vpn
           tridactyl
           ublacklist
           ublock-origin
