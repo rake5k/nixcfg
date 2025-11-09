@@ -63,9 +63,24 @@ in
     programs.kitty = {
       enable = true;
       package = kitty;
+
       settings = {
+        cursor_trail = 1;
+        cursor_trail_decay = "0.1 0.2";
+        enable_audio_bell = false;
+        open_url_with = "default";
+        scrollback_fill_enlarged_window = true;
+        scrollback_lines = 10000;
+        show_hyperlink_targets = true;
+        strip_trailing_spaces = "always";
         tab_bar_style = "powerline";
+        update_check_interval = 0;
       };
+
+      extraConfig = ''
+        mouse_map ctrl+left click ungrabbed mouse_handle_click selection link prompt
+        mouse_map left click ungrabbed no-op
+      '';
     };
   };
 }
