@@ -5,11 +5,16 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.programs.firefox;
+
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   defaultProfile = "ztbvdcs8.default";
 
