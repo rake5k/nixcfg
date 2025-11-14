@@ -24,8 +24,7 @@ in
   config = mkIf cfg.enable {
     custom = {
       programs.firefox = {
-        # See: https://github.com/NixOS/nixpkgs/issues/71689
-        enable = isLinux;
+        enable = true;
         extensions = with pkgs.nur.repos.rycee.firefox-addons; [
           facebook-container
           istilldontcareaboutcookies
