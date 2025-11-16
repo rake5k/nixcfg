@@ -48,7 +48,7 @@ in
             };
             sirius-a = {
               addresses = [ ];
-              id = "Z5CMWGO-QVYSG5A-ERDY57R-CZSI56V-6ZRRQ6U-WPA37ZL-DCT3MSZ-57MQWAW";
+              id = "WTYJYH5-XTTBBTX-TJ2KUSE-7R7Q77T-4HCEO4R-CJMWKCD-ZGYV2AI-TG3NHQH";
             };
           };
 
