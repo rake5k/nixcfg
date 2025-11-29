@@ -372,6 +372,13 @@ in
               "spawn 'PATH=${PATH} ${getExe launcherPackage} --cache=${config.xdg.cacheHome}/fuzzel/launcher'";
             "Super E" = "spawn '${getExe pkgs.rofimoji} --selector fuzzel'";
 
+            # Screenshots
+            "Super S" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdFull}'";
+            "Super+Shift S" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdSelect}'";
+            "Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdFull}'";
+            "Control Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdWindow}'";
+            "Control+Shift Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdSelect}'";
+
             # Destructive key strokes
             "Super+Shift C" = "close";
             "Super+Shift Delete" = "spawn '${cfg.lockerCfg.lockerCmd}'";
