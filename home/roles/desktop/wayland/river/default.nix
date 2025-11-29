@@ -176,7 +176,7 @@ in
               return-type = "string";
               exec = "${waybarModulesPath}/cpu.sh";
               tooltip = false;
-              on-click = "/usr/bin/gnome-system-monitor";
+              on-click = "gnome-system-monitor";
             };
 
             "custom/clock" = {
@@ -184,8 +184,8 @@ in
               return-type = "string";
               exec = "${waybarModulesPath}/datetime.sh";
               tooltip = false;
-              on-click = "/usr/bin/gnome-clocks";
-              on-click-right = "/usr/bin/gnome-calendar";
+              on-click = "gnome-clocks";
+              on-click-right = "gnome-calendar";
             };
 
             tray = {
@@ -400,9 +400,9 @@ in
             "Super Comma" = "focus-output previous";
 
             "Super+Shift Period" =
-              "spawn 'sh -c \"${pkgs.river}/bin/riverctl send-to-output -current-tags next && ${pkgs.river}/bin/riverctl focus-output next\"'";
+              "spawn '${getExe pkgs.bash} -c \"riverctl send-to-output -current-tags next && riverctl focus-output next\"'";
             "Super+Shift Comma" =
-              "spawn 'sh -c \"${pkgs.river}/bin/riverctl send-to-output -current-tags previous && ${pkgs.river}/bin/riverctl focus-output previous\"'";
+              "spawn '${getExe pkgs.bash} -c \"riverctl send-to-output -current-tags previous && riverctl focus-output previous\"'";
 
             # Super+Return to bump the focused view to the top of the layout stack
             "Super Return" = "zoom";
