@@ -41,7 +41,15 @@ in
         set nu rnu
       '';
 
-      packages = [ pkgs.fira-code ] ++ (optionals cfg.install [ ideaPackage ]);
+      packages =
+        with pkgs;
+        [
+          fira-code
+
+          # language-servers
+          nil
+        ]
+        ++ (optionals cfg.install [ ideaPackage ]);
     };
   };
 }
