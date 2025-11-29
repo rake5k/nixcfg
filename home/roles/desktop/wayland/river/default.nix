@@ -12,7 +12,14 @@ let
   cfg = desktopCfg.wayland.river;
 
   inherit (config.lib) nixGL;
-  package = nixGL.wrap pkgs.river;
+
+  # Wrap river to set PATH before starting, so all spawned processes inherit it
+  riverWithPath = pkgs.writeShellScriptBin "river" ''
+    export PATH="${PATH}"
+    exec ${nixGL.wrap pkgs.river}/bin/river "$@"
+  '';
+
+  package = riverWithPath;
   launcherPackage = nixGL.wrap pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -368,8 +375,7 @@ in
           normal = {
             # Constructive key strokes
             "Super+Shift Return" = "spawn ${terminalCmd}";
-            "Super P" =
-              "spawn 'PATH=${PATH} ${getExe launcherPackage} --cache=${config.xdg.cacheHome}/fuzzel/launcher'";
+            "Super P" = "spawn '${getExe launcherPackage} --cache=${config.xdg.cacheHome}/fuzzel/launcher'";
             "Super E" = "spawn '${getExe pkgs.rofimoji} --selector fuzzel'";
 
             # Screenshots
