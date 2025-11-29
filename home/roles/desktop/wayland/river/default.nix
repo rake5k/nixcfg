@@ -407,10 +407,6 @@ in
             "Super+Alt+Shift K" = "resize vertical -100";
             "Super+Alt+Shift L" = "resize horizontal 100";
 
-            "Super BTN_LEFT" = "move-view";
-            "Super BTN_RIGHT" = "resize-view";
-            "Super BTN_MIDDLE" = "toggle-float";
-
             "Super Space" = "toggle-float";
             "Super F" = "toggle-fullscreen";
 
@@ -419,6 +415,14 @@ in
 
           passthrough = {
             "Super F11" = "enter-mode normal";
+          };
+        };
+
+        map-pointer = {
+          normal = {
+            "Super BTN_LEFT" = "move-view";
+            "Super BTN_RIGHT" = "resize-view";
+            "Super BTN_MIDDLE" = "toggle-float";
           };
         };
 
