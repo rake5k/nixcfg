@@ -386,9 +386,10 @@ in
             "Super Period" = "focus-output next";
             "Super Comma" = "focus-output previous";
 
-            # Super+Shift+{Period,Comma} to send the focused view to the next/previous output
-            "Super+Shift Period" = "send-to-output next";
-            "Super+Shift Comma" = "send-to-output previous";
+            "Super+Shift Period" =
+              "spawn 'sh -c \"${pkgs.river}/bin/riverctl send-to-output -current-tags next && ${pkgs.river}/bin/riverctl focus-output next\"'";
+            "Super+Shift Comma" =
+              "spawn 'sh -c \"${pkgs.river}/bin/riverctl send-to-output -current-tags previous && ${pkgs.river}/bin/riverctl focus-output previous\"'";
 
             # Super+Return to bump the focused view to the top of the layout stack
             "Super Return" = "zoom";
