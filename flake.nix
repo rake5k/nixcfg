@@ -48,7 +48,7 @@
     # Configuration types
 
     home-manager = {
-      url = "github:rake5k/home-manager/fix-river";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
