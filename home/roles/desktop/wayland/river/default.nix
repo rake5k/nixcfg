@@ -561,7 +561,7 @@ in
 
         config = {
           river = {
-            default = [ "gtk" ];
+            default = [ "wlr" ];
             "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
             "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
           };
