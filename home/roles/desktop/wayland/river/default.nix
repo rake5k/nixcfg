@@ -476,42 +476,42 @@ in
       extraConfig = ''
         ${getExe pkgs.swaybg} -i $(find ${cfg.wallpapersDir} -type f | ${pkgs.coreutils}/bin/shuf -n1) -m fill &
 
-        ${pkgs.river}/bin/riverctl default-layout rivertile
-        ${pkgs.river}/bin/rivertile -view-padding 6 -outer-padding 6 &
+        riverctl default-layout rivertile
+        rivertile -view-padding 6 -outer-padding 6 &
 
-        ${pkgs.river}/bin/riverctl focus-follows-cursor always
+        riverctl focus-follows-cursor always
 
         # Various media key mapping examples for both normal and locked mode which do
         # not have a modifier
         for mode in normal locked
         do
             # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioRaiseVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioLowerVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioMicMute      spawn '${pkgs.wireplumber}/bin/wpctl set-source-mute @DEFAULT_SOURCE@ toggle'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioMute         spawn '${audioMuteToggle}'
+            riverctl map $mode None XF86AudioRaiseVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
+            riverctl map $mode None XF86AudioLowerVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
+            riverctl map $mode None XF86AudioMicMute      spawn '${pkgs.wireplumber}/bin/wpctl set-source-mute @DEFAULT_SOURCE@ toggle'
+            riverctl map $mode None XF86AudioMute         spawn '${audioMuteToggle}'
 
             # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioMedia spawn '${getExe pkgs.playerctl} play-pause'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioPlay  spawn '${getExe pkgs.playerctl} play-pause'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioPrev  spawn '${getExe pkgs.playerctl} previous'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioNext  spawn '${getExe pkgs.playerctl} next'
-            ${pkgs.river}/bin/riverctl map $mode None XF86AudioStop  spawn '${getExe pkgs.playerctl} stop'
+            riverctl map $mode None XF86AudioMedia spawn '${getExe pkgs.playerctl} play-pause'
+            riverctl map $mode None XF86AudioPlay  spawn '${getExe pkgs.playerctl} play-pause'
+            riverctl map $mode None XF86AudioPrev  spawn '${getExe pkgs.playerctl} previous'
+            riverctl map $mode None XF86AudioNext  spawn '${getExe pkgs.playerctl} next'
+            riverctl map $mode None XF86AudioStop  spawn '${getExe pkgs.playerctl} stop'
 
             # Control screen backlight brightness with brightnessctl (https://github.com/Hummer12007/brightnessctl)
-            ${pkgs.river}/bin/riverctl map $mode None XF86MonBrightnessDown spawn '${getExe pkgs.brightnessctl} set 10%-'
-            ${pkgs.river}/bin/riverctl map $mode None XF86MonBrightnessUp   spawn '${getExe pkgs.brightnessctl} set 10%+'
+            riverctl map $mode None XF86MonBrightnessDown spawn '${getExe pkgs.brightnessctl} set 10%-'
+            riverctl map $mode None XF86MonBrightnessUp   spawn '${getExe pkgs.brightnessctl} set 10%+'
 
             # Toggle wireless / bluethooth adapter
-            ${pkgs.river}/bin/riverctl map $mode None XF86Bluetooth  spawn '${getExe pkgs.bash} -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\"';
+            riverctl map $mode None XF86Bluetooth  spawn '${getExe pkgs.bash} -c \"if rfkill list bluetooth|grep -q 'yes$';then rfkill unblock bluetooth;else rfkill block bluetooth;fi\"';
             
             # Eject the optical drive (well if you still have one that is)
-            ${pkgs.river}/bin/riverctl map $mode None XF86Eject spawn 'eject -T'
+            riverctl map $mode None XF86Eject spawn 'eject -T'
 
             # Quick access
-            ${pkgs.river}/bin/riverctl map $mode None XF86Calculator spawn '${terminalCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.eva}';
-            ${pkgs.river}/bin/riverctl map $mode None XF86Explorer   spawn '${terminalCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.yazi}';
-            ${pkgs.river}/bin/riverctl map $mode None XF86HomePage   spawn 'xdg-open';
+            riverctl map $mode None XF86Calculator spawn '${terminalCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.eva}';
+            riverctl map $mode None XF86Explorer   spawn '${terminalCmd} ${terminalCfg.commandArgPrefix}${getExe pkgs.yazi}';
+            riverctl map $mode None XF86HomePage   spawn 'xdg-open';
         done
 
         # Set up tags (aka. "workspaces")
@@ -520,23 +520,23 @@ in
             tags=$((1 << ($i - 1)))
 
             # Super+[1-9] to focus tag [0-8]
-            ${pkgs.river}/bin/riverctl map normal Super $i set-focused-tags $tags
+            riverctl map normal Super $i set-focused-tags $tags
 
             # Super+Shift+[1-9] to tag focused view with tag [0-8]
-            ${pkgs.river}/bin/riverctl map normal Super+Shift $i set-view-tags $tags
+            riverctl map normal Super+Shift $i set-view-tags $tags
 
             # Super+Control+[1-9] to toggle focus of tag [0-8]
-            ${pkgs.river}/bin/riverctl map normal Super+Control $i toggle-focused-tags $tags
+            riverctl map normal Super+Control $i toggle-focused-tags $tags
 
             # Super+Shift+Control+[1-9] to toggle tag [0-8] of focused view
-            ${pkgs.river}/bin/riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
+            riverctl map normal Super+Shift+Control $i toggle-view-tags $tags
         done
 
         # Super+0 to focus all tags
         # Super+Shift+0 to tag focused view with all tags
         all_tags=$(((1 << 32) - 1))
-        ${pkgs.river}/bin/riverctl map normal Super 0 set-focused-tags $all_tags
-        ${pkgs.river}/bin/riverctl map normal Super+Shift 0 set-view-tags $all_tags
+        riverctl map normal Super 0 set-focused-tags $all_tags
+        riverctl map normal Super+Shift 0 set-view-tags $all_tags
 
         systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
         dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
