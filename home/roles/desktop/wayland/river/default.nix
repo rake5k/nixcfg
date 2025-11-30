@@ -561,7 +561,7 @@ in
 
         config = {
           river = {
-            default = [ "gtk" ];
+            default = [ "wlr" ];
             "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
             "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
           };
@@ -571,7 +571,6 @@ in
           map nixGL.wrap [
             xdg-desktop-portal
             xdg-desktop-portal-wlr
-            xdg-desktop-portal-gtk
           ];
       };
     };
