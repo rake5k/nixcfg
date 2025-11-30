@@ -165,6 +165,7 @@ in
           let
             engines = {
               harke = "Harke Search";
+              hmOpts = "Home Manager Options";
               nixPkgs = "Nix Packages";
               nixOpts = "NixOS Options";
               nixWiki = "NixOS Wiki";
@@ -186,6 +187,22 @@ in
                   }
                 ];
                 icon = ./icons/search.harke.ch.svg;
+              };
+
+              "${engines.hmOpts}" = {
+                urls = [
+                  {
+                    template = "https://home-manager-options.extranix.com/";
+                    params = [
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [ "@hm" ];
               };
 
               "${engines.nixPkgs}" = {
