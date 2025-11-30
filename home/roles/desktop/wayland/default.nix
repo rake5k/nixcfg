@@ -31,8 +31,8 @@ let
     }
 
     screenshot() {
-      OUTDIR="''${HOME}/Pictures/screenshots"
-      OUT="''${OUTDIR}/$(${pkgs.coreutils}/bin/date +%F_%H-%M-%S).png"
+      OUTDIR="''${HOME}/Pictures/Screenshots"
+      OUT="''${OUTDIR}/Screenshot from $(${pkgs.coreutils}/bin/date '+%Y-%m-%d %H-%M-%S').png"
 
       ${pkgs.coreutils}/bin/mkdir -p "''${OUTDIR}"
 
