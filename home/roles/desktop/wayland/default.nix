@@ -30,6 +30,13 @@ let
       ${pkgs.libnotify}/bin/notify-send -u critical "Taking screenshot failed" "''${1}"
     }
 
+    copy_to_clipboard_and_notify() {
+      local file="''${1}"
+      local message="''${2}"
+      ${pkgs.wl-clipboard}/bin/wl-copy < "''${file}"
+      notify_success "''${message}" "''${file}"
+    }
+
     screenshot() {
       OUTDIR="''${HOME}/Pictures/Screenshots"
       OUT="''${OUTDIR}/Screenshot from $(${pkgs.coreutils}/bin/date '+%Y-%m-%d %H-%M-%S').png"
@@ -39,7 +46,7 @@ let
       case $1 in
       full)
         if ${getExe pkgs.grim} "''${OUT}"; then
-          notify_success "Fullscreen screenshot saved" "''${OUT}"
+          copy_to_clipboard_and_notify "''${OUT}" "Fullscreen screenshot saved"
         else
           notify_failure "Fullscreen screenshot failed"
         fi
@@ -49,7 +56,7 @@ let
         GEOMETRY="$(${getExe pkgs.slurp} -d)"
         if [[ -n "''${GEOMETRY}" ]]; then
           if ${getExe pkgs.grim} -g "''${GEOMETRY}" "''${OUT}"; then
-            notify_success "Selection screenshot saved" "''${OUT}"
+            copy_to_clipboard_and_notify "''${OUT}" "Selection screenshot saved"
           else
             notify_failure "Selection screenshot failed"
           fi
@@ -61,7 +68,7 @@ let
         GEOMETRY="$(${getExe pkgs.slurp} -o -r -c '#ffff00')"
         if [[ -n "''${GEOMETRY}" ]]; then
           if ${getExe pkgs.grim} -g "''${GEOMETRY}" "''${OUT}"; then
-            notify_success "Window screenshot saved" "''${OUT}"
+            copy_to_clipboard_and_notify "''${OUT}" "Window screenshot saved"
           else
             notify_failure "Window screenshot failed"
           fi
