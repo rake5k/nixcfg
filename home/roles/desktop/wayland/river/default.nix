@@ -14,10 +14,15 @@ let
   inherit (config.lib) nixGL;
 
   # Wrap river to set PATH before starting, so all spawned processes inherit it
-  riverWithPath = pkgs.writeShellScriptBin "river" ''
-    export PATH="${PATH}"
-    exec ${nixGL.wrap pkgs.river}/bin/river "$@"
-  '';
+  riverWithPath = pkgs.symlinkJoin {
+    name = "river-with-path";
+    paths = [ (nixGL.wrap pkgs.river) ];
+    buildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      wrapProgram $out/bin/river \
+        --prefix PATH : "${PATH}"
+    '';
+  };
 
   package = riverWithPath;
   launcherPackage = nixGL.wrap pkgs.fuzzel;
@@ -41,6 +46,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Install river utilities (riverctl, rivertile) in PATH
+    home.packages = [ riverWithPath ];
+
     custom = {
       roles = {
         desktop = {
