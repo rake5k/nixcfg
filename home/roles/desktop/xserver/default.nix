@@ -103,6 +103,7 @@ in
     };
 
     home.packages = with pkgs; [
+      scrot
       xclip
       xorg.xrandr
       xzoom
