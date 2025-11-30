@@ -20,7 +20,8 @@ let
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/river \
-        --prefix PATH : "${PATH}"
+        --prefix PATH : "${PATH}" \
+        --run '[ -r /etc/profile ] && . /etc/profile'
     '';
   };
 
