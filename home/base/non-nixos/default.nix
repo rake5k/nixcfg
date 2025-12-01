@@ -2,7 +2,6 @@
   lib,
   config,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -55,11 +54,9 @@ in
 
     targets.genericLinux = mkIf isLinux {
       enable = true;
-      nixGL = mkIf (!config.custom.roles.mobile.enable) {
-        inherit (inputs.nixgl) packages;
-        defaultWrapper = "mesa";
-        installScripts = [ "mesa" ];
-      };
+      # GPU support is now handled automatically via targets.genericLinux.gpu
+      # Run: sudo /nix/store/*-non-nixos-gpu/bin/non-nixos-gpu-setup
+      # after the first home-manager switch to set up GPU libraries
     };
   };
 }

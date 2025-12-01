@@ -110,14 +110,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-        flake-utils.follows = "flake-utils";
-      };
-    };
-
     nvidia-patch = {
       url = "github:rake5k/nvidia-patch-nixos/add-570.195.03";
       inputs = {

@@ -11,8 +11,6 @@ let
 
   cfg = config.custom.roles.gaming.streaming;
 
-  moonlight = config.lib.nixGL.wrap pkgs.moonlight-qt;
-
 in
 
 {
@@ -24,7 +22,7 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [
-      moonlight
+      pkgs.moonlight-qt
     ];
   };
 }

@@ -9,8 +9,6 @@ let
 
   cfg = config.custom.roles.desktop.terminal;
 
-  kitty = config.lib.nixGL.wrap pkgs.kitty;
-
   inherit (lib)
     getExe
     mkEnableOption
@@ -28,7 +26,7 @@ in
 
       package = mkOption {
         type = types.package;
-        default = kitty;
+        default = pkgs.kitty;
         description = "Terminal emulator package";
       };
 
@@ -62,7 +60,6 @@ in
 
     programs.kitty = {
       enable = true;
-      package = kitty;
 
       settings = {
         cursor_trail = 1;

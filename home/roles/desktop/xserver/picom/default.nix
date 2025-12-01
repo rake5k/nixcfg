@@ -1,15 +1,10 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-
-with lib;
+{ config, lib, ... }:
 
 let
 
   cfg = config.custom.roles.desktop.xserver.picom;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -23,7 +18,6 @@ in
   config = mkIf cfg.enable {
     services.picom = {
       enable = true;
-      package = config.lib.nixGL.wrap pkgs.picom;
       backend = "glx";
       settings = {
         blur = {
