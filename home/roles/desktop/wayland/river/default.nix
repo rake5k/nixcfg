@@ -11,12 +11,10 @@ let
   terminalCfg = desktopCfg.terminal;
   cfg = desktopCfg.wayland.river;
 
-  inherit (config.lib) nixGL;
-
   # Wrap river to set PATH before starting, so all spawned processes inherit it
   riverWithPath = pkgs.symlinkJoin {
     name = "river-with-path";
-    paths = [ (nixGL.wrap pkgs.river-classic) ];
+    paths = [ pkgs.river-classic ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/river \
@@ -26,7 +24,7 @@ let
   };
 
   package = riverWithPath;
-  launcherPackage = nixGL.wrap pkgs.fuzzel;
+  launcherPackage = pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
 
@@ -566,12 +564,10 @@ in
             "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
           };
         };
-        extraPortals =
-          with pkgs;
-          map nixGL.wrap [
-            xdg-desktop-portal
-            xdg-desktop-portal-wlr
-          ];
+        extraPortals = with pkgs; [
+          xdg-desktop-portal
+          xdg-desktop-portal-wlr
+        ];
       };
     };
   };

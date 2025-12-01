@@ -11,8 +11,6 @@ let
 
   cfg = config.custom.roles.multimedia.video;
 
-  plex = config.lib.nixGL.wrap pkgs.plex-media-player;
-
 in
 
 {
@@ -25,7 +23,7 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = [
-        plex
+        pkgs.plex-media-player
       ];
     };
 
