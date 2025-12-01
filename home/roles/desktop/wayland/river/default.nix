@@ -16,7 +16,7 @@ let
   # Wrap river to set PATH before starting, so all spawned processes inherit it
   riverWithPath = pkgs.symlinkJoin {
     name = "river-with-path";
-    paths = [ (nixGL.wrap pkgs.river) ];
+    paths = [ (nixGL.wrap pkgs.river-classic) ];
     buildInputs = [ pkgs.makeWrapper ];
     postBuild = ''
       wrapProgram $out/bin/river \

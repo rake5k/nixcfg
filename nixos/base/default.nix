@@ -47,8 +47,6 @@ in
 
     security.sudo.package = pkgs.sudo.override { withInsults = true; };
 
-    services.logind.extraConfig = ''
-      HandlePowerKey=ignore
-    '';
+    services.logind.settings.Login.HandlePowerKey = "ignore";
   };
 }

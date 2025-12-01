@@ -21,7 +21,7 @@ in
       autosuggestion.enable = true;
       enableCompletion = true;
       autocd = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       dirHashes = {
         bb = "/mnt/bluecare/bluecare";
         bh = "/mnt/bluecare/home";
