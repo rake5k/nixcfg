@@ -43,7 +43,7 @@ in
       $DRY_RUN_CMD ${getExe pkgs.git} config --local core.sshCommand "ssh -i ~/.ssh/id_logseq"
     '';
 
-    programs.git.extraConfig = {
+    programs.git.settings = {
       safe.directory = "/storage/emulated/0/Documents/notes/home";
     };
   };

@@ -39,11 +39,16 @@ in
         extraPackages = with pkgs; [
           # formatters
           black
-          nixfmt-rfc-style
+          nixfmt
           shfmt
+
+          # language servers
+          typescript
+          vue-language-server
         ];
 
         plugins = with pkgs.vimPlugins; [
+          coc-docker
           coc-html
           coc-java
           coc-json
@@ -51,7 +56,6 @@ in
           coc-pyright
           coc-sh
           coc-tsserver
-          coc-vetur
         ];
 
         coc = {
@@ -64,22 +68,6 @@ in
               filetypes = [ "nix" ];
             };
             languageserver = {
-              dockerfile = {
-                command = "${pkgs.dockerfile-language-server-nodejs}/bin/docker-langserver";
-                filetypes = [ "dockerfile" ];
-                args = [ "--stdio" ];
-              };
-              dockercompose = {
-                command = "${pkgs.docker-compose-language-service}/bin/docker-compose-langserver";
-                args = [ "--stdio" ];
-                filetypes = [ "dockercompose" ];
-                rootPatterns = [
-                  ".git"
-                  ".env"
-                  "docker-compose.yml"
-                  "compose.yml"
-                ];
-              };
               efm = {
                 command = "${pkgs.efm-langserver}/bin/efm-langserver";
                 args = [ ];
@@ -103,6 +91,16 @@ in
               systemd-language-server = {
                 command = "${systemd-language-server}/bin/systemd-language-server";
                 filetypes = [ "systemd" ];
+              };
+              vue = {
+                command = "${pkgs.vue-language-server}/bin/vue-language-server";
+                args = [ "--stdio" ];
+                filetypes = [ "vue" ];
+                initializationOptions = {
+                  typescript = {
+                    tsdk = "${pkgs.typescript}/lib/node_modules/typescript/lib";
+                  };
+                };
               };
             };
             java = {

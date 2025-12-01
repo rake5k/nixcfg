@@ -41,12 +41,6 @@ in
       '';
     };
 
-    nixGL = mkIf (isLinux && !config.custom.roles.mobile.enable) {
-      inherit (inputs.nixgl) packages;
-      defaultWrapper = "mesa";
-      installScripts = [ "mesa" ];
-    };
-
     programs.zsh.envExtra = lib.mkAfter ''
       hash -f
 
@@ -59,6 +53,13 @@ in
       ''}
     '';
 
-    targets.genericLinux.enable = isLinux;
+    targets.genericLinux = mkIf isLinux {
+      enable = true;
+      nixGL = mkIf (!config.custom.roles.mobile.enable) {
+        inherit (inputs.nixgl) packages;
+        defaultWrapper = "mesa";
+        installScripts = [ "mesa" ];
+      };
+    };
   };
 }

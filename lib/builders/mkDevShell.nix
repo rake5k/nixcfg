@@ -12,7 +12,7 @@ pkgs.mkShell {
     lolcat
 
     nix-tree
-    nixfmt-rfc-style
+    nixfmt
     shellcheck
     statix
   ];

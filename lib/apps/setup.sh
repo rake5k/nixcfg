@@ -73,10 +73,10 @@ _setup_nix() {
     nix_env_pkgs_json="$(nix-env -q --json)"
     local nix_env_pkgs_names
     nix_env_pkgs_names="$(echo "${nix_env_pkgs_json}" | jq ".[].pname")"
-    local has_nix_imperative
-    has_nix_imperative=$(echo "${nix_env_pkgs_names}" | grep '"nix"' > /dev/null)
+    local has_nix_imperative=false
     # preparation for non nixos systems
-    if ${has_nix_imperative}; then
+    if echo "${nix_env_pkgs_names}" | grep -q '"nix"'; then
+        has_nix_imperative=true
         _log "Set priority of installed nix package..."
         nix-env --set-flag priority 1000 nix
     fi
