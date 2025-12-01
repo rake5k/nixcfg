@@ -5,6 +5,7 @@ let
   config = {
     allowAliases = false;
     allowUnfree = true;
+    allowUnsupportedSystem = builtins.match "aarch64-linux" system != null;
     nvidia.acceptLicense = true;
     permittedInsecurePackages = [
       "broadcom-sta-6.30.223.271-57-6.12.55"
@@ -19,6 +20,7 @@ import inputs.nixpkgs {
   overlays =
     let
       unstable = import inputs.nixpkgs-unstable { inherit config system; };
+      isX86 = builtins.match "x86_64-.*" system != null;
     in
     [
       (_final: _prev: {
@@ -28,6 +30,6 @@ import inputs.nixpkgs {
       })
 
       inputs.nur.overlays.default
-      inputs.nvidia-patch.overlays.default
-    ];
+    ]
+    ++ (if isX86 then [ inputs.nvidia-patch.overlays.default ] else [ ]);
 }
