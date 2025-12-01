@@ -8,7 +8,6 @@
 let
 
   nixCommons = import ../nix-commons { inherit lib inputs pkgs; };
-  nixSubstituters = import ../nix-commons/substituters.nix;
 
 in
 
@@ -21,7 +20,6 @@ in
         "nix-command"
         "flakes"
       ];
-    }
-    // nixSubstituters;
+    };
   };
 }
