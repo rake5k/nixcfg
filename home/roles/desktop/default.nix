@@ -66,6 +66,8 @@ in
     };
 
     xdg = mkIf pkgs.stdenv.isLinux {
+
+      configFile."mimeapps.list".force = true;
       mime.enable = true;
       mimeApps = {
         enable = true;
