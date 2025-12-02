@@ -15,6 +15,7 @@ inputs.flake-commons.lib {
       literalExpression
       mkEnableOption
       mkOption
+      mkPackageOption
       types
       ;
 
@@ -145,9 +146,9 @@ inputs.flake-commons.lib {
       };
 
       lockerCfg = {
-        package = mkOption {
-          type = types.package;
-          description = "Locker package to use";
+        package = mkPackageOption pkgs "Locker" {
+          nullable = true;
+          default = null;
         };
 
         lockerCmd = mkOption {

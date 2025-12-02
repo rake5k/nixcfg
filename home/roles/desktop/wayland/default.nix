@@ -122,7 +122,7 @@ in
         inherit (cfg) autoruns wallpapersDir;
 
         lockerCfg = {
-          package = pkgs.swaylock;
+          package = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
 
           # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
           # On non-NixOS: install `swaylock` from the distribution's repository.
