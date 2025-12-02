@@ -71,6 +71,7 @@ in
         };
       };
       swaylock = {
+        inherit (cfg.lockerCfg) package;
         enable = true;
         settings = {
           show-failed-attempts = true;
