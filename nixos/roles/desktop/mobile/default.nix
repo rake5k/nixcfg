@@ -22,10 +22,10 @@ in
 
   config = mkIf cfg.enable {
     services = {
-      logind = {
-        lidSwitch = "suspend-then-hibernate";
-        lidSwitchDocked = "ignore";
-        lidSwitchExternalPower = "lock";
+      logind.settings.Login = {
+        HandleLidSwitch = "suspend-then-hibernate";
+        HandleLidSwitchDocked = "ignore";
+        HandleLidSwitchExternalPower = "lock";
       };
 
       thermald.enable = true;
