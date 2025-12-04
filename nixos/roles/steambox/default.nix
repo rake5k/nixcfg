@@ -72,17 +72,12 @@ in
 
     # Enable the KDE Desktop Environment.
     services = {
+      desktopManager.plasma6.enable = true;
       displayManager = {
         sddm.enable = true;
-        autoLogin = {
-          enable = true;
-          user = "gamer";
-        };
+        autoLogin.user = "gamer";
       };
-      xserver = {
-        enable = true;
-        desktopManager.plasma5.enable = true;
-      };
+      xserver.enable = true;
     };
 
     users.users."${username}" = {
