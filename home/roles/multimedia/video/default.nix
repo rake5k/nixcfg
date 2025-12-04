@@ -23,7 +23,7 @@ in
   config = mkIf cfg.enable {
     home = {
       packages = [
-        pkgs.plex-media-player
+        pkgs.plex-desktop
       ];
     };
 
