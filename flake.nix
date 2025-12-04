@@ -111,7 +111,7 @@
     };
 
     nvidia-patch = {
-      url = "github:rake5k/nvidia-patch-nixos/add-570.195.03";
+      url = "github:icewind1991/nvidia-patch-nixos";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         utils.follows = "flake-utils";
