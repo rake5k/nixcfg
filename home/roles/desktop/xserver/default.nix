@@ -43,10 +43,6 @@ in
             command = "${pkgs.blueberry}/bin/blueberry-tray";
             workspace = 1;
           }
-          {
-            command = "${getExe pkgs.parcellite}";
-            workspace = 1;
-          }
         ]
         ++ desktopCfg.autoruns;
         description = ''
