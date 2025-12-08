@@ -10,7 +10,7 @@ let
 
   cfg = config.custom.base;
 
-  inherit (lib) mkOption types;
+  inherit (lib) getExe mkOption types;
 
 in
 
@@ -56,6 +56,6 @@ in
 
     time.timeZone = "Europe/Zurich";
 
-    user.shell = "${pkgs.zsh}/bin/zsh";
+    user.shell = getExe pkgs.zsh;
   };
 }
