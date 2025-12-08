@@ -22,6 +22,8 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
+      home.shell.enableZshIntegration = true;
+
       programs.zsh = {
         enable = true;
         autosuggestion.enable = true;
@@ -29,9 +31,6 @@ in
         autocd = true;
         dotDir = "${config.xdg.configHome}/zsh";
         dirHashes = {
-          bb = "/mnt/bluecare/bluecare";
-          bh = "/mnt/bluecare/home";
-          bt = "/mnt/bluecare/transfer";
           d = "$HOME/Documents";
           dl = "$HOME/Downloads";
           hh = "/mnt/home/home";
