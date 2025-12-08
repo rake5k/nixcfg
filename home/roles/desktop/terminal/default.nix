@@ -68,6 +68,7 @@ in
         open_url_with = "default";
         scrollback_fill_enlarged_window = true;
         scrollback_lines = 10000;
+        shell = getExe pkgs.zsh;
         show_hyperlink_targets = true;
         strip_trailing_spaces = "always";
         tab_bar_style = "powerline";
