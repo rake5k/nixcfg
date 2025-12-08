@@ -95,7 +95,7 @@ in
             fi
             echo "running chsh to make zsh the default shell"
             run chsh -s $ZSH_PATH ${config.home.username}
-            echo "zsh is now set as default shell !"
+            echo "ZSH is now your default shell! 🚀"
           fi
         '';
       };
