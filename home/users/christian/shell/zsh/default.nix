@@ -9,7 +9,7 @@ let
 
   cfg = config.custom.users.christian.shell.zsh;
 
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkMerge;
 
 in
 
@@ -20,8 +20,8 @@ in
     };
   };
 
-  config =
-    mkIf cfg.enable {
+  config = mkIf cfg.enable (mkMerge [
+    {
       programs.zsh = {
         enable = true;
         autosuggestion.enable = true;
@@ -76,7 +76,7 @@ in
         syntaxHighlighting.enable = true;
       };
     }
-    // mkIf config.custom.base.non-nixos.enable {
+    (mkIf config.custom.base.non-nixos.enable {
       home = {
         packages = [
           pkgs.zsh
@@ -99,5 +99,6 @@ in
           fi
         '';
       };
-    };
+    })
+  ]);
 }
