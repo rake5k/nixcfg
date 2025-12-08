@@ -50,7 +50,8 @@ in
         neofetch
         trash-cli
         unzip
-        util-linux
+        # Breaks steam on SteamOS in desktop mode!
+        # util-linux
 
         (writeShellApplication {
           name = "sbb";
