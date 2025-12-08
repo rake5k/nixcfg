@@ -52,7 +52,7 @@ in
             extended = true;
             ignoreDups = true;
             ignoreSpace = true;
-            path = "$ZDOTDIR/.zsh_history";
+            path = "${config.programs.zsh.dotDir}/.zsh_history";
             save = historySize;
             share = true;
             size = historySize;
