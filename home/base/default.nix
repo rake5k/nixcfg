@@ -1,14 +1,13 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 
 {
   home = {
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
 
     sessionPath = [ "$HOME/bin" ];
+    sessionVariables = {
+      LANG = "${config.home.language.base}";
+    };
 
     enableNixpkgsReleaseCheck = true;
   };
