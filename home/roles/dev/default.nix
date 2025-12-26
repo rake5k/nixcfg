@@ -30,6 +30,7 @@ in
       java.enable = true;
       js.enable = true;
       plantuml.enable = true;
+      opencode.enable = true;
       scala.enable = true;
     };
 
