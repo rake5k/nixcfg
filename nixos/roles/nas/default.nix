@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -46,5 +51,9 @@ in
     };
 
     powerManagement.powertop.enable = true;
+
+    environment.systemPackages = with pkgs; [
+      yazi
+    ];
   };
 }
