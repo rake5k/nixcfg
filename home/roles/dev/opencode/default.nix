@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -18,6 +23,7 @@ in
   config = mkIf cfg.enable {
     programs.opencode = {
       enable = true;
+      package = pkgs.unstable.opencode;
       settings = {
         provider = {
           hyperion = {
