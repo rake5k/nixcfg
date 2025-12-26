@@ -47,7 +47,7 @@ in
         glow
         gron
         killall
-        neofetch
+        fastfetch
         trash-cli
         unzip
         # Breaks steam on SteamOS in desktop mode!
