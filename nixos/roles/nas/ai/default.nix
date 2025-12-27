@@ -37,6 +37,7 @@ in
             routers = {
               ollama = {
                 entryPoints = [ "websecure" ];
+                middlewares = [ "hostheader" ];
                 rule = "Host(`ollama.local.harke.ch`)";
                 service = "ollama";
                 tls.certResolver = "letsencrypt";
@@ -47,6 +48,16 @@ in
                 rule = "Host(`chat.local.harke.ch`)";
                 service = "open-webui";
                 tls.certResolver = "letsencrypt";
+              };
+            };
+
+            middlewares = {
+              hostheader = {
+                headers = {
+                  customRequestHeaders = {
+                    Host = "localhost:11434";
+                  };
+                };
               };
             };
           };
