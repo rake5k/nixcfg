@@ -29,6 +29,7 @@ in
           facebook-container
           istilldontcareaboutcookies
           languagetool
+          libredirect
           localcdn
           multi-account-containers
           onepassword-password-manager
