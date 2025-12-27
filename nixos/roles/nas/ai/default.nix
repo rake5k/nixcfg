@@ -44,7 +44,7 @@ in
 
               open-webui = {
                 entryPoints = [ "websecure" ];
-                rule = "Host(`txtgen.local.harke.ch`)";
+                rule = "Host(`chat.local.harke.ch`)";
                 service = "open-webui";
                 tls.certResolver = "letsencrypt";
               };
