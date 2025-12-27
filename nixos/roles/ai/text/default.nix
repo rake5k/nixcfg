@@ -33,6 +33,9 @@ in
     services = {
       ollama = {
         enable = true;
+        environmentVariables = {
+          OLLAMA_ORIGINS = "*";
+        };
         openFirewall = true;
         port = 11434;
       };
