@@ -31,9 +31,14 @@ in
             name = "Ollama (hyperion)";
             options.baseURL = "https://ollama.local.harke.ch/v1";
             models = {
-              "deepseek-r1:7b".name = "Deepseek r1 7b";
-              "deepseek-r1:8b".name = "Deepseek r1 8b";
-              "gpt-oss:20b".name = "GPT OSS 20b";
+              "devstral-small-2:24b-8k".name = "Devstral Small 2 24b 8k";
+              "devstral-small-2:24b-16k".name = "Devstral Small 2 24b 16k";
+              "qwen2.5-coder:3b-8k".name = "Qwen 2.5 Coder 3b 8k";
+              "qwen2.5-coder:3b-16k".name = "Qwen 2.5 Coder 3b 16k";
+              "qwen2.5-coder:3b-32k".name = "Qwen 2.5 Coder 3b 32k";
+              "qwen2.5-coder:7b-8k".name = "Qwen 2.5 Coder 7b 8k";
+              "qwen2.5-coder:7b-16k".name = "Qwen 2.5 Coder 7b 16k";
+              "qwen2.5-coder:7b-32k".name = "Qwen 2.5 Coder 7b 32k";
             };
           };
         };
