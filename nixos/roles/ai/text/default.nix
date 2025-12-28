@@ -38,7 +38,6 @@ in
     services = {
       ollama = {
         enable = true;
-        package = pkgs.unstable.ollama;
         openFirewall = true;
         port = 11434;
       };
