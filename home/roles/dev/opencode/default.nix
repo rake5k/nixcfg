@@ -31,12 +31,30 @@ in
             name = "Ollama (hyperion)";
             options.baseURL = "https://ollama.local.harke.ch/v1";
             models = {
-              "qwen2.5-coder:3b-8k".name = "Qwen 2.5 Coder 3b 8k";
-              "qwen2.5-coder:3b-16k".name = "Qwen 2.5 Coder 3b 16k";
-              "qwen2.5-coder:3b-32k".name = "Qwen 2.5 Coder 3b 32k";
-              "qwen2.5-coder:7b-8k".name = "Qwen 2.5 Coder 7b 8k";
-              "qwen2.5-coder:7b-16k".name = "Qwen 2.5 Coder 7b 16k";
-              "qwen2.5-coder:7b-32k".name = "Qwen 2.5 Coder 7b 32k";
+              "qwen2.5-coder:3b-8k" = {
+                name = "Qwen 2.5 Coder 3b 8k";
+                tools = true;
+              };
+              "qwen2.5-coder:3b-16k" = {
+                name = "Qwen 2.5 Coder 3b 16k";
+                tools = true;
+              };
+              "qwen2.5-coder:3b-32k" = {
+                name = "Qwen 2.5 Coder 3b 32k";
+                tools = true;
+              };
+              "qwen2.5-coder:7b-8k" = {
+                name = "Qwen 2.5 Coder 7b 8k";
+                tools = true;
+              };
+              "qwen2.5-coder:7b-16k" = {
+                name = "Qwen 2.5 Coder 7b 16k";
+                tools = true;
+              };
+              "qwen2.5-coder:7b-32k" = {
+                name = "Qwen 2.5 Coder 7b 32k";
+                tools = true;
+              };
             };
           };
         };
