@@ -31,8 +31,6 @@ in
             name = "Ollama (hyperion)";
             options.baseURL = "https://ollama.local.harke.ch/v1";
             models = {
-              "devstral-small-2:24b-8k".name = "Devstral Small 2 24b 8k";
-              "devstral-small-2:24b-16k".name = "Devstral Small 2 24b 16k";
               "qwen2.5-coder:3b-8k".name = "Qwen 2.5 Coder 3b 8k";
               "qwen2.5-coder:3b-16k".name = "Qwen 2.5 Coder 3b 16k";
               "qwen2.5-coder:3b-32k".name = "Qwen 2.5 Coder 3b 32k";
