@@ -18,7 +18,7 @@ in
   config = mkIf cfg.enable {
     home.keyboard = {
       layout = "de,de";
-      variant = "neo_qwertz,bone";
+      variant = "bone,neo_qwertz";
       options = [
         "grp:rctrl_toggle"
         "grp_led:scroll"

@@ -377,7 +377,7 @@ in
           };
         };
 
-        keyboard-layout = "-variant neo_qwertz,bone -options grp:rctrl_toggle,grp_led:scroll de,de";
+        keyboard-layout = "-variant bone,neo_qwertz -options grp:rctrl_toggle,grp_led:scroll de,de";
 
         map = {
           normal = {
@@ -387,8 +387,7 @@ in
             "Super E" = "spawn '${getExe pkgs.rofimoji} --selector fuzzel'";
 
             # Screenshots
-            "Super S" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdFull}'";
-            "Super+Shift S" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdSelect}'";
+            "Super+Shift T" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdSelect}'";
             "Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdFull}'";
             "Control Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdWindow}'";
             "Control+Shift Print" = "spawn '${getExe pkgs.bash} ${cfg.screenshotCfg.screenshotCmdSelect}'";
@@ -400,10 +399,10 @@ in
             "Super Q" = "spawn ${config.xdg.configHome}/river/init";
 
             # Window navigation
-            "Super J" = "focus-view next";
-            "Super K" = "focus-view previous";
-            "Super+Shift J" = "swap next";
-            "Super+Shift K" = "swap previous";
+            "Super N" = "focus-view next";
+            "Super R" = "focus-view previous";
+            "Super+Shift N" = "swap next";
+            "Super+Shift R" = "swap previous";
             "Super Period" = "focus-output next";
             "Super Comma" = "focus-output previous";
 
@@ -416,17 +415,17 @@ in
             "Super Return" = "zoom";
 
             # Super+H and Super+L to decrease/increase the main ratio of rivertile(1)
-            "Super H" = "send-layout-cmd rivertile 'main-ratio -0.05'";
-            "Super L" = "send-layout-cmd rivertile 'main-ratio +0.05'";
+            "Super B" = "send-layout-cmd rivertile 'main-ratio -0.05'";
+            "Super S" = "send-layout-cmd rivertile 'main-ratio +0.05'";
 
             # Super+Shift+H and Super+Shift+L to increment/decrement the main count of rivertile(1)
-            "Super+Shift H" = "send-layout-cmd rivertile 'main-count +1'";
-            "Super+Shift L" = "send-layout-cmd rivertile 'main-count -1'";
+            "Super+Shift B" = "send-layout-cmd rivertile 'main-count +1'";
+            "Super+Shift S" = "send-layout-cmd rivertile 'main-count -1'";
 
-            "Super+Alt+Shift H" = "resize horizontal -100";
-            "Super+Alt+Shift J" = "resize vertical 100";
-            "Super+Alt+Shift K" = "resize vertical -100";
-            "Super+Alt+Shift L" = "resize horizontal 100";
+            "Super+Alt+Shift B" = "resize horizontal -100";
+            "Super+Alt+Shift N" = "resize vertical 100";
+            "Super+Alt+Shift R" = "resize vertical -100";
+            "Super+Alt+Shift S" = "resize horizontal 100";
 
             "Super Space" = "toggle-float";
             "Super F" = "toggle-fullscreen";

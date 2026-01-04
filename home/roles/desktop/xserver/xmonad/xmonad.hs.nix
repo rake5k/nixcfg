@@ -45,7 +45,7 @@ pkgs.writeText "xmonad.hs" ''
   import XMonad.Layout.NoBorders (hasBorder, smartBorders)
   import XMonad.Layout.Spacing (spacingWithEdge)
 
-  import XMonad.Util.EZConfig (additionalKeysP)
+  import XMonad.Util.EZConfig (additionalKeysP, remapKeysP)
   import XMonad.Util.NamedScratchpad (customFloating, NamedScratchpad(NS), namedScratchpadAction, namedScratchpadManageHook)
   import XMonad.Util.SpawnOnce (spawnOnOnce)
   import XMonad.Util.Ungrab (unGrab)
@@ -171,9 +171,9 @@ pkgs.writeText "xmonad.hs" ''
 
   myStartupHook :: X ()
   myStartupHook = startupHook def <+> do
-      ${optionalString (autoruns != [ ]) ''
-        ${concatStringsSep "\n    " (map mkAutorun autoruns)}
-      ''}
+    ${optionalString (autoruns != [ ]) ''
+      ${concatStringsSep "\n  " (map mkAutorun autoruns)}
+    ''}
 
   myLayout = avoidStruts $ smartBorders $ spacingWithEdge 5 $ tiled ||| Mirror tiled ||| Full
     where
@@ -183,21 +183,20 @@ pkgs.writeText "xmonad.hs" ''
       delta    = 3/100  -- Percent of screen to increment by when resizing panes
 
   toggleFull = withFocused (\windowId -> do {
-     floats <- gets (W.floating . windowset);
-     if windowId `M.member` floats
-     then do
-       withFocused $ toggleBorder
-       withFocused $ windows . W.sink
-     else do
-       withFocused $ toggleBorder
-       withFocused $  windows . (flip W.float $ W.RationalRect 0 0 1 1)
-     })
+    floats <- gets (W.floating . windowset);
+    if windowId `M.member` floats
+    then do
+      withFocused $ toggleBorder
+      withFocused $ windows . W.sink
+    else do
+      withFocused $ toggleBorder
+      withFocused $  windows . (flip W.float $ W.RationalRect 0 0 1 1)
+  })
 
   myKeys :: [(String, X ())]
   myKeys =
     [ ("M-S-<Delete>",  spawn "${escapeHaskellString lockerCmd}")
-    , ("M-s",           unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdFull}")
-    , ("M-S-s",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdSelect}")
+    , ("M-S-t",         unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdSelect}")
     , ("<Print>",       unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdFull}")
     , ("C-<Print>",     unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdWindow}")
     , ("C-S-<Print>",   unGrab *> spawn "${getExe pkgs.bash} ${escapeHaskellString screenshotCfg.screenshotCmdSelect}")
@@ -234,6 +233,7 @@ pkgs.writeText "xmonad.hs" ''
       , manageHook          = myManageHook  -- Match on certain windows
       ${optionalString (autoruns != { }) ", startupHook         = myStartupHook"}
       }
+    `remapKeysP` [( "M-b", "M-h" ), ( "M-n", "M-j" ), ( "M-r", "M-k" ), ( "M-s", "M-l" )]
     `additionalKeysP` myKeys
 
   main :: IO ()
