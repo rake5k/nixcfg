@@ -2,7 +2,7 @@
   services = {
     xserver.xkb = {
       layout = "ch,de,de";
-      variant = ",neo_qwertz,bone";
+      variant = ",bone,neo_qwertz";
       options = "grp:rctrl_toggle,grp_led:scroll";
     };
   };

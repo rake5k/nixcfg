@@ -5,12 +5,12 @@
   ...
 }:
 
-with lib;
-
 let
 
   desktopCfg = config.custom.roles.desktop;
   cfg = desktopCfg.gnome;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -33,11 +33,11 @@ in
         sources = [
           (mkTuple [
             "xkb"
-            "de+neo_qwertz"
+            "de+bone"
           ])
           (mkTuple [
             "xkb"
-            "de+bone"
+            "de+neo_qwertz"
           ])
         ];
       };
