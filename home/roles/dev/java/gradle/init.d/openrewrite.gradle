@@ -12,7 +12,7 @@ rootProject {
   plugins.apply(org.openrewrite.gradle.RewritePlugin)
 
   dependencies {
-    rewrite platform('org.openrewrite.recipe:rewrite-recipe-bom:2.9.0')
+    rewrite platform('org.openrewrite.recipe:rewrite-recipe-bom:3.21.0')
     rewrite 'org.openrewrite:rewrite-java'
 
     // add your recipe dependencies as needed:
