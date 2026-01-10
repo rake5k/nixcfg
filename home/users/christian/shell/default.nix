@@ -24,6 +24,8 @@ in
     custom = {
       users.christian.shell = {
         direnv.enable = true;
+        lazygit.enable = true;
+        starship.enable = true;
         tmux.enable = true;
         yazi.enable = true;
         zsh.enable = true;
@@ -86,23 +88,6 @@ in
       jq.enable = true;
       less.enable = true;
       pandoc.enable = true;
-
-      starship = {
-        enable = true;
-        settings = {
-          character = {
-            success_symbol = "[➜](bold green)";
-            error_symbol = "[➜](bold red)";
-            vimcmd_symbol = "[V](bold green)";
-          };
-          nix_shell = {
-            symbol = "❄ ";
-          };
-          package = {
-            symbol = " ";
-          };
-        };
-      };
     };
   };
 }
