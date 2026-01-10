@@ -24,6 +24,11 @@ in
 
     programs.lazygit = {
       enable = true;
+      settings = {
+        gui = {
+          useHunkModeInStagingView = true;
+        };
+      };
     };
   };
 }
