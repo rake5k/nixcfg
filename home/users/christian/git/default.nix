@@ -27,8 +27,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.programs.lazygit.enable = true;
-
     home.packages = with pkgs; [ git-crypt ];
 
     programs.difftastic = {
