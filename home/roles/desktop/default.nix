@@ -50,22 +50,18 @@ in
 
   config = mkIf cfg.enable {
 
-    home.packages =
-      with pkgs;
-      lib.optionals stdenv.isLinux [
-        kooha
-        seahorse
-      ]
-      ++ [
-        mupdf
-      ];
+    home.packages = with pkgs; [
+      kooha
+      mupdf
+      seahorse
+    ];
 
     services = {
-      gnome-keyring.enable = pkgs.stdenv.isLinux;
-      network-manager-applet.enable = pkgs.stdenv.isLinux;
+      gnome-keyring.enable = true;
+      network-manager-applet.enable = true;
     };
 
-    xdg = mkIf pkgs.stdenv.isLinux {
+    xdg = {
 
       configFile."mimeapps.list".force = true;
       mime.enable = true;

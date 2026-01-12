@@ -149,11 +149,14 @@
         listToAttrs
         maintainers
         platforms
+        recursiveUpdate
         ;
       inherit (nixcfgLib)
         forEachSystem
         mkApp
+        mkBuild
         mkDevShell
+        mkForSystem
         mkForEachSystem
         mkHome
         mkNixDarwin
@@ -214,16 +217,23 @@
         })
       ];
 
-      checks = forEachSystem (
-        system:
-        let
-          commonsLib = inputs.flake-commons.lib {
-            pkgs = pkgsFor."${system}";
-            flake = self;
-          };
-        in
-        commonsLib.checks
-      );
+      checks =
+        recursiveUpdate
+          (forEachSystem (
+            system:
+            let
+              commonsLib = inputs.flake-commons.lib {
+                pkgs = pkgsFor."${system}";
+                flake = self;
+              };
+            in
+            commonsLib.checks
+          ))
+          (
+            mkForSystem aarch64-linux [
+              (mkBuild "build" self.packages.aarch64-linux.default)
+            ]
+          );
 
       devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
 
@@ -231,9 +241,7 @@
       # Run it using `nix-tree . --impure --derivation`
       packages = {
         aarch64-darwin.default = self.darwinConfigurations.macos.system;
-        # Note: nix-on-droid uses builtins.storePath which isn't compatible with flake check
-        # Users should build it with: nix-on-droid switch --flake .#nix-on-droid
-        # aarch64-linux.default = self.nixOnDroidConfigurations.nix-on-droid.activationPackage;
+        aarch64-linux.default = self.nixOnDroidConfigurations.nix-on-droid.activationPackage;
         x86_64-linux = {
           default = self.packages.x86_64-linux.nixos;
           nixos = self.nixosConfigurations.nixos.config.system.build.toplevel;
