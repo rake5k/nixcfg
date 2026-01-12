@@ -6,6 +6,7 @@ let
 
   inherit (lib)
     mkEnableOption
+    mkForce
     mkIf
     mkOption
     types
@@ -34,5 +35,7 @@ in
         nod-switch = "nix-on-droid switch --flake '${cfg.flake}'";
       };
     };
+
+    targets.genericLinux.gpu.enable = mkForce false;
   };
 }
