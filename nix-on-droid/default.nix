@@ -42,6 +42,9 @@ in
         /_//_/_//_\_\    \___/_//_/    \_,_/_/  \___/_/\_,_/
 
       '';
+      packages = with pkgs; [
+        glibcLocales
+      ];
     };
 
     home-manager.config = "${inputs.self}/hosts/${cfg.hostname}/home-nix-on-droid.nix";
