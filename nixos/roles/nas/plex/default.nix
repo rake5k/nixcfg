@@ -23,7 +23,14 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [ config.services.plex.dataDir ];
+    custom = {
+      base.system.btrfs.impermanence.extraDirectories = [ config.services.plex.dataDir ];
+
+      roles.backup.rsync.jobs.backup.excludes = [
+        "/persist/${config.services.plex.dataDir}/Plex Media Server/Cache"
+        "${config.services.plex.dataDir}/Plex Media Server/Cache"
+      ];
+    };
 
     services = {
       plex = {
