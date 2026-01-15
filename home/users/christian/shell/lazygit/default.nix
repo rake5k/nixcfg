@@ -26,7 +26,7 @@ in
       enable = true;
       settings = {
         gui = {
-          useHunkModeInStagingView = true;
+          useHunkModeInStagingView = false;
         };
       };
     };
