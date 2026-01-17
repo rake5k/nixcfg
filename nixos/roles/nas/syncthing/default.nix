@@ -46,6 +46,10 @@ in
               addresses = [ "tcp://10.0.10.7:22000" ];
               id = "XKSHGGN-JSMIPZ3-MUDZHEM-LH2I6KZ-B3WTV3X-R2ZLCBI-QHPJTFR-ELYCIQN";
             };
+            retropie = {
+              addresses = [ ];
+              id = "WJM37IG-DIXQ5NL-6BBLEJP-MT67BKR-C7WMLT3-QD2HZYZ-SQGR25I-JLA4DAI";
+            };
             sirius-a = {
               addresses = [ ];
               id = "WTYJYH5-XTTBBTX-TJ2KUSE-7R7Q77T-4HCEO4R-CJMWKCD-ZGYV2AI-TG3NHQH";
@@ -72,6 +76,14 @@ in
               ];
               id = "gbpxu-zscyz";
               path = "/data/syncthing/RetroDeck";
+            };
+            RetroPie = {
+              enable = true;
+              devices = [
+                config.services.syncthing.settings.devices.retropie.name
+              ];
+              id = "l75h5-auqfx";
+              path = "/data/syncthing/RetroPie";
             };
           };
 
