@@ -28,7 +28,7 @@ in
         d = "$HOME/Documents";
         dl = "$HOME/Downloads";
         p = "$HOME/Pictures";
-        usb = "/run/media/chr";
+        usb = "/run/media/${config.home.username}";
         v = "$HOME/Videos";
       };
       history =
