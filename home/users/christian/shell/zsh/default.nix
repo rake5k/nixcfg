@@ -27,11 +27,6 @@ in
       dirHashes = {
         d = "$HOME/Documents";
         dl = "$HOME/Downloads";
-        hh = "/mnt/home/home";
-        hm = "/mnt/home/music";
-        hp = "/mnt/home/photo";
-        ht = "/mnt/home/public";
-        hv = "/mnt/home/video";
         p = "$HOME/Pictures";
         usb = "/run/media/chr";
         v = "$HOME/Videos";
