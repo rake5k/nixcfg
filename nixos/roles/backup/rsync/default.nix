@@ -25,6 +25,7 @@ let
     "/dev/"
     "/home/*/.thumbnails/"
     "/home/*/.cache/"
+    "/home/*/.config/*/Cache/"
     "/home/*/.local/share/Trash/"
     "/media/"
     "/mnt/"
