@@ -308,6 +308,11 @@ in
 
         # Built Visual Studio Code Extensions
         "*.vsix"
+
+        # Custom/Vim
+        #
+
+        ".vim"
       ];
     };
   };
