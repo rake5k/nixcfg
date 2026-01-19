@@ -25,6 +25,7 @@ in
       autocd = true;
       dotDir = "${config.xdg.configHome}/zsh";
       dirHashes = {
+        c = "$HOME/code";
         d = "$HOME/Documents";
         dl = "$HOME/Downloads";
         p = "$HOME/Pictures";
