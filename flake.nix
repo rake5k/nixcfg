@@ -93,7 +93,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs = {
+        home-manager.follows = "";
+        nixpkgs.follows = "";
+      };
+    };
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.3";
