@@ -59,6 +59,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    custom = {
+      roles.backup.rsync.jobs.backup.excludes = [
+        "${cfg.dataPath}/home/*/.thumbnails/"
+        "${cfg.dataPath}/home/*/.cache/"
+        "${cfg.dataPath}/home/*/.config/*/Cache/"
+        "${cfg.dataPath}/home/*/.local/share/flatpak/"
+        "${cfg.dataPath}/home/*/.local/share/Trash/"
+      ];
+    };
 
     users = {
       users.steam-headless = {
