@@ -27,7 +27,7 @@ in
       base.system.btrfs.impermanence.extraDirectories = [ config.services.plex.dataDir ];
 
       roles.backup.rsync.jobs.backup.excludes = [
-        "/persist/${config.services.plex.dataDir}/Plex Media Server/Cache"
+        "/persist${config.services.plex.dataDir}/Plex Media Server/Cache"
         "${config.services.plex.dataDir}/Plex Media Server/Cache"
       ];
     };
