@@ -25,7 +25,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = kernel.moduleBuildDependencies;
 
-  patchPhase = ''
+  postPatch = ''
     mkdir -p $out/{lib/udev/rules.d,${moduleDir}}
 
     sed -i '/depmod/d' Makefile
@@ -34,7 +34,7 @@ stdenv.mkDerivation (finalAttrs: {
 
     substituteInPlace fanatec.rules \
       --replace-fail '/usr/bin/evdev-joystick' '${lib.getExe' linuxConsoleTools "evdev-joystick"}' \
-      --replace-fail '/bin/sh' '${lib.getExe' bashNonInteractive "bash"}'
+      --replace-fail '/bin/sh' '${lib.getExe bashNonInteractive}'
   '';
 
   makeFlags = kernelModuleMakeFlags ++ [
