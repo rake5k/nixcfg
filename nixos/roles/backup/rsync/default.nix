@@ -91,7 +91,9 @@ let
       name = "rsync-no24";
       runtimeInputs = [ rsync ];
       text = ''
+        set -x
         ${getExe rsync} "$@"
+        set +x
         e=$?
         if test $e = 24; then
             exit 0
