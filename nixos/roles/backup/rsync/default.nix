@@ -21,11 +21,16 @@ let
     ;
   inherit (lib.strings) concatStringsSep optionalString;
 
+  defaultIncludes = [
+    "/home/*/.local/share/flatpak/overrides/***"
+  ];
+
   defaultExcludes = [
     "/dev/"
     "/home/*/.thumbnails/"
     "/home/*/.cache/"
     "/home/*/.config/*/Cache/"
+    "/home/*/.local/share/flatpak/*"
     "/home/*/.local/share/Trash/"
     "/media/"
     "/mnt/"
@@ -53,6 +58,12 @@ let
         type = types.str;
         description = "Identity file to use";
         example = "/root/.ssh/id_example";
+      };
+
+      includes = mkOption {
+        type = with types; listOf str;
+        description = "Directories and files to be explicitly included";
+        default = defaultIncludes;
       };
 
       excludes = mkOption {
@@ -94,10 +105,13 @@ let
     optionalString (
       identityFile != null
     ) "--rsh='${getExe pkgs.openssh} -i ${identityFile} -o StrictHostKeyChecking=no'";
+  mkIncludes =
+    includes:
+    concatStringsSep " " (map (include: "--include '${include}'") (defaultIncludes ++ includes));
   mkExcludes =
     excludes:
     concatStringsSep " " (map (exclude: "--exclude '${exclude}'") (defaultExcludes ++ excludes));
-  mkIncludes = concatStringsSep " ";
+  mkPaths = concatStringsSep " ";
   mkCmd = concatStringsSep " ";
   rsyncCmd = mkCmd [
     (getExe rsync-no24)
@@ -148,8 +162,9 @@ let
         rsyncCmd
         "--delete-after --delete-excluded"
         (mkIdentity value.identityFile)
+        (mkIncludes value.includes)
         (mkExcludes value.excludes)
-        (mkIncludes value.paths)
+        (mkPaths value.paths)
         value.target
       ];
       startAt = "00:00";
