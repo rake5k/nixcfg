@@ -37,8 +37,8 @@ in
         };
 
         sansSerif = {
-          package = pkgs.nerd-fonts.monofur;
-          name = "Monofur Nerd Font";
+          package = pkgs.roboto;
+          name = "Roboto";
         };
 
         monospace = {

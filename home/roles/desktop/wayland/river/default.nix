@@ -24,6 +24,7 @@ let
   };
 
   package = riverWithPath;
+  fontPackage = pkgs.nerd-fonts.monofur;
   launcherPackage = pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
@@ -45,8 +46,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Install river utilities (riverctl, rivertile) in PATH
-    home.packages = [ riverWithPath ];
+    home.packages = [
+      fontPackage
+
+      # Install river utilities (riverctl, rivertile) in PATH
+      riverWithPath
+    ];
 
     custom = {
       roles = {
@@ -315,7 +320,12 @@ in
     stylix.targets = {
       waybar = {
         addCss = false;
-        font = "sansSerif";
+        fonts.override = {
+          monospace = {
+            package = fontPackage;
+            name = "Monofur Nerd Font";
+          };
+        };
       };
     };
 
