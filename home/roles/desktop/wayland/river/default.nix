@@ -28,6 +28,7 @@ let
   launcherPackage = pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+  audioSourceMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
 
   PATH = "${config.home.homeDirectory}/.nix-profile/bin:/nix/var/nix/profiles/default/bin:${config.home.homeDirectory}/bin:$PATH";
 
@@ -99,11 +100,10 @@ in
             modules-center = [ "river/window" ];
             modules-right = [
               "battery"
-              "backlight"
               "wireplumber"
-              "custom/mic"
-              "custom/cpu"
-              "custom/clock"
+              "cpu"
+              "memory"
+              "clock"
               "tray"
             ];
 
@@ -126,9 +126,11 @@ in
                 "5"
                 "6"
                 "7"
+                "8"
+                "9"
               ];
               disable-click = false;
-              num-tags = 7;
+              num-tags = 9;
             };
 
             temperature = {
@@ -160,24 +162,10 @@ in
               ];
             };
 
-            backlight = {
-              device = "amdgpu_b10";
-              format = "{icon}  {}%";
-              format-icons = [
-                ""
-                ""
-              ];
-              interval = 1;
-              scroll-step = 5.0;
-            };
-
             wireplumber = {
               tooltip = false;
               scroll-step = 5.0;
-              format = "{icon}  {volume}%";
-              format-muted = "󰝟  0%";
-              on-click = cfg.volumeCtl.spawnCmd;
-              on-click-right = audioMuteToggle;
+              format = "{icon}  {volume}% | {format_source}";
               format-icons = {
                 default = [
                   ""
@@ -185,21 +173,32 @@ in
                   "󰕾"
                 ];
               };
+              format-muted = "󰝟  0% | {format_source}";
+              format-source = "󰍬 {volume}%";
+              format-source-muted = "󰍭 0%";
+              on-click = audioMuteToggle;
+              on-click-middle = cfg.volumeCtl.spawnCmd;
+              on-click-right = audioSourceMuteToggle;
             };
 
-            "custom/cpu" = {
+            cpu = {
               interval = 1;
-              return-type = "string";
-              exec = "${waybarModulesPath}/cpu.sh";
+              format = "  {}%";
               tooltip = false;
               on-click = "gnome-system-monitor";
             };
 
-            "custom/clock" = {
+            memory = {
               interval = 1;
-              return-type = "string";
-              exec = "${waybarModulesPath}/datetime.sh";
+              format = "  {}%";
               tooltip = false;
+              on-click = "gnome-system-monitor";
+            };
+
+            clock = {
+              interval = 1;
+              format = "  {:%H:%M}";
+              tooltip-format = "{:%Y-%m-%d}";
               on-click = "gnome-clocks";
               on-click-right = "gnome-calendar";
             };
@@ -224,11 +223,15 @@ in
             }
 
             .module {
-              margin: 6px 6px 0 6px;
-              padding: 0 15px;
-              border-radius: 5px;
+              margin-left: 12px;
+              padding: 6px 12px;
+              border-radius: 0 0 3px 3px;
               transition: none;
               background: @base00;
+            }
+
+            .modules-right {
+                margin-right: 12px;
             }
 
             .module button {
@@ -236,6 +239,7 @@ in
               color: @base03;
               background: transparent;
               border-radius: 0px;
+              padding: 4px 6px;
             }
 
             .module button.occupied {
@@ -265,7 +269,7 @@ in
 
             #custom-powermenu {
               color: @base05;
-              padding-right: 20px;
+              padding-right: 17px;
             }
 
             #tags {
@@ -285,7 +289,7 @@ in
               color: @base00;
               animation-name: blink;
               animation-duration: 0.5s;
-              animation-timing-function: linear;
+              animation-timing-function: steps(12);
               animation-iteration-count: infinite;
               animation-direction: alternate;
             }
@@ -297,19 +301,19 @@ in
               }
             }
 
-            #backlight {
+            #wireplumber {
               color: @base0A;
             }
 
-            #wireplumber {
+            #cpu {
               color: @base09;
             }
 
-            #custom-cpu {
+            #memory {
               color: @base0E;
             }
 
-            #custom-clock {
+            #clock {
               color: @base08;
             }
 
@@ -500,7 +504,7 @@ in
             # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
             riverctl map $mode None XF86AudioRaiseVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+'
             riverctl map $mode None XF86AudioLowerVolume  spawn '${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-'
-            riverctl map $mode None XF86AudioMicMute      spawn '${pkgs.wireplumber}/bin/wpctl set-source-mute @DEFAULT_SOURCE@ toggle'
+            riverctl map $mode None XF86AudioMicMute      spawn '${audioSourceMuteToggle}'
             riverctl map $mode None XF86AudioMute         spawn '${audioMuteToggle}'
 
             # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
