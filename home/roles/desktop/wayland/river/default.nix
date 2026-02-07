@@ -51,6 +51,9 @@ in
 
       # Install river utilities (riverctl, rivertile) in PATH
       riverWithPath
+
+      # Necessary for screen sharing
+      pkgs.wofi
     ];
 
     custom = {
