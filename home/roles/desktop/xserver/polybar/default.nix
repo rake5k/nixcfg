@@ -181,8 +181,7 @@ in
           line-size = "2pt";
           padding-left = 0;
           padding-right = 1;
-          # Defining this is currently failing with a `file not found` error
-          #font-0 = "${cfg.font.config};2";
+          font-0 = "${cfg.font.config};2";
           font-1 = "Font Awesome 6 Free,Font Awesome 6 Free Regular:style=Regular:size=9;2";
           fixed-center = true;
 
