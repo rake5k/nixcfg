@@ -12,7 +12,7 @@ let
   cfg = config.custom.roles.desktop.xserver.polybar;
 
   package = pkgs.polybar.override { pulseSupport = true; };
-  fontPackage = pkgs.nerdfonts.override { fonts = [ "Monofur" ]; };
+  fontPackage = pkgs.nerd-fonts.monofur;
 
   logsFolder = "${config.xdg.dataHome}/polybar/logs";
 
@@ -111,10 +111,13 @@ in
     };
 
     home = {
-      packages = with pkgs; [
-        font-awesome
-        pasystray
-      ];
+      packages =
+        with pkgs;
+        [
+          font-awesome
+          pasystray
+        ]
+        ++ [ fontPackage ];
     };
 
     services.polybar = {
