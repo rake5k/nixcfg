@@ -23,32 +23,36 @@ in
     custom.roles.desktop.xserver.polybar = {
       enable = mkEnableOption "Polybar status bar";
 
-      colorScheme = {
-        foreground = mkOption {
-          type = types.str;
-          default = "#BBBBBB";
-        };
+      colorScheme =
+        let
+          inherit (config.lib.stylix) colors;
+        in
+        {
+          foreground = mkOption {
+            type = types.str;
+            default = colors.base00;
+          };
 
-        background = mkOption {
-          type = types.str;
-          default = "#000000";
-        };
+          background = mkOption {
+            type = types.str;
+            default = colors.base00;
+          };
 
-        base = mkOption {
-          type = types.str;
-          default = "#6586c8";
-        };
+          base = mkOption {
+            type = types.str;
+            default = colors.base05;
+          };
 
-        accent = mkOption {
-          type = types.str;
-          default = "#FF7F00";
-        };
+          accent = mkOption {
+            type = types.str;
+            default = colors.base0D;
+          };
 
-        warn = mkOption {
-          type = types.str;
-          default = "#FF5555";
+          warn = mkOption {
+            type = types.str;
+            default = colors.base05;
+          };
         };
-      };
 
       font = {
         package = mkOption {
@@ -149,22 +153,26 @@ in
           pseudo-transparency = false;
         };
 
-        colors = {
-          background = "#000000";
-          background-alt = "#373B41";
-          foreground = "#C5C8C6";
-          primary = "#F0C674";
-          secondary = "#8ABEB7";
-          alert = "#A54242";
-          disabled = "#707880";
+        colors =
+          let
+            inherit (config.lib.stylix) colors;
+          in
+          {
+            background = colors.base00;
+            background-alt = colors.base03;
+            foreground = colors.base05;
+            primary = colors.base0D;
+            secondary = colors.base0B;
+            alert = colors.base08;
+            disabled = colors.base03;
 
-          # Bars
-          bar-good = "#55aa55";
-          bar-ok = "#557755";
-          bar-warn = "#f5a70a";
-          bar-alert = "#ff5555";
-          bar-empty = "#444444";
-        };
+            # Bars
+            bar-good = colors.base0B;
+            bar-ok = colors.base05;
+            bar-warn = colors.base09;
+            bar-alert = colors.base08;
+            bar-empty = colors.base03;
+          };
 
         "bar/top" = {
           inherit (cfg) height;
@@ -226,6 +234,7 @@ in
           label-active-padding = 1;
 
           label-occupied = "%name%";
+          label-occupied-foreground = "\${colors.secondary}";
           label-occupied-padding = 1;
 
           label-urgent = "%name%";
