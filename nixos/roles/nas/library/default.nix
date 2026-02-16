@@ -40,7 +40,6 @@ in
     services = {
       calibre-web = {
         enable = true;
-        openFirewall = true;
         options = {
           calibreLibrary = cfg.libraryPath;
           enableBookConversion = true;

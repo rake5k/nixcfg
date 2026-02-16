@@ -159,13 +159,11 @@ in
       allowedTCPPorts = [
         7860
         5900
-        cfg.services.steam-headless.port
         32036
         32037
         32041
         47984
         47989
-        cfg.services.sunshine.port
         48010
       ];
       allowedUDPPorts = [

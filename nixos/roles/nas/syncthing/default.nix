@@ -6,8 +6,6 @@ let
 
   cfg = config.custom.roles.nas.syncthing;
 
-  guiAddress = "localhost:8384";
-
 in
 
 {
@@ -22,8 +20,6 @@ in
 
     services = {
       syncthing = {
-        inherit guiAddress;
-
         enable = true;
         dataDir = "/var/lib/syncthing";
         openDefaultPorts = true;
@@ -101,7 +97,7 @@ in
         dynamicConfigOptions = {
           http = {
             services = {
-              syncthing.loadBalancer.servers = [ { url = "http://${guiAddress}"; } ];
+              syncthing.loadBalancer.servers = [ { url = "http://${config.services.syncthing.guiAddress}"; } ];
             };
 
             routers = {
