@@ -63,7 +63,6 @@ in
         enable = true;
         # `null` will give access to all devices:
         accelerationDevices = null;
-        openFirewall = true;
         mediaLocation = cfg.mediaPath;
         settings = {
           machineLearning.facialRecognition.minFaces = 15;

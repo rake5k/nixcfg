@@ -11,6 +11,7 @@ let
 
   cfg = config.custom.roles.nas.plex;
 
+  plexPort = "32400";
   threadfinPort = "34400";
 
 in
@@ -44,7 +45,7 @@ in
         dynamicConfigOptions = {
           http = {
             services = {
-              plex.loadBalancer.servers = [ { url = "http://localhost:32400"; } ];
+              plex.loadBalancer.servers = [ { url = "http://localhost:${plexPort}"; } ];
               threadfin.loadBalancer.servers = [ { url = "http://localhost:${threadfinPort}"; } ];
             };
 

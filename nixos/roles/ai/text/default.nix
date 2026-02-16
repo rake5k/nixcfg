@@ -38,13 +38,11 @@ in
     services = {
       ollama = {
         enable = true;
-        openFirewall = true;
         port = 11434;
       };
       open-webui = {
         enable = true;
         package = pkgs.unstable.open-webui;
-        openFirewall = true;
         port = 11435;
       };
     };

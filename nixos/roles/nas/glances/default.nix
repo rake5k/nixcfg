@@ -41,10 +41,7 @@ in
     };
 
     services = {
-      glances = {
-        enable = true;
-        openFirewall = true;
-      };
+      glances.enable = true;
 
       traefik = {
         dynamicConfigOptions = {
