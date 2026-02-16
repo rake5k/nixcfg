@@ -15,6 +15,7 @@ let
     mkEnableOption
     mkIf
     mkOption
+    optionals
     types
     ;
 
@@ -52,9 +53,10 @@ in
 
     home.packages =
       with pkgs;
-      lib.optionals stdenv.isLinux [
+      optionals stdenv.isLinux [
         kooha
         seahorse
+        yubioath-flutter
       ]
       ++ [
         mupdf
