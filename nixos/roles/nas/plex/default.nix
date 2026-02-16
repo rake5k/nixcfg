@@ -92,7 +92,7 @@ in
       {
         containers = {
           threadfin = {
-            image = "fyb3roptik/threadfin:1.2.35-nvidia";
+            image = "fyb3roptik/threadfin:1.2.37-nvidia";
             ports = [ "127.0.0.1:${threadfinPort}:${threadfinPort}" ];
             environment = {
               PUID = uidStr;
