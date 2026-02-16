@@ -313,6 +313,11 @@ in
         #
 
         ".vim"
+
+        # Custom/Gradle
+        #
+
+        "bin"
       ];
     };
   };
