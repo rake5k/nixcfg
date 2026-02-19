@@ -43,7 +43,7 @@ in
             "/data/container/steam-headless/home/*/.cache/*"
             "/data/container/steam-headless/home/*/.local/share/Trash/*"
           ];
-          target = "backup@sv-syno-01.home.local:/volume1/NetBackup/${hostname}";
+          target = "backup@sv-syno-01.lan.harke.ch:/volume1/NetBackup/${hostname}";
         };
       };
     };

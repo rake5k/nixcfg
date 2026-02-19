@@ -41,7 +41,7 @@ in
             paths = [
               "/home"
             ];
-            target = "backup@sv-syno-01.home.local:/volume1/NetBackup/${hostname}";
+            target = "backup@sv-syno-01.lan.harke.ch:/volume1/NetBackup/${hostname}";
           };
         };
         printing.enable = true;

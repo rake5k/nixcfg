@@ -27,7 +27,7 @@ in
         settings = {
           devices = {
             altair = {
-              addresses = [ "tcp://altair.home.local:22000" ];
+              addresses = [ "tcp://altair.lan.harke.ch:22000" ];
               id = "5X2IF5F-VEV27CQ-B3SIGJH-AMCKBCJ-3D7N7MC-I4TNSCG-AKOGL4P-ABM2VQR";
             };
             malmok = {
@@ -35,7 +35,7 @@ in
               id = "JJXAPCO-MOJLFVL-3YHBIXK-YUGQWXF-SWEGZTH-7DW2XAS-GDSQ3KC-RUQVBAB";
             };
             pc-win10-chr = {
-              addresses = [ "tcp://altair.home.local:22000" ];
+              addresses = [ "tcp://altair.lan.harke.ch:22000" ];
               id = "CU6527N-PEXYFOV-YZSY5AI-UDRMM46-FM3BKUU-X3DSU4Y-JLEJ2YO-2CZBJAV";
             };
             pixel-7a = {
