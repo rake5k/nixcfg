@@ -34,9 +34,9 @@ in
               addresses = [ "tcp://10.0.10.2:22000" ];
               id = "JJXAPCO-MOJLFVL-3YHBIXK-YUGQWXF-SWEGZTH-7DW2XAS-GDSQ3KC-RUQVBAB";
             };
-            pc-win10-chr = {
+            pc-win-chr = {
               addresses = [ "tcp://altair.lan.harke.ch:22000" ];
-              id = "CU6527N-PEXYFOV-YZSY5AI-UDRMM46-FM3BKUU-X3DSU4Y-JLEJ2YO-2CZBJAV";
+              id = "4F3YSKI-OS2DO77-KKX2F45-5L627YH-6IL7KNK-72OBJ6U-7K4KMAV-ZRHZGQV";
             };
             pixel-7a = {
               addresses = [ "tcp://10.0.10.7:22000" ];
@@ -57,7 +57,7 @@ in
               enable = true;
               devices = [
                 config.services.syncthing.settings.devices.altair.name
-                config.services.syncthing.settings.devices.pc-win10-chr.name
+                config.services.syncthing.settings.devices.pc-win-chr.name
                 config.services.syncthing.settings.devices.malmok.name
                 config.services.syncthing.settings.devices.pixel-7a.name
                 config.services.syncthing.settings.devices.sirius-a.name
