@@ -100,6 +100,7 @@ in
 
           options = {
             globalAnnounceEnabled = false;
+            natEnabled = false;
             relaysEnabled = false;
             urAccepted = -1;
           };
