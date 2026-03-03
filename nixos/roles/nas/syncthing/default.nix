@@ -100,6 +100,8 @@ in
           gui.insecureSkipHostcheck = true;
 
           options = {
+            globalAnnounceEnabled = false;
+            relaysEnabled = false;
             urAccepted = -1;
           };
         };
