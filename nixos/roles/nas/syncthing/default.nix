@@ -65,6 +65,18 @@ in
               id = "jongs-ayrxt";
               path = "/data/syncthing/FreeTube";
             };
+            Logseq = {
+              enable = true;
+              devices = [
+                config.services.syncthing.settings.devices.altair.name
+                config.services.syncthing.settings.devices.pc-win-chr.name
+                config.services.syncthing.settings.devices.malmok.name
+                config.services.syncthing.settings.devices.pixel-7a.name
+                config.services.syncthing.settings.devices.sirius-a.name
+              ];
+              id = "erdif-3jmbn";
+              path = "/data/syncthing/Logseq";
+            };
             RetroDeck = {
               enable = true;
               devices = [
