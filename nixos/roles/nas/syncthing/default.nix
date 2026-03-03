@@ -27,7 +27,6 @@ in
         settings = {
           devices = {
             altair = {
-              addresses = [ "tcp://altair.lan.harke.ch:22000" ];
               id = "5X2IF5F-VEV27CQ-B3SIGJH-AMCKBCJ-3D7N7MC-I4TNSCG-AKOGL4P-ABM2VQR";
             };
             malmok = {
@@ -35,19 +34,19 @@ in
               id = "JJXAPCO-MOJLFVL-3YHBIXK-YUGQWXF-SWEGZTH-7DW2XAS-GDSQ3KC-RUQVBAB";
             };
             pc-win-chr = {
-              addresses = [ "tcp://altair.lan.harke.ch:22000" ];
               id = "4F3YSKI-OS2DO77-KKX2F45-5L627YH-6IL7KNK-72OBJ6U-7K4KMAV-ZRHZGQV";
             };
             pixel-7a = {
-              addresses = [ "tcp://10.0.10.7:22000" ];
+              addresses = [
+                "tcp://10.0.10.7:22000"
+                "dynamic"
+              ];
               id = "XKSHGGN-JSMIPZ3-MUDZHEM-LH2I6KZ-B3WTV3X-R2ZLCBI-QHPJTFR-ELYCIQN";
             };
             retropie = {
-              addresses = [ ];
               id = "WJM37IG-DIXQ5NL-6BBLEJP-MT67BKR-C7WMLT3-QD2HZYZ-SQGR25I-JLA4DAI";
             };
             sirius-a = {
-              addresses = [ ];
               id = "WTYJYH5-XTTBBTX-TJ2KUSE-7R7Q77T-4HCEO4R-CJMWKCD-ZGYV2AI-TG3NHQH";
             };
           };
