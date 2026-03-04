@@ -26,6 +26,9 @@ in
 
         settings = {
           devices = {
+            acrux = {
+              id = "LRTIDK7-EFT7M7P-SVD3S7N-RNGGU2G-QJD6U56-WUYRJYE-QXCLF34-OZTVZAN";
+            };
             altair = {
               id = "5X2IF5F-VEV27CQ-B3SIGJH-AMCKBCJ-3D7N7MC-I4TNSCG-AKOGL4P-ABM2VQR";
             };
@@ -55,6 +58,7 @@ in
             FreeTube = {
               enable = true;
               devices = [
+                config.services.syncthing.settings.devices.acrux.name
                 config.services.syncthing.settings.devices.altair.name
                 config.services.syncthing.settings.devices.pc-win-chr.name
                 config.services.syncthing.settings.devices.malmok.name
@@ -67,6 +71,7 @@ in
             Logseq = {
               enable = true;
               devices = [
+                config.services.syncthing.settings.devices.acrux.name
                 config.services.syncthing.settings.devices.altair.name
                 config.services.syncthing.settings.devices.pc-win-chr.name
                 config.services.syncthing.settings.devices.malmok.name
