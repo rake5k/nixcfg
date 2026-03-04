@@ -35,5 +35,20 @@ in
 
   config = mkIf cfg.enable {
     home.packages = [ pkgs.logseq ];
+
+    services.syncthing = {
+      settings = {
+        folders = {
+          Logseq = {
+            enable = true;
+            devices = [
+              config.services.syncthing.settings.devices.hyperion.name
+            ];
+            id = "erdif-3jmbn";
+            path = "~/Documents/notes/home";
+          };
+        };
+      };
+    };
   };
 }
