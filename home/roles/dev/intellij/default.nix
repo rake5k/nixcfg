@@ -48,6 +48,7 @@ in
 
           # language-servers
           nil
+          nixfmt
         ]
         ++ (optionals cfg.install [ ideaPackage ]);
     };
