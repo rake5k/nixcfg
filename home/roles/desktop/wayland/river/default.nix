@@ -34,10 +34,48 @@ let
 
   waybarModulesPath = config.xdg.configFile."waybar/modules".target;
 
-  inherit (lib) getExe mkIf;
+  inherit (lib)
+    concatStringsSep
+    getExe
+    mapAttrs
+    mapAttrsToList
+    mkIf
+    ;
   inherit (config.lib.custom) mkWindowManagerOptions;
 
   mkTag = tag: "$((1 << (${tag} - 1)))";
+  mkTagRule = _: tag: { tags = mkTag (toString tag); };
+
+  # Tag rules applied only at startup: apps spawn on their designated tag
+  # during login, then rules are removed so later windows open on the
+  # currently focused tag.
+  startupAppIdTagRules = {
+    "firefox" = 3;
+    "firefox_firefox" = 3;
+    "chromium" = 3;
+    "chromium-browser" = 3;
+    "jetbrains-idea" = 2;
+    "org.keepassxc.KeePassXC" = 7;
+    "kitty" = 1;
+    "Logseq" = 6;
+    "org.gnome.Evolution" = 5;
+  };
+
+  startupTitleTagRules = {
+    "'Microsoft Teams*'" = 4;
+    "'Outlook*'" = 5;
+  };
+
+  removeStartupTagRulesCmd =
+    let
+      appIdCmds = mapAttrsToList (
+        appId: _: "riverctl rule-del -app-id '${appId}' tags"
+      ) startupAppIdTagRules;
+      titleCmds = mapAttrsToList (
+        title: _: "riverctl rule-del -title ${title} tags"
+      ) startupTitleTagRules;
+    in
+    concatStringsSep "\n  " (appIdCmds ++ titleCmds);
 
 in
 
@@ -467,21 +505,9 @@ in
           "-app-id" = {
             # Fix app borders
             "*" = "ssd";
-
-            # App-specific rules
-            "firefox".tags = mkTag "3";
-            "firefox_firefox".tags = mkTag "3";
-            "chromium".tags = mkTag "3";
-            "chromium-browser".tags = mkTag "3";
-            "jetbrains-idea".tags = mkTag "2";
-            "org.keepassxc.KeePassXC".tags = mkTag "7";
-            "kitty".tags = mkTag "1";
-            "Logseq".tags = mkTag "6";
-            "org.gnome.Evolution".tags = mkTag "5";
-          };
-          "-title" = {
-            "'Microsoft Teams*'".tags = mkTag "4";
-          };
+          }
+          // mapAttrs mkTagRule startupAppIdTagRules;
+          "-title" = mapAttrs mkTagRule startupTitleTagRules;
         };
 
         set-cursor-warp = "on-output-change";
@@ -560,6 +586,13 @@ in
 
         killall .waybar-wrapped
         ${getExe pkgs.waybar} &
+
+        # Remove startup tag rules after apps have opened their windows,
+        # so any new windows open on the currently focused tag instead.
+        {
+          sleep 5
+          ${removeStartupTagRulesCmd}
+        } &
       '';
     };
 
