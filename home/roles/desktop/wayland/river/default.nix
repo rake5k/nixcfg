@@ -420,7 +420,7 @@ in
         input = {
           "pointer-11311-45-SNSL002D:00_2C2F:002D_Touchpad" = {
             disable-while-typing = true;
-            events = true;
+            events = "disabled-on-external-mouse";
             natural-scroll = true;
             pointer-accel = 0.4;
             tap = true;
