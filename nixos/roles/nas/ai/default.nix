@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -19,6 +24,8 @@ in
     custom.roles.ai = {
       text.enable = true;
     };
+
+    environment.systemPackages = with pkgs; [ unstable.llmfit ];
 
     services = {
       traefik = {
