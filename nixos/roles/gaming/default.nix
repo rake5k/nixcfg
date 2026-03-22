@@ -24,6 +24,7 @@ in
     custom.roles.backup.rsync.jobs.backup.excludes = [
       "/home/*/.steam*"
       "/home/*/.local/share/Steam"
+      "/home/*/Games"
     ];
 
     programs = {
