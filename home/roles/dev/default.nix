@@ -28,6 +28,7 @@ in
         ultimate = true;
       };
       java.enable = true;
+      claudecode.enable = true;
       js.enable = true;
       plantuml.enable = true;
       opencode.enable = true;
