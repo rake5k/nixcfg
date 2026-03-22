@@ -3,7 +3,6 @@
 let
 
   config = {
-    allowAliases = false;
     allowUnfree = true;
     allowUnsupportedSystem = builtins.match "aarch64-linux" system != null;
     nvidia.acceptLicense = true;
