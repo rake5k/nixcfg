@@ -9,7 +9,6 @@
       url = "github:rake5k/flake-commons";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
-        pre-commit-hooks.follows = "pre-commit-hooks";
       };
     };
 
@@ -21,12 +20,9 @@
       };
     };
 
-    pre-commit-hooks = {
-      url = "github:cachix/git-hooks.nix";
-      inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
-        flake-compat.follows = "flake-compat";
-      };
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     # Flake utils
@@ -107,7 +103,6 @@
         nixpkgs.follows = "nixpkgs-unstable";
         flake-compat.follows = "flake-compat";
         flake-parts.follows = "flake-parts";
-        pre-commit-hooks-nix.follows = "pre-commit-hooks";
       };
     };
 
@@ -183,7 +178,16 @@
 
       nixOnDroidConfigurations = listToAttrs [ (mkNixOnDroid aarch64-linux "nix-on-droid") ];
 
-      formatter = forEachSystem (system: nixpkgs.legacyPackages."${system}".nixfmt-tree);
+      formatter = forEachSystem (
+        system:
+        let
+          commonsLib = inputs.flake-commons.lib {
+            pkgs = pkgsFor."${system}";
+            flake = self;
+          };
+        in
+        commonsLib.flake.formatter
+      );
 
       apps = mkForEachSystem [
         (mkApp "setup" {
@@ -228,7 +232,7 @@
             flake = self;
           };
         in
-        commonsLib.checks
+        commonsLib.flake.checks
       );
 
       devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
