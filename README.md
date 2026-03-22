@@ -1,27 +1,26 @@
 # :snowflake: Nix Configuration
 
-[![NixOS][nixos-badge]][nixos]
-[![Build and Test][ci-badge]][ci]
+[![NixOS][nixos-badge]][nixos] [![Build and Test][ci-badge]][ci]
 
 ## Features
 
-* Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
+- Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
   an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
-* Disk configuration using [Disko][disko]
-* Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
+- Disk configuration using [Disko][disko]
+- Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
-* Secure boot support using [Lanzaboote][lanzaboote]
-* Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixfmt][nixfmt]
-* Weekly automatic flake input updates committed to master when CI passes
+- Secure boot support using [Lanzaboote][lanzaboote]
+- Checks source code with [shellcheck][shellcheck], [statix][statix] and [nixfmt][nixfmt]
+- Weekly automatic flake input updates committed to master when CI passes
 
 ## Supported configurations
 
-* [Nix-on-Droid][nix-on-droid]-managed
-  * `nix-on-droid`
-* [NixOS][nixos]-managed
-  * `nixos-vm`
-* [Home Manager][home-manager]-managed
-  * `non-nixos-vm`
+- [Nix-on-Droid][nix-on-droid]-managed
+  - `nix-on-droid`
+- [NixOS][nixos]-managed
+  - `nixos-vm`
+- [Home Manager][home-manager]-managed
+  - `non-nixos-vm`
 
 See [flake.nix](flake.nix) for more information like `system`.
 
@@ -138,15 +137,15 @@ export NIX_CONFIG="extra-access-tokens = github.com=github_pat_*****************
 nix run $FLAKE#disko-install -- <hostname> $FLAKE
 ```
 
-Where `<hostname>` is your target machine's desired host name. Define it
-beforehand inside `nixosConfigurations` of `flake.nix`.
+Where `<hostname>` is your target machine's desired host name. Define it beforehand inside
+`nixosConfigurations` of `flake.nix`.
 
-This will completely *nuke* all the data on your `<disk>` devices listed in the
-*disko* configuration. Make sure to have a working backup from your data of all
-drives connected to your target machine.
+This will completely _nuke_ all the data on your `<disk>` devices listed in the _disko_
+configuration. Make sure to have a working backup from your data of all drives connected to your
+target machine.
 
-**Warning:** Even if the script *should* ask you before committing any changes to your machine,
-it can unexpectedly cause great harm!
+**Warning:** Even if the script _should_ ask you before committing any changes to your machine, it
+can unexpectedly cause great harm!
 
 After rebooting proceed with the [next section](#nixos-config-setup).
 
@@ -237,9 +236,9 @@ sudo nixos-rebuild switch
 hm-switch
 ```
 
+<!-- prettier-ignore-start -->
 [ci]: https://garnix.io/repo/rake5k/nixcfg
 [ci-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Frake5k%2Fnixcfg%3Fbranch%3Dmain
-
 [age]: https://age-encryption.org/
 [agenix]: https://github.com/ryantm/agenix
 [disko]: https://github.com/nix-community/disko
@@ -252,3 +251,4 @@ hm-switch
 [nixfmt]: https://github.com/NixOS/nixfmt
 [shellcheck]: https://github.com/koalaman/shellcheck
 [statix]: https://github.com/NerdyPepper/statix
+<!-- prettier-ignore-end -->

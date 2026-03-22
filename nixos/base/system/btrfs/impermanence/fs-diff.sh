@@ -10,9 +10,9 @@ sudo btrfs subvolume find-new "/mnt/root" "${OLD_TRANSID}" |
   uniq |
   while read -r path; do
     path="/${path}"
-    if [[ -L "${path}" ]]; then
+    if [[ -L ${path} ]]; then
       : # The path is a symbolic link, so is probably handled by NixOS already
-    elif [[ -d "${path}" ]]; then
+    elif [[ -d ${path} ]]; then
       : # The path is a directory, ignore
     else
       echo "${path}"
