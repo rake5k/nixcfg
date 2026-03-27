@@ -6,10 +6,133 @@ This repository contains NixOS and Home‑Manager configurations built by the Ni
 `homeConfigurations`, and `nixOnDroidConfigurations`. The following sections explain how to build,
 lint, test, and develop the code within a _Nix development shell_ (`nix develop`).
 
-## Build / Lint / Test Commands
+## Project Structure
 
-The commands below are divided into groups to help agents and developers quickly pick the operation
-they need.
+```
+nixcfg/
+├── flake.nix          # Main flake definition, hosts, outputs
+├── flake.lock         # Locked inputs
+├── home/              # Home Manager configuration
+│   ├── base/          # Basic user configs
+│   ├── programs/      # Custom program modules
+│   ├── roles/         # Custom roles for bundling configsets
+│   └── users/         # User-specific configs
+├── hosts/             # NixOS host configs
+│   ├── nixos-vm/
+│   ├── nix-on-droid/
+│   └── non-nixos-vm/
+├── lib/               # Internal flake library
+├── nix-on-droid/      # Custom NixOnDroid modules
+├── nixos/             # Custom NixOS modules
+│   ├── base/          # Basic NixOS configs
+│   ├── containers/    # Container modules
+│   ├── programs/      # Program modules
+│   └── roles/         # Roles for bundling configsets
+└── secrets/           # agenix-encrypted secrets
+```
+
+### Key Input Dependencies
+
+The flake depends on:
+
+- **nixpkgs** - Main package set (nixos-25.11)
+- **nixpkgs-unstable** - Unstable branch for newer features
+- **flake-commons** (rake5k/flake-commons) - Shared utilities
+- **nur** - Nix User Repositories
+- **home-manager** - User dotfile management
+- **darwin** - MacOS configuration
+- **nix-on-droid** - Android Nix management
+- **agenix** - Secret management
+- **agenix-cli** - CLI utilities for agenix
+- **disko** - Disk partitioning
+- **homeage** - Home age secret management
+- **impermanence** - Zero-configuration immutable NixOS
+- **lanzaboote** - Secure boot
+- **nix-index-database** - Nix index for performance
+- **nvidia-patch** - NVIDIA driver patches
+- **stylix** - Theming and customization
+- **wallpapers** - Personal wallpaper collection
+
+### Configuration Flow
+
+1. **flake.nix** defines all outputs:
+   - `nixosConfigurations` - NixOS system configs
+   - `homeConfigurations` - Home Manager user configs
+   - `nixOnDroidConfigurations` - Nix-on-Droid configs
+   - `darwinConfigurations` - Darwin/MacOS configs
+   - `devShells` - Development shells
+
+2. **nixos/** - NixOS-specific modules:
+   - `base/` - Core system configuration (boot, nix, network, etc.)
+   - `programs/` - Program configurations
+   - `roles/` - Role-based composition (desktop, nas, gaming, etc.)
+   - `users/` - Per-user configuration
+
+3. **home/** - Home Manager modules:
+   - `base/` - Basic user environment
+   - `programs/` - Custom program modules
+   - `roles/` - Role-specific configs (gnome, gtk, terminal, etc.)
+   - `users/` - User-specific overrides
+
+4. **secrets/** - Encrypted secrets for agenix decryption
+
+### Roles System
+
+The configuration uses a role-based composition system:
+
+**nixos/roles/** - NixOS roles:
+
+- `desktop/` - General desktop environment
+- `desktop/mobile/` - Mobile-friendly desktop
+- `gaming/` - Gaming setup
+- `nas/` - NAS configuration (various sub-roles)
+- `containers/` - Container runtime
+- `android/` - Android development
+- `ai/` - AI/ML setup
+- `sound/` - Audio configuration
+- `printing/` - Printer support
+- And more...
+
+**home/roles/** - Home Manager roles:
+
+- `desktop/gnome/`, `desktop/gtk/`, `desktop/wayland/` - DE configurations
+- `terminal/` - Terminal emulator setup
+- `password-manager/` - Password manager configuration
+- `shell/` - Shell configuration
+- `notification/` - Notification daemon
+- And more...
+
+### Secrets Management
+
+Secrets are stored encrypted in `secrets/` using agenix. The process:
+
+1. Add host public keys to [.agenix.toml](.agenix.toml)
+2. Push updated [.agenix.toml](.agenix.toml) to git
+3. Re-key secrets on existing hosts:
+
+   ```bash
+   # On NixOS:
+   sudo agenix -i /etc/ssh/ssh_host_ed25519_key -i ~/.age/key.txt -r -vv
+
+   # On non-NixOS:
+   agenix -i ~/.age/key.txt -r -vv
+   ```
+
+4. Rebuild to decrypt: `sudo nixos-rebuild switch`
+
+To update a secret:
+
+```bash
+# Decrypt current secret
+age --decrypt -i ~/.age/key.txt -o tmpfile < ./secrets/<secretfile>.age
+
+# Edit tmpfile
+
+# Re-encrypt
+age --encrypt --armor -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
+```
+
+## Build / Lint / Test Commands
 
 ### 1. Build all configurations
 
@@ -38,35 +161,45 @@ nix build .#packages.x86_64-linux.nixos
 nix build .#packages.x86_64-linux.non-nixos-demo
 ```
 
-### 4. Pre‑commit hooks
+### 4. Rebuild configurations
 
 ```bash
-# Run every pre‑commit hook on all files.
-# The hooks install in the devShell automatically.
+# On NixOS
+sudo nixos-rebuild switch
 
-pre-commit run --all-files
+# On non-NixOS (Home Manager)
+hm-switch
+
+# On Nix-on-Droid
+nix-on-droid switch --flake .#<hostname>
 ```
 
-### 5. Individual pre‑commit hooks
+### 5. Setup (first-time configuration)
 
 ```bash
-# Run a specific hook, e.g., `shellcheck` or `markdownlint`.
+# Apply system configuration
+nix run github:rake5k/nixcfg#setup -- <flake-url>
 
-pre-commit run shellcheck
-pre-commit run markdownlint
+# Fresh NixOS install with disk partitioning
+nix run $FLAKE#disko-install -- <hostname> $FLAKE
 ```
 
-### 6. Linting & formatting
+### 6. Update Flake Inputs
 
-| Tool           | Command                                      | Notes                                     |
-| -------------- | -------------------------------------------- | ----------------------------------------- |
-| `markdownlint` | `markdownlint . --config .markdownlint.json` | Lints Markdown files.                     |
-| `yamllint`     | `yamllint -c .yamllint .`                    | Lints YAML files defined in the repo.     |
-| `nixfmt`       | `nixfmt -l .`                                | Formats all `.nix` files.                 |
-| `statix`       | `statix check`                               | Lints Nix syntax and best‑practice style. |
-| `shellcheck`   | `shellcheck` via pre‑commit                  | Lints all shell scripts.                  |
+```bash
+nix flake update
+```
 
-### 7. Run tests for a single check
+### 7. Linting & formatting
+
+| Tool      | Command   | Notes                        |
+| --------- | --------- | ---------------------------- |
+| `treefmt` | `treefmt` | Formats and lints all files. |
+
+### 8. Run tests for a single check
+
+Use `nix build .#checks.<system>.<name>` to run individual checks, or use
+`nix test .#check.<system>.<name>` to run tests in a sandboxed environment.
 
 The flake-commons project provides a set of _checks_ that can be run individually:
 
@@ -86,7 +219,7 @@ If you need to run the test in a sandboxed environment you can also use `nix tes
 nix test .#check.<system>.<name>
 ```
 
-### 8. Building a specific package
+### 9. Building a specific package
 
 Individual packages can be built with the `packages` attribute set. For example:
 
@@ -96,8 +229,7 @@ nix build .#packages.x86_64-linux.<package-name>
 
 ## Code‑Style Guidelines
 
-The following rules are enforced by the linter tools above and are expected to be followed by all
-contributors.
+The following rules are enforced by `treefmt`, and are expected to be followed by all contributors.
 
 ### Imports
 
@@ -106,7 +238,7 @@ contributors.
 
 ### Format & Style
 
-- Always use `nixfmt` and `statix` before committing.
+- `treefmt` will automatically format all files. Run `treefmt` manually if needed.
 - Prefer attributes over lambda functions when possible.
 - Keep each expression on its own line for readability.
 
@@ -137,11 +269,31 @@ contributors.
   `checks` attribute.
 - Keep the test suites independent from user‑specific secrets.
 
-## Cursor / Copilot Rules
+## CI Workflow
 
-- This repository currently does **not** contain any `.cursor` or `.cursorrules` directories.
-- There is no `.github/copilot-instructions.md` file. The repository is open to contributions, but
-  no special Copilot guidance has been defined yet.
+The project runs weekly automated updates via GitHub Actions (`.github/workflows/update.yml`) that:
+
+- Update flake inputs using `nix flake update`
+- Commit changes if CI passes
+
+## Apps
+
+The flake provides these buildable applications:
+
+- `setup` - Setup script for applying configuration
+- `disko-install` - Full installation with disk partitioning
+
+## Utilities
+
+Built-in utility functions from `nixcfgLib`:
+
+- `mkApp` - Create flake app
+- `mkDevShell` - Create dev shell
+- `mkHome` - Create home configuration
+- `mkNixos` - Create NixOS configuration
+- `mkNixDarwin` - Create Darwin configuration
+- `mkNixOnDroid` - Create NixOnDroid configuration
+- `mkForEachSystem` - Create for each system
 
 ## Development Workflow
 
@@ -149,7 +301,7 @@ contributors.
    ```bash
    nix develop
    ```
-2. Run the linting tools. They are automatically available due to `pre-commit-hooks`.
+2. Run `treefmt` to format/lint files (available in the dev shell).
 3. Build or test changes with one of the commands above.
 4. Commit and push.
 
