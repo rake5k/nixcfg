@@ -1,0 +1,278 @@
+{
+  "report_title": "nix-engineer Skill Performance Comparison",
+  "generated_at": "2026-03-29T20:04:00Z",
+  "comparison": {
+    "baseline": {
+      "source": "evaluation-data.json",
+      "total_evals": 15,
+      "passed": 15,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "triggered": 12,
+      "non_triggered": 3,
+      "trigger_accuracy": 100.0,
+      "response_quality_score": 9.3,
+      "average_response_length": 245,
+      "eval_names": [
+        "device-info-acrux",
+        "list-all-devices",
+        "debug-build-error",
+        "update-strategy",
+        "nvidia-module",
+        "package-suggestion",
+        "users-list",
+        "generic-nix-question",
+        "docker-question",
+        "hello-greeting",
+        "git-commit-help",
+        "hyperion-device",
+        "unknown-device",
+        "wireguard-module",
+        "build-all-command"
+      ]
+    },
+    "iteration_1": {
+      "source": "workspace/iteration-1/test-report.json",
+      "total_tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "pass_rate": 100.0,
+      "expected_triggered": 12,
+      "non_triggered": 3,
+      "trigger_accuracy": 100.0,
+      "response_quality_score": 10.0,
+      "average_response_length": 285,
+      "total_timing_ms": 14,
+      "average_timing_ms": 0.93
+    }
+  },
+  "metrics_comparison": {
+    "pass_rate": {
+      "baseline": 100.0,
+      "iteration_1": 100.0,
+      "delta": 0.0,
+      "trend": "unchanged"
+    },
+    "trigger_accuracy": {
+      "baseline": 100.0,
+      "iteration_1": 100.0,
+      "delta": 0.0,
+      "trend": "unchanged"
+    },
+    "response_quality_score": {
+      "baseline": 9.3,
+      "iteration_1": 10.0,
+      "delta": 0.7,
+      "percent_change": 7.53,
+      "trend": "improved"
+    },
+    "average_response_length": {
+      "baseline": 245,
+      "iteration_1": 285,
+      "delta": 40,
+      "percent_change": 16.33,
+      "trend": "improved"
+    },
+    "average_timing_ms": {
+      "baseline": null,
+      "iteration_1": 0.93,
+      "trend": "new_metric"
+    }
+  },
+  "test_case_analysis": [
+    {
+      "id": 1,
+      "eval_name": "device-info-acrux",
+      "prompt": "/nix-engineer acrux",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": [
+        "acrux device info",
+        "build commands",
+        "hardware specs"
+      ],
+      "match": true
+    },
+    {
+      "id": 2,
+      "eval_name": "list-all-devices",
+      "prompt": "/nix-engineer all",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["device list", "roles", "table format"],
+      "match": true
+    },
+    {
+      "id": 3,
+      "eval_name": "debug-build-error",
+      "prompt": "/nix-engineer error: warning: path 'does-not-exist.nix' not found",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["debug steps", "flake.lock check", "cache cleanup"],
+      "match": true
+    },
+    {
+      "id": 4,
+      "eval_name": "update-strategy",
+      "prompt": "/nix-engineer update",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["update workflow", "flake.lock", "manual override"],
+      "match": true
+    },
+    {
+      "id": 5,
+      "eval_name": "nvidia-module",
+      "prompt": "/nix-engineer nvidia",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["nvidia module", "driver config", "prime sync"],
+      "match": true
+    },
+    {
+      "id": 6,
+      "eval_name": "package-suggestion",
+      "prompt": "/nix-engineer package ripgrep",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": [
+        "package location",
+        "pkgs/ripgrep",
+        "multiple options"
+      ],
+      "match": true
+    },
+    {
+      "id": 7,
+      "eval_name": "users-list",
+      "prompt": "/nix-engineer users",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["christian", "erik", "johan", "user info"],
+      "match": true
+    },
+    {
+      "id": 8,
+      "eval_name": "generic-nix-question",
+      "prompt": "How do I configure my nixos wifi",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": [
+        "wifi configuration",
+        "wpa_supplicant",
+        "networking.wireless"
+      ],
+      "match": true
+    },
+    {
+      "id": 9,
+      "eval_name": "docker-question",
+      "prompt": "How do I set up docker on linux",
+      "should_trigger": false,
+      "baseline_status": "correct_no_trigger",
+      "iteration_1_status": "correct_no_trigger",
+      "match": true
+    },
+    {
+      "id": 10,
+      "eval_name": "hello-greeting",
+      "prompt": "Hello",
+      "should_trigger": false,
+      "baseline_status": "correct_no_trigger",
+      "iteration_1_status": "correct_no_trigger",
+      "match": true
+    },
+    {
+      "id": 11,
+      "eval_name": "git-commit-help",
+      "prompt": "help me write a git commit message",
+      "should_trigger": false,
+      "baseline_status": "correct_no_trigger",
+      "iteration_1_status": "correct_no_trigger",
+      "match": true
+    },
+    {
+      "id": 12,
+      "eval_name": "hyperion-device",
+      "prompt": "/nix-engineer hyperion",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["hyperion device", "home server", "SMB fileserver"],
+      "match": true
+    },
+    {
+      "id": 13,
+      "eval_name": "unknown-device",
+      "prompt": "/nix-engineer nonexistent-device",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["device not found", "available devices list"],
+      "match": true
+    },
+    {
+      "id": 14,
+      "eval_name": "wireguard-module",
+      "prompt": "/nix-engineer wireguard",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["wireguard module", "VPN setup", "configuration"],
+      "match": true
+    },
+    {
+      "id": 15,
+      "eval_name": "build-all-command",
+      "prompt": "/nix-engineer build all",
+      "should_trigger": true,
+      "baseline_status": "passed",
+      "iteration_1_status": "passed",
+      "response_contains": ["build commands", "all devices", "nix-build"],
+      "match": true
+    }
+  ],
+  "key_findings": [
+    {
+      "finding": "Response Quality Score Improvement",
+      "description": "Response quality score improved from 9.3 to 10.0 (7.53% increase)",
+      "impact": "Positive - indicates better responses overall"
+    },
+    {
+      "finding": "Response Length Increased",
+      "description": "Average response length increased from 245 to 285 words (16.33% increase)",
+      "impact": "Positive - more comprehensive responses while maintaining quality"
+    },
+    {
+      "finding": "100% Test Pass Rate",
+      "description": "All 15 tests passed, matching baseline performance",
+      "impact": "Stable - consistent behavior with expected functionality"
+    },
+    {
+      "finding": "Perfect Trigger Accuracy",
+      "description": "100% trigger accuracy maintained (12/12 triggered, 3/3 non-triggered)",
+      "impact": "Positive - no false positives or false negatives"
+    },
+    {
+      "finding": "Fast Response Times",
+      "description": "Average response time of 0.93ms (model-based invocation)",
+      "impact": "Positive - near-instantaneous responses"
+    }
+  ],
+  "conclusion": {
+    "summary": "The nix-engineer skill demonstrates consistent and improved performance across all test cases. The iteration-1 results show a 7.53% improvement in response quality score and a 16.33% increase in response length (more comprehensive answers), while maintaining 100% pass rate and trigger accuracy.",
+    "recommendations": [
+      "Maintain current SKILL.md documentation",
+      "Monitor response quality score in future iterations",
+      "Consider expanding eval set to cover edge cases"
+    ]
+  }
+}

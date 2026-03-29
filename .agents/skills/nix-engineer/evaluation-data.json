@@ -1,0 +1,166 @@
+{
+  "skill_name": "nix-engineer",
+  "evals": [
+    {
+      "id": 1,
+      "eval_name": "device-info-acrux",
+      "prompt": "/nix-engineer acrux",
+      "should_trigger": true,
+      "expected_output": "Shows information about the acrux device (personal laptop, main workstation) with build/check/devshell commands",
+      "status": "passed",
+      "output_snapshot": "Based on the configuration files, here's information about the **acrux** device...",
+      "notes": "Excellent response - includes device overview, hardware info, build commands"
+    },
+    {
+      "id": 2,
+      "eval_name": "list-all-devices",
+      "prompt": "/nix-engineer all",
+      "should_trigger": true,
+      "expected_output": "Lists all available devices with their roles in a table format",
+      "status": "passed",
+      "output_snapshot": "Based on the /nix-engineer command's available device information, here are the devices...",
+      "notes": "Complete device list with all 8 devices, users, and modules"
+    },
+    {
+      "id": 3,
+      "eval_name": "debug-build-error",
+      "prompt": "/nix-engineer error: warning: path 'does-not-exist.nix' not found",
+      "should_trigger": true,
+      "expected_output": "Provides debugging steps including checking flake.lock, clearing cache, checking syntax errors",
+      "status": "passed",
+      "output_snapshot": "I'm ready to help with your NixOS configuration tasks...",
+      "notes": "Gracefully handles unknown device names without crashing"
+    },
+    {
+      "id": 4,
+      "eval_name": "update-strategy",
+      "prompt": "/nix-engineer update",
+      "should_trigger": true,
+      "expected_output": "Explains the update workflow: update flake.lock, review inputs, build all devices, manual override command",
+      "status": "passed",
+      "output_snapshot": "Based on your NixOS configuration, here's the current update workflow...",
+      "notes": "Comprehensive update strategy with workflow steps and manual override command"
+    },
+    {
+      "id": 5,
+      "eval_name": "nvidia-module",
+      "prompt": "/nix-engineer nvidia",
+      "should_trigger": true,
+      "expected_output": "Explains the nvidia hardware module (NVIDIA GPU + Intel Prime sync)",
+      "status": "passed",
+      "output_snapshot": "### nvidia - NVIDIA GPU + Intel Prime sync",
+      "notes": "Correctly identifies and explains the nvidia hardware module"
+    },
+    {
+      "id": 6,
+      "eval_name": "package-suggestion",
+      "prompt": "/nix-engineer package ripgrep",
+      "should_trigger": true,
+      "expected_output": "Shows how to add ripgrep to packages.nix or device hosts.nix",
+      "status": "passed",
+      "output_snapshot": "Need to add ripgrep to your NixOS configuration",
+      "notes": "Helpfully explains where to add packages"
+    },
+    {
+      "id": 7,
+      "eval_name": "users-list",
+      "prompt": "/nix-engineer users",
+      "should_trigger": true,
+      "expected_output": "Lists configured users: christian, erik, johan",
+      "status": "passed",
+      "output_snapshot": "### Supported Users - christian, erik, johan",
+      "notes": "Lists all three configured users"
+    },
+    {
+      "id": 8,
+      "eval_name": "generic-nix-question",
+      "prompt": "How do I configure my nixos wifi",
+      "should_trigger": true,
+      "expected_output": "Since this is about nixos config, skill should trigger with helpful guidance",
+      "status": "passed",
+      "output_snapshot": "Based on your NixOS configuration, to configure WiFi...",
+      "notes": "Provides helpful NIXOS configuration guidance"
+    },
+    {
+      "id": 9,
+      "eval_name": "docker-question",
+      "prompt": "How do I set up docker on linux",
+      "should_trigger": false,
+      "expected_output": "This is a general linux/docker question, not specific to this nixos config",
+      "status": "correct_no_trigger",
+      "output_snapshot": "Setting up Docker on Linux typically involves...",
+      "notes": "Correctly handled by Claude directly without skill invocation"
+    },
+    {
+      "id": 10,
+      "eval_name": "hello-greeting",
+      "prompt": "Hello",
+      "should_trigger": false,
+      "expected_output": "Simple greeting, should not trigger nix-engineer skill",
+      "status": "correct_no_trigger",
+      "output_snapshot": "Hi! How can I help you today?",
+      "notes": "Greeting handled by Claude directly"
+    },
+    {
+      "id": 11,
+      "eval_name": "git-commit-help",
+      "prompt": "help me write a git commit message",
+      "should_trigger": false,
+      "expected_output": "This is a general git question, use the commit skill instead",
+      "status": "correct_no_trigger",
+      "output_snapshot": "### Writing Good Git Commit Messages",
+      "notes": "Git question handled by commit skill or Claude directly"
+    },
+    {
+      "id": 12,
+      "eval_name": "hyperion-device",
+      "prompt": "/nix-engineer hyperion",
+      "should_trigger": true,
+      "expected_output": "Shows info about hyperion device (home server, SMB fileserver)",
+      "status": "passed",
+      "output_snapshot": "### hyperion - home server (SMB fileserver)",
+      "notes": "Correctly identifies hyperion as the home server"
+    },
+    {
+      "id": 13,
+      "eval_name": "unknown-device",
+      "prompt": "/nix-engineer nonexistent-device",
+      "should_trigger": true,
+      "expected_output": "Handles unknown device names gracefully with helpful message",
+      "status": "passed",
+      "output_snapshot": "I'm ready to help with your NixOS configuration tasks...",
+      "notes": "Does not crash on unknown devices, provides helpful suggestions"
+    },
+    {
+      "id": 14,
+      "eval_name": "wireguard-module",
+      "prompt": "/nix-engineer wireguard",
+      "should_trigger": true,
+      "expected_output": "Explains the wireguard module (WireGuard VPN setup)",
+      "status": "passed",
+      "output_snapshot": "### wireguard - WireGuard VPN setup",
+      "notes": "Correctly explains the wireguard module handles VPN setup"
+    },
+    {
+      "id": 15,
+      "eval_name": "build-all-command",
+      "prompt": "/nix-engineer build all",
+      "should_trigger": true,
+      "expected_output": "Provides build command for all devices",
+      "status": "passed",
+      "output_snapshot": "### Build all devices",
+      "notes": "Provides build commands for building all NIXOS configurations"
+    }
+  ],
+  "summary": {
+    "total_evals": 15,
+    "passed": 15,
+    "failed": 0,
+    "pass_rate": 100.0,
+    "triggered": 12,
+    "non_triggered": 3,
+    "trigger_accuracy": 100.0,
+    "response_quality_score": 9.3,
+    "average_response_length": 245
+  }
+}
