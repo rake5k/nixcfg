@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git log:*)",
+      "Bash(nix eval:*)",
+      "Bash(nix flake:*)",
+      "Bash(treefmt:*)"
+    ]
+  }
+}
