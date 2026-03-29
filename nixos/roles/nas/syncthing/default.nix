@@ -97,6 +97,14 @@ in
               id = "l75h5-auqfx";
               path = "/data/syncthing/RetroPie";
             };
+            TrackMania = {
+              enable = true;
+              devices = [
+                config.services.syncthing.settings.devices.sirius-a.name
+              ];
+              id = "flgrz-5ytrt";
+              path = "/data/container/steam-headless/games/GameLibrary/Steam/steamapps/compatdata/11020/pfx/drive_c/users/steamuser/Documents/TrackMania/Profiles";
+            };
           };
 
           # Prevent "Host check error"
