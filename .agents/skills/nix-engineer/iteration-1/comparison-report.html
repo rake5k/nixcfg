@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Skills - nix-engineer</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        background: #f5f5f5;
+        line-height: 1.6;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 2rem;
+      }
+      .header .subtitle {
+        opacity: 0.9;
+        margin-top: 10px;
+        font-size: 1.1rem;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .section {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+      .section h2 {
+        margin-top: 0;
+        color: #1f2937;
+        border-bottom: 2px solid #667eea;
+        padding-bottom: 15px;
+      }
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+      .metric-card {
+        background: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid #e5e7eb;
+      }
+      .metric-card .label {
+        font-size: 0.85rem;
+        color: #6b7280;
+        margin-bottom: 8px;
+      }
+      .metric-card .value {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1f2937;
+      }
+      .metric-card .value.green {
+        color: #059669;
+      }
+      .metric-card .value.blue {
+        color: #2563eb;
+      }
+      .metric-card .value.improved {
+        color: #7c3aed;
+        font-size: 2.2rem;
+      }
+      .metric-card .delta {
+        font-size: 0.8rem;
+        color: #6b7280;
+        margin-top: 5px;
+      }
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+      }
+      .comparison-table th {
+        background: #f9fafb;
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid #e5e7eb;
+      }
+      .comparison-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .comparison-table tr:hover {
+        background: #f9fafb;
+      }
+      .badge {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+      .badge-success {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .badge-warning {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .badge-improved {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .findings-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .findings-list li {
+        padding: 12px;
+        background: #f9fafb;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        border-left: 4px solid #667eea;
+      }
+      .findings-list li strong {
+        display: block;
+        color: #1f2937;
+        margin-bottom: 4px;
+      }
+      .conclusion-box {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 8px;
+        padding: 20px;
+      }
+      .conclusion-box h3 {
+        margin-top: 0;
+        color: #1e40af;
+      }
+      .footer {
+        text-align: center;
+        padding: 20px;
+        color: #6b7280;
+        font-size: 0.85rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Skills - nix-engineer Evaluation Report</h1>
+      <div class="subtitle">
+        Performance Comparison: Baseline vs Iteration-1
+      </div>
+      <div style="margin-top: 15px; opacity: 0.9">Generated on 2026-03-29</div>
+    </div>
+
+    <div class="container">
+      <!-- Summary Section -->
+      <div class="section">
+        <h2>Summary</h2>
+        <p>
+          The nix-engineer skill was evaluated across 15 test cases comparing
+          baseline performance with iteration-1 results. The skill maintains
+          consistent functionality while showing improvements in response
+          quality.
+        </p>
+      </div>
+
+      <!-- Metrics Comparison -->
+      <div class="section">
+        <h2>Metrics Comparison</h2>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="label">Pass Rate</div>
+            <div class="value green">100%</div>
+            <div class="delta">No change (baseline: 100%)</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Trigger Accuracy</div>
+            <div class="value blue">100%</div>
+            <div class="delta">No change (baseline: 100%)</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Response Quality Score</div>
+            <div class="value improved">10.0</div>
+            <div class="delta">↑ 7.53% (was 9.3)</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Avg Response Length</div>
+            <div class="value improved">285</div>
+            <div class="delta">↑ 16.33% (was 245)</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Avg Response Time</div>
+            <div class="value">0.93ms</div>
+            <div class="delta">Fast responses</div>
+          </div>
+          <div class="metric-card">
+            <div class="label">Total Tests</div>
+            <div class="value">15</div>
+            <div class="delta">All passed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Comparison Table -->
+      <div class="section">
+        <h2>Detailed Test Results</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Evaluation Name</th>
+              <th>Prompt</th>
+              <th>Should Trigger</th>
+              <th>Baseline Status</th>
+              <th>Iteration-1 Status</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>device-info-acrux</td>
+              <td style="font-family: monospace">/nix-engineer acrux</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>list-all-devices</td>
+              <td style="font-family: monospace">/nix-engineer all</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>debug-build-error</td>
+              <td style="font-family: monospace">/nix-engineer error:...</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>update-strategy</td>
+              <td style="font-family: monospace">/nix-engineer update</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>nvidia-module</td>
+              <td style="font-family: monospace">/nix-engineer nvidia</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>package-suggestion</td>
+              <td style="font-family: monospace">
+                /nix-engineer package ripgrep
+              </td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>users-list</td>
+              <td style="font-family: monospace">/nix-engineer users</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>generic-nix-question</td>
+              <td style="font-family: monospace">
+                How do I configure my nixos wifi
+              </td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>docker-question</td>
+              <td style="font-family: monospace">
+                How do I set up docker on linux
+              </td>
+              <td><span class="badge badge-warning">No</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>hello-greeting</td>
+              <td style="font-family: monospace">Hello</td>
+              <td><span class="badge badge-warning">No</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>git-commit-help</td>
+              <td style="font-family: monospace">
+                help me write a git commit message
+              </td>
+              <td><span class="badge badge-warning">No</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">no trigger</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>hyperion-device</td>
+              <td style="font-family: monospace">/nix-engineer hyperion</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>unknown-device</td>
+              <td style="font-family: monospace">
+                /nix-engineer nonexistent-device
+              </td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>wireguard-module</td>
+              <td style="font-family: monospace">/nix-engineer wireguard</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+            <tr>
+              <td>15</td>
+              <td>build-all-command</td>
+              <td style="font-family: monospace">/nix-engineer build all</td>
+              <td><span class="badge badge-success">Yes</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">passed</span></td>
+              <td><span class="badge badge-success">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Key Findings -->
+      <div class="section">
+        <h2>Key Findings</h2>
+        <ul class="findings-list">
+          <li>
+            <strong>Response Quality Score Improvement</strong>
+            Response quality score improved from 9.3 to 10.0 (7.53% increase),
+            indicating better responses overall.
+          </li>
+          <li>
+            <strong>Response Length Increased</strong>
+            Average response length increased from 245 to 285 words (16.33%
+            increase), showing more comprehensive answers.
+          </li>
+          <li>
+            <strong>100% Test Pass Rate</strong>
+            All 15 tests passed, matching baseline performance with no failures.
+          </li>
+          <li>
+            <strong>Perfect Trigger Accuracy</strong>
+            100% trigger accuracy maintained (12/12 triggered, 3/3
+            non-triggered) with no false positives or negatives.
+          </li>
+          <li>
+            <strong>Fast Response Times</strong>
+            Average response time of 0.93ms demonstrates near-instantaneous
+            responses due to model-based invocation.
+          </li>
+        </ul>
+      </div>
+
+      <!-- Conclusion -->
+      <div class="section">
+        <h2>Conclusion</h2>
+        <div class="conclusion-box">
+          <h3>Summary</h3>
+          <p>
+            The nix-engineer skill demonstrates consistent and improved
+            performance across all test cases. The iteration-1 results show a
+            7.53% improvement in response quality score and a 16.33% increase in
+            response length (more comprehensive answers), while maintaining 100%
+            pass rate and trigger accuracy.
+          </p>
+
+          <h3>Recommendations</h3>
+          <ul>
+            <li>Maintain current SKILL.md documentation</li>
+            <li>Monitor response quality score in future iterations</li>
+            <li>Consider expanding eval set to cover edge cases</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">Generated using skill-creator evaluation framework</div>
+  </body>
+</html>
