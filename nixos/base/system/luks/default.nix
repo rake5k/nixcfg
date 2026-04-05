@@ -35,6 +35,12 @@ in
             "/etc/secrets/initrd/ssh_host_ed25519_key"
           ];
         };
+        postCommands = ''
+          # unlock LUKS encrypted partitions
+          echo 'systemd-tty-ask-password-agent' >> /root/.profile
+          # exit SSH
+          echo 'exit' >> /root/.profile
+        '';
       };
 
       systemd.enable = true;
