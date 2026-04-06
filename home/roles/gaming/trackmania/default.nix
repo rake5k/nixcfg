@@ -26,7 +26,7 @@ in
               enable = true;
               devices = [ config.services.syncthing.settings.devices.hyperion.name ];
               id = "flgrz-5ytrt";
-              path = "~/.steam/steam/steamapps/compatdata/11020/pfx/drive_c/users/steamuser/Documents/TrackMania/Profiles";
+              path = "~/.steam/steam/steamapps/compatdata/11020/pfx/drive_c/users/steamuser/Documents/TrackMania";
             };
           };
         };
