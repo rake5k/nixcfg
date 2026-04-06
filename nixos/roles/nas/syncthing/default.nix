@@ -103,7 +103,7 @@ in
                 config.services.syncthing.settings.devices.sirius-a.name
               ];
               id = "flgrz-5ytrt";
-              path = "/data/container/steam-headless/games/GameLibrary/Steam/steamapps/compatdata/11020/pfx/drive_c/users/steamuser/Documents/TrackMania/Profiles";
+              path = "/data/container/steam-headless/games/GameLibrary/Steam/steamapps/compatdata/11020/pfx/drive_c/users/steamuser/Documents/TrackMania";
             };
           };
 
