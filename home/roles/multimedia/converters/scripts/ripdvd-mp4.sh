@@ -12,4 +12,3 @@ ARGS=("${@}")
 mkdir -p "${OUTDIR}"
 
 HandBrakeCLI --audio-lang-list "deu, eng" --all-audio --native-language "deu" --subtitle-lang-list "deu, eng" --all-subtitles --subtitle-burned="none" --subtitle-default="none" -Z "HQ 576p25 Surround" -i /dev/cdrom -o "${OUTDIR}/${FILE}" -t "${TITLE}" "${ARGS[@]}"
-
