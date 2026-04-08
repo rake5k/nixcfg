@@ -28,18 +28,26 @@ in
         handbrake
         ffmpeg_6
         picard
-      ];
 
-      file = {
-        "bin/mp3conv" = {
-          executable = true;
-          source = ./scripts/mp3conv;
-        };
-        "bin/ripdvd-mp4" = {
-          executable = true;
-          source = ./scripts/ripdvd-mp4;
-        };
-      };
+        # Shell apps for ripping
+        (writeShellApplication {
+          name = "mp3conv";
+          runtimeInputs = with pkgs; [
+            abcde
+            lame
+            ffmpeg_6
+          ];
+          text = builtins.readFile ./scripts/mp3conv.sh;
+        })
+        (writeShellApplication {
+          name = "ripdvd-mp4";
+          runtimeInputs = with pkgs; [
+            handbrake
+            ffmpeg_6
+          ];
+          text = builtins.readFile ./scripts/ripdvd-mp4.sh;
+        })
+      ];
 
       shellAliases = {
         ripcd-mp3 = "abcde -c ~/.config/abcde/abcde_mp3_lame.conf";
