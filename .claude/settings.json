@@ -2,9 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(git log:*)",
+      "Bash(nix develop:*)",
       "Bash(nix eval:*)",
       "Bash(nix flake:*)",
-      "Bash(treefmt:*)"
+      "Bash(nix fmt:*)",
+      "Bash(treefmt:*)",
+      "WebFetch(domain:home-manager.nix-community.org)",
+      "WebFetch(domain:nix-community.github.io)"
     ]
   }
 }
