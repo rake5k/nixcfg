@@ -19,6 +19,11 @@ let
     types
     ;
 
+  suspend = pkgs.writeShellApplication {
+    name = "suspend";
+    text = "systemctl suspend";
+  };
+
 in
 
 {
@@ -56,6 +61,7 @@ in
       optionals stdenv.isLinux [
         kooha
         seahorse
+        suspend
         yubioath-flutter
       ]
       ++ [

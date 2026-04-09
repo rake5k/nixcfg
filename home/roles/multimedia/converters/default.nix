@@ -5,11 +5,30 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.multimedia.converters;
+
+  inherit (lib) mkEnableOption mkIf;
+
+  mp3conv = pkgs.writeShellApplication {
+    name = "mp3conv";
+    runtimeInputs = with pkgs; [
+      abcde
+      lame
+      ffmpeg_6
+    ];
+    text = builtins.readFile ./scripts/mp3conv.sh;
+  };
+
+  ripdvd-mp4 = pkgs.writeShellApplication {
+    name = "ripdvd-mp4";
+    runtimeInputs = with pkgs; [
+      handbrake
+      ffmpeg_6
+    ];
+    text = builtins.readFile ./scripts/ripdvd-mp4.sh;
+  };
 
 in
 
@@ -30,22 +49,17 @@ in
         picard
 
         # Shell apps for ripping
+        mp3conv
+        ripdvd-mp4
         (writeShellApplication {
-          name = "mp3conv";
-          runtimeInputs = with pkgs; [
-            abcde
-            lame
-            ffmpeg_6
-          ];
-          text = builtins.readFile ./scripts/mp3conv.sh;
-        })
-        (writeShellApplication {
-          name = "ripdvd-mp4";
-          runtimeInputs = with pkgs; [
-            handbrake
-            ffmpeg_6
-          ];
-          text = builtins.readFile ./scripts/ripdvd-mp4.sh;
+          name = "ripdvd-bulk";
+          runtimeInputs = [ ripdvd-mp4 ];
+          text = ''
+            for title in $1;
+            do
+              ripdvd-mp4 "$title"
+            done
+          '';
         })
       ];
 
