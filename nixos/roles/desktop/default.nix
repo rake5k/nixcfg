@@ -33,8 +33,12 @@ in
           jobs.backup = {
             identityFile = config.age.secrets.${backupId}.path;
             excludes = [
+              "/home/*/Nextcloud/*.log"
+              "/home/*/.mozilla/firefox/*/Crash Reports/"
+              "/home/*/.mozilla/firefox/*/lock"
               "/home/*/.mozilla/firefox/*/storage/default"
               "/home/*/.mozilla/firefox/*/storage/temporary"
+              "/home/*/bluecare/*"
               "/home/*/code/*"
               "/home/*/Nextcloud/*"
             ];
