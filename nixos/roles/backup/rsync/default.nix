@@ -22,20 +22,53 @@ let
   inherit (lib.strings) concatStringsSep optionalString;
 
   defaultIncludes = [
+    "/home/*/.config/FreeTube/*.db"
     "/home/*/.local/share/flatpak/overrides/***"
   ];
 
   defaultExcludes = [
+    # Devices
     "/dev/"
-    "/home/*/.thumbnails/"
-    "/home/*/.cache/"
-    "/home/*/.config/*/Cache/"
-    "/home/*/.local/share/flatpak/*"
-    "/home/*/.local/share/Trash/"
     "/media/"
     "/mnt/"
-    "/nix/store/"
+
+    # Logs
+    "*/logs/*"
+
+    # Build tools
+    "/home/**/node_modules/"
+    "/home/*/.bun/"
+    "/home/*/.cargo/"
+    "/home/*/.ccache/"
+    "/home/*/.config/pnpm/"
+    "/home/*/.npm/"
+    "/home/*/.rustup/"
+
+    # Electron apps
+    "/home/*/.config/*/*cache*/"
+    "/home/*/.config/*/*Cache*/"
+    "/home/*/.config/*/Crashpad/"
+    "/home/*/.config/*/IndexedDB/"
+    "/home/*/.config/*/Local Storage/"
+    "/home/*/.config/*/WidevineCdm/"
+    "/home/*/.config/discord/"
+    "/home/*/.config/Element*/"
+    "/home/*/.config/FreeTube/*"
+    "/home/*/.config/Proton Mail/"
+
+    # User data
+    "/home/**/cache/"
+    "/home/*/.thumbnails/"
+    "/home/*/.cache/"
+    "/home/*/.local/share/containers/*/overlay*/"
+    "/home/*/.local/share/flatpak/*"
+    "/home/*/.local/share/gvfs-metadata/"
+    "/home/*/.local/share/secrets/"
+    "/home/*/.local/share/Trash/"
+    "/home/*/.local/state/"
+
     "/lost+found/"
+    "/nix/store/"
     "/persist/var/cache/"
     "/persist/var/lib/containers/storage/overlay*/"
     "/persist/var/lib/docker/overlay*/"

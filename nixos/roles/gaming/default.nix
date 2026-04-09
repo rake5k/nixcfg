@@ -22,6 +22,9 @@ in
 
   config = mkIf cfg.enable {
     custom.roles.backup.rsync.jobs.backup.excludes = [
+      "/home/*/.local/share/lutris/runners/"
+      "/home/*/.local/share/lutris/runtime/"
+      "/home/*/.local/share/umu/"
       "/home/*/.steam*"
       "/home/*/.local/share/Steam"
       "/home/*/Games"
