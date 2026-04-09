@@ -5,11 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.roles.web.messengers;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
@@ -24,6 +24,16 @@ in
     home.packages = with pkgs; [
       element-desktop
       threema-desktop
+      (writeShellApplication {
+        name = "element-private";
+        runtimeInputs = [ element-desktop ];
+        text = "element-desktop";
+      })
+      (writeShellApplication {
+        name = "element-public";
+        runtimeInputs = [ element-desktop ];
+        text = "element-desktop --profile matrix";
+      })
     ];
   };
 }

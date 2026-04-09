@@ -11,6 +11,14 @@ let
 
   inherit (lib) mkEnableOption mkIf;
 
+  tiptoi-sync = pkgs.writeShellApplication {
+    name = "tiptoi-sync";
+    runtimeInputs = with pkgs; [
+      rsync
+    ];
+    text = builtins.readFile ./scripts/tiptoi-sync.sh;
+  };
+
 in
 
 {
@@ -24,6 +32,7 @@ in
     home = {
       packages = with pkgs; [
         calibre
+        tiptoi-sync
       ];
     };
   };
