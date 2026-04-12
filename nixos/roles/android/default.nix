@@ -15,5 +15,8 @@ in
     };
   };
 
-  config = mkIf cfg.enable { custom.programs.adb.enable = true; };
+  config = mkIf cfg.enable {
+    custom.programs.adb.enable = true;
+    virtualisation.waydroid.enable = true;
+  };
 }
