@@ -38,6 +38,7 @@ in
     services = {
       ollama = {
         enable = true;
+        package = pkgs.unstable.ollama;
         port = 11434;
       };
       open-webui = {
