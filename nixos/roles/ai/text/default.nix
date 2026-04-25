@@ -11,6 +11,8 @@ let
 
   inherit (lib) mkEnableOption mkIf;
 
+  ollamaCfg = config.services.ollama;
+
 in
 
 {
@@ -38,7 +40,13 @@ in
     services = {
       ollama = {
         enable = true;
-        package = pkgs.unstable.ollama;
+        package =
+          if ollamaCfg.acceleration == null then
+            pkgs.unstable.ollama
+          else if ollamaCfg.acceleration == "cuda" || ollamaCfg == "rocm" || ollamaCfg == "vulkan" then
+            pkgs.unstable."ollama-${ollamaCfg.acceleration}"
+          else
+            pkgs.unstable.ollama-cpu;
         port = 11434;
       };
       open-webui = {
