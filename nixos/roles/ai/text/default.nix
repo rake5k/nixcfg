@@ -40,6 +40,9 @@ in
     services = {
       ollama = {
         enable = true;
+        environmentVariables = {
+          OLLAMA_FLASH_ATTENTION = "1";
+        };
         package =
           if ollamaCfg.acceleration == null then
             pkgs.unstable.ollama
