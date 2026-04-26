@@ -1,0 +1,14 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://ollama.local.harke.ch",
+    "ANTHROPIC_AUTH_TOKEN": "ollama",
+    "ANTHROPIC_MODEL": "qwen3.5:0.8b-128k",
+    "ANTHROPIC_DEFAULT_OPUS_MODEL": "qwen3.5:0.8b-128k",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "qwen3.5:0.8b-128k",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "qwen3.5:0.8b-128k",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "qwen3.5:0.8b-128k",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "64000",
+    "DISABLE_PROMPT_CACHING": "1",
+    "DISABLE_NON_ESSENTIAL_MODEL_CALLS": "1"
+  }
+}
