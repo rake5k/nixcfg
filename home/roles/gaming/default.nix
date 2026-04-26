@@ -30,7 +30,7 @@ in
     home.packages = with pkgs; [
       # Game libs
       heroic
-      unstable.lutris
+      lutris
       steam
 
       # Runtimes
