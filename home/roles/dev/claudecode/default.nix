@@ -17,8 +17,9 @@ in
       type = lib.types.enum [
         "local"
         "hyperion"
+        "cloud"
       ];
-      default = "local";
+      default = "cloud";
       description = "Backend host configuration to use";
     };
   };
@@ -36,7 +37,13 @@ in
           commonSettings = lib.importJSON ./settings_common.json;
           localSettings = lib.importJSON ./settings_local.json;
           hyperionSettings = lib.importJSON ./settings_hyperion.json;
-          hostSettings = if cfg.host == "hyperion" then hyperionSettings else localSettings;
+          hostSettings =
+            if cfg.host == "hyperion" then
+              hyperionSettings
+            else if cfg.host == "local" then
+              localSettings
+            else
+              { };
           unifiedSettings = lib.recursiveUpdate commonSettings hostSettings;
         in
         {
