@@ -29,6 +29,7 @@
       "Bash(glab mr todo:*)",
       "Bash(glab mr update:*)",
       "Bash(glab mr view:*)",
+      "Bash(glab repo view:*)",
       "Bash(helm dependency update:*)",
       "Bash(helm template:*)",
       "Bash(ls:*)",
@@ -84,8 +85,7 @@
       "Bash(glab mr subscribe:*)",
       "Bash(glab mr unsubscribe:*)",
       "Bash(wget:*)"
-    ],
-    "defaultMode": "plan"
+    ]
   },
   "enabledPlugins": {
     "claude-code-setup@claude-plugins-official": true,
