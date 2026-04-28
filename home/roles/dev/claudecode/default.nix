@@ -9,6 +9,29 @@ let
   cfg = config.custom.roles.dev.claudecode;
 
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
+
+  # Merge two settings attrsets like `recursiveUpdate`, but concatenate the
+  # `permissions.{allow,deny,ask}` lists instead of letting the right-hand side
+  # replace them. This lets downstream flakes append permissions without having
+  # to redeclare the full list.
+  mergeSettings =
+    a: b:
+    let
+      base = lib.recursiveUpdate a b;
+      mergePerm = key: (a.permissions.${key} or [ ]) ++ (b.permissions.${key} or [ ]);
+      hasPermissions = (a ? permissions) || (b ? permissions);
+    in
+    base
+    // lib.optionalAttrs hasPermissions {
+      permissions =
+        (a.permissions or { })
+        // (b.permissions or { })
+        // {
+          allow = mergePerm "allow";
+          deny = mergePerm "deny";
+          ask = mergePerm "ask";
+        };
+    };
 in
 {
   options.custom.roles.dev.claudecode = {
@@ -21,6 +44,16 @@ in
       ];
       default = "cloud";
       description = "Backend host configuration to use";
+    };
+    extraSettings = lib.mkOption {
+      type = lib.types.attrs;
+      default = { };
+      description = ''
+        Additional settings merged into ~/.claude/settings.json on top of the
+        common and host-specific defaults. The `permissions.{allow,deny,ask}`
+        lists are concatenated; all other keys follow `lib.recursiveUpdate`
+        semantics (right-hand side wins).
+      '';
     };
   };
 
@@ -44,7 +77,7 @@ in
               localSettings
             else
               { };
-          unifiedSettings = lib.recursiveUpdate commonSettings hostSettings;
+          unifiedSettings = mergeSettings (mergeSettings commonSettings hostSettings) cfg.extraSettings;
         in
         {
           ".claude/CLAUDE.md".source = ./CLAUDE.md;
