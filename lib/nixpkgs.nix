@@ -7,7 +7,7 @@ let
     allowUnsupportedSystem = builtins.match "aarch64-linux" system != null;
     nvidia.acceptLicense = true;
     permittedInsecurePackages = [
-      "broadcom-sta-6.30.223.271-57-6.12.55"
+      "broadcom-sta-6.30.223.271-59-6.12.83"
       "openclaw-2026.4.12"
     ];
   };
