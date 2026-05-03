@@ -59,10 +59,15 @@ in
 
   config = lib.mkIf cfg.enable {
     home = {
-      packages = with pkgs; [
-        unstable.claude-code
-        claude-seccomp # sandbox dependency
-      ];
+      # Only include seccomp on Linux - macOS uses native sandbox
+      packages =
+        with pkgs;
+        [
+          unstable.claude-code
+        ]
+        ++ lib.optionals pkgs.stdenv.isLinux [
+          claude-seccomp # sandbox dependency
+        ];
 
       file =
         # Read all JSON configs and merge based on selected host
@@ -86,7 +91,8 @@ in
           # Skills directories
           ".claude/skills/commit".source = ./skills/commit;
           ".claude/skills/ollama".source = ./skills/ollama;
-
+        }
+        // lib.mkIf pkgs.stdenv.isLinux {
           # Seccomp sandbox filter for Claude Code native sandbox
           ".claude/seccomp/apply-seccomp".source = "${claude-seccomp}/share/claude-seccomp/apply-seccomp";
           ".claude/seccomp/unix-block.bpf".source = "${claude-seccomp}/share/claude-seccomp/unix-block.bpf";
