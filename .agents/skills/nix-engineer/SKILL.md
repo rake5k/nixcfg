@@ -48,6 +48,13 @@ understand hardware modules, and guide you through package management and update
 **Why this matters:** Documentation ensures accuracy, version compatibility, and best practices.
 Never propose configurations without verifying them against the current stable documentation.
 
+## Knowledge
+
+### Scripting
+
+On NixOS the shebang must be `#!/usr/bin/env <shell>`, since NixOS does not follow the File
+Hierarchy Standard and so there is no bash and whatsoever in `/bin`.
+
 ## How I Can Help
 
 ### Documentation Consultation First
