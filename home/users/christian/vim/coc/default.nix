@@ -5,11 +5,11 @@
   ...
 }:
 
-with lib;
-
 let
 
   cfg = config.custom.users.christian.vim.coc;
+
+  inherit (lib) mkEnableOption mkIf;
 
 in
 
