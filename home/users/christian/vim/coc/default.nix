@@ -36,7 +36,6 @@ in
       plugins = with pkgs.vimPlugins; [
         coc-docker
         coc-html
-        coc-java
         coc-json
         coc-markdownlint
         coc-pyright
@@ -88,9 +87,6 @@ in
                 };
               };
             };
-          };
-          java = {
-            enabled = true;
           };
           pyright = {
             enable = true;
