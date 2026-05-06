@@ -92,7 +92,7 @@ in
           ".claude/skills/commit".source = ./skills/commit;
           ".claude/skills/ollama".source = ./skills/ollama;
         }
-        // lib.mkIf pkgs.stdenv.isLinux {
+        // lib.optionalAttrs pkgs.stdenv.isLinux {
           # Seccomp sandbox filter for Claude Code native sandbox
           ".claude/seccomp/apply-seccomp".source = "${claude-seccomp}/share/claude-seccomp/apply-seccomp";
           ".claude/seccomp/unix-block.bpf".source = "${claude-seccomp}/share/claude-seccomp/unix-block.bpf";
