@@ -63,14 +63,18 @@ in
     services = {
       udisks2.enable = true;
 
+      displayManager = {
+
+        gdm = {
+          enable = true;
+          wayland = true;
+        };
+
+        sessionPackages = [ pkgs.niri ];
+      };
       xserver = {
         enable = true;
         desktopManager.cinnamon.enable = true;
-        displayManager.lightdm = {
-          background = pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath;
-          greeter.package = pkgs.unstable.lightdm-slick-greeter.xgreeters;
-          greeters.slick.enable = true;
-        };
         serverFlagsSection = ''
           Option "BlankTime" "0"
           Option "StandbyTime" "0"
