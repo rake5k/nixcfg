@@ -84,6 +84,7 @@
       "Bash(glab mr revoke:*)",
       "Bash(glab mr subscribe:*)",
       "Bash(glab mr unsubscribe:*)",
+      "Bash(nix-store --delete:*)",
       "Bash(wget:*)"
     ]
   },
