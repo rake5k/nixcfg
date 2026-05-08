@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  inputs,
   ...
 }:
 
@@ -68,7 +67,7 @@ in
         enable = true;
         desktopManager.cinnamon.enable = true;
         displayManager.lightdm = {
-          background = "${inputs.wallpapers}/0033.jpg";
+          background = pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath;
           greeter.package = pkgs.unstable.lightdm-slick-greeter.xgreeters;
           greeters.slick.enable = true;
         };
