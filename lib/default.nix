@@ -24,6 +24,7 @@ let
     [
       inputs.homeage.homeManagerModules.homeage
       inputs.niri.homeModules.niri
+      inputs.niri.homeModules.stylix
       inputs.nix-index-database.homeModules.nix-index
       inputs.stylix.homeModules.stylix
 
