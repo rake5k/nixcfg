@@ -106,6 +106,14 @@
       };
     };
 
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        nixpkgs-stable.follows = "nixpkgs";
+      };
+    };
+
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
