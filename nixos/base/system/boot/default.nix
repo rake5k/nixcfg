@@ -28,6 +28,9 @@ in
         pkiBundle = "/etc/secureboot";
       };
 
+      # Enable Plymouth boot splash screen
+      plymouth.enable = true;
+
       loader = {
         efi.canTouchEfiVariables = true;
 
