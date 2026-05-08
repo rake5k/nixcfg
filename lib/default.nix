@@ -23,6 +23,7 @@ let
     in
     [
       inputs.homeage.homeManagerModules.homeage
+      inputs.niri.homeModules.niri
       inputs.nix-index-database.homeModules.nix-index
       inputs.stylix.homeModules.stylix
 

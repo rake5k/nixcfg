@@ -91,6 +91,15 @@ in
     custom.roles.desktop.wayland = {
       enable = mkEnableOption "Wayland config";
 
+      windowManager = mkOption {
+        type = types.enum [
+          "river"
+          "niri"
+        ];
+        default = "river";
+        description = "The Wayland window manager to use";
+      };
+
       autoruns = mkOption {
         type = types.listOf config.lib.custom.autorunType;
         default = desktopCfg.autoruns;
@@ -117,9 +126,17 @@ in
   config = mkIf cfg.enable {
     custom.roles.desktop.wayland = {
       kanshi.enable = true;
-      river = {
+
+      # Window managers
+
+      niri = mkIf (cfg.windowManager == "niri") {
+        # inherit (cfg) autoruns wallpapersDir;
         enable = true;
+      };
+
+      river = mkIf (cfg.windowManager == "river") {
         inherit (cfg) autoruns wallpapersDir;
+        enable = true;
 
         lockerCfg = {
           package = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;

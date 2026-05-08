@@ -12,6 +12,7 @@ let
 
   inherit (lib)
     literalExpression
+    mkDefault
     mkEnableOption
     mkIf
     mkOption
@@ -55,6 +56,8 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    custom.roles.desktop.wayland.enable = mkDefault true;
 
     home.packages =
       with pkgs;
