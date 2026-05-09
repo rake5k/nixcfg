@@ -172,6 +172,7 @@ in
           main = {
             dpi-aware = "no";
             layer = "overlay";
+            list-executables-in-path = "yes";
             terminal = "${getExe pkgs.kitty}";
           };
         };
