@@ -32,6 +32,41 @@ in
 
       isMobile = mkEnableOption "Enable laptop features";
 
+      workspaceIndicator = mkOption {
+        type = types.submodule {
+          options = {
+            name = mkOption {
+              type = types.str;
+              description = "Name/label for the workspace indicator";
+            };
+            module = mkOption {
+              type = types.attrs;
+              default = { };
+              description = "Module configuration for the workspace indicator";
+            };
+          };
+        };
+      };
+
+      windowIndicator = mkOption {
+        type = types.submodule {
+          options = {
+            name = mkOption {
+              type = types.str;
+              description = "Name/label for the window indicator module";
+            };
+            module = mkOption {
+              type = types.attrs;
+              default = {
+                format = "  {}";
+                max-length = 90;
+              };
+              description = "Module configuration for the window indicator";
+            };
+          };
+        };
+      };
+
       volumeCtl = {
         spawnCmd = mkOption {
           type = types.str;
@@ -53,15 +88,16 @@ in
             layer = "top";
             modules-left = [
               "custom/powermenu"
-              "river/tags"
+              "${cfg.workspaceIndicator.name}"
+              "cpu"
+              "memory"
+              "disk"
               "temperature"
             ];
-            modules-center = [ "river/window" ];
+            modules-center = [ "${cfg.windowIndicator.name}" ];
             modules-right = [
               "battery"
               "wireplumber"
-              "cpu"
-              "memory"
               "clock"
               "tray"
             ];
@@ -76,20 +112,26 @@ in
               signal = 8;
             };
 
-            "river/tags" = {
-              tag-labels = [
-                "1"
-                "2"
-                "3"
-                "4"
-                "5"
-                "6"
-                "7"
-                "8"
-                "9"
-              ];
-              disable-click = false;
-              num-tags = 9;
+            "${cfg.workspaceIndicator.name}" = cfg.workspaceIndicator.module;
+
+            cpu = {
+              interval = 1;
+              format = "  {}%";
+              tooltip = false;
+              on-click = "${getExe pkgs.gnome-system-monitor}";
+            };
+
+            memory = {
+              interval = 1;
+              format = "  {}%";
+              tooltip = false;
+              on-click = "${getExe pkgs.gnome-system-monitor}";
+            };
+
+            disk = {
+              interval = 1;
+              format = "  {percentage_used}%";
+              path = "/";
             };
 
             temperature = {
@@ -98,10 +140,7 @@ in
               format = " {temperatureC}°C";
             };
 
-            "river/window" = {
-              format = "  {}";
-              max-length = 90;
-            };
+            "${cfg.windowIndicator.name}" = cfg.windowIndicator.module;
 
             battery = {
               states = {
@@ -138,20 +177,6 @@ in
               on-click = audioMuteToggle;
               on-click-middle = cfg.volumeCtl.spawnCmd;
               on-click-right = audioSourceMuteToggle;
-            };
-
-            cpu = {
-              interval = 1;
-              format = "  {}%";
-              tooltip = false;
-              on-click = "${getExe pkgs.gnome-system-monitor}";
-            };
-
-            memory = {
-              interval = 1;
-              format = "  {}%";
-              tooltip = false;
-              on-click = "${getExe pkgs.gnome-system-monitor}";
             };
 
             clock = {
@@ -231,12 +256,24 @@ in
               padding-right: 17px;
             }
 
-            #tags {
-              padding: 0;
+            #cpu {
+              color: @base09;
+            }
+
+            #memory {
+              color: @base0A;
+            }
+
+            #disk {
+              color: @base0B;
             }
 
             #temperature {
-              color: @base0D;
+              color: @base0E;
+            }
+
+            #tags, #workspaces {
+              padding: 0;
             }
 
             #battery {
@@ -264,16 +301,8 @@ in
               color: @base0A;
             }
 
-            #cpu {
-              color: @base09;
-            }
-
-            #memory {
-              color: @base0E;
-            }
-
             #clock {
-              color: @base08;
+              color: @base09;
             }
 
             #tray {

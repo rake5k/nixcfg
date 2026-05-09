@@ -103,6 +103,29 @@ in
           wayland.waybar = {
             inherit (cfg) isMobile;
             enable = true;
+            workspaceIndicator = {
+              name = "river/tags";
+              module = {
+                tags = {
+                  tag-labels = [
+                    "1"
+                    "2"
+                    "3"
+                    "4"
+                    "5"
+                    "6"
+                    "7"
+                    "8"
+                    "9"
+                  ];
+                  disable-click = false;
+                  num-tags = 9;
+                };
+              };
+            };
+            windowIndicator = {
+              name = "river/window";
+            };
             volumeCtl = {
               inherit (cfg.volumeCtl) spawnCmd;
             };
