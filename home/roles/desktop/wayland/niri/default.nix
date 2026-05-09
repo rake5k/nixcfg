@@ -34,6 +34,12 @@ in
           wayland.waybar = {
             inherit (cfg) isMobile;
             enable = true;
+            workspaceIndicator = {
+              name = "niri/workspaces";
+            };
+            windowIndicator = {
+              name = "niri/window";
+            };
             volumeCtl = {
               inherit (cfg.volumeCtl) spawnCmd;
             };
