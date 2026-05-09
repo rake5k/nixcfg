@@ -82,7 +82,6 @@ in
           # Animations
           animations = {
             enable = true;
-            slowdown = null;
           };
 
           # Window rules
@@ -101,22 +100,27 @@ in
 
           # Keybinds
           binds = {
-            # Constructive key strokes
-            "Super+Shift+Return".action.spawn = "${getExe pkgs.kitty}";
-            "Super+T".action.spawn = "${getExe pkgs.kitty}";
+            # Hotkey overlay
+            "Mod+Shift+K".action.show-hotkey-overlay = { };
 
-            # Launcher
-            "Super+P".action.spawn = "${getExe pkgs.fuzzel}";
-            "Super+E".action.spawn = "${getExe pkgs.rofimoji} --selector fuzzel";
+            # Program launching
+            "Mod+T" = {
+              hotkey-overlay.title = "Open a Terminal";
+              action.spawn = "${getExe pkgs.kitty}";
+            };
+            "Mod+D" = {
+              hotkey-overlay.title = "Run an Application";
+              action.spawn = "${getExe pkgs.fuzzel}";
+            };
+            "Mod+E" = {
+              hotkey-overlay.title = "Select an emojo";
+              action.spawn = "${getExe pkgs.rofimoji} --selector fuzzel";
+            };
 
-            # Screenshots
-            #"Super+Shift+T".action.spawn = "${cfg.screenshotCmdSelect}";
-            #"Print".action.spawn = "${cfg.screenshotCmdFull}";
-            #"Control+Print".action.spawn = "${cfg.screenshotCmdWindow}";
-            #"Control+Shift+Print".action.spawn = "${cfg.screenshotCmdSelect}";
-
-            # Locker
-            #"Super+Shift+Delete".action.spawn = "${cfg.lockerCmd}";
+            "Super+Alt+L" = {
+              hotkey-overlay.title = "Lock the Screen";
+              action.spawn = "${cfg.lockerCfg.lockerCmd}";
+            };
 
             # Media keys
             "XF86AudioRaiseVolume".action.spawn = [
@@ -174,38 +178,170 @@ in
             # Browser
             "XF86HomePage".action.spawn = "xdg-open";
 
-            # Hotkey overlay
-            "Super+Shift+Slash".action.show-hotkey-overlay = { };
-
             # Overview
-            "Super+O" = {
+            "Mod+O" = {
               repeat = false;
               action.toggle-overview = { };
             };
 
             # Close window
-            "Super+Q" = {
+            "Mod+Q" = {
               repeat = false;
               action.close-window = { };
             };
 
-            # Window navigation (arrow keys)
-            "Super+Left".action.focus-column-left = { };
-            "Super+Down".action.focus-window-down = { };
-            "Super+Up".action.focus-window-up = { };
-            "Super+Right".action.focus-column-right = { };
+            # Window navigation
+            "Mod+Left".action.focus-column-left = { };
+            "Mod+Down".action.focus-window-down = { };
+            "Mod+Up".action.focus-window-up = { };
+            "Mod+Right".action.focus-column-right = { };
+            "Mod+B".action.focus-column-left = { };
+            "Mod+N".action.focus-window-down = { };
+            "Mod+R".action.focus-window-up = { };
+            "Mod+S".action.focus-column-right = { };
+
+            "Mod+Ctrl+Left".action.move-column-left = { };
+            "Mod+Ctrl+Down".action.move-window-down = { };
+            "Mod+Ctrl+Up".action.move-window-up = { };
+            "Mod+Ctrl+Right".action.move-column-right = { };
+            "Mod+Ctrl+B".action.move-column-left = { };
+            "Mod+Ctrl+N".action.move-window-down = { };
+            "Mod+Ctrl+R".action.move-window-up = { };
+            "Mod+Ctrl+S".action.move-column-right = { };
+
+            # First/last column
+            "Mod+Home".action.focus-column-first = { };
+            "Mod+End".action.focus-column-last = { };
+            "Mod+Ctrl+Home".action.move-column-to-first = { };
+            "Mod+Ctrl+End".action.move-column-to-last = { };
+
+            # Monitor navigation
+            "Mod+Shift+Left".action.focus-monitor-left = { };
+            "Mod+Shift+Down".action.focus-monitor-down = { };
+            "Mod+Shift+Up".action.focus-monitor-up = { };
+            "Mod+Shift+Right".action.focus-monitor-right = { };
+            "Mod+Shift+B".action.focus-monitor-left = { };
+            "Mod+Shift+N".action.focus-monitor-down = { };
+            "Mod+Shift+R".action.focus-monitor-up = { };
+            "Mod+Shift+S".action.focus-monitor-right = { };
+
+            # Move to monitor
+            "Mod+Shift+Ctrl+Left".action.move-column-to-monitor-left = { };
+            "Mod+Shift+Ctrl+Down".action.move-column-to-monitor-down = { };
+            "Mod+Shift+Ctrl+Up".action.move-column-to-monitor-up = { };
+            "Mod+Shift+Ctrl+Right".action.move-column-to-monitor-right = { };
+            "Mod+Shift+Ctrl+B".action.move-column-to-monitor-left = { };
+            "Mod+Shift+Ctrl+N".action.move-column-to-monitor-down = { };
+            "Mod+Shift+Ctrl+R".action.move-column-to-monitor-up = { };
+            "Mod+Shift+Ctrl+S".action.move-column-to-monitor-right = { };
 
             # Workspace navigation
-            "Super+Page_Down".action.focus-workspace-down = { };
-            "Super+Page_Up".action.focus-workspace-up = { };
-            "Super+U".action.focus-workspace-down = { };
-            "Super+I".action.focus-workspace-up = { };
+            "Mod+Page_Down".action.focus-workspace-down = { };
+            "Mod+Page_Up".action.focus-workspace-up = { };
+            "Mod+H".action.focus-workspace-down = { };
+            "Mod+L".action.focus-workspace-up = { };
 
             # Move between workspaces
-            "Super+Ctrl+Page_Down".action.move-column-to-workspace-down = { };
-            "Super+Ctrl+Page_Up".action.move-column-to-workspace-up = { };
-            "Super+Ctrl+U".action.move-column-to-workspace-down = { };
-            "Super+Ctrl+I".action.move-column-to-workspace-up = { };
+            "Mod+Ctrl+Page_Down".action.move-column-to-workspace-down = { };
+            "Mod+Ctrl+Page_Up".action.move-column-to-workspace-up = { };
+            "Mod+Ctrl+H".action.move-column-to-workspace-down = { };
+            "Mod+Ctrl+L".action.move-column-to-workspace-up = { };
+
+            # Workspace movement
+            "Mod+Shift+Page_Down".action.move-workspace-down = { };
+            "Mod+Shift+Page_Up".action.move-workspace-up = { };
+            "Mod+Shift+H".action.move-workspace-down = { };
+            "Mod+Shift+L".action.move-workspace-up = { };
+
+            # Wheel navigation
+            "Mod+WheelScrollDown" = {
+              cooldown-ms = 150;
+              action.focus-workspace-down = { };
+            };
+            "Mod+WheelScrollUp" = {
+              cooldown-ms = 150;
+              action.focus-workspace-up = { };
+            };
+            "Mod+Ctrl+WheelScrollDown" = {
+              cooldown-ms = 150;
+              action.move-column-to-workspace-down = { };
+            };
+            "Mod+Ctrl+WheelScrollUp" = {
+              cooldown-ms = 150;
+              action.move-column-to-workspace-up = { };
+            };
+
+            # Column direction
+            "Mod+WheelScrollRight".action.focus-column-right = { };
+            "Mod+WheelScrollLeft".action.focus-column-left = { };
+            "Mod+Ctrl+WheelScrollRight".action.move-column-right = { };
+            "Mod+Ctrl+WheelScrollLeft".action.move-column-left = { };
+
+            # Alternative direction (Shift)
+            "Mod+Shift+WheelScrollDown".action.focus-column-right = { };
+            "Mod+Shift+WheelScrollUp".action.focus-column-left = { };
+            "Mod+Ctrl+Shift+WheelScrollDown".action.move-column-right = { };
+            "Mod+Ctrl+Shift+WheelScrollUp".action.move-column-left = { };
+
+            # Workspace
+            "Mod+1".action.focus-workspace = [ 1 ];
+            "Mod+2".action.focus-workspace = [ 2 ];
+            "Mod+3".action.focus-workspace = [ 3 ];
+            "Mod+4".action.focus-workspace = [ 4 ];
+            "Mod+5".action.focus-workspace = [ 5 ];
+            "Mod+6".action.focus-workspace = [ 6 ];
+            "Mod+7".action.focus-workspace = [ 7 ];
+            "Mod+8".action.focus-workspace = [ 8 ];
+            "Mod+9".action.focus-workspace = [ 9 ];
+
+            # Move to workspace
+            "Mod+Ctrl+1".action.move-column-to-workspace = [ 1 ];
+            "Mod+Ctrl+2".action.move-column-to-workspace = [ 2 ];
+            "Mod+Ctrl+3".action.move-column-to-workspace = [ 3 ];
+            "Mod+Ctrl+4".action.move-column-to-workspace = [ 4 ];
+            "Mod+Ctrl+5".action.move-column-to-workspace = [ 5 ];
+            "Mod+Ctrl+6".action.move-column-to-workspace = [ 6 ];
+            "Mod+Ctrl+7".action.move-column-to-workspace = [ 7 ];
+            "Mod+Ctrl+8".action.move-column-to-workspace = [ 8 ];
+            "Mod+Ctrl+9".action.move-column-to-workspace = [ 9 ];
+
+            # Window consume/expel
+            "Mod+BracketLeft".action.consume-or-expel-window-left = { };
+            "Mod+BracketRight".action.consume-or-expel-window-right = { };
+
+            "Mod+Comma".action.consume-window-into-column = { };
+            "Mod+Period".action.expel-window-from-column = { };
+
+            # Window height/width adjustment
+            "Mod+A".action.switch-preset-column-width = { };
+            "Mod+Shift+A".action.switch-preset-window-height = { };
+            "Mod+Ctrl+A".action.reset-window-height = { };
+
+            # Tiling
+            "Mod+F".action.maximize-column = { };
+            "Mod+Shift+F".action.fullscreen-window = { };
+
+            # Column expansion
+            "Mod+Ctrl+F".action.expand-column-to-available-width = { };
+
+            # Center column
+            "Mod+C".action.center-column = { };
+            "Mod+Ctrl+C".action.center-visible-columns = { };
+
+            # Window width adjustment
+            "Mod+Minus".action.set-column-width = "-10%";
+            "Mod+Equal".action.set-column-width = "+10%";
+
+            # Window height adjustment
+            "Mod+Shift+Minus".action.set-window-height = "-10%";
+            "Mod+Shift+Equal".action.set-window-height = "+10%";
+
+            # Floating windows
+            "Mod+V".action.toggle-window-floating = { };
+            "Mod+Shift+V".action.switch-focus-between-floating-and-tiling = { };
+
+            # Tabbed display mode
+            "Mod+W".action.toggle-column-tabbed-display = { };
 
             # Screenshot
             "Print".action.screenshot = { };
@@ -213,131 +349,17 @@ in
             "Alt+Print".action.screenshot-window = { };
 
             # Keyboard shortcuts inhibitor
-            "Super+Escape" = {
+            "Mod+Escape" = {
               allow-inhibiting = false;
               action.toggle-keyboard-shortcuts-inhibit = { };
             };
 
             # Quit
-            "Super+Shift+E".action.quit = { };
+            "Mod+Shift+E".action.quit = { };
             "Ctrl+Alt+Delete".action.quit = { };
 
             # Power off monitors
-            "Super+Shift+P".action.power-off-monitors = { };
-
-            # Monitor navigation
-            "Super+Shift+Left".action.focus-monitor-left = { };
-            "Super+Shift+Down".action.focus-monitor-down = { };
-            "Super+Shift+Up".action.focus-monitor-up = { };
-            "Super+Shift+Right".action.focus-monitor-right = { };
-
-            # Move to monitor
-            "Super+Shift+Ctrl+Left".action.move-column-to-monitor-left = { };
-            "Super+Shift+Ctrl+Down".action.move-column-to-monitor-down = { };
-            "Super+Shift+Ctrl+Up".action.move-column-to-monitor-up = { };
-            "Super+Shift+Ctrl+Right".action.move-column-to-monitor-right = { };
-
-            # First/last column
-            "Super+Home".action.focus-column-first = { };
-            "Super+End".action.focus-column-last = { };
-            "Super+Ctrl+Home".action.move-column-to-first = { };
-            "Super+Ctrl+End".action.move-column-to-last = { };
-
-            # Wheel navigation
-            "Super+WheelScrollDown" = {
-              cooldown-ms = 150;
-              action.focus-workspace-down = { };
-            };
-            "Super+WheelScrollUp" = {
-              cooldown-ms = 150;
-              action.focus-workspace-up = { };
-            };
-            "Super+Ctrl+WheelScrollDown" = {
-              cooldown-ms = 150;
-              action.move-column-to-workspace-down = { };
-            };
-            "Super+Ctrl+WheelScrollUp" = {
-              cooldown-ms = 150;
-              action.move-column-to-workspace-up = { };
-            };
-
-            # Column direction
-            "Super+WheelScrollRight".action.focus-column-right = { };
-            "Super+WheelScrollLeft".action.focus-column-left = { };
-            "Super+Ctrl+WheelScrollRight".action.move-column-right = { };
-            "Super+Ctrl+WheelScrollLeft".action.move-column-left = { };
-
-            # Alternative direction (Shift)
-            "Super+Shift+WheelScrollDown".action.focus-column-right = { };
-            "Super+Shift+WheelScrollUp".action.focus-column-left = { };
-            "Super+Ctrl+Shift+WheelScrollDown".action.move-column-right = { };
-            "Super+Ctrl+Shift+WheelScrollUp".action.move-column-left = { };
-
-            # Workspace
-            "Super+1".action.focus-workspace = [ 1 ];
-            "Super+2".action.focus-workspace = [ 2 ];
-            "Super+3".action.focus-workspace = [ 3 ];
-            "Super+4".action.focus-workspace = [ 4 ];
-            "Super+5".action.focus-workspace = [ 5 ];
-            "Super+6".action.focus-workspace = [ 6 ];
-            "Super+7".action.focus-workspace = [ 7 ];
-            "Super+8".action.focus-workspace = [ 8 ];
-            "Super+9".action.focus-workspace = [ 9 ];
-
-            # Move to workspace
-            "Super+Ctrl+1".action.move-column-to-workspace = [ 1 ];
-            "Super+Ctrl+2".action.move-column-to-workspace = [ 2 ];
-            "Super+Ctrl+3".action.move-column-to-workspace = [ 3 ];
-            "Super+Ctrl+4".action.move-column-to-workspace = [ 4 ];
-            "Super+Ctrl+5".action.move-column-to-workspace = [ 5 ];
-            "Super+Ctrl+6".action.move-column-to-workspace = [ 6 ];
-            "Super+Ctrl+7".action.move-column-to-workspace = [ 7 ];
-            "Super+Ctrl+8".action.move-column-to-workspace = [ 8 ];
-            "Super+Ctrl+9".action.move-column-to-workspace = [ 9 ];
-
-            # Tiling
-            "Super+F".action.maximize-column = { };
-            "Super+Shift+F".action.fullscreen-window = { };
-
-            # Window height/width adjustment
-            "Super+R".action.switch-preset-column-width = { };
-            "Super+Shift+R".action.switch-preset-window-height = { };
-            "Super+Ctrl+R".action.reset-window-height = { };
-
-            # Center column
-            "Super+C".action.center-column = { };
-            "Super+Ctrl+C".action.center-visible-columns = { };
-
-            # Window width adjustment
-            "Super+Minus".action.set-column-width = "-10%";
-            "Super+Equal".action.set-column-width = "+10%";
-
-            # Window height adjustment
-            "Super+Shift+Minus".action.set-window-height = "-10%";
-            "Super+Shift+Equal".action.set-window-height = "+10%";
-
-            # Floating windows
-            "Super+V".action.toggle-window-floating = { };
-            "Super+Shift+V".action.switch-focus-between-floating-and-tiling = { };
-
-            # Tabbed display mode
-            "Super+W".action.toggle-column-tabbed-display = { };
-
-            # Column expansion
-            "Super+Ctrl+F".action.expand-column-to-available-width = { };
-
-            # Window consume/expel
-            "Super+BracketLeft".action.consume-or-expel-window-left = { };
-            "Super+BracketRight".action.consume-or-expel-window-right = { };
-
-            "Super+Comma".action.consume-window-into-column = { };
-            "Super+Period".action.expel-window-from-column = { };
-
-            # Workspace movement
-            "Super+Shift+Page_Down".action.move-workspace-down = { };
-            "Super+Shift+Page_Up".action.move-workspace-up = { };
-            "Super+Shift+U".action.move-workspace-down = { };
-            "Super+Shift+I".action.move-workspace-up = { };
+            "Mod+Shift+P".action.power-off-monitors = { };
           };
         };
       };

@@ -19,6 +19,14 @@ let
     types
     ;
 
+  # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
+  # On non-NixOS: install `swaylock` from the distribution's repository.
+  # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
+  lockerCfg = {
+    package = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
+    lockerCmd = "swaylock -f";
+  };
+
   screenshotScript = pkgs.writeShellScript "wayland-screenshot" ''
     set -uo pipefail
 
@@ -130,22 +138,15 @@ in
       # Window managers
 
       niri = mkIf (cfg.windowManager == "niri") {
-        # inherit (cfg) autoruns wallpapersDir;
+        inherit lockerCfg;
+        inherit (cfg) autoruns wallpapersDir;
         enable = true;
       };
 
       river = mkIf (cfg.windowManager == "river") {
+        inherit lockerCfg;
         inherit (cfg) autoruns wallpapersDir;
         enable = true;
-
-        lockerCfg = {
-          package = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
-
-          # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
-          # On non-NixOS: install `swaylock` from the distribution's repository.
-          # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
-          lockerCmd = "swaylock -f";
-        };
 
         screenshotCfg = {
           package = pkgs.grim;
