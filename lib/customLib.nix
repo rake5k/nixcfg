@@ -106,10 +106,8 @@ inputs.flake-commons.lib {
       };
 
       font = {
-        package = mkOption {
-          type = types.package;
+        package = mkPackageOption pkgs "Font derivation" {
           default = pkgs.nerd-fonts.monofur;
-          description = "Font derivation";
         };
 
         family = mkOption {
@@ -134,9 +132,9 @@ inputs.flake-commons.lib {
       isMobile = mkEnableOption "Enable laptop features";
 
       launcherCfg = {
-        package = mkOption {
-          type = types.package;
-          description = "Launcher package to use";
+        package = mkPackageOption pkgs "Launcher" {
+          nullable = true;
+          default = null;
         };
 
         launcherCmd = mkOption {
@@ -171,9 +169,9 @@ inputs.flake-commons.lib {
       };
 
       screenshotCfg = {
-        package = mkOption {
-          type = types.package;
-          description = "Screenshot util";
+        package = mkPackageOption pkgs "Screenshot util" {
+          nullable = true;
+          default = null;
         };
 
         screenshotCmdFull = mkOption {
@@ -193,9 +191,9 @@ inputs.flake-commons.lib {
       };
 
       terminalCfg = {
-        package = mkOption {
-          type = types.package;
-          description = "Terminal emulator package";
+        package = mkPackageOption pkgs "Terminal emulator" {
+          nullable = true;
+          default = null;
         };
 
         spawnCmd = mkOption {
