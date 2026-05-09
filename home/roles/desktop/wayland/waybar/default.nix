@@ -42,6 +42,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    home.packages = [ fontPackage ];
     programs = {
       waybar = {
         enable = true;
