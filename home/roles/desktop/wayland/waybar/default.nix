@@ -19,8 +19,6 @@ let
 
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
   audioSourceMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
-
-  waybarModulesPath = config.xdg.configFile."waybar/modules".target;
   fontPackage = pkgs.nerd-fonts.monofur;
 
 in
@@ -87,7 +85,6 @@ in
           mainBar = {
             layer = "top";
             modules-left = [
-              "custom/powermenu"
               "${cfg.workspaceIndicator.name}"
               "cpu"
               "memory"
@@ -103,14 +100,6 @@ in
             ];
 
             # Modules
-
-            "custom/powermenu" = {
-              format = "⏻";
-              interval = "once";
-              on-click = "${waybarModulesPath}/powermenu.sh";
-              tooltip = false;
-              signal = 8;
-            };
 
             "${cfg.workspaceIndicator.name}" = cfg.workspaceIndicator.module;
 
@@ -249,11 +238,6 @@ in
             .module .critical {
               background-color: @base05;
               color: @base00;
-            }
-
-            #custom-powermenu {
-              color: @base05;
-              padding-right: 17px;
             }
 
             #cpu {
