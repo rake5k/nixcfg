@@ -8,7 +8,7 @@ let
     nvidia.acceptLicense = true;
     permittedInsecurePackages = [
       "broadcom-sta-6.30.223.271-59-6.12.83"
-      "openclaw-2026.4.12"
+      "openclaw-2026.4.22"
     ];
   };
 
