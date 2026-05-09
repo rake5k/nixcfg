@@ -134,27 +134,6 @@ in
       };
     };
 
-    programs = {
-      fuzzel = {
-        enable = true;
-        package = launcherPackage;
-        settings = {
-          main = {
-            terminal = terminalCmd;
-            layer = "overlay";
-          };
-        };
-      };
-      swaylock = {
-        inherit (cfg.lockerCfg) package;
-        enable = true;
-        settings = {
-          show-failed-attempts = true;
-          show-keyboard-layout = true;
-        };
-      };
-    };
-
     wayland.windowManager.river = {
       inherit package;
 

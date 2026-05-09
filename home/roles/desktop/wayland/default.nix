@@ -164,6 +164,28 @@ in
       wlr-randr
     ];
 
+    programs = {
+      # supporting tools
+      fuzzel = {
+        enable = true;
+        settings = {
+          main = {
+            dpi-aware = "no";
+            layer = "overlay";
+            terminal = "${getExe pkgs.kitty}";
+          };
+        };
+      };
+
+      swaylock = {
+        enable = true;
+        settings = {
+          show-failed-attempts = true;
+          show-keyboard-layout = true;
+        };
+      };
+    };
+
     xsession.enable = true;
   };
 }
