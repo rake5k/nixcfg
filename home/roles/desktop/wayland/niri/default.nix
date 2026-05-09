@@ -40,9 +40,7 @@ in
             windowIndicator = {
               name = "niri/window";
             };
-            volumeCtl = {
-              inherit (cfg.volumeCtl) spawnCmd;
-            };
+            volumeCtl = { inherit (cfg.volumeCtl) spawnCmd; };
           };
         };
       };
@@ -90,8 +88,26 @@ in
             enable = true;
           };
 
+          layer-rules = [
+            {
+              # Block out notifications from screencasts.
+              matches = [ { namespace = "^notifications$"; } ];
+              block-out-from = "screencast";
+            }
+          ];
+
           # Window rules
           window-rules = [
+            {
+              # Rounded corners
+              geometry-corner-radius = {
+                bottom-left = 3.;
+                bottom-right = 3.;
+                top-left = 3.;
+                top-right = 3.;
+              };
+              clip-to-geometry = true;
+            }
             {
               # Firefox picture-in-picture
               matches = [
@@ -103,13 +119,43 @@ in
               open-floating = true;
             }
             {
-              geometry-corner-radius = {
-                bottom-left = 3.;
-                bottom-right = 3.;
-                top-left = 3.;
-                top-right = 3.;
+              # Indicate screencasted windows with red colors.
+              matches = [ { is-window-cast-target = true; } ];
+
+              focus-ring = {
+                active.color = "#f38ba8";
+                inactive.color = "#7d0d2d";
               };
-              clip-to-geometry = true;
+
+              border = {
+                inactive.color = "#7d0d2d";
+              };
+
+              shadow = {
+                color = "#7d0d2d70";
+              };
+
+              tab-indicator = {
+                active.color = "#f38ba8";
+                inactive.color = "#7d0d2d";
+              };
+            }
+            {
+              # Block out password managers from screencasts.
+              matches = [
+                { app-id = "^1password$"; }
+                { app-id = "KeePassXC$"; }
+              ];
+              block-out-from = "screencast";
+            }
+            {
+              # Block out messaging apps from screencasts.
+              matches = [
+                { title = "^Element"; }
+                { title = "^Proton Mail"; }
+                { title = "^Threema"; }
+              ];
+              block-out-from = "screencast";
             }
           ];
 
@@ -372,6 +418,12 @@ in
             # Quit
             "Mod+Shift+E".action.quit = { };
             "Ctrl+Alt+Delete".action.quit = { };
+
+            # Screen mirroring
+            "Mod+P" = {
+              repeat = false;
+              action.spawn-sh = "${getExe pkgs.wl-mirror} $(${getExe pkgs.niri} msg --json focused-output | jq -r .name)";
+            };
 
             # Power off monitors
             "Mod+Shift+P".action.power-off-monitors = { };
