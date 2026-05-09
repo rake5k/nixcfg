@@ -96,6 +96,15 @@ in
               ];
               open-floating = true;
             }
+            {
+              geometry-corner-radius = {
+                bottom-left = 3.;
+                bottom-right = 3.;
+                top-left = 3.;
+                top-right = 3.;
+              };
+              clip-to-geometry = true;
+            }
           ];
 
           # Keybinds
