@@ -57,7 +57,7 @@ in
 
   config = mkIf cfg.enable {
 
-    custom.roles.desktop.wayland.enable = mkDefault true;
+    custom.roles.desktop.wayland.enable = mkDefault (!config.custom.roles.desktop.xserver.enable);
 
     home.packages =
       with pkgs;
