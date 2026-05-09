@@ -378,25 +378,6 @@ in
           };
         };
       };
-
-      # supporting tools
-      fuzzel = {
-        enable = true;
-        settings = {
-          main = {
-            terminal = "${getExe pkgs.kitty}";
-            layer = "overlay";
-          };
-        };
-      };
-
-      swaylock = {
-        enable = true;
-        settings = {
-          show-failed-attempts = true;
-          show-keyboard-layout = true;
-        };
-      };
     };
   };
 }
