@@ -104,7 +104,7 @@ in
           "river"
           "niri"
         ];
-        default = "river";
+        default = "niri";
         description = "The Wayland window manager to use";
       };
 
