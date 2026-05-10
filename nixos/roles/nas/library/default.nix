@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
 
@@ -40,6 +45,7 @@ in
     services = {
       calibre-web = {
         enable = true;
+        package = pkgs.unstable.calibre-web;
         options = {
           calibreLibrary = cfg.libraryPath;
           enableBookConversion = true;
