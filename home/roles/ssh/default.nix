@@ -26,8 +26,6 @@ let
       symlinks = [ "${sshDirectory}/${identity}" ];
     };
 
-  inherit (pkgs.stdenv) isLinux;
-
 in
 
 {
@@ -49,7 +47,5 @@ in
     home.packages = with pkgs; [ openssh ];
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
-
-    services.ssh-agent.enable = isLinux;
   };
 }
