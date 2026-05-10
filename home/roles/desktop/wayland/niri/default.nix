@@ -51,6 +51,19 @@ in
         enable = true;
         package = pkgs.niri;
         settings = {
+
+          # Input
+          input = {
+            keyboard = {
+              numlock = true;
+              xkb = {
+                layout = "de,de";
+                options = "grp:rctrl_toggle,grp_led:scroll";
+                variant = "bone,neo_qwertz";
+              };
+            };
+          };
+
           # Layout settings
           layout = {
             gaps = 12;
