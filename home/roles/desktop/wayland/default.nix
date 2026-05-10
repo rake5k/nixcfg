@@ -133,7 +133,7 @@ in
 
   config = mkIf cfg.enable {
     custom.roles.desktop.wayland = {
-      kanshi.enable = cfg.windowManager == "river";
+      kanshi.enable = true;
 
       # Window managers
 
