@@ -12,12 +12,30 @@ let
 
   inherit (lib)
     getExe
+    hm
     literalExpression
     mkEnableOption
     mkIf
     mkOption
     types
     ;
+
+  windowManagerSessions = {
+    niri = {
+      name = "Niri";
+      comment = "A scrollable-tiling Wayland compositor";
+      exec = "${config.home.homeDirectory}/.nix-profile/bin/niri-session";
+      desktopName = "niri";
+    };
+    river = {
+      name = "River";
+      comment = "A dynamic tiling Wayland compositor";
+      exec = "${config.home.homeDirectory}/.nix-profile/bin/river";
+      desktopName = "river";
+    };
+  };
+
+  activeSession = windowManagerSessions.${cfg.windowManager};
 
   # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
   # On non-NixOS: install `swaylock` from the distribution's repository.
@@ -188,5 +206,36 @@ in
     };
 
     xsession.enable = true;
+
+    home.activation = mkIf config.custom.base.non-nixos.enable {
+      waylandSessionGuide = hm.dag.entryAfter [ "writeBoundary" ] ''
+        cat <<'GUIDE'
+
+        ============================================================
+         Register the ${activeSession.name} session with GDM
+        ============================================================
+         GDM only scans /usr/share/wayland-sessions and
+         /usr/local/share/wayland-sessions for .desktop files. It
+         cannot resolve binaries from ~/.nix-profile, so the session
+         file must point at the absolute path.
+
+         Run once (re-run if the binary path changes):
+
+        sudo install -d /usr/local/share/wayland-sessions
+        sudo tee /usr/local/share/wayland-sessions/${activeSession.desktopName}.desktop >/dev/null <<'DESKTOP'
+        [Desktop Entry]
+        Name=${activeSession.name}
+        Comment=${activeSession.comment}
+        Exec=${activeSession.exec}
+        Type=Application
+        DesktopNames=${activeSession.desktopName}
+        DESKTOP
+
+         Then log out and pick "${activeSession.name}" from the gear
+         menu on the GDM login screen.
+        ============================================================
+        GUIDE
+      '';
+    };
   };
 }
