@@ -78,6 +78,11 @@ in
           layout = {
             gaps = 12;
 
+            struts = {
+              left = 32;
+              right = 32;
+            };
+
             border = {
               width = 2;
             };
