@@ -205,8 +205,6 @@ in
       };
     };
 
-    xsession.enable = true;
-
     home.activation = mkIf config.custom.base.non-nixos.enable {
       waylandSessionGuide = hm.dag.entryAfter [ "writeBoundary" ] ''
         cat <<'GUIDE'
