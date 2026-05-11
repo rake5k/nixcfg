@@ -25,11 +25,9 @@
   d = "dirs -v | head -10";
   l = "eza -ghl --git --icons";
   la = "eza -aghl --git --icons";
-  lal = "la | less";
-  ll = "l";
+  ll = "eza -ghl --git --icons";
   ls = "ls -h --color='auto'";
   lsa = "ls -a";
-  lsl = "ls | less";
   tree = "eza --icons --tree";
 
   # File reading
