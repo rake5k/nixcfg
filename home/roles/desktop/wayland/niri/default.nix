@@ -62,6 +62,33 @@ in
         package = pkgs.niri;
         settings = {
 
+          # niri does not bundle XWayland; xwayland-satellite provides DISPLAY
+          # for X11 clients. WAYLAND_DISPLAY/DISPLAY are also pushed into the
+          # user systemd + DBus activation environment so user services started
+          # by graphical-session.target inherit them.
+          environment = {
+            DISPLAY = ":0";
+          };
+
+          spawn-at-startup = [
+            {
+              command = [
+                (getExe pkgs.xwayland-satellite)
+                ":0"
+              ];
+            }
+            {
+              command = [
+                "sh"
+                "-c"
+                ''
+                  systemctl --user import-environment WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
+                  dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP=niri XDG_SESSION_TYPE
+                ''
+              ];
+            }
+          ];
+
           # Input
           input = {
             keyboard = {
