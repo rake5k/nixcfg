@@ -60,6 +60,7 @@ in
         "......." = "../../../../../..";
         "........" = "../../../../../../..";
         G = "| grep";
+        L = "| less";
         UUID = "$(uuidgen | tr -d \\n)";
       };
       syntaxHighlighting.enable = true;
