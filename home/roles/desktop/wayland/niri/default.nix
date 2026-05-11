@@ -51,9 +51,14 @@ in
     # shipped by `pkgs.niri` are invisible to `systemctl --user`. Mirror them
     # into `~/.config/systemd/user/`, which is always in the search path, so
     # `niri-session` (which runs `systemctl --user start niri.service`) works.
+    # The same goes for `niri-portals.conf`: the system `xdg-desktop-portal`
+    # only searches its compile-time datadir and `$XDG_CONFIG_HOME`, so the file
+    # shipped by `pkgs.niri` is invisible until it's mirrored under `~/.config`.
     xdg.configFile = mkIf config.custom.base.non-nixos.enable {
       "systemd/user/niri.service".source = "${pkgs.niri}/share/systemd/user/niri.service";
       "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
+      "xdg-desktop-portal/niri-portals.conf".source =
+        "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
     };
 
     programs = {
