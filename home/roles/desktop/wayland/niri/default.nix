@@ -67,6 +67,13 @@ in
         package = pkgs.niri;
         settings = {
 
+          # Startup commands
+          spawn-at-startup = [
+            {
+              sh = "${getExe pkgs.swaybg} -i $(${pkgs.findutils}/bin/find ${cfg.wallpapersDir} -type f | ${pkgs.coreutils}/bin/shuf -n1) -m fill";
+            }
+          ];
+
           # Input
           input = {
             keyboard = {
