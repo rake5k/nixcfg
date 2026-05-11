@@ -46,6 +46,16 @@ in
       };
     };
 
+    # On non-NixOS, the user `systemd` instance is started by PAM with a minimal
+    # `XDG_DATA_DIRS` that does not include `~/.nix-profile/share`, so the units
+    # shipped by `pkgs.niri` are invisible to `systemctl --user`. Mirror them
+    # into `~/.config/systemd/user/`, which is always in the search path, so
+    # `niri-session` (which runs `systemctl --user start niri.service`) works.
+    xdg.configFile = mkIf config.custom.base.non-nixos.enable {
+      "systemd/user/niri.service".source = "${pkgs.niri}/share/systemd/user/niri.service";
+      "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
+    };
+
     programs = {
       niri = {
         enable = true;
