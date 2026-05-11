@@ -70,7 +70,6 @@ in
           # Input
           input = {
             keyboard = {
-              numlock = true;
               xkb = {
                 layout = "de,de";
                 options = "grp:rctrl_toggle,grp_led:scroll";
