@@ -309,6 +309,10 @@ in
         # Built Visual Studio Code Extensions
         "*.vsix"
 
+        # Custom/Claude Code
+        "docs/superpowers/plans/"
+        "docs/superpowers/specs/"
+
         # Custom/Vim
         #
 
