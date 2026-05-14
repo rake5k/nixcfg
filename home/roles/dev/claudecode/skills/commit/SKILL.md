@@ -7,7 +7,7 @@ description:
 
 # Commit Skill
 
-## Message Convention
+## Message Format
 
 Format every commit message following the Conventional Commits v1.0.0 specification:
 
@@ -18,6 +18,11 @@ Format every commit message following the Conventional Commits v1.0.0 specificat
 
 [optional footer(s)]
 ```
+
+## Message Convention
+
+Only describe what actually changed in the staged changeset. Ignore other files/lines that are not
+being committed.
 
 ## Pre-commit
 
