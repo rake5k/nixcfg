@@ -68,6 +68,7 @@ in
                 rule = "Host(`${cfg.host}`)";
                 service = "library";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
             };
           };

@@ -133,6 +133,7 @@ in
                 rule = "Host(`syncthing.local.harke.ch`)";
                 service = "syncthing";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
             };
           };
