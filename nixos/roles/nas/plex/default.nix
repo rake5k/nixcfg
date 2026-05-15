@@ -61,6 +61,7 @@ in
                 rule = "Host(`threadfin.local.harke.ch`)";
                 service = "threadfin";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
             };
           };

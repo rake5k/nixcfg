@@ -186,9 +186,18 @@ in
                 { url = "http://localhost:${toString cfg.services.steam-headless.port}"; }
               ];
 
-              sunshine.loadBalancer.servers = [
-                { url = "http://localhost:${toString cfg.services.sunshine.port}"; }
-              ];
+              sunshine.loadBalancer = {
+                servers = [ { url = "https://localhost:${toString cfg.services.sunshine.port}"; } ];
+                serversTransport = "sunshine-transport";
+              };
+            };
+
+            # Skip TLS verification for the backend
+            serversTransports.sunshine-transport.insecureSkipVerify = true;
+
+            # Add sunshine basic auth credentials automatically
+            middlewares = {
+              sunshine-auth.headers.customRequestHeaders.Authorization = "Basic c3Vuc2hpbmU6c3Vuc2hpbmU=";
             };
 
             routers = {
@@ -197,6 +206,7 @@ in
                 rule = "Host(`${cfg.services.steam-headless.host}`)";
                 service = "steam";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
 
               sunshine = {
@@ -204,6 +214,10 @@ in
                 rule = "Host(`${cfg.services.sunshine.host}`)";
                 service = "sunshine";
                 tls.certResolver = "letsencrypt";
+                middlewares = [
+                  "authelia"
+                  "sunshine-auth"
+                ];
               };
             };
           };
