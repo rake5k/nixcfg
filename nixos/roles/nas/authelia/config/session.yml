@@ -1,0 +1,80 @@
+---
+##
+## Session Provider Configuration
+##
+## The session cookies identify the user once logged in.
+## The available providers are: `memory`, `redis`. Memory is the provider unless redis is defined.
+session:
+  ## The secret to encrypt the session data. This is only used with Redis / Redis Sentinel.
+  ## Secret can also be set using a secret: https://www.authelia.com/c/secrets
+  # secret: 'insecure_session_secret'
+
+  ## Cookies configures the list of allowed cookie domains for sessions to be created on.
+  ## Undefined values will default to the values below.
+  cookies:
+    -
+      ## The name of the session cookie.
+      name: 'authelia_session'
+
+      ## The domain to protect.
+      ## Note: the Authelia portal must also be in that domain.
+      domain: 'local.harke.ch'
+
+      ## Required. The fully qualified URI of the portal to redirect users to on proxies that support redirections.
+      ## Rules:
+      ##   - MUST use the secure scheme 'https://'
+      ##   - The above 'domain' option MUST either:
+      ##      - Match the host portion of this URI.
+      ##      - Match the suffix of the host portion when prefixed with '.'.
+      authelia_url: 'https://auth.local.harke.ch'
+
+      ## Optional. The fully qualified URI used as the redirection location if the portal is accessed directly. Not
+      ## configuring this option disables the automatic redirection behavior.
+      ##
+      ## Note: this parameter is optional. If not provided, user won't be redirected upon successful authentication
+      ## unless they were redirected to Authelia by the proxy.
+      ##
+      ## Rules:
+      ##   - MUST use the secure scheme 'https://'
+      ##   - MUST not match the 'authelia_url' option.
+      ##   - The above 'domain' option MUST either:
+      ##      - Match the host portion of this URI.
+      ##      - Match the suffix of the host portion when prefixed with '.'.
+      # default_redirection_url: 'https://www.example.com'
+
+      ## Sets the Cookie SameSite value. Possible options are none, lax, or strict.
+      ## Please read https://www.authelia.com/c/session#same_site
+      # same_site: 'lax'
+
+      ## The value for inactivity, expiration, and remember_me are in seconds or the duration common syntax.
+      ## All three of these values affect the cookie/session validity period. Longer periods are considered less secure
+      ## because a stolen cookie will last longer giving attackers more time to spy or attack.
+
+      ## The inactivity time before the session is reset. If expiration is set to 1h, and this is set to 5m, if the user
+      ## does not select the remember me option their session will get destroyed after 1h, or after 5m since the last
+      ## time Authelia detected user activity.
+      # inactivity: '5 minutes'
+
+      ## The time before the session cookie expires and the session is destroyed if remember me IS NOT selected by the
+      ## user.
+      # expiration: '1 hour'
+
+      ## The time before the cookie expires and the session is destroyed if remember me IS selected by the user. Setting
+      ## this value to -1 disables remember me for this session cookie domain. If allowed and the user uses the remember
+      ## me checkbox this overrides the expiration option and disables the inactivity option.
+      # remember_me: '1 month'
+
+  ## Cookie Session Domain default 'name' value.
+  name: 'authelia_session'
+
+  ## Cookie Session Domain default 'same_site' value.
+  same_site: 'lax'
+
+  ## Cookie Session Domain default 'inactivity' value.
+  inactivity: '5m'
+
+  ## Cookie Session Domain default 'expiration' value.
+  expiration: '1h'
+
+  ## Cookie Session Domain default 'remember_me' value.
+  remember_me: '1M'

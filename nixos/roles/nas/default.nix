@@ -48,6 +48,7 @@ in
         };
         syncthing.enable = true;
         tls.enable = true;
+        authelia.enable = true;
       };
     };
 

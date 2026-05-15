@@ -48,6 +48,11 @@ in
             "desktop.ini"
           ];
           PAPERLESS_OCR_LANGUAGE = "deu+eng";
+
+          # Authelia integration
+          PAPERLESS_ENABLE_HTTP_REMOTE_USER = true;
+          PAPERLESS_HTTP_REMOTE_USER_HEADER_NAME = "HTTP_REMOTE_USER";
+          PAPERLESS_LOGOUT_REDIRECT_URL = "https://auth.local.harke.ch/logout";
         };
       };
 
@@ -66,6 +71,7 @@ in
                 rule = "Host(`${cfg.host}`)";
                 service = "dms";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
             };
           };
