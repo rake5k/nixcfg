@@ -16,6 +16,11 @@ let
     types
     ;
 
+  localUrl = "http://localhost:${toString config.services.immich.port}";
+  remoteUrl = "https://${cfg.host}";
+
+  immichApiKeySecret = "dashboard-immich-api-key";
+
 in
 
 {
@@ -38,9 +43,33 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [
-      "/var/lib/${config.services.postgresql.dataDir}"
-    ];
+    custom = {
+      base = {
+        agenix.secrets = [ immichApiKeySecret ];
+        system.btrfs.impermanence.extraDirectories = [
+          "/var/lib/${config.services.postgresql.dataDir}"
+        ];
+      };
+      roles.nas.dashboard = {
+        environment = "HOMEPAGE_FILE_IMMICH_API_KEY=${config.age.secrets."${immichApiKeySecret}".path}";
+        secrets = [ immichApiKeySecret ];
+        services = [
+          {
+            Immich = {
+              icon = "immich.svg";
+              href = remoteUrl;
+              siteMonitor = localUrl;
+              widget = {
+                url = localUrl;
+                type = "immich";
+                key = "{{HOMEPAGE_FILE_IMMICH_API_KEY}}";
+                version = 2;
+              };
+            };
+          }
+        ];
+      };
+    };
 
     environment.systemPackages = [ pkgs.immich-cli ];
 
@@ -66,7 +95,7 @@ in
         mediaLocation = cfg.mediaPath;
         settings = {
           machineLearning.facialRecognition.minFaces = 15;
-          server.externalDomain = "https://${cfg.host}";
+          server.externalDomain = remoteUrl;
         };
       };
 
@@ -75,7 +104,7 @@ in
           http = {
             services = {
               photos.loadBalancer.servers = [
-                { url = "http://localhost:${toString config.services.immich.port}"; }
+                { url = localUrl; }
               ];
             };
 

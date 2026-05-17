@@ -36,6 +36,7 @@ in
         ai.enable = true;
         backup.enable = true;
         dms.enable = true;
+        dashboard.enable = true;
         glances.enable = true;
         library.enable = true;
         photos.enable = true;

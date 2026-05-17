@@ -13,6 +13,11 @@ let
     types
     ;
 
+  localSteamUrl = "http://localhost:${toString cfg.services.steam-headless.port}";
+  localSunshineUrl = "https://localhost:${toString cfg.services.sunshine.port}";
+  remoteSteamUrl = "https://${cfg.services.steam-headless.host}";
+  remoteSunshineUrl = "https://${cfg.services.sunshine.host}";
+
 in
 
 {
@@ -59,13 +64,27 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom = {
-      roles.backup.rsync.jobs.backup.excludes = [
+    custom.roles = {
+      backup.rsync.jobs.backup.excludes = [
         "${cfg.dataPath}/home/*/.thumbnails/"
         "${cfg.dataPath}/home/*/.cache/"
         "${cfg.dataPath}/home/*/.config/*/Cache/"
         "${cfg.dataPath}/home/*/.local/share/flatpak/"
         "${cfg.dataPath}/home/*/.local/share/Trash/"
+      ];
+      nas.dashboard.services = [
+        {
+          Steam = {
+            icon = "steam.svg";
+            href = remoteSteamUrl;
+            siteMonitor = localSteamUrl;
+          };
+          Sunshine = {
+            icon = "steam.svg";
+            href = remoteSunshineUrl;
+            siteMonitor = localSunshineUrl;
+          };
+        }
       ];
     };
 
@@ -183,11 +202,11 @@ in
           http = {
             services = {
               steam.loadBalancer.servers = [
-                { url = "http://localhost:${toString cfg.services.steam-headless.port}"; }
+                { url = localSteamUrl; }
               ];
 
               sunshine.loadBalancer = {
-                servers = [ { url = "https://localhost:${toString cfg.services.sunshine.port}"; } ];
+                servers = [ { url = localSunshineUrl; } ];
                 serversTransport = "sunshine-transport";
               };
             };

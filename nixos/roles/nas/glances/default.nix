@@ -12,6 +12,9 @@ let
     ;
   inherit (lib.generators) toINI;
 
+  localUrl = "http://localhost:${toString config.services.glances.port}";
+  remoteUrl = "https://${cfg.host}";
+
 in
 
 {
@@ -40,6 +43,16 @@ in
       };
     };
 
+    custom.roles.nas.dashboard.services = [
+      {
+        Glances = {
+          icon = "glances.svg";
+          href = remoteUrl;
+          siteMonitor = localUrl;
+        };
+      }
+    ];
+
     services = {
       glances.enable = true;
 
@@ -48,7 +61,7 @@ in
           http = {
             services = {
               glances.loadBalancer.servers = [
-                { url = "http://localhost:${toString config.services.glances.port}"; }
+                { url = localUrl; }
               ];
             };
 
