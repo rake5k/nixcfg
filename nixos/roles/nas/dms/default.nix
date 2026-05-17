@@ -11,6 +11,11 @@ let
     types
     ;
 
+  localUrl = "http://localhost:${toString config.services.paperless.port}";
+  remoteUrl = "https://dms.local.harke.ch/";
+
+  paperlessNgxKey = "dashboard-paperless-ngx-key";
+
 in
 
 {
@@ -33,9 +38,28 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [
-      config.services.paperless.dataDir
-    ];
+    custom = {
+      base = {
+        agenix.secrets = [ paperlessNgxKey ];
+        system.btrfs.impermanence.extraDirectories = [
+          config.services.paperless.dataDir
+        ];
+      };
+      roles.nas.dashboard.services = [
+        {
+          Paperless = {
+            icon = "paperless-ngx.svg";
+            href = remoteUrl;
+            siteMonitor = localUrl;
+            widget = {
+              url = localUrl;
+              type = "paperlessngx";
+              key = config.age.secrets."${paperlessNgxKey}";
+            };
+          };
+        }
+      ];
+    };
 
     services = {
       paperless = {
@@ -61,7 +85,7 @@ in
           http = {
             services = {
               dms.loadBalancer.servers = [
-                { url = "http://localhost:${toString config.services.paperless.port}"; }
+                { url = localUrl; }
               ];
             };
 

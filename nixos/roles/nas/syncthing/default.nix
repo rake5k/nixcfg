@@ -2,9 +2,17 @@
 
 let
 
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    types
+    ;
 
   cfg = config.custom.roles.nas.syncthing;
+
+  localUrl = "http://${config.services.syncthing.guiAddress}";
+  remoteUrl = "https://${cfg.host}";
 
 in
 
@@ -12,11 +20,28 @@ in
   options = {
     custom.roles.nas.syncthing = {
       enable = mkEnableOption "Syncthing config";
+
+      host = mkOption {
+        type = types.str;
+        default = "https://syncthing.local.harke.ch/";
+        description = "Host where Syncthing is available";
+      };
     };
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [ config.services.syncthing.dataDir ];
+    custom = {
+      base.system.btrfs.impermanence.extraDirectories = [ config.services.syncthing.dataDir ];
+      roles.nas.dashboard.services = [
+        {
+          Syncthing = {
+            icon = "syncthing.svg";
+            href = remoteUrl;
+            siteMonitor = localUrl;
+          };
+        }
+      ];
+    };
 
     services = {
       syncthing = {
@@ -124,13 +149,13 @@ in
         dynamicConfigOptions = {
           http = {
             services = {
-              syncthing.loadBalancer.servers = [ { url = "http://${config.services.syncthing.guiAddress}"; } ];
+              syncthing.loadBalancer.servers = [ { url = localUrl; } ];
             };
 
             routers = {
               syncthing = {
                 entryPoints = [ "websecure" ];
-                rule = "Host(`syncthing.local.harke.ch`)";
+                rule = "Host(`${cfg.host}`)";
                 service = "syncthing";
                 tls.certResolver = "letsencrypt";
                 middlewares = [ "authelia" ];
