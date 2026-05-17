@@ -16,6 +16,12 @@ let
     types
     ;
 
+  localUrl = "http://localhost:${toString config.services.calibre-web.listen.port}";
+  remoteUrl = "https://${cfg.host}";
+
+  dashboardUsernameSecret = "dashboard-calibreweb-username";
+  dashboardPasswordSecret = "dashboard-calibreweb-password";
+
 in
 
 {
@@ -38,9 +44,42 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.base.system.btrfs.impermanence.extraDirectories = [
-      "/var/lib/${config.services.calibre-web.dataDir}"
-    ];
+    custom = {
+      base = {
+        agenix.secrets = [
+          dashboardUsernameSecret
+          dashboardPasswordSecret
+        ];
+        system.btrfs.impermanence.extraDirectories = [
+          "/var/lib/${config.services.calibre-web.dataDir}"
+        ];
+      };
+      roles.nas.dashboard = {
+        environment = ''
+          HOMEPAGE_FILE_CALIBREWEB_USERNAME=${config.age.secrets."${dashboardUsernameSecret}".path}
+          HOMEPAGE_FILE_CALIBREWEB_PASSWORD=${config.age.secrets."${dashboardPasswordSecret}".path}
+        '';
+        secrets = [
+          dashboardUsernameSecret
+          dashboardPasswordSecret
+        ];
+        services = [
+          {
+            Calibre-Web = {
+              icon = "calibre-web.svg";
+              href = remoteUrl;
+              siteMonitor = localUrl;
+              widget = {
+                url = localUrl;
+                type = "calibreweb";
+                username = "{{HOMEPAGE_FILE_CALIBREWEB_USERNAME}}";
+                password = "{{HOMEPAGE_FILE_CALIBREWEB_PASSWORD}}";
+              };
+            };
+          }
+        ];
+      };
+    };
 
     services = {
       calibre-web = {
@@ -58,7 +97,7 @@ in
           http = {
             services = {
               library.loadBalancer.servers = [
-                { url = "http://localhost:${toString config.services.calibre-web.listen.port}"; }
+                { url = localUrl; }
               ];
             };
 
