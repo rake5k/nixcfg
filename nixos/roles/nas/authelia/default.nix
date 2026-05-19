@@ -104,36 +104,39 @@ in
         set -e
 
         if [ $# -lt 2 ]; then
-          echo "Usage: authelia-create-user <username> <email> [groups]"
+          echo "Usage: authelia-create-user <username> <email> [group1,group2,...]"
           exit 1
         fi
 
-        USERNAME="$1"
-        EMAIL="$2"
-        GROUPS="''${3:-users}"
+        AUTHELIA_USERNAME="$1"
+        AUTHELIA_EMAIL="$2"
+        AUTHELIA_GROUPS="''${3:-users}"
         USERS_FILE="${dataDir}/users_database.yml"
 
-        echo "Creating user: $USERNAME ($EMAIL)"
-        read -s -p "Password: " PASSWORD
+        echo "Creating user: $AUTHELIA_USERNAME ($AUTHELIA_EMAIL)"
+        read -s -p "Password: " AUTHELIA_PASSWORD
         echo ""
 
-        HASH=$(${getExe pkgs.authelia} crypto hash generate argon2 --password "$PASSWORD" 2>/dev/null | grep "Digest:" | awk '{print $2}')
+        HASH=$(${getExe pkgs.authelia} crypto hash generate argon2 --password "$AUTHELIA_PASSWORD" 2>/dev/null | grep "Digest:" | awk '{print $2}')
 
-        if grep -q "^  $USERNAME:" "$USERS_FILE" 2>/dev/null; then
-          echo "User $USERNAME already exists!"
+        if grep -q "^  $AUTHELIA_USERNAME:" "$USERS_FILE" 2>/dev/null; then
+          echo "User $AUTHELIA_USERNAME already exists!"
           exit 1
         fi
 
+        # Convert comma-separated groups into a YAML list
+        GROUPS_YAML=$(echo "$AUTHELIA_GROUPS" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed 's/^/            - /' | sed 's/$//')
+
         cat >> "$USERS_FILE" << EOF
-          $USERNAME:
-            displayname: "$USERNAME"
-            password: "$HASH"
-            email: "$EMAIL"
-            groups:
-              - $GROUPS
+            $AUTHELIA_USERNAME:
+                displayname: $AUTHELIA_USERNAME
+                password: $HASH
+                email: $AUTHELIA_EMAIL
+                groups:
+        $GROUPS_YAML
         EOF
 
-        echo "User $USERNAME created successfully!"
+        echo "User $AUTHELIA_USERNAME created successfully!"
       '')
     ];
 
