@@ -19,7 +19,8 @@ let
   localUrl = "http://localhost:${toString config.services.immich.port}";
   remoteUrl = "https://${cfg.host}";
 
-  immichApiKeySecret = "dashboard-immich-api-key";
+  apiKeySecret = "dashboard-immich-api-key";
+  oauthClientSecret = "immich-oauth-client-secret";
 
 in
 
@@ -45,14 +46,17 @@ in
   config = mkIf cfg.enable {
     custom = {
       base = {
-        agenix.secrets = [ immichApiKeySecret ];
+        agenix.secrets = [
+          apiKeySecret
+          oauthClientSecret
+        ];
         system.btrfs.impermanence.extraDirectories = [
           "/var/lib/${config.services.postgresql.dataDir}"
         ];
       };
       roles.nas.dashboard = {
-        environment = "HOMEPAGE_FILE_IMMICH_API_KEY=${config.age.secrets."${immichApiKeySecret}".path}";
-        secrets = [ immichApiKeySecret ];
+        environment = "HOMEPAGE_FILE_IMMICH_API_KEY=${config.age.secrets."${apiKeySecret}".path}";
+        secrets = [ apiKeySecret ];
         services = [
           {
             Immich = {
@@ -95,6 +99,18 @@ in
         mediaLocation = cfg.mediaPath;
         settings = {
           machineLearning.facialRecognition.minFaces = 15;
+          oauth = {
+            autoLaunch = false;
+            autoRegister = true;
+            buttonText = "Login with Authelia";
+            clientId = "immich";
+            clientSecret._secret = config.age.secrets."${oauthClientSecret}".path;
+            enabled = true;
+            issuerUrl = "https://${config.custom.roles.nas.authelia.host}/.well-known/openid-configuration";
+            scope = "openid email profile";
+            signingAlgorithm = "RS256";
+            tokenEndpointAuthMethod = "client_secret_post";
+          };
           server.externalDomain = remoteUrl;
         };
       };

@@ -21,6 +21,8 @@ let
   remoteUrl = "https://${cfg.openWebuiHost}";
   remoteOllamaUrl = "https://${cfg.ollamaHost}";
 
+  oauthEnvSecret = "open-webui-oauth-env";
+
 in
 
 {
@@ -43,24 +45,27 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.roles = {
-      ai.text.enable = true;
-      nas.dashboard.services = [
-        {
-          "Open WebUI" = {
-            icon = "open-webui.svg";
-            href = remoteUrl;
-            siteMonitor = localUrl;
-          };
-        }
-        {
-          "Ollama" = {
-            icon = "ollama.svg";
-            href = remoteOllamaUrl;
-            siteMonitor = localOllamaUrl;
-          };
-        }
-      ];
+    custom = {
+      base.agenix.secrets = [ oauthEnvSecret ];
+      roles = {
+        ai.text.enable = true;
+        nas.dashboard.services = [
+          {
+            "Open WebUI" = {
+              icon = "open-webui.svg";
+              href = remoteUrl;
+              siteMonitor = localUrl;
+            };
+          }
+          {
+            "Ollama" = {
+              icon = "ollama.svg";
+              href = remoteOllamaUrl;
+              siteMonitor = localOllamaUrl;
+            };
+          }
+        ];
+      };
     };
 
     environment.systemPackages = with pkgs; [ unstable.llmfit ];
@@ -107,6 +112,25 @@ in
             };
           };
         };
+      };
+
+      open-webui = {
+        environment = {
+          WEBUI_URL = remoteUrl;
+          ENABLE_OAUTH_SIGNUP = "true";
+          ENABLE_OAUTH_PERSISTENT_CONFIG = "false";
+          OAUTH_MERGE_ACCOUNTS_BY_EMAIL = "true";
+          OAUTH_PROVIDER_NAME = "Authelia";
+          OPENID_PROVIDER_URL = "https://${config.custom.roles.nas.authelia.host}/.well-known/openid-configuration";
+          OAUTH_CLIENT_ID = "open-webui";
+          OAUTH_SCOPES = "openid profile email groups";
+          OAUTH_CODE_CHALLENGE_METHOD = "S256";
+          ENABLE_OAUTH_ROLE_MANAGEMENT = "true";
+          OAUTH_ROLES_CLAIM = "groups";
+          OAUTH_ALLOWED_ROLES = "users";
+          OAUTH_ADMIN_ROLES = "admins";
+        };
+        environmentFile = config.age.secrets."${oauthEnvSecret}".path;
       };
     };
   };
