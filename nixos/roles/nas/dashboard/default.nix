@@ -186,7 +186,7 @@ in
 
         settings = {
           title = "Home Server";
-          color = "stone";
+          color = "zinc";
           providers = {
             openweathermap = "{{HOMEPAGE_FILE_OPENWEATHERMAP_KEY}}";
             weatherapi = "weatherapiapikey";
