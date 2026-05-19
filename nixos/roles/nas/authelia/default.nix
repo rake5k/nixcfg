@@ -20,7 +20,8 @@ let
 
   dataDir = "/var/lib/authelia-main";
 
-  hasSecrets = cfg.jwtSecret != null && cfg.storageEncryptionKey != null;
+  oidcClientConfig = "authelia-config-oidc-clients";
+
   mkSecretFilePath = secret: config.age.secrets."${secret}".path;
   mkSecretOwner =
     secrets:
@@ -36,17 +37,39 @@ in
     custom.roles.nas.authelia = {
       enable = mkEnableOption "Authelia SSO";
 
+      host = mkOption {
+        type = types.str;
+        default = "auth.local.harke.ch";
+        description = "Host name where Authelia is available on";
+      };
+
       jwtSecret = mkOption {
-        type = with types; nullOr str;
-        default = null;
+        type = types.str;
+        default = "authelia-jwt-secret";
         description = ''
           Name of the JWT secret.
         '';
       };
 
+      oidcHmacSecret = mkOption {
+        type = types.str;
+        default = "authelia-oidc-hmac-secret";
+        description = ''
+          Name of the HMAC secret used to sign OIDC JWTs.
+        '';
+      };
+
+      oidcIssuerPrivateKey = mkOption {
+        type = types.str;
+        default = "authelia-oidc-issuer-private-key";
+        description = ''
+          Name of the private key file used to encrypt OIDC JWTs.
+        '';
+      };
+
       storageEncryptionKey = mkOption {
-        type = with types; nullOr str;
-        default = null;
+        type = types.str;
+        default = "authelia-storage-encryption-key";
         description = ''
           Name of the storage encryption key secret.
         '';
@@ -56,17 +79,24 @@ in
 
   config = mkIf cfg.enable {
 
-    age.secrets = mkIf hasSecrets (
-      mkSecretOwner (
-        with cfg;
-        [
-          jwtSecret
-          storageEncryptionKey
-        ]
-      )
-    );
+    age.secrets = mkSecretOwner [
+      cfg.jwtSecret
+      cfg.oidcHmacSecret
+      cfg.oidcIssuerPrivateKey
+      cfg.storageEncryptionKey
+      oidcClientConfig
+    ];
 
-    custom.base.system.btrfs.impermanence.extraDirectories = [ dataDir ];
+    custom.base = {
+      agenix.secrets = [
+        cfg.jwtSecret
+        cfg.oidcHmacSecret
+        cfg.oidcIssuerPrivateKey
+        cfg.storageEncryptionKey
+        oidcClientConfig
+      ];
+      system.btrfs.impermanence.extraDirectories = [ dataDir ];
+    };
 
     # Authelia admin tool
     environment.systemPackages = [
@@ -110,18 +140,17 @@ in
     services = {
       authelia.instances.main = {
         enable = true;
-        secrets =
-          if hasSecrets then
-            {
-              jwtSecretFile = mkSecretFilePath cfg.jwtSecret;
-              storageEncryptionKeyFile = mkSecretFilePath cfg.storageEncryptionKey;
-            }
-          else
-            {
-              manual = true;
-            };
+        secrets = {
+          jwtSecretFile = mkSecretFilePath cfg.jwtSecret;
+          oidcHmacSecretFile = mkSecretFilePath cfg.oidcHmacSecret;
+          oidcIssuerPrivateKeyFile = mkSecretFilePath cfg.oidcIssuerPrivateKey;
+          storageEncryptionKeyFile = mkSecretFilePath cfg.storageEncryptionKey;
+        };
         settings.theme = "auto";
-        settingsFiles = [ ./config ];
+        settingsFiles = [
+          ./config
+          (mkSecretFilePath oidcClientConfig)
+        ];
       };
 
       traefik.dynamicConfigOptions.http = {
@@ -149,7 +178,7 @@ in
         routers = {
           authelia = {
             entryPoints = [ "websecure" ];
-            rule = "Host(`auth.local.harke.ch`)";
+            rule = "Host(`${cfg.host}`)";
             service = "authelia";
             tls.certResolver = "letsencrypt";
           };
