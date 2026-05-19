@@ -20,6 +20,7 @@ let
 
   dataDir = "/var/lib/authelia-main";
 
+  notifierConfig = "authelia-config-notifier";
   oidcClientConfig = "authelia-config-oidc-clients";
 
   mkSecretFilePath = secret: config.age.secrets."${secret}".path;
@@ -84,6 +85,7 @@ in
       cfg.oidcHmacSecret
       cfg.oidcIssuerPrivateKey
       cfg.storageEncryptionKey
+      notifierConfig
       oidcClientConfig
     ];
 
@@ -93,6 +95,7 @@ in
         cfg.oidcHmacSecret
         cfg.oidcIssuerPrivateKey
         cfg.storageEncryptionKey
+        notifierConfig
         oidcClientConfig
       ];
       system.btrfs.impermanence.extraDirectories = [ dataDir ];
@@ -152,6 +155,7 @@ in
         settings.theme = "auto";
         settingsFiles = [
           ./config
+          (mkSecretFilePath notifierConfig)
           (mkSecretFilePath oidcClientConfig)
         ];
       };
