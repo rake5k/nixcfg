@@ -44,6 +44,7 @@ access_control:
     ## Normal users
     - domain:
       - 'chat.local.harke.ch'
+      - 'dash.local.harke.ch'
       - 'dms.local.harke.ch'
       - 'library.local.harke.ch'
       - 'photos.local.harke.ch'
