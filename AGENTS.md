@@ -258,8 +258,7 @@ The following rules are enforced by `treefmt`, and are expected to be followed b
 
 ### Error Handling
 
-- Use `builtins.tryEval` or `assert` for runtime checks.
-- Prefer `builtins.abort` to surface errors during build.
+- Use `assert` for runtime checks; avoid `throw` and `builtins.abort`.
 - When writing shell scripts, use `set -euo pipefail`.
 
 ### Testing
@@ -306,6 +305,97 @@ Built-in utility functions from `nixcfgLib`:
 4. Commit and push.
 
 Feel free to ask an agent for help with any of the commands listed here or for further explanations.
+
+## Editing Conventions
+
+These rules capture the editing discipline of this flake. `nixcfg` is the core library — downstream
+flavor flakes (`nixcfg-home`, `nixcfg-work`) extend it via `recursiveUpdate`, so changes here often
+propagate to other repositories.
+
+### Two key invariants
+
+1. **`default.nix` files are auto-imported.** `lib/customLib.nix` exports
+   `getRecursiveDefaultNixFileList`, which recursively collects every `default.nix` under `nixos/`
+   and `home/` (in both this flake and any consuming flake). To add a new module, drop a
+   `default.nix` in a sensibly-named directory — it is picked up automatically. Do not edit a parent
+   module's `imports` to "register" a new file. Non-`default.nix` files (e.g.
+   `hardware-configuration.nix`, helper `.nix` files) are _not_ auto-imported and must be imported
+   explicitly.
+2. **Enabling a module pulls its packages in implicitly.** NixOS and Home Manager modules install
+   the packages they need when `enable` is set. Do not search nixpkgs or add the same package to
+   `environment.systemPackages` / `home.packages` if a module already wires it up. Only add packages
+   explicitly when there is no module providing them.
+
+### Decision tree: where do my changes go?
+
+Walk this list in order and stop at the first match:
+
+1. **Is there a `custom.*` option that already does this?** Use it. Examples: `custom.base.users`,
+   `custom.base.system.btrfs.enable`, `custom.roles.nas.ai.enable`. Read the relevant role file in
+   `nixos/roles/<name>/` before adding anything — the option you need probably exists.
+2. **Does the change belong in an existing role?** Extend that role. Each role file defines
+   `options.custom.roles.<name>` via `mkEnableOption` and guards `config` with `mkIf cfg.enable`.
+3. **Is the change trivially small and host-specific?** Put it directly in
+   `hosts/<type>/<host>/default.nix` or `home-<user>.nix`.
+4. **Otherwise, create a new custom role.**
+
+### New role template
+
+```nix
+{ config, lib, pkgs, ... }:
+let
+  cfg = config.custom.roles.myrole;
+  inherit (lib) mkEnableOption mkIf;
+in
+{
+  options.custom.roles.myrole = {
+    enable = mkEnableOption "My role";
+  };
+
+  config = mkIf cfg.enable {
+    # actual configuration
+  };
+}
+```
+
+Place at `nixos/roles/myrole/default.nix` or `home/roles/myrole/default.nix` (auto-imported). Hosts
+enable it with `custom.roles.myrole.enable = true;`.
+
+### Where does code go? Quick reference
+
+| Request                                    | Edit                                                                                     |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| Add a NixOS module / role                  | `nixos/<area>/<name>/default.nix`                                                        |
+| Add a Home Manager module / role           | `home/<area>/<name>/default.nix`                                                         |
+| Add a host-only one-liner                  | `hosts/<type>/<host>/default.nix`                                                        |
+| Add per-user Home Manager config on a host | `hosts/<type>/<host>/home-<user>.nix`                                                    |
+| Add a package not in nixpkgs               | `pkgs/<name>/`                                                                           |
+| Add a shared helper / option type          | `lib/customLib.nix`                                                                      |
+| Wire a new flake input                     | `flake.nix` inputs + (if it ships a module) `lib/default.nix` or `lib/builders/modules/` |
+
+`hosts/` is grouped by configuration type: `hosts/nixos/`, `hosts/macos/`, `hosts/nix-on-droid/`,
+`hosts/non-nixos/`. Downstream flavor flakes target a single OS type and use a flat `hosts/<host>/`
+layout instead.
+
+### Propagating changes downstream
+
+A breaking change here will fail in `nixcfg-home` / `nixcfg-work` at lock time. Before pushing:
+
+1. Commit locally (do not push yet).
+2. In the consuming flake, temporarily set `nixcfg.url = "path:/home/chr/code/nixcfg";`.
+3. `nix flake update nixcfg && nix flake check` — fix and amend if it breaks.
+4. On green: push `nixcfg`, restore `nixcfg.url = "github:rake5k/nixcfg";`, relock, commit, push.
+
+### Common pitfalls
+
+- **Adding a package that a module already installs.** Check the module first; if `enable` is on,
+  the package is already there.
+- **Adding to an `imports` list.** Almost never needed — drop a `default.nix` in the right directory
+  instead.
+- **Putting downstream-specific config in core.** This flake is consumed by `nixcfg-home` and
+  `nixcfg-work`; keep machine-specific or user-specific defaults out of `nixos/` and `home/` here.
+- **Hardcoding paths to secrets.** Use `custom.base.agenix.secrets.<name>.path` (or the homeage
+  equivalent) — the path is generated.
 
 ---
 
