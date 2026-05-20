@@ -56,8 +56,9 @@ in
     security.pam.services = {
       # Enable pam service to enable session unlocking by i3lock-based lockers:
       # https://github.com/NixOS/nixpkgs/issues/401891#issuecomment-2831813778
-      i3lock.enable = true;
+      i3lock = { };
       login.enableGnomeKeyring = true;
+      swaylock = { };
     };
 
     services = {
