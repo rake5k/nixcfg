@@ -461,6 +461,7 @@ in
             # Screen mirroring
             "Mod+P" = {
               repeat = false;
+              hotkey-overlay.title = "Mirror the Screen";
               action.spawn-sh = "${getExe pkgs.wl-mirror} $(${getExe pkgs.niri} msg --json focused-output | jq -r .name)";
             };
 
