@@ -32,9 +32,23 @@ access_control:
   default_policy: 'deny'
 
   rules:
-    ## Rules applied to everyone
-    - domain: '*.local.harke.ch'
-      policy: one_factor
+
+    ## Only admins
+    - domain:
+      - 'sunshine.local.harke.ch'
+      - 'syncthing.local.harke.ch'
+      - 'threadfin.local.harke.ch'
+      subject: 'group:admins'
+      policy: 'one_factor'
+
+    ## Normal users
+    - domain:
+      - 'chat.local.harke.ch'
+      - 'dms.local.harke.ch'
+      - 'library.local.harke.ch'
+      - 'photos.local.harke.ch'
+      - 'steam.local.harke.ch'
+      policy: 'one_factor'
 
     ## Domain Regex examples. Generally we recommend just using a standard domain.
     # - domain_regex: '^(?P<User>\w+)\.example\.com$'

@@ -103,6 +103,7 @@ in
 
     # Authelia admin tool
     environment.systemPackages = [
+      pkgs.authelia
       (pkgs.writeShellScriptBin "authelia-create-user" ''
         set -e
 
