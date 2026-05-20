@@ -71,6 +71,7 @@ in
                 rule = "Host(`${cfg.host}`)";
                 service = "glances";
                 tls.certResolver = "letsencrypt";
+                middlewares = [ "authelia" ];
               };
             };
           };
