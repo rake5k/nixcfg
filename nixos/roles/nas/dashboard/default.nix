@@ -251,7 +251,10 @@ in
                 rule = "Host(`${cfg.host}`)";
                 service = "dashboard";
                 tls.certResolver = "letsencrypt";
-                middlewares = [ "dashboard-hostheader" ];
+                middlewares = [
+                  "authelia"
+                  "dashboard-hostheader"
+                ];
               };
             };
 
