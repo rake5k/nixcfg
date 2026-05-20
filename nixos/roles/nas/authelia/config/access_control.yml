@@ -33,8 +33,16 @@ access_control:
 
   rules:
 
+    ## Remote dashboard without auth
+    - domain:
+      - 'glances.local.harke.ch'
+      networks:
+        - '10.0.10.100'
+      policy: 'bypass'
+
     ## Only admins
     - domain:
+      - 'glances.local.harke.ch'
       - 'sunshine.local.harke.ch'
       - 'syncthing.local.harke.ch'
       - 'threadfin.local.harke.ch'
