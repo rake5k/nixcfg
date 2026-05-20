@@ -214,12 +214,12 @@ in
             };
             "Mod+E" = {
               hotkey-overlay.title = "Select an emojo";
-              action.spawn = "${getExe pkgs.rofimoji} --selector fuzzel";
+              action.spawn-sh = "${getExe pkgs.rofimoji} --selector fuzzel";
             };
 
             "Super+Alt+L" = {
               hotkey-overlay.title = "Lock the Screen";
-              action.spawn = "${cfg.lockerCfg.lockerCmd}";
+              action.spawn-sh = "${cfg.lockerCfg.lockerCmd}";
             };
 
             # Media keys
