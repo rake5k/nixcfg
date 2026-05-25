@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -44,7 +43,9 @@ in
   config = mkIf cfg.enable {
     custom.roles.homeage.enable = true;
 
-    home.packages = with pkgs; [ openssh ];
+    programs.ssh = {
+      enable = true;
+    };
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
   };
