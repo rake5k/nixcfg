@@ -40,8 +40,9 @@ let
   # On NixOS: add `security.pam.services.swaylock = {};` to the system configuration.
   # On non-NixOS: install `swaylock` from the distribution's repository.
   # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
+  swaylockPkg = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
   lockerCfg = {
-    package = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
+    package = swaylockPkg;
     lockerCmd = "swaylock -f";
   };
 
@@ -198,6 +199,7 @@ in
 
       swaylock = {
         enable = true;
+        package = swaylockPkg;
         settings = {
           show-failed-attempts = true;
           show-keyboard-layout = true;
