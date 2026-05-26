@@ -12,6 +12,7 @@ let
     mkEnableOption
     mkIf
     mkOption
+    optional
     readFile
     ;
 
@@ -62,9 +63,8 @@ in
       services.rollback = {
         description = "Rollback BTRFS root subvolume to a pristine state";
         wantedBy = [ "initrd.target" ];
-        # make sure it's done after encryption
-        # i.e. LUKS/TPM process
-        after = [ "systemd-cryptsetup@cryptroot.service" ];
+        # make sure it's done after encryption on LUKS hosts
+        after = optional (config.boot.initrd.luks.devices != { }) "systemd-cryptsetup@cryptroot.service";
         # mount the root fs before clearing
         before = [ "sysroot.mount" ];
         unitConfig.DefaultDependencies = "no";
@@ -74,7 +74,7 @@ in
 
           # We first mount the btrfs root to /mnt
           # so we can manipulate btrfs subvolumes.
-          mount -o subvol=/ /dev/mapper/cryptroot /mnt
+          mount -o subvol=/ /dev/disk/by-label/nixos /mnt
           btrfs subvolume list -o /mnt/root
 
           # While we're tempted to just delete /root and create
@@ -148,7 +148,7 @@ in
           ];
           text = ''
             sudo mkdir -p /mnt
-            sudo mount -o subvol=/ /dev/mapper/cryptroot /mnt
+            sudo mount -o subvol=/ /dev/disk/by-label/nixos /mnt
             fs-diff
             sudo umount /mnt
           '';
