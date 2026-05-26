@@ -83,6 +83,9 @@ in
                 variant = "bone,neo_qwertz";
               };
             };
+            touchpad = {
+              dwt = true;
+            };
           };
 
           # Layout settings
