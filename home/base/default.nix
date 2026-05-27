@@ -8,7 +8,10 @@
   home = {
     homeDirectory = lib.mkDefault "/home/${config.home.username}";
 
-    sessionPath = [ "$HOME/bin" ];
+    sessionPath = [
+      "$HOME/bin"
+      "$HOME/.local/bin"
+    ];
 
     enableNixpkgsReleaseCheck = true;
   };
