@@ -29,6 +29,10 @@
       "Bash(glab mr todo:*)",
       "Bash(glab mr update:*)",
       "Bash(glab mr view:*)",
+      "Bash(glab release create:*)",
+      "Bash(glab release download:*)",
+      "Bash(glab release list:*)",
+      "Bash(glab release view:*)",
       "Bash(glab repo view:*)",
       "Bash(helm dependency update:*)",
       "Bash(helm template:*)",
@@ -84,6 +88,7 @@
       "Bash(glab mr revoke:*)",
       "Bash(glab mr subscribe:*)",
       "Bash(glab mr unsubscribe:*)",
+      "Bash(glab release upload:*)",
       "Bash(nix-store --delete:*)",
       "Bash(wget:*)"
     ]
