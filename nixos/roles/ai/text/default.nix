@@ -9,9 +9,7 @@ let
 
   cfg = config.custom.roles.ai.text;
 
-  inherit (lib) mkEnableOption mkIf;
-
-  ollamaCfg = config.services.ollama;
+  inherit (lib) mkDefault mkEnableOption mkIf;
 
 in
 
@@ -43,13 +41,7 @@ in
         environmentVariables = {
           OLLAMA_FLASH_ATTENTION = "1";
         };
-        package =
-          if ollamaCfg.acceleration == null then
-            pkgs.unstable.ollama
-          else if ollamaCfg.acceleration == "cuda" || ollamaCfg == "rocm" || ollamaCfg == "vulkan" then
-            pkgs.unstable."ollama-${ollamaCfg.acceleration}"
-          else
-            pkgs.unstable.ollama-cpu;
+        package = mkDefault pkgs.unstable.ollama;
         port = 11434;
       };
       open-webui = {

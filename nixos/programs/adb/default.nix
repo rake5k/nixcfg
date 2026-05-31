@@ -10,7 +10,6 @@ with lib;
 let
 
   cfg = config.custom.programs.adb;
-  baseCfg = config.custom.base;
 
 in
 
@@ -22,12 +21,9 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ signify ];
-
-    programs.adb.enable = true;
-
-    users.users = genAttrs baseCfg.users (_: {
-      extraGroups = [ "adbusers" ];
-    });
+    environment.systemPackages = with pkgs; [
+      android-tools
+      signify
+    ];
   };
 }
