@@ -30,6 +30,7 @@ in
 
         # language servers
         typescript
+        typescript-language-server
         vue-language-server
       ];
 
@@ -40,7 +41,6 @@ in
         coc-markdownlint
         coc-pyright
         coc-sh
-        coc-tsserver
       ];
 
       coc = {
@@ -77,6 +77,26 @@ in
               command = "${pkgs.systemd-language-server}/bin/systemd-language-server";
               filetypes = [ "systemd" ];
             };
+            tsserver = {
+              command = "${pkgs.typescript-language-server}/bin/typescript-language-server";
+              args = [ "--stdio" ];
+              filetypes = [
+                "javascript"
+                "javascriptreact"
+                "typescript"
+                "typescriptreact"
+              ];
+              rootPatterns = [
+                "package.json"
+                "tsconfig.json"
+                "jsconfig.json"
+              ];
+              initializationOptions = {
+                tsserver = {
+                  path = "${pkgs.typescript}/lib/node_modules/typescript/lib";
+                };
+              };
+            };
             vue = {
               command = "${pkgs.vue-language-server}/bin/vue-language-server";
               args = [ "--stdio" ];
@@ -109,7 +129,7 @@ in
           \ }
       '';
 
-      extraLuaConfig = ''
+      initLua = ''
         ---------
         -- COC --
         ---------

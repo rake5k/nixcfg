@@ -40,7 +40,7 @@ in
         type = types.listOf config.lib.custom.autorunType;
         default = [
           {
-            command = "${pkgs.blueberry}/bin/blueberry-tray";
+            command = "${pkgs.blueman}/bin/blueman-applet";
             workspace = 1;
           }
         ]

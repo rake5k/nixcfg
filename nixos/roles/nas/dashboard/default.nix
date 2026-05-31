@@ -144,14 +144,16 @@ in
           }
         ];
 
-        environmentFile = toString (
-          pkgs.writeText "homepage-dashboard-env" ''
-            HOMEPAGE_FILE_OPENWEATHERMAP_KEY=${openweathermapKeySecretPath}
-            HOMEPAGE_FILE_SYNOLOGY_DSM_USERNAME=${synologyDsmUsernameSecretPath}
-            HOMEPAGE_FILE_SYNOLOGY_DSM_PASSWORD=${synologyDsmPasswordSecretPath}
-            ${cfg.environment}
-          ''
-        );
+        environmentFiles = [
+          (toString (
+            pkgs.writeText "homepage-dashboard-env" ''
+              HOMEPAGE_FILE_OPENWEATHERMAP_KEY=${openweathermapKeySecretPath}
+              HOMEPAGE_FILE_SYNOLOGY_DSM_USERNAME=${synologyDsmUsernameSecretPath}
+              HOMEPAGE_FILE_SYNOLOGY_DSM_PASSWORD=${synologyDsmPasswordSecretPath}
+              ${cfg.environment}
+            ''
+          ))
+        ];
 
         services = [
           {

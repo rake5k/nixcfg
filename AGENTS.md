@@ -35,7 +35,7 @@ nixcfg/
 
 The flake depends on:
 
-- **nixpkgs** - Main package set (nixos-25.11)
+- **nixpkgs** - Main package set (nixos-26.05)
 - **nixpkgs-unstable** - Unstable branch for newer features
 - **flake-commons** (rake5k/flake-commons) - Shared utilities
 - **nur** - Nix User Repositories

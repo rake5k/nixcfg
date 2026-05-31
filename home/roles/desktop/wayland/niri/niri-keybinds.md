@@ -55,17 +55,17 @@ Generated from config: `home/roles/desktop/wayland/niri/default.nix`
 
 ## Window Management
 
-| Keybinding        | Action                            |
-| ----------------- | --------------------------------- |
-| `Mod + Q`         | Close Window                      |
-| `Mod + O`         | Toggle Overview                   |
-| `Mod + V`         | Toggle Window Floating            |
+| Keybinding        | Action                           |
+| ----------------- | -------------------------------- |
+| `Mod + Q`         | Close Window                     |
+| `Mod + O`         | Toggle Overview                  |
+| `Mod + V`         | Toggle Window Floating           |
 | `Mod + Shift + V` | Switch Focus (Floating ↔ Tiling) |
-| `Mod + F`         | Maximize Column                   |
-| `Mod + Shift + F` | Fullscreen Window                 |
-| `Mod + Ctrl + F`  | Expand Column to Full Width       |
-| `Mod + C`         | Center Column                     |
-| `Mod + Ctrl + C`  | Center Visible Columns            |
+| `Mod + F`         | Maximize Column                  |
+| `Mod + Shift + F` | Fullscreen Window                |
+| `Mod + Ctrl + F`  | Expand Column to Full Width      |
+| `Mod + C`         | Center Column                    |
+| `Mod + Ctrl + C`  | Center Visible Columns           |
 
 ## Window Size Adjustment
 
