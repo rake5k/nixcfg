@@ -34,7 +34,7 @@ in
     programs.neovim = {
       enable = true;
 
-      extraLuaConfig = ''
+      initLua = ''
         vim.opt.clipboard = 'unnamedplus'
         vim.opt.cursorline = true
         vim.opt.relativenumber = true
@@ -56,12 +56,15 @@ in
         -- TREESITTER --
         ----------------
 
-        require('nvim-treesitter.configs').setup({
-          highlight = {
-            enable = true,
-            additional_vim_regex_highlighting = true,
-          },
-          indent = { enable = true },
+        -- nvim-treesitter's main-branch rewrite dropped the module system
+        -- (`nvim-treesitter.configs`). Highlighting is now Neovim's built-in
+        -- `vim.treesitter.start()` and indentation comes from the plugin's
+        -- `indentexpr()`. Grammars/queries ship via Nix (withAllGrammars).
+        vim.api.nvim_create_autocmd('FileType', {
+          callback = function()
+            pcall(vim.treesitter.start)
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end,
         })
       '';
 
