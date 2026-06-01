@@ -59,21 +59,6 @@ in
       i3lock = { };
       login.enableGnomeKeyring = true;
       swaylock = { };
-
-      # Workaround for GDM 50 greeter failing to find gnome-session.
-      # See: https://github.com/NixOS/nixpkgs/issues/523332
-      # Drop once https://github.com/NixOS/nixpkgs/pull/523948 lands in nixos-26.05.
-      gdm-launch-environment.rules.session.env-greeter = {
-        control = "required";
-        modulePath = "${config.security.pam.package}/lib/security/pam_env.so";
-        order = config.security.pam.services.gdm-launch-environment.rules.session.env.order + 50;
-        settings.conffile = pkgs.writeText "gdm-launch-environment-env-conf" ''
-          PATH                    DEFAULT="''${PATH}:${pkgs.gnome-session}/bin"
-          XDG_DATA_DIRS           DEFAULT="''${XDG_DATA_DIRS}:${config.services.displayManager.generic.environment.XDG_DATA_DIRS}"
-          GDM_X_SERVER_EXTRA_ARGS DEFAULT="${config.services.displayManager.generic.environment.GDM_X_SERVER_EXTRA_ARGS}"
-        '';
-        settings.readenv = 0;
-      };
     };
 
     services = {
@@ -81,7 +66,10 @@ in
 
       displayManager = {
 
-        gdm.enable = true;
+        sddm = {
+          enable = true;
+          wayland.enable = true;
+        };
 
         sessionPackages = [ pkgs.niri ];
       };
