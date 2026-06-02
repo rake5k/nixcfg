@@ -64,24 +64,14 @@ in
     services = {
       udisks2.enable = true;
 
-      displayManager = {
-
-        sddm = {
-          enable = true;
-          wayland.enable = true;
-        };
-
-        sessionPackages = [ pkgs.niri ];
-      };
+      displayManager.sessionPackages = [ pkgs.niri ];
       xserver = {
         enable = true;
         desktopManager.cinnamon.enable = true;
-        # GDM 50's wayland greeter leaks `XDG_SESSION_TYPE=wayland` into X11 sessions;
-        # cinnamon/muffin then try to start as a wayland compositor and fail with EBUSY
-        # in logind's TakeControl. Force the correct value before the session execs.
-        displayManager.setupCommands = ''
-          export XDG_SESSION_TYPE=x11
-        '';
+        displayManager.lightdm = {
+          background = pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath;
+          greeters.slick.enable = true;
+        };
         serverFlagsSection = ''
           Option "BlankTime" "0"
           Option "StandbyTime" "0"
