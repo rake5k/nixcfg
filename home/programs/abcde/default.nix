@@ -33,7 +33,7 @@ in
         fdk-aac-encoder
         lame
         monkeysAudio
-        opusTools
+        opus-tools
         twolame
         wavpack
       ];

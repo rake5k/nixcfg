@@ -101,7 +101,7 @@ in
     home.packages = with pkgs; [
       scrot
       xclip
-      xorg.xrandr
+      xrandr
       xzoom
     ];
 

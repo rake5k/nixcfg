@@ -33,6 +33,8 @@ in
 
     programs.neovim = {
       enable = true;
+      withPython3 = false;
+      withRuby = false;
 
       initLua = ''
         vim.opt.clipboard = 'unnamedplus'

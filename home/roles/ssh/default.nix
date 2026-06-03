@@ -45,6 +45,22 @@ in
 
     programs.ssh = {
       enable = true;
+
+      # Opt out of the deprecated implicit defaults and keep the previous
+      # values explicitly on the wildcard host.
+      enableDefaultConfig = false;
+      settings."*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "no";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+      };
     };
 
     homeage.file = listToAttrs (map mkHomeageFile cfg.identities);
