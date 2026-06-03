@@ -73,10 +73,11 @@ in
 
     services = {
       # On NixOS the keyring is started by PAM (via the gnome-keyring NixOS
-      # module pulled in by GDM); the niri flake also unconditionally sets this
-      # to true on its users. Running a second HM-managed gnome-keyring-daemon
-      # alongside the PAM one produces races over $XDG_RUNTIME_DIR/gcr/ssh, so
-      # force it off on NixOS and only let HM manage it on non-NixOS hosts.
+      # module pulled in by the Cinnamon desktop-manager module); the niri flake
+      # also unconditionally sets this to true on its users. Running a second
+      # HM-managed gnome-keyring-daemon alongside the PAM one produces races
+      # over $XDG_RUNTIME_DIR/gcr/ssh, so force it off on NixOS and only let HM
+      # manage it on non-NixOS hosts.
       gnome-keyring.enable = lib.mkForce (pkgs.stdenv.isLinux && config.custom.base.non-nixos.enable);
       network-manager-applet.enable = pkgs.stdenv.isLinux;
     };
