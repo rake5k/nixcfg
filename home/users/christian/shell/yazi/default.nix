@@ -27,6 +27,7 @@ in
 
     programs.yazi = {
       enable = true;
+      shellWrapperName = "y";
 
       plugins = with pkgs.yaziPlugins; {
         inherit full-border;
