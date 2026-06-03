@@ -22,6 +22,7 @@ in
 
   config = mkIf cfg.enable {
     custom.roles.dev = {
+      android.enable = true;
       embedmongo.enable = false;
       intellij = {
         enable = true;
