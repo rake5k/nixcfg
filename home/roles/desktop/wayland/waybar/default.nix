@@ -197,7 +197,7 @@ in
 
             .module {
               margin-left: 12px;
-              padding: 6px 12px;
+              padding: 3px 12px;
               border-radius: 0 0 3px 3px;
               transition: none;
               background: @base00;
@@ -212,7 +212,8 @@ in
               color: @base03;
               background: transparent;
               border-radius: 0px;
-              padding: 4px 6px;
+              border-bottom: 3px solid transparent;
+              padding: 2px 6px;
             }
 
             .module button.occupied {
