@@ -54,8 +54,18 @@ in
     # The same goes for `niri-portals.conf`: the system `xdg-desktop-portal`
     # only searches its compile-time datadir and `$XDG_CONFIG_HOME`, so the file
     # shipped by `pkgs.niri` is invisible until it's mirrored under `~/.config`.
+    #
+    # `niri.service` carries `X-SwitchMethod=keep-old`: Home Manager's
+    # `reloadSystemd` step (sd-switch) scans `~/.config/systemd/user`, and the
+    # unit's `ExecStart` embeds the `niri` store path. Without the annotation,
+    # every `niri` upgrade changes the unit and sd-switch's default `stop-start`
+    # tears down the running compositor mid-activation, killing the session.
+    # `keep-old` leaves the running instance untouched on switch.
     xdg.configFile = mkIf config.custom.base.non-nixos.enable {
-      "systemd/user/niri.service".source = "${pkgs.niri}/share/systemd/user/niri.service";
+      "systemd/user/niri.service".source = pkgs.runCommand "niri.service" { } ''
+        sed '/^\[Unit\]$/a X-SwitchMethod=keep-old' \
+          ${pkgs.niri}/share/systemd/user/niri.service > $out
+      '';
       "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
       "xdg-desktop-portal/niri-portals.conf".source =
         "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
