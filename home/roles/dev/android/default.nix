@@ -9,19 +9,19 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.adb;
+  cfg = config.custom.roles.dev.android;
 
 in
 
 {
   options = {
-    custom.programs.adb = {
-      enable = mkEnableOption "Android Debug Bridge";
+    custom.roles.dev.android = {
+      enable = mkEnableOption "Android tooling";
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
+    home.packages = with pkgs; [
       android-tools
       signify
     ];
