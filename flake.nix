@@ -172,8 +172,6 @@
         ;
     in
     {
-      name = "nixcfg";
-
       lib = { inputs }: import ./lib { inputs = inputs // self.inputs; };
 
       darwinConfigurations = listToAttrs [ (mkNixDarwin aarch64-darwin "macos") ];
@@ -243,7 +241,7 @@
         commonsLib.flake.checks
       );
 
-      devShells = mkForEachSystem [ (mkDevShell "default" { flake = self; }) ];
+      devShells = mkForEachSystem [ (mkDevShell "default" { name = "nixcfg"; }) ];
 
       # Necessary for nix-tree
       # Run it using `nix-tree . --impure --derivation`

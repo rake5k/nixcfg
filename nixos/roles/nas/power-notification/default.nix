@@ -75,11 +75,6 @@ in
       powerDownCommands = ''
         ${notifySleep}
       '';
-
-      # post-resume-notification:
-      powerUpCommands = ''
-        ${notifyStartup}
-      '';
     };
 
     systemd.services = {
@@ -139,6 +134,38 @@ in
           "run-agenix.d.mount"
         ];
         serviceConfig = {
+          Restart = "on-failure";
+          RestartSec = 10;
+        };
+      };
+
+      post-resume-notification = {
+        description = "Post-Resume Notification";
+        startLimitIntervalSec = 120;
+        startLimitBurst = 5;
+        after = [
+          "suspend.target"
+          "hibernate.target"
+          "hybrid-sleep.target"
+          "suspend-then-hibernate.target"
+          "network-online.target"
+          "run-agenix.d.mount"
+        ];
+        wants = [
+          "network-online.target"
+          "run-agenix.d.mount"
+        ];
+        wantedBy = [
+          "suspend.target"
+          "hibernate.target"
+          "hybrid-sleep.target"
+          "suspend-then-hibernate.target"
+        ];
+        script = ''
+          ${notifyStartup}
+        '';
+        serviceConfig = {
+          Type = "oneshot";
           Restart = "on-failure";
           RestartSec = 10;
         };
