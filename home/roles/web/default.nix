@@ -52,6 +52,7 @@ in
         wget
       ]
       ++ (optionals isLinux [
+        proton-vpn
         protonmail-desktop
       ]);
 
