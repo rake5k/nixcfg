@@ -47,6 +47,8 @@ in
     programs.firefox = {
       inherit (cfg) enable;
 
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
+
       policies = {
         PasswordManagerEnabled = false;
         DisableFirefoxAccounts = false;
