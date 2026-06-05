@@ -16,6 +16,13 @@ let
 
   inherit (config.lib.custom) mkWindowManagerOptions;
 
+  # End the session via niri's own shutdown target. LightDM's X11-oriented seat
+  # handoff does not reliably tear down a Wayland session on `quit`, which leaves
+  # an orphaned `niri.service` in the persistent `user@.service` manager. Forcing
+  # `niri-shutdown.target` stops `graphical-session.target` (and `niri.service`
+  # via `BindsTo`) deterministically and returns to the greeter.
+  endSessionCmd = "systemctl --user start --job-mode=replace-irreversibly niri-shutdown.target";
+
 in
 
 {
@@ -467,9 +474,9 @@ in
               action.toggle-keyboard-shortcuts-inhibit = { };
             };
 
-            # Quit
-            "Mod+Shift+E".action.quit = { };
-            "Ctrl+Alt+Delete".action.quit = { };
+            # End session (see endSessionCmd above)
+            "Mod+Shift+E".action.spawn-sh = endSessionCmd;
+            "Ctrl+Alt+Delete".action.spawn-sh = endSessionCmd;
 
             # Screen mirroring
             "Mod+P" = {
