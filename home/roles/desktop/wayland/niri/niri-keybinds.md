@@ -230,10 +230,13 @@ Generated from config: `home/roles/desktop/wayland/niri/default.nix`
 
 ## Quit
 
-| Keybinding            | Action    |
-| --------------------- | --------- |
-| `Mod + Shift + E`     | Quit Niri |
-| `Ctrl + Alt + Delete` | Quit Niri |
+These trigger `niri-shutdown.target` to end the session and return to the display manager. They do
+not show a confirmation prompt.
+
+| Keybinding            | Action      |
+| --------------------- | ----------- |
+| `Mod + Shift + E`     | End session |
+| `Ctrl + Alt + Delete` | End session |
 
 ## Toggle
 
