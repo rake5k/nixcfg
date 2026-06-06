@@ -30,6 +30,7 @@
 - Always verify that no new linting issues are introduced in your changes.
 - Run tests before commits.
 - Always use static imports of methods when unambiguous and self-explaining.
+- Keep code comments concise and to a single line whenever possible.
 
 # Git
 
