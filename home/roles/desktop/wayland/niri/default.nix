@@ -271,23 +271,49 @@ in
             ];
 
             # Media controls
-            "XF86AudioMedia".action.spawn = "${getExe pkgs.playerctl} play-pause";
-            "XF86AudioPlay".action.spawn = "${getExe pkgs.playerctl} play-pause";
-            "XF86AudioPrev".action.spawn = "${getExe pkgs.playerctl} previous";
-            "XF86AudioNext".action.spawn = "${getExe pkgs.playerctl} next";
-            "XF86AudioStop".action.spawn = "${getExe pkgs.playerctl} stop";
+            "XF86AudioMedia".action.spawn = [
+              "${getExe pkgs.playerctl}"
+              "play-pause"
+            ];
+            "XF86AudioPlay".action.spawn = [
+              "${getExe pkgs.playerctl}"
+              "play-pause"
+            ];
+            "XF86AudioPrev".action.spawn = [
+              "${getExe pkgs.playerctl}"
+              "previous"
+            ];
+            "XF86AudioNext".action.spawn = [
+              "${getExe pkgs.playerctl}"
+              "next"
+            ];
+            "XF86AudioStop".action.spawn = [
+              "${getExe pkgs.playerctl}"
+              "stop"
+            ];
 
             # Brightness
-            "XF86MonBrightnessDown".action.spawn = "${getExe pkgs.brightnessctl} set 10%-";
-            "XF86MonBrightnessUp".action.spawn = "${getExe pkgs.brightnessctl} set 10%+";
+            "XF86MonBrightnessDown".action.spawn = [
+              "${getExe pkgs.brightnessctl}"
+              "set"
+              "10%-"
+            ];
+            "XF86MonBrightnessUp".action.spawn = [
+              "${getExe pkgs.brightnessctl}"
+              "set"
+              "10%+"
+            ];
 
             # Bluetooth
-            "XF86Bluetooth".action.spawn = ''
-              ${pkgs.bash}/bin/bash -c "if rfkill list bluetooth | grep -q 'yes$'; then rfkill unblock bluetooth; else rfkill block bluetooth; fi"
+            "XF86Bluetooth".action.spawn-sh = ''
+              if rfkill list bluetooth | grep -q 'yes$'; then rfkill unblock bluetooth; else rfkill block bluetooth; fi
             '';
 
             # Eject
-            "XF86Eject".action.spawn = "eject -T";
+            "XF86Eject".action.spawn = [
+              "eject"
+              "-T"
+            ];
 
             # Calculator
             "XF86Calculator".action.spawn = "${getExe pkgs.eva}";
