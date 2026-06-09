@@ -8,13 +8,13 @@
   if the CI succeeds.
 - Update the existing documentation after every substantial change done.
 
-# Tools
+# Conversation
 
-- Always use `glab` CLI to interact with GitLab (merge requests, issues, pipelines, etc.).
+- When reporting information to me, be extremely concise and sacrifice grammar for the sake of
+  concision.
 
 # Documentation
 
-- ALWAYS ask before creating .md files. Propose: filename, purpose, alternative (existing file?).
 - Before writing documentation (README.md, CLAUDE.md, doc-hub, etc.), always verify claims by
   checking the actual code, config, or relevant source. If an external resource exists for a topic,
   reference it explicitly rather than inlining details that may go stale.
@@ -34,7 +34,7 @@
 
 # Git
 
-- Amend previous commit only for small follow-up fixes on the same branch.
+- Amend a previous commit for small follow-up fixes on the same branch.
 
 # Self-Improvement
 
