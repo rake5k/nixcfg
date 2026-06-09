@@ -134,6 +134,12 @@ in
         -- COC --
         ---------
 
+        -- coc.nvim's runtime uses the global WebCrypto API (crypto.randomUUID),
+        -- present only in Node >= 20; pin a reproducible Nix node so it never
+        -- falls back to an older ambient $PATH node (ReferenceError: crypto is
+        -- not defined).
+        vim.g.coc_node_path = "${pkgs.nodejs}/bin/node"
+
         -- Some servers have issues with backup files, see #649
         vim.opt.backup = false
         vim.opt.writebackup = false
