@@ -42,3 +42,5 @@
   your configuration, skills, etc.
 - After every correction or mistake, update the relevant CLAUDE.md or .claude/rules/ file to prevent
   repeating it.
+- When writing skills, tighten the `allowed-tools` as much as possible (no global wildcard commands
+  like `Bash(git *)` or `Bash(bash *)`).
