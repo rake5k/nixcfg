@@ -9,7 +9,7 @@ let
     permittedInsecurePackages = [
       "broadcom-sta-6.30.223.271-59-6.18.33"
       "electron-39.8.10"
-      "openclaw-2026.5.12"
+      "openclaw-2026.6.1"
     ];
   };
 
