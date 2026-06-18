@@ -67,6 +67,8 @@ in
         credential.helper = credentialHelper;
 
         merge.tool = "vimdiff";
+
+        pull.rebase = true;
       };
 
       ignores = [
