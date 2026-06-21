@@ -111,6 +111,15 @@ in
 
         isDefault = true;
 
+        settings = {
+          # Pin the startup page to the declared homepage. Re-applied on every
+          # launch via user.js, overriding any value Firefox Sync restores.
+          "browser.startup.homepage" = cfg.homepage;
+          "browser.startup.page" = 1;
+          # Stop Sync from pushing/pulling preferences so Nix owns them.
+          "services.sync.engine.prefs" = false;
+        };
+
         containers = {
           personal = {
             color = "turquoise";
