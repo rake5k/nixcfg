@@ -129,7 +129,13 @@ in
 
       autoruns = mkOption {
         type = types.listOf config.lib.custom.autorunType;
-        default = desktopCfg.autoruns;
+        default = [
+          {
+            command = "${pkgs.blueman}/bin/blueman-applet";
+            workspace = 1;
+          }
+        ]
+        ++ desktopCfg.autoruns;
         description = ''
           Applications to be launched in a workspace of choice.
         '';
