@@ -131,6 +131,10 @@ in
       file = {
         ".claude/CLAUDE.md".source = ./CLAUDE.md;
 
+        # ccstatusline layout (statusLine command set in settings_common.json).
+        # Leading git-root-dir widget shows the project name.
+        ".config/ccstatusline/settings.json".source = ./ccstatusline.json;
+
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
         ".claude/skills/ollama".source = ./skills/ollama;
