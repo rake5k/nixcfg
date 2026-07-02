@@ -1,10 +1,14 @@
 result
-.claude/settings.local.json
 
 *.tgz
 *.tar
 *.gz
 *.zip
 
-# Skill files
-# .agents/skills/ - Keep for agent access
+# Agents
+.agents/skills/*/iteration-*/
+.agents/skills/*/evaluation-report.html
+.agents/skills/*/evaluation-data.json
+
+# Claude
+.claude/settings.local.json
