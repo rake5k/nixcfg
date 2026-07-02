@@ -163,16 +163,21 @@ nix build .#packages.x86_64-linux.non-nixos-demo
 
 ### 4. Rebuild configurations
 
+This is a base flake and defines **no real hosts**. Never apply a config from here — building
+`nixcfg#<host>` fails with "host not defined". Real hosts live in downstream flakes (`nixcfg-home`,
+`nixcfg-work`) whose `nixcfg.url = "github:rake5k/nixcfg"`. Find the one that owns a host with
+`grep -rln <hostname> ~/code/*/flake.nix` (excluding this repo), then apply from there.
+
+To apply an **unpushed** change from here, rebuild the downstream host with the input overridden to
+this local checkout:
+
 ```bash
-# On NixOS
-sudo nixos-rebuild switch
-
-# On non-NixOS (Home Manager)
-hm-switch
-
-# On Nix-on-Droid
-nix-on-droid switch --flake .#<hostname>
+sudo nixos-rebuild switch --flake ~/code/nixcfg-home#<host> \
+  --override-input nixcfg ~/code/nixcfg
 ```
+
+Prefer `nixos-rebuild test` (no boot entry) over `switch` while iterating; `switch` once confirmed
+good. On non-NixOS use `hm-switch`; on Nix-on-Droid `nix-on-droid switch --flake .#<hostname>`.
 
 ### 5. Setup (first-time configuration)
 
