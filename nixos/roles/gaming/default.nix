@@ -44,6 +44,14 @@ in
         enable = true;
         dedicatedServer.openFirewall = true;
         remotePlay.openFirewall = true;
+        # 32-bit freetype/fontconfig: wine GUIs (installers, msiexec) hang
+        # without them when run via steam-run outside the Steam runtime.
+        package = pkgs.steam.override {
+          extraLibraries = p: [
+            p.freetype
+            p.fontconfig
+          ];
+        };
       };
     };
 
