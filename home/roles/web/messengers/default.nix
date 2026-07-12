@@ -11,6 +11,14 @@ let
 
   inherit (lib) mkEnableOption mkIf;
 
+  # Chromium's keyring auto-detection only recognizes GNOME/KDE desktops, so
+  # under niri Electron finds no backend ("System unsupported" dialog) even
+  # though gnome-keyring provides org.freedesktop.secrets. Point it there
+  # explicitly.
+  element-desktop = pkgs.element-desktop.override {
+    commandLineArgs = "--password-store=gnome-libsecret";
+  };
+
 in
 
 {
