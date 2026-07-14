@@ -241,6 +241,12 @@ in
               color: @base00;
             }
 
+            /* niri/window keeps its module box visible when no window is active */
+            window#waybar.empty #window {
+              background: none;
+              padding: 0;
+            }
+
             #cpu {
               color: @base09;
             }
