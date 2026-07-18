@@ -73,6 +73,7 @@ let
     "/persist/var/lib/containers/storage/overlay*/"
     "/persist/var/lib/docker/overlay*/"
     "/persist/var/lib/samba/"
+    "/persist/var/lib/waydroid/overlay_work/"
     "/proc/"
     "/run/"
     "/sys/"
@@ -81,6 +82,7 @@ let
     "/var/lib/containers/storage/overlay*/"
     "/var/lib/docker/storage/overlay*/"
     "/var/lib/samba/"
+    "/var/lib/waydroid/overlay_work/"
     "/var/log/"
     "/var/tmp/"
   ];
