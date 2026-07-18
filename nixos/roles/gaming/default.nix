@@ -55,6 +55,28 @@ in
       };
     };
 
+    networking = {
+      # Age of Empires II: DE in-game LAN lobby hosting
+      # https://support.ageofempires.com/hc/en-us/articles/360048249391
+      firewall = {
+        allowedTCPPorts = [
+          3478
+          5222
+          8888
+        ];
+        allowedUDPPorts = [
+          3478
+          5222
+          9999
+        ];
+      };
+      # AoE II DE hangs creating a LAN lobby when gethostname() resolves to a
+      # loopback address (https://github.com/ValveSoftware/Proton/issues/3189).
+      # Drop the static 127.0.0.2 hostname entry so lookups fall through to
+      # nss-myhostname, which returns the current real LAN IP dynamically.
+      hosts."127.0.0.2" = mkForce [ ];
+    };
+
     # Xbox controller
     hardware.xpadneo.enable = true;
   };
