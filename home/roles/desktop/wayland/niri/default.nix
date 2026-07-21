@@ -11,6 +11,7 @@ let
 
   inherit (lib)
     getExe
+    mkForce
     mkIf
     ;
 
@@ -51,6 +52,22 @@ in
           };
         };
       };
+    };
+
+    # Home Manager's stock waybar unit is `WantedBy=graphical-session.target` and
+    # guards on `ConditionEnvironment=WAYLAND_DISPLAY`. On NixOS, the display-manager
+    # wrapper force-activates a fake `graphical-session.target` for the early
+    # background (`class=manager`) session — before `niri` imports `WAYLAND_DISPLAY`
+    # into the user manager environment — so the condition fails and the unit is
+    # skipped for the whole session with no retry. Bind waybar to `niri.service`
+    # instead: it starts only once niri is active (environment already imported) and
+    # stops with the compositor via `PartOf`.
+    systemd.user.services.waybar = {
+      Unit = {
+        After = mkForce [ "niri.service" ];
+        PartOf = mkForce [ "niri.service" ];
+      };
+      Install.WantedBy = mkForce [ "niri.service" ];
     };
 
     # On non-NixOS, the user `systemd` instance is started by PAM with a minimal
