@@ -79,6 +79,8 @@ in
       # over $XDG_RUNTIME_DIR/gcr/ssh, so force it off on NixOS and only let HM
       # manage it on non-NixOS hosts.
       gnome-keyring.enable = lib.mkForce (pkgs.stdenv.isLinux && config.custom.base.non-nixos.enable);
+
+      blueman-applet.enable = pkgs.stdenv.isLinux;
       network-manager-applet.enable = pkgs.stdenv.isLinux;
     };
 
