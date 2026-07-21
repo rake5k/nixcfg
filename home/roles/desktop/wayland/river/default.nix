@@ -37,6 +37,7 @@ let
     getExe
     mapAttrs
     mapAttrsToList
+    mkForce
     mkIf
     ;
   inherit (config.lib.custom) mkWindowManagerOptions;
@@ -133,6 +134,14 @@ in
         };
       };
     };
+
+    # River is not systemd-aware: there is no session service to bind waybar to, and
+    # Home Manager's default WantedBy=graphical-session.target would activate it before
+    # river imports WAYLAND_DISPLAY (the fake graphical-session.target fires first),
+    # failing ConditionEnvironment and skipping the unit. Drop the auto-start and let
+    # river's init start the unit explicitly once the environment is imported (see
+    # extraConfig). PartOf=graphical-session.target (kept) still stops it on logout.
+    systemd.user.services.waybar.Install.WantedBy = mkForce [ ];
 
     wayland.windowManager.river = {
       inherit package;
@@ -344,8 +353,9 @@ in
         dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=river
         systemctl --user restart xdg-desktop-portal
 
-        killall .waybar-wrapped
-        ${getExe pkgs.waybar} &
+        # Environment is imported above, so ConditionEnvironment now passes; start the
+        # systemd-managed waybar unit for supervision instead of spawning it directly.
+        systemctl --user start --no-block waybar.service
 
         # Remove startup tag rules after apps have opened their windows,
         # so any new windows open on the currently focused tag instead.
