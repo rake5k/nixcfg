@@ -89,6 +89,11 @@ in
           calibreLibrary = cfg.libraryPath;
           enableBookConversion = true;
           enableBookUploading = true;
+          # Trust Authelia's forward-auth Remote-User header for SSO login.
+          reverseProxyAuth = {
+            enable = true;
+            header = "Remote-User";
+          };
         };
       };
 
