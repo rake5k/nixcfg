@@ -247,7 +247,7 @@ hm-switch
 [lanzaboote]: https://github.com/nix-community/lanzaboote
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
-[nixos-badge]: https://img.shields.io/badge/NixOS-24.11-blue.svg?logo=NixOS&logoColor=white
+[nixos-badge]: https://img.shields.io/badge/NixOS-26.05-blue.svg?logo=NixOS&logoColor=white
 [nixfmt]: https://github.com/NixOS/nixfmt
 [shellcheck]: https://github.com/koalaman/shellcheck
 [statix]: https://github.com/NerdyPepper/statix
