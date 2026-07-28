@@ -1,6 +1,6 @@
 # :snowflake: Nix Configuration
 
-[![NixOS][nixos-badge]][nixos]
+[![NixOS][nixos-badge]][nixos] [![Build and Test][ci-badge]][ci]
 
 ## Features
 
@@ -237,6 +237,8 @@ hm-switch
 ```
 
 <!-- prettier-ignore-start -->
+[ci]: https://garnix.io/repo/rake5k/nixcfg
+[ci-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Frake5k%2Fnixcfg%3Fbranch%3Dmain
 [age]: https://age-encryption.org/
 [agenix]: https://github.com/ryantm/agenix
 [disko]: https://github.com/nix-community/disko
