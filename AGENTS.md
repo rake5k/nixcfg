@@ -275,10 +275,9 @@ The following rules are enforced by `treefmt`, and are expected to be followed b
 
 ## CI Workflow
 
-The project runs weekly automated updates via GitHub Actions (`.github/workflows/update.yml`) that:
+There is no CI. Run `nix flake check` locally before pushing.
 
-- Update flake inputs using `nix flake update`
-- Commit changes if CI passes
+Dependabot (`.github/dependabot.yml`) opens weekly pull requests updating the flake inputs.
 
 ## Apps
 
