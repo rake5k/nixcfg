@@ -138,7 +138,7 @@ in
       "org/gnome/shell/extensions/auto-move-windows" = {
         application-list = [
           "kitty.desktop:1"
-          "idea-ultimate.desktop:2"
+          "idea.desktop:2"
           "intellij-idea-ultimate_intellij-idea-ultimate.desktop:2"
           "chromium-browser.desktop:3"
           "firefox.desktop:3"
