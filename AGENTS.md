@@ -275,7 +275,7 @@ The following rules are enforced by `treefmt`, and are expected to be followed b
 
 ## CI Workflow
 
-There is no CI. Run `nix flake check` locally before pushing.
+Garnix CI builds the flake outputs selected by [garnix.yaml](garnix.yaml) on every push.
 
 Dependabot (`.github/dependabot.yml`) opens weekly pull requests updating the flake inputs.
 
