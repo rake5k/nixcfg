@@ -21,9 +21,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      android-tools
-      signify
-    ];
+    home.packages =
+      with pkgs;
+      [
+        android-tools
+      ]
+      # signify is Linux-only in nixpkgs.
+      ++ optionals stdenv.isLinux [ signify ];
   };
 }
