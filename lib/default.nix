@@ -74,6 +74,9 @@ in
   mkDevShell = wrapper ./builders/mkDevShell.nix;
   mkGeneric = nameValuePairWrapper;
   mkHome = simpleWrapper ./builders/mkHome.nix;
+  mkInstaller =
+    system: name: args:
+    wrapper ./builders/mkInstaller.nix name args system;
   mkNixos = simpleWrapper ./builders/mkNixos.nix;
   mkNixDarwin = simpleWrapper ./builders/mkNixDarwin.nix;
   mkNixOnDroid = simpleWrapper ./builders/mkNixOnDroid.nix;

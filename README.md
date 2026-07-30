@@ -39,6 +39,7 @@ See [flake.nix](flake.nix) for more information like `system`.
 │  ├──📂 nixos-vm
 │  ├──📂 nix-on-droid
 │  └──📂 non-nixos-vm
+├──📂 installer     -- installer ISO config (not imported by hosts)
 ├──📂 lib           -- internal flake library
 ├──📂 nix-on-droid  -- custom NixOnDroid modules
 ├──📂 nixos         -- custom NixOS modules
@@ -122,6 +123,32 @@ this flake to the inputs and define your hosts and users in the `flake.nix`:
 ## Initial Setup
 
 ### NixOS
+
+#### Installer ISO
+
+Besides the stock ISO from [nixos.org][nixos], this flake builds its own installer image:
+
+```bash
+nix build .#installer-iso
+# writes to result/iso/*.iso
+```
+
+It is the minimal NixOS installer plus `sshd` (key-only root login), `pciutils`, `usbutils` and
+`smartmontools`, and boots on both BIOS and UEFI machines. The image carries no keys by default; set
+`custom.installer.authorizedKeys` to log in over SSH, which is what unattended installers such as
+[nixos-anywhere][nixos-anywhere] need:
+
+```nix
+nixosConfigurations = listToAttrs [
+  (mkInstaller x86_64-linux "installer" {
+    modules = [
+      { custom.installer.authorizedKeys = [ "ssh-ed25519 AAAA..." ]; }
+    ];
+  })
+];
+```
+
+`custom.installer.extraPackages` adds further tools to the installer environment.
 
 #### NixOS installation
 
@@ -247,6 +274,7 @@ hm-switch
 [lanzaboote]: https://github.com/nix-community/lanzaboote
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
+[nixos-anywhere]: https://github.com/nix-community/nixos-anywhere
 [nixos-badge]: https://img.shields.io/badge/NixOS-26.05-blue.svg?logo=NixOS&logoColor=white
 [nixfmt]: https://github.com/NixOS/nixfmt
 [shellcheck]: https://github.com/koalaman/shellcheck
