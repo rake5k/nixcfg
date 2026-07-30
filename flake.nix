@@ -165,6 +165,7 @@
         mkDevShell
         mkForEachSystem
         mkHome
+        mkInstaller
         mkNixDarwin
         mkNixOnDroid
         mkNixos
@@ -180,7 +181,12 @@
         (mkHome x86_64-linux "demo@non-nixos")
       ];
 
-      nixosConfigurations = listToAttrs [ (mkNixos x86_64-linux "nixos") ];
+      nixosConfigurations = listToAttrs [
+        (mkNixos x86_64-linux "nixos")
+        # Generic installer ISO; downstream flakes override
+        # `custom.installer.authorizedKeys` with their own keys.
+        (mkInstaller x86_64-linux "installer" { })
+      ];
 
       nixOnDroidConfigurations = listToAttrs [ (mkNixOnDroid aarch64-linux "nix-on-droid") ];
 
@@ -252,6 +258,7 @@
         # aarch64-linux.default = self.nixOnDroidConfigurations.nix-on-droid.activationPackage;
         x86_64-linux = {
           default = self.packages.x86_64-linux.nixos;
+          installer-iso = self.nixosConfigurations.installer.config.system.build.isoImage;
           nixos = self.nixosConfigurations.nixos.config.system.build.toplevel;
           non-nixos-demo = self.homeConfigurations."demo@non-nixos".activationPackage;
         };
