@@ -11,6 +11,30 @@ let
   claude-code = pkgs.unstable.claude-code;
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
 
+  # codegraph is not in nixpkgs and ships as per-platform prebuilt blobs, so run
+  # it through npx. The wrapper also puts `codegraph init` on PATH, which builds
+  # a project's index and is what the CLAUDE.md guidance refers to.
+  codegraphVersion = "1.5.0";
+  codegraph = pkgs.writeShellScriptBin "codegraph" ''
+    exec ${pkgs.nodejs}/bin/npx -y @colbymchenry/codegraph@${codegraphVersion} "$@"
+  '';
+
+  # MCP servers passed via `claude --mcp-config`; settings.json has no
+  # mcpServers key. Without --strict-mcp-config this merges with the servers
+  # already configured in ~/.claude.json instead of replacing them.
+  mcpConfigFile = pkgs.writeText "claude-mcp-servers.json" (
+    builtins.toJSON {
+      mcpServers.codegraph = {
+        type = "stdio";
+        command = "${codegraph}/bin/codegraph";
+        args = [
+          "serve"
+          "--mcp"
+        ];
+      };
+    }
+  );
+
   # Merge two settings attrsets like `recursiveUpdate`, but concatenate the
   # `permissions.{allow,deny,ask}` lists instead of letting the right-hand side
   # replace them. This lets downstream flakes append permissions without having
@@ -53,11 +77,14 @@ let
     in
     pkgs.writeText "claude-settings-${backend}.json" (builtins.toJSON unified);
 
-  # `claude-<backend>` wrapper pinning the backend's settings file.
+  # `claude-<backend>` wrapper pinning the backend's settings and MCP servers.
   wrapperFor =
     backend:
     pkgs.writeShellScriptBin "claude-${backend}" ''
-      exec ${claude-code}/bin/claude --settings ${settingsFileFor backend} "$@"
+      exec ${claude-code}/bin/claude \
+        --settings ${settingsFileFor backend} \
+        --mcp-config ${mcpConfigFile} \
+        "$@"
     '';
 
   wrappers = map wrapperFor cfg.backends;
@@ -122,6 +149,7 @@ in
       # Only include seccomp on Linux - macOS uses native sandbox
       packages = [
         claude-code
+        codegraph
       ]
       ++ wrappers
       ++ lib.optionals pkgs.stdenv.isLinux [

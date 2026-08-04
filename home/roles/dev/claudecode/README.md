@@ -1,7 +1,21 @@
 # claudecode
 
-Home Manager role exposing `claude-<backend>` wrappers, shared settings, skills, and the
-ccstatusline layout. See `default.nix` for options.
+Home Manager role exposing `claude-<backend>` wrappers, shared settings, MCP servers, skills, and
+the ccstatusline layout. See `default.nix` for options.
+
+## MCP servers
+
+`settings.json` has no `mcpServers` key, so servers are generated into a store file and passed via
+`claude --mcp-config`. Since `--strict-mcp-config` is not set, they merge with the servers already
+configured in `~/.claude.json`.
+
+[codegraph](https://github.com/colbymchenry/codegraph) is wired up this way. It is not in nixpkgs
+and ships per-platform prebuilt blobs, so both the MCP server and the `codegraph` command run
+through `npx` at a version pinned in `default.nix`. Indexing is per project and stays manual:
+
+```bash
+cd <project> && codegraph init
+```
 
 ## ccstatusline
 

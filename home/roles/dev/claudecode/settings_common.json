@@ -85,6 +85,7 @@
       "WebFetch(domain:tecnovy.com)",
       "WebFetch(domain:www.isaqb.org)",
       "WebSearch",
+      "mcp__codegraph__*",
       "mcp__ide__getDiagnostics",
       "mcp__mcp-atlassian__confluence_get_page",
       "mcp__mcp-atlassian__confluence_get_page_children",
