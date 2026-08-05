@@ -79,6 +79,11 @@
         "type": "separator"
       },
       {
+        "id": "3c9ceb59-0b2c-43e8-8112-0cb6880c889c",
+        "type": "custom-text",
+        "customText": "S:"
+      },
+      {
         "id": "f69d1dcb-d811-4b77-b920-2dfafabd30f4",
         "type": "session-usage",
         "rawValue": true,
@@ -87,19 +92,65 @@
         }
       },
       {
-        "id": "cf9b3043-7486-4894-8424-1c0f74d00790",
-        "type": "separator"
+        "id": "042fbb27-4590-463d-89e1-97322c3eb4bc",
+        "type": "custom-symbol",
+        "customSymbol": "("
       },
       {
         "id": "6d5cd5b8-22cd-40d3-b9bb-c56edaccf5fa",
         "type": "reset-timer",
+        "rawValue": true,
+        "metadata": {
+          "display": "time",
+          "compact": "true"
+        }
+      },
+      {
+        "id": "9f6cc159-d0db-4023-9f2f-d211a744c308",
+        "type": "custom-symbol",
+        "customSymbol": ")"
+      },
+      {
+        "id": "l-sep-weekly",
+        "type": "separator"
+      },
+      {
+        "id": "b2962948-0f3d-4b15-9d49-618f5140c782",
+        "type": "custom-text",
+        "customText": "W:"
+      },
+      {
+        "id": "l-weekly-usage",
+        "type": "weekly-usage",
+        "metadata": {
+          "display": "slider"
+        },
         "rawValue": true
+      },
+      {
+        "id": "abb6e6d7-e87e-4b3d-9bdf-6dd4a3452a8c",
+        "type": "custom-symbol",
+        "customSymbol": "("
+      },
+      {
+        "id": "ed1ae00b-3844-43f1-ba7c-4ad6b7c734fa",
+        "type": "weekly-reset-timer",
+        "rawValue": true,
+        "metadata": {
+          "compact": "true"
+        }
+      },
+      {
+        "id": "50037cd9-e74d-44b8-b29f-b63ac1689477",
+        "type": "custom-symbol",
+        "customSymbol": ")"
       }
     ]
   ],
   "flexMode": "full-minus-40",
   "compactThreshold": 60,
   "colorLevel": 2,
+  "defaultPaddingSide": "both",
   "inheritSeparatorColors": false,
   "globalBold": false,
   "gitCacheTtlSeconds": 5,
