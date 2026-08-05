@@ -3,6 +3,18 @@
 Home Manager role exposing `claude-<backend>` wrappers, shared settings, MCP servers, skills, and
 the ccstatusline layout. See `default.nix` for options.
 
+## Plugins
+
+`enabledPlugins` in `settings_common.json` only enables plugins; it does not install them.
+Installation state lives in `~/.claude/plugins` and is not managed here, so each entry needs a
+one-time install:
+
+```bash
+claude plugin install <name>@<marketplace>
+```
+
+See the [plugin docs](https://code.claude.com/docs/en/discover-plugins).
+
 ## MCP servers
 
 `settings.json` has no `mcpServers` key, so servers are generated into a store file and passed via
