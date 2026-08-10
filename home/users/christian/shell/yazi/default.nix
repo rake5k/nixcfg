@@ -29,8 +29,14 @@ in
       enable = true;
       shellWrapperName = "y";
 
-      plugins = with pkgs.yaziPlugins; {
-        inherit full-border;
+      plugins = {
+        inherit (pkgs.yaziPlugins) full-border;
+
+        # Sort Downloads by modification time, everything else naturally
+        folder-rules = {
+          package = ./folder-rules.yazi;
+          setup = true;
+        };
       };
 
       initLua = # lua
