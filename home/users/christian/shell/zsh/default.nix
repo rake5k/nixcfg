@@ -25,12 +25,12 @@ in
       autocd = true;
       dotDir = "${config.xdg.configHome}/zsh";
       dirHashes = {
-        c = "$HOME/code";
-        d = "$HOME/Documents";
-        dl = "$HOME/Downloads";
-        p = "$HOME/Pictures";
+        c = "${config.home.homeDirectory}/code";
+        dd = "${config.home.homeDirectory}/Documents";
+        dl = "${config.home.homeDirectory}/Downloads";
+        p = "${config.home.homeDirectory}/Pictures";
         usb = "/run/media/${config.home.username}";
-        v = "$HOME/Videos";
+        v = "${config.home.homeDirectory}/Videos";
       };
       history =
         let
