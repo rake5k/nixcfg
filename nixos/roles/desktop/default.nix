@@ -80,6 +80,16 @@ in
         displayManager.lightdm = {
           background = pkgs.nixos-artwork.wallpapers.binary-blue.gnomeFilePath;
           greeters.slick.enable = true;
+          # 26.05 hardcodes `minimum-vt = 1` and removed `services.xserver.tty`,
+          # so restarting lightdm mid-session parks the greeter on a VT inside
+          # logind's autovt range (tty1-tty6). The session then shares its VT
+          # with a getty, which keeps yanking the console back into text mode
+          # and swallows keystrokes at a login prompt. VT 7 is out of range.
+          # extraConfig is appended to [LightDM] and GKeyFile takes the last
+          # duplicate key, so this wins over the hardcoded value.
+          extraConfig = ''
+            minimum-vt = 7
+          '';
         };
         serverFlagsSection = ''
           Option "BlankTime" "0"
