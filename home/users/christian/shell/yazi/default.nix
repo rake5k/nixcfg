@@ -75,9 +75,53 @@ in
           {
             on = [
               "g"
+              "c"
+            ];
+            run = "cd ${config.home.homeDirectory}/code";
+          }
+          {
+            on = [
+              "g"
+              "d"
+              "d"
+            ];
+            run = "cd ${config.home.homeDirectory}/Documents";
+          }
+          {
+            on = [
+              "g"
+              "d"
+              "l"
+            ];
+            run = "cd ${config.home.homeDirectory}/Downloads";
+          }
+          {
+            on = [
+              "g"
               "M"
             ];
             run = "cd /mnt";
+          }
+          {
+            on = [
+              "g"
+              "p"
+            ];
+            run = "cd ${config.home.homeDirectory}/Pictures";
+          }
+          {
+            on = [
+              "g"
+              "r"
+            ];
+            run = "cd /";
+          }
+          {
+            on = [
+              "g"
+              "v"
+            ];
+            run = "cd ${config.home.homeDirectory}/Videos";
           }
         ];
       };
