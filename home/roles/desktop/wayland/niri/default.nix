@@ -101,6 +101,15 @@ in
         package = pkgs.niri;
         settings = {
 
+          # niri does not bundle XWayland. Pointing it at the binary enables its
+          # managed integration: niri owns the X11 sockets, exports `DISPLAY`,
+          # spawns xwayland-satellite on demand and respawns it when it dies
+          # (e.g. on resume from suspend). Spawning it via `spawn-at-startup`
+          # instead leaves an unsupervised process that stays dead after a crash.
+          xwayland-satellite = {
+            path = getExe pkgs.xwayland-satellite;
+          };
+
           # Startup commands
           spawn-at-startup = [
             {
