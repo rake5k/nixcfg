@@ -65,6 +65,7 @@
       "WebFetch(domain:code.claude.com)",
       "WebFetch(domain:digicomp.ch)",
       "WebFetch(domain:doc-hub.apps.case.bluecare.ch)",
+      "WebFetch(domain:docs.gitlab.com)",
       "WebFetch(domain:docs.ollama.com)",
       "WebFetch(domain:docs.sonarsource.com)",
       "WebFetch(domain:dzone.com)",
@@ -117,6 +118,7 @@
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
+    "honey@greenpt": true,
     "mattpocock-skills@claude-plugins-official": true,
     "playground@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
@@ -124,8 +126,18 @@
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true
   },
+  "extraKnownMarketplaces": {
+    "greenpt": {
+      "source": {
+        "source": "github",
+        "repo": "Green-PT/honey-for-devs"
+      }
+    }
+  },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
+  "model": "opus[1m]",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "statusLine": {
     "type": "command",

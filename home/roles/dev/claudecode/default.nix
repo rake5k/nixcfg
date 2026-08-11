@@ -163,6 +163,9 @@ in
         # Leading git-root-dir widget shows the project name.
         ".config/ccstatusline/settings.json".source = ./ccstatusline.json;
 
+        # Slash commands
+        ".claude/commands/wiki.md".source = ./commands/wiki.md;
+
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
         ".claude/skills/ollama".source = ./skills/ollama;

@@ -1,7 +1,20 @@
 # claudecode
 
-Home Manager role exposing `claude-<backend>` wrappers, shared settings, MCP servers, skills, and
-the ccstatusline layout. See `default.nix` for options.
+Home Manager role exposing `claude-<backend>` wrappers, shared settings, MCP servers, skills, slash
+commands, and the ccstatusline layout. See `default.nix` for options.
+
+## Settings
+
+`settings_common.json` holds the settings shared by every backend. It is merged with the backend's
+`env` overrides and the consuming flake's `custom.roles.dev.claudecode.extraSettings`, then passed
+to `claude --settings`, which outranks `~/.claude/settings.json`.
+
+`~/.claude/settings.json` is deliberately left unmanaged: Claude Code writes to it itself
+(`/config`, `/model`, plugin installs), so a read-only store symlink would break those. Keys set
+here shadow it; `hooks` entries merge across both, with identical handlers deduplicated.
+
+Plugins enabled via `enabledPlugins` need their marketplace declared in `extraKnownMarketplaces`
+unless it ships as a built-in (`claude-plugins-official`).
 
 ## Plugins
 
@@ -28,6 +41,12 @@ through `npx` at a version pinned in `default.nix`. Indexing is per project and 
 ```bash
 cd <project> && codegraph init
 ```
+
+## Slash commands
+
+Markdown files under `commands/` are linked into `~/.claude/commands/` by `default.nix` and become
+`/<name>` commands. `wiki.md` implements `/wiki`, a Logseq/Obsidian knowledge base with an L1/L2
+cache model.
 
 ## ccstatusline
 
