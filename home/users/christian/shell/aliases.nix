@@ -23,12 +23,12 @@
   # Navigating
   "cd.." = "cd ..";
   d = "dirs -v | head -10";
-  l = "eza -ghl --git --icons";
-  la = "eza -aghl --git --icons";
-  ll = "eza -ghl --git --icons";
+  l = "eza -ghl --git --icons=auto";
+  la = "eza -aghl --git --icons=auto";
+  ll = "eza -ghl --git --icons=auto";
   ls = "ls -h --color='auto'";
   lsa = "ls -a";
-  tree = "eza --icons --tree";
+  tree = "eza --icons=auto --tree";
 
   # File reading
   cat = "bat";
