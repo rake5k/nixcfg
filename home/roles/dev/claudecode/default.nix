@@ -36,15 +36,17 @@ let
   );
 
   # Merge two settings attrsets like `recursiveUpdate`, but concatenate the
-  # `permissions.{allow,deny,ask}` lists instead of letting the right-hand side
-  # replace them. This lets downstream flakes append permissions without having
-  # to redeclare the full list.
+  # `permissions.{allow,deny,ask}` and `hooks.<event>` lists instead of letting
+  # the right-hand side replace them. This lets downstream flakes append
+  # permissions and hook handlers without having to redeclare the full list.
   mergeSettings =
     a: b:
     let
       base = lib.recursiveUpdate a b;
       mergePerm = key: (a.permissions.${key} or [ ]) ++ (b.permissions.${key} or [ ]);
       hasPermissions = (a ? permissions) || (b ? permissions);
+      hookEvents = lib.attrNames ((a.hooks or { }) // (b.hooks or { }));
+      hasHooks = (a ? hooks) || (b ? hooks);
     in
     base
     // lib.optionalAttrs hasPermissions {
@@ -56,6 +58,9 @@ let
           deny = mergePerm "deny";
           ask = mergePerm "ask";
         };
+    }
+    // lib.optionalAttrs hasHooks {
+      hooks = lib.genAttrs hookEvents (event: (a.hooks.${event} or [ ]) ++ (b.hooks.${event} or [ ]));
     };
 
   commonSettings = lib.importJSON ./settings_common.json;
@@ -128,9 +133,9 @@ in
       default = { };
       description = ''
         Additional settings merged into every backend's settings file on top of
-        the common defaults. The `permissions.{allow,deny,ask}` lists are
-        concatenated; all other keys follow `lib.recursiveUpdate` semantics
-        (right-hand side wins).
+        the common defaults. The `permissions.{allow,deny,ask}` and
+        `hooks.<event>` lists are concatenated; all other keys follow
+        `lib.recursiveUpdate` semantics (right-hand side wins).
       '';
     };
   };
@@ -165,6 +170,12 @@ in
 
         # Slash commands
         ".claude/commands/wiki.md".source = ./commands/wiki.md;
+
+        # Hooks (registered in settings_common.json)
+        ".claude/hooks/wiki-index.sh" = {
+          source = ./hooks/wiki-index.sh;
+          executable = true;
+        };
 
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;

@@ -47,6 +47,29 @@ codegraph explore <query>      # relevant symbols' source + call paths in one ca
 codegraph node <symbol|file>   # one symbol's source + callers, or a file with line numbers
 ```
 
+# Wiki
+
+`/wiki` maintains my knowledge base (L2) at the `wiki_path` in its `llm-wiki.yml`. A SessionStart
+hook (`hooks/wiki-index.sh`) injects the hub `### Index` routing lines every session, so what L2
+holds is already in context.
+
+- Before a web search or repo-wide grep about my projects, business processes, decisions or infra,
+  check those routing lines. A line covers the question -> answer via `/wiki query <question>`
+  (reads at most 3 pages, logs the hit) before reaching for external sources.
+- No routing line matches -> research normally, then capture what is worth keeping (below).
+- Capture durable learnings as they happen: a decision and its rationale, an architecture or ops
+  fact, a domain rule, a dead end worth not repeating. Append ONE line per learning to
+  `Wiki/Reference/Ingest-Inbox` —
+  `<ISO date> -- <Wiki/Namespace target or ?> -- <fact> -- src: <repo / MR / URL / session>` — and
+  keep working. Do not run a full `/wiki ingest` mid-task; it rewrites 5-15 pages and derails the
+  task.
+- Nothing durable came out of a session -> capture nothing. An inbox of trivia is worse than an
+  empty one.
+- Drain deliberately: `/wiki ingest inbox` turns pending lines into pages, then clears them. Offer
+  it when a task is finished, never in the middle.
+- Quick rules and gotchas belong in memory (L1), deep knowledge in the wiki (L2). Never put
+  credentials in the wiki — it is git-tracked.
+
 # Git
 
 - Amend a previous commit for small follow-up fixes on the same branch.
