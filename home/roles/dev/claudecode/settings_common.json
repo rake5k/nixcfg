@@ -56,15 +56,15 @@
       "Bash(npm test:*)",
       "Bash(systemctl status *)",
       "Bash(systemctl cat *)",
+      "Edit(~/Documents/notes/claude/pages/**)",
+      "Read(~/Documents/notes/claude/**)",
       "Read(~/code/flake-commons/**)",
       "Read(~/code/nixcfg-home/**)",
       "Read(~/code/nixcfg-work/**)",
       "Read(~/code/nixcfg/**)",
-      "Skill(blueclaude:glab)",
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:code.claude.com)",
       "WebFetch(domain:digicomp.ch)",
-      "WebFetch(domain:doc-hub.apps.case.bluecare.ch)",
       "WebFetch(domain:docs.gitlab.com)",
       "WebFetch(domain:docs.ollama.com)",
       "WebFetch(domain:docs.sonarsource.com)",
@@ -133,6 +133,19 @@
         "repo": "Green-PT/honey-for-devs"
       }
     }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/wiki-index.sh"
+          }
+        ]
+      }
+    ]
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
