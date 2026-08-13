@@ -15,7 +15,9 @@ pages="${root}/${pages_dir:-pages}"
 
 # Hub pages are the only ones carrying `### Index`, so scanning every page covers both the
 # logseq (flat Wiki___*.md) and obsidian (Wiki/**.md) layouts. `### Archive` ends the live block.
-index=$(find "${pages}" -type f -name '*.md' -print0 | xargs -0 --no-run-if-empty awk '
+# Syncthing conflict copies keep the .md suffix, so skip them or a stale hub page's routing
+# lines get injected a second time.
+index=$(find "${pages}" -type f -name '*.md' ! -name '*.sync-conflict-*' -print0 | xargs -0 --no-run-if-empty awk '
   FNR == 1                       { in_index = 0 }
   /###[[:space:]]+Index/         { in_index = 1; next }
   in_index && /###[[:space:]]+/  { in_index = 0 }
@@ -31,7 +33,7 @@ if ((total > max_lines)); then
 fi
 
 # Capture queue: dated lines under `## Pending` in the inbox page, awaiting `/wiki ingest inbox`.
-inbox=$(find "${pages}" -type f -name '*Ingest-Inbox*' -print -quit)
+inbox=$(find "${pages}" -type f -name '*Ingest-Inbox*' ! -name '*.sync-conflict-*' -print -quit)
 pending=0
 if [[ -n ${inbox} ]]; then
   pending=$(grep -cE '^[[:space:]]*-[[:space:]]*[0-9]{4}-[0-9]{2}-[0-9]{2}[[:space:]]+--' "${inbox}" || true)

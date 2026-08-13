@@ -148,6 +148,10 @@ in
       }
     ];
 
+    # The wiki folder below is inert without it; hosts that must not run
+    # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
+    custom.roles.syncthing.enable = lib.mkDefault true;
+
     home = {
       shellAliases.claude = "claude-${cfg.defaultBackend}";
 
@@ -191,6 +195,19 @@ in
         ".npm/lib/node_modules/@anthropic-ai/sandbox-runtime/vendor/seccomp/x64/unix-block.bpf".source =
           "${claude-seccomp}/share/claude-seccomp/unix-block.bpf";
       };
+    };
+
+    # L2 knowledge base read and written by /wiki, synced through hyperion.
+    # `.git` stays local (per-device .stignore); `maxConflicts = 1` keeps a
+    # single copy of a lost race instead of a growing pile of conflict files.
+    services.syncthing.settings.folders.LogseqClaude = {
+      enable = true;
+      devices = [
+        config.services.syncthing.settings.devices.hyperion.name
+      ];
+      id = "oce6r-2p1ft";
+      maxConflicts = 1;
+      path = "~/Documents/notes/claude";
     };
   };
 }
