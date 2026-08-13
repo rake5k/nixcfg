@@ -46,6 +46,10 @@ Read `llm-wiki.yml` from the wiki root directory FIRST to determine:
   `-home-me-work-api`). A `*` in the configured value means all projects — lint scope only
 - `namespaces`: configured top-level namespaces
 
+The wiki syncs via Syncthing, whose conflict copies keep the `.md` suffix
+(`Wiki___Tech___Foo.sync-conflict-20260101-120000-ABCDEFG.md`). Exclude `*.sync-conflict-*` from
+every glob and grep below — they are stale duplicates, never pages. Report them in `lint`.
+
 ## Tool-Specific Format Rules
 
 ### Logseq Mode

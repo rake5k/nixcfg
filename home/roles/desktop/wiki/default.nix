@@ -34,6 +34,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    # The Logseq folder below is inert without it; hosts that must not run
+    # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
+    custom.roles.syncthing.enable = mkDefault true;
+
     home.packages = [ pkgs.logseq ];
 
     services.syncthing = {
