@@ -57,6 +57,9 @@ in
             altair = {
               id = "5X2IF5F-VEV27CQ-B3SIGJH-AMCKBCJ-3D7N7MC-I4TNSCG-AKOGL4P-ABM2VQR";
             };
+            antares = {
+              id = "BFLX7H6-4QQFQ7B-UNDSAAV-WW3E5RL-KK35XEJ-4EJCQ5V-46YEFEJ-T3QO3AJ";
+            };
             malmok = {
               addresses = [ "tcp://10.0.10.2:22000" ];
               id = "JJXAPCO-MOJLFVL-3YHBIXK-YUGQWXF-SWEGZTH-7DW2XAS-GDSQ3KC-RUQVBAB";
@@ -98,6 +101,7 @@ in
               devices = [
                 config.services.syncthing.settings.devices.acrux.name
                 config.services.syncthing.settings.devices.altair.name
+                config.services.syncthing.settings.devices.antares.name
                 config.services.syncthing.settings.devices.pc-win-chr.name
                 config.services.syncthing.settings.devices.malmok.name
                 config.services.syncthing.settings.devices.pixel-7a.name
@@ -105,6 +109,21 @@ in
               ];
               id = "erdif-3jmbn";
               path = "/data/syncthing/Logseq";
+            };
+            # Claude's L2 knowledge base (see home/roles/dev/claudecode).
+            LogseqClaude = {
+              enable = true;
+              devices = [
+                config.services.syncthing.settings.devices.acrux.name
+                config.services.syncthing.settings.devices.altair.name
+                config.services.syncthing.settings.devices.antares.name
+                config.services.syncthing.settings.devices.pc-win-chr.name
+                config.services.syncthing.settings.devices.malmok.name
+                config.services.syncthing.settings.devices.sirius-a.name
+              ];
+              id = "oce6r-2p1ft";
+              maxConflicts = 1;
+              path = "/data/syncthing/LogseqClaude";
             };
             RetroDeck = {
               enable = true;
