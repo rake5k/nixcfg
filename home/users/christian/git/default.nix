@@ -312,6 +312,7 @@ in
         "*.vsix"
 
         # Custom/Claude Code
+        ".codegraph/"
         "docs/superpowers/plans/"
         "docs/superpowers/specs/"
 

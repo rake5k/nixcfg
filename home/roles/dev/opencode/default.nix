@@ -24,7 +24,24 @@ in
     programs.opencode = {
       enable = true;
       package = pkgs.unstable.opencode;
+
+      # Puts the `codegraph` MCP server command below on opencode's PATH.
+      extraPackages = [ pkgs.unstable.codegraph ];
+
+      # Shared with claude-code's CLAUDE.md.
+      context = ../codegraph.md;
+
       settings = {
+        mcp.codegraph = {
+          type = "local";
+          command = [
+            "codegraph"
+            "serve"
+            "--mcp"
+          ];
+          enabled = true;
+        };
+
         provider = {
           hyperion = {
             npm = "@ai-sdk/openai-compatible";
