@@ -40,13 +40,20 @@ See the [plugin docs](https://code.claude.com/docs/en/discover-plugins).
 `claude --mcp-config`. Since `--strict-mcp-config` is not set, they merge with the servers already
 configured in `~/.claude.json`.
 
-[codegraph](https://github.com/colbymchenry/codegraph) is wired up this way. It is not in nixpkgs
-and ships per-platform prebuilt blobs, so both the MCP server and the `codegraph` command run
-through `npx` at a version pinned in `default.nix`. Indexing is per project and stays manual:
+[codegraph](https://github.com/colbymchenry/codegraph) is wired up this way, using
+`pkgs.unstable.codegraph` for both the MCP server and the `codegraph` command. Indexing is per
+project and stays manual:
 
 ```bash
 cd <project> && codegraph init
 ```
+
+The rest of what `codegraph install` would write is declared instead of installed: the
+`mcp__codegraph__*` allow rule and the `codegraph prompt-hook` `UserPromptSubmit` hook in
+`settings_common.json`, and the agent guidance in `../codegraph.md`, which is appended to
+`~/.claude/CLAUDE.md` and reused verbatim as opencode's `AGENTS.md`. Do not run `codegraph install`
+— it replaces the managed `CLAUDE.md` symlink with a plain file, which then blocks Home Manager
+activation.
 
 ## Slash commands
 

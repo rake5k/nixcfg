@@ -11,13 +11,7 @@ let
   claude-code = pkgs.unstable.claude-code;
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
 
-  # codegraph is not in nixpkgs and ships as per-platform prebuilt blobs, so run
-  # it through npx. The wrapper also puts `codegraph init` on PATH, which builds
-  # a project's index and is what the CLAUDE.md guidance refers to.
-  codegraphVersion = "1.5.0";
-  codegraph = pkgs.writeShellScriptBin "codegraph" ''
-    exec ${pkgs.nodejs}/bin/npx -y @colbymchenry/codegraph@${codegraphVersion} "$@"
-  '';
+  codegraph = pkgs.unstable.codegraph;
 
   # MCP servers passed via `claude --mcp-config`; settings.json has no
   # mcpServers key. Without --strict-mcp-config this merges with the servers
@@ -166,7 +160,11 @@ in
       ];
 
       file = {
-        ".claude/CLAUDE.md".source = ./CLAUDE.md;
+        # The CodeGraph guidance is shared with opencode's AGENTS.md.
+        ".claude/CLAUDE.md".text = lib.concatStringsSep "\n" [
+          (builtins.readFile ./CLAUDE.md)
+          (builtins.readFile ../codegraph.md)
+        ];
 
         # ccstatusline layout (statusLine command set in settings_common.json).
         # Leading git-root-dir widget shows the project name.
