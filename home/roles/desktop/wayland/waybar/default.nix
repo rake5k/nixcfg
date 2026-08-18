@@ -21,6 +21,31 @@ let
   audioSourceMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
   fontPackage = pkgs.nerd-fonts.monofur;
 
+  # Caffeine: a logind inhibitor lock held by a transient user unit. Lid-close
+  # suspend only honors a `handle-lid-switch` lock (`LidSwitchIgnoreInhibited`
+  # defaults to yes), so Wayland idle-inhibit cannot cover it. Host systemd
+  # binaries are used on purpose: they match the running logind on non-NixOS.
+  caffeineStatus = pkgs.writeShellScript "caffeine-status" ''
+    set -euo pipefail
+    if systemctl --user --quiet is-active caffeine.service; then
+      echo '{"text": "󰅶", "class": "activated", "tooltip": "Caffeine on: idle, sleep and lid-close inhibited"}'
+    else
+      echo '{"text": "󰾪", "class": "deactivated", "tooltip": "Caffeine off"}'
+    fi
+  '';
+
+  caffeineToggle = pkgs.writeShellScript "caffeine-toggle" ''
+    set -euo pipefail
+    if systemctl --user --quiet is-active caffeine.service; then
+      systemctl --user stop caffeine.service
+    else
+      systemd-run --user --unit=caffeine systemd-inhibit \
+        --what=idle:sleep:handle-lid-switch --who=caffeine \
+        --why="Caffeine toggled in waybar" sleep infinity
+    fi
+    pkill -RTMIN+8 -x waybar || true
+  '';
+
 in
 
 {
@@ -96,6 +121,7 @@ in
               "battery"
               "wireplumber"
               "clock"
+              "custom/caffeine"
               "tray"
             ];
 
@@ -174,6 +200,14 @@ in
               tooltip-format = "{:%Y-%m-%d}";
               on-click = "${getExe pkgs.gnome-clocks}";
               on-click-right = "${getExe pkgs.gnome-calendar}";
+            };
+
+            "custom/caffeine" = {
+              exec = "${caffeineStatus}";
+              return-type = "json";
+              interval = 60;
+              signal = 8;
+              on-click = "${caffeineToggle}";
             };
 
             tray = {
@@ -294,6 +328,14 @@ in
 
             #clock {
               color: @base09;
+            }
+
+            #custom-caffeine {
+              color: @base03;
+            }
+
+            #custom-caffeine.activated {
+              color: @base08;
             }
 
             #tray {
