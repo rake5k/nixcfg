@@ -25,6 +25,8 @@ let
   # suspend only honors a `handle-lid-switch` lock (`LidSwitchIgnoreInhibited`
   # defaults to yes), so Wayland idle-inhibit cannot cover it. Host systemd
   # binaries are used on purpose: they match the running logind on non-NixOS.
+  # wlinhibit additionally holds a Wayland idle-inhibit lock, since swayidle
+  # only honors the compositor idle protocol, not logind idle inhibitors.
   caffeineStatus = pkgs.writeShellScript "caffeine-status" ''
     set -euo pipefail
     if systemctl --user --quiet is-active caffeine.service; then
@@ -39,9 +41,11 @@ let
     if systemctl --user --quiet is-active caffeine.service; then
       systemctl --user stop caffeine.service
     else
-      systemd-run --user --unit=caffeine systemd-inhibit \
+      systemd-run --user --unit=caffeine \
+        --setenv=WAYLAND_DISPLAY="''${WAYLAND_DISPLAY}" \
+        systemd-inhibit \
         --what=idle:sleep:handle-lid-switch --who=caffeine \
-        --why="Caffeine toggled in waybar" sleep infinity
+        --why="Caffeine toggled in waybar" ${pkgs.wlinhibit}/bin/wlinhibit
     fi
     pkill -RTMIN+8 -x waybar || true
   '';

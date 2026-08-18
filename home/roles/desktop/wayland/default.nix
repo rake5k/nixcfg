@@ -183,6 +183,35 @@ in
       wlr-randr
     ];
 
+    services.swayidle = {
+      enable = true;
+      timeouts = [
+        {
+          timeout = 600;
+          command = lockerCfg.lockerCmd;
+        }
+        {
+          timeout = 900;
+          command = "systemctl suspend";
+        }
+      ];
+      events."before-sleep" = lockerCfg.lockerCmd;
+    };
+
+    # Hold a Wayland idle inhibitor while audio plays (xidlehook's not-when-audio)
+    systemd.user.services.wayland-pipewire-idle-inhibit = {
+      Unit = {
+        Description = "Inhibit Wayland idle when audio is playing";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = getExe pkgs.wayland-pipewire-idle-inhibit;
+        Restart = "on-failure";
+      };
+      Install.WantedBy = [ "graphical-session.target" ];
+    };
+
     programs = {
       # supporting tools
       fuzzel = {
