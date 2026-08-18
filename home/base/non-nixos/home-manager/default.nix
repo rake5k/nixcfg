@@ -8,6 +8,7 @@
 let
 
   cfg = config.custom.base.non-nixos.home-manager;
+  expireCfg = config.services.home-manager.autoExpire;
 
   inherit (lib)
     getExe
@@ -39,7 +40,12 @@ in
       shellAliases = {
         hm-switch = "home-manager switch -b hm-bak --flake '${cfg.flake}'";
         hm-diff = "home-manager generations | head -n 2 | cut -d' ' -f 7 | tac | xargs ${getExe pkgs.nix} store diff-closures";
+        hm-clean = "home-manager expire-generations '${expireCfg.timestamp}' && ${pkgs.nix}/bin/nix-collect-garbage";
       };
     };
+
+    # Expiring generations only drops the gcroots; without NixOS' nix.gc nothing
+    # collects the store afterwards.
+    services.home-manager.autoExpire.store.cleanup = true;
   };
 }
