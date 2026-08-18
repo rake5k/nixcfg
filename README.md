@@ -263,6 +263,12 @@ sudo nixos-rebuild switch
 hm-switch
 ```
 
+## Garbage collection
+
+NixOS collects the store daily (`nix.gc`). Home Manager configs expire generations weekly via
+`services.home-manager.autoExpire` (30 days); on non-NixOS that run also calls
+`nix-collect-garbage`. The `hm-clean` alias does the same on demand.
+
 <!-- prettier-ignore-start -->
 [ci]: https://garnix.io/repo/rake5k/nixcfg
 [ci-badge]: https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Frake5k%2Fnixcfg%3Fbranch%3Dmain
