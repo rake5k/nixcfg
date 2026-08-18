@@ -24,6 +24,15 @@ let
   # via `BindsTo`) deterministically and returns to the greeter.
   endSessionCmd = "systemctl --user start --job-mode=replace-irreversibly niri-shutdown.target";
 
+  powerProfilesCtl = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl";
+  togglePowerProfileCmd = ''
+    if [ "$(${powerProfilesCtl} get)" = power-saver ]; then
+      ${powerProfilesCtl} set balanced
+    else
+      ${powerProfilesCtl} set power-saver
+    fi
+  '';
+
 in
 
 {
@@ -539,6 +548,13 @@ in
 
             # Power off monitors
             "Mod+Shift+P".action.power-off-monitors = { };
+
+            # Power profile (power-profiles-daemon)
+            "Mod+Ctrl+P" = {
+              repeat = false;
+              hotkey-overlay.title = "Toggle Power Saver";
+              action.spawn-sh = togglePowerProfileCmd;
+            };
           };
         };
       };

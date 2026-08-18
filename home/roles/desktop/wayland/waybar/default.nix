@@ -118,6 +118,7 @@ in
             ];
             modules-center = [ "${cfg.windowIndicator.name}" ];
             modules-right = [
+              "power-profiles-daemon"
               "battery"
               "wireplumber"
               "clock"
@@ -156,6 +157,18 @@ in
             };
 
             "${cfg.windowIndicator.name}" = cfg.windowIndicator.module;
+
+            # Hides itself when power-profiles-daemon is not on the system bus
+            "power-profiles-daemon" = {
+              format = "{icon}";
+              tooltip-format = "Power profile: {profile}";
+              format-icons = {
+                default = "󰓅";
+                performance = "󰓅";
+                balanced = "󰾅";
+                power-saver = "󰾆";
+              };
+            };
 
             battery = {
               states = {
@@ -299,6 +312,10 @@ in
 
             #tags, #workspaces {
               padding: 0;
+            }
+
+            #power-profiles-daemon {
+              color: @base0C;
             }
 
             #battery {
