@@ -281,6 +281,17 @@ in
       };
     };
 
+    # Taskbar-tab starters pin the exact firefox /nix/store path, which dies on
+    # every update (profile downgrade protection, then GC). Repoint them to the
+    # stable profile path on each activation.
+    home.activation.fixFirefoxTaskbarTabs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      for starter in "$HOME/.local/share/applications"/org.mozilla.firefox.webapp-*.desktop; do
+        [ -e "$starter" ] || continue
+        run ${pkgs.gnused}/bin/sed -i \
+          's|^Exec="/nix/store/[^"]*"|Exec="${config.home.profileDirectory}/bin/firefox"|' "$starter"
+      done
+    '';
+
     stylix.targets.firefox.profileNames = [ defaultProfile ];
   };
 }
