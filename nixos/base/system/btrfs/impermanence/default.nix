@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  utils,
   ...
 }:
 
@@ -12,11 +13,17 @@ let
     mkEnableOption
     mkIf
     mkOption
-    optional
     readFile
     ;
 
+  inherit (utils) escapeSystemdPath;
+
   cfg = config.custom.base.system.btrfs.impermanence;
+
+  # disko labels the btrfs filesystem "nixos"; on LUKS hosts the label lives
+  # inside the container, so its device unit only shows up after decryption
+  rootDevice = "/dev/disk/by-label/nixos";
+  rootDeviceUnit = "${escapeSystemdPath rootDevice}.device";
 
 in
 
@@ -63,8 +70,10 @@ in
       services.rollback = {
         description = "Rollback BTRFS root subvolume to a pristine state";
         wantedBy = [ "initrd.target" ];
-        # make sure it's done after encryption on LUKS hosts
-        after = optional (config.boot.initrd.luks.devices != { }) "systemd-cryptsetup@cryptroot.service";
+        # wait for the root device itself instead of a host-specific dependency:
+        # without this the unit races udev and dies on its first mount
+        requires = [ rootDeviceUnit ];
+        after = [ rootDeviceUnit ];
         # mount the root fs before clearing
         before = [ "sysroot.mount" ];
         unitConfig.DefaultDependencies = "no";
@@ -74,7 +83,8 @@ in
 
           # We first mount the btrfs root to /mnt
           # so we can manipulate btrfs subvolumes.
-          mount -o subvol=/ /dev/disk/by-label/nixos /mnt
+          # The type is explicit because the initrd has no filesystem probing.
+          mount -t btrfs -o subvol=/ ${rootDevice} /mnt
           btrfs subvolume list -o /mnt/root
 
           # While we're tempted to just delete /root and create
@@ -148,7 +158,7 @@ in
           ];
           text = ''
             sudo mkdir -p /mnt
-            sudo mount -o subvol=/ /dev/disk/by-label/nixos /mnt
+            sudo mount -t btrfs -o subvol=/ ${rootDevice} /mnt
             fs-diff
             sudo umount /mnt
           '';
