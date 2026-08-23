@@ -6,7 +6,11 @@
       "Bash(nix eval:*)",
       "Bash(nix flake:*)",
       "Bash(nix fmt:*)",
+      "Bash(statix check *)",
       "Bash(treefmt:*)",
+      "Read(//etc/nixos/**)",
+      "Read(//run/current-system/**)",
+      "WebFetch(domain:docs.syncthing.net)",
       "WebFetch(domain:home-manager.nix-community.org)",
       "WebFetch(domain:nix-community.github.io)"
     ]
