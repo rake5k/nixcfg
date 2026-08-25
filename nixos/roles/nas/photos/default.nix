@@ -51,7 +51,7 @@ in
           oauthClientSecret
         ];
         system.btrfs.impermanence.extraDirectories = [
-          "/var/lib/${config.services.postgresql.dataDir}"
+          config.services.postgresql.dataDir
         ];
       };
       roles.nas.dashboard = {
