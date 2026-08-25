@@ -9,11 +9,18 @@
 let
 
   inherit (lib)
+    filterAttrs
     literalExpression
+    mapAttrs'
+    mkDefault
     mkEnableOption
     mkIf
+    mkMerge
     mkOption
+    nameValuePair
+    optionalString
     readFile
+    removePrefix
     ;
 
   inherit (utils) escapeSystemdPath;
@@ -24,6 +31,21 @@ let
   # inside the container, so its device unit only shows up after decryption
   rootDevice = "/dev/disk/by-label/nixos";
   rootDeviceUnit = "${escapeSystemdPath rootDevice}.device";
+
+  # Btrbk creates every snapshot as a subvolume below its snapshot directory.
+  # Below /root the rollback deletes them on each boot, capping retention at
+  # "since last boot", so they get a subvolume of their own instead. The NAS
+  # role defines btrbk instances without enabling the btrbk module, hence
+  # keying off the instances rather than `btrbk.enable`.
+  inherit (config.custom.base.system.btrfs.btrbk) snapshotDir;
+  snapshotSubvolume = removePrefix "/" snapshotDir;
+  # Only the instances snapshotting into `snapshotDir` are at risk: the NAS
+  # role also snapshots into /data/snapshots, on a filesystem the rollback
+  # never touches.
+  snapshotInstances = filterAttrs (
+    _: instance: (instance.settings.snapshot_dir or null) == snapshotDir
+  ) config.services.btrbk.instances;
+  snapshotsInUse = snapshotInstances != { };
 
 in
 
@@ -108,6 +130,15 @@ in
 
           echo "restoring blank /root subvolume..."
           btrfs subvolume snapshot /mnt/root-blank /mnt/root
+          ${optionalString snapshotsInUse ''
+
+            # Sibling of /root: the wipe above cannot reach it. Created here so
+            # hosts installed before it existed need no manual migration.
+            if [ ! -e /mnt/${snapshotSubvolume} ]; then
+              echo "creating /${snapshotSubvolume} subvolume..."
+              btrfs subvolume create /mnt/${snapshotSubvolume}
+            fi
+          ''}
 
           # Once we're done rolling back to a blank snapshot,
           # we can unmount /mnt and continue on the boot process.
@@ -166,6 +197,31 @@ in
       ];
     };
 
-    fileSystems."/persist".neededForBoot = true;
+    # Without the mount, btrbk happily snapshots into the plain directory
+    # tmpfiles creates in its place and the next rollback eats the result, so
+    # a failed mount would silently restore the very behaviour this fixes.
+    systemd.services = mapAttrs' (
+      name: _:
+      nameValuePair "btrbk-${name}" {
+        unitConfig.RequiresMountsFor = [ snapshotDir ];
+      }
+    ) snapshotInstances;
+
+    fileSystems = mkMerge [
+      { "/persist".neededForBoot = true; }
+
+      # mkDefault so a host declaring the subvolume in its disko layout wins
+      (mkIf snapshotsInUse {
+        ${snapshotDir} = {
+          device = mkDefault rootDevice;
+          fsType = mkDefault "btrfs";
+          options = mkDefault [
+            "subvol=${snapshotSubvolume}"
+            "compress=zstd"
+            "noatime"
+          ];
+        };
+      })
+    ];
   };
 }
