@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 
@@ -21,12 +20,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      packages = [
-        pkgs.plex-desktop
-      ];
-    };
-
     custom.roles.multimedia.video.mpv.enable = true;
   };
 }
