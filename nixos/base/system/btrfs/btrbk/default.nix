@@ -19,7 +19,14 @@ in
     enable = mkEnableOption "btrbk";
 
     snapshotDir = mkOption {
-      description = "Path to Btrbk's snapshot directory.";
+      description = ''
+        Path to Btrbk's snapshot directory.
+
+        Under impermanence this doubles as the name of a top-level btrfs
+        subvolume, so it has to be a single path component: a nested value
+        such as `/var/snapshots` would need a `var` subvolume that the
+        rollback unit neither creates nor mounts.
+      '';
       default = "/snapshots";
       type = types.str;
     };

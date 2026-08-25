@@ -71,6 +71,16 @@
                       ];
                       mountpoint = "/persist";
                     };
+                    # Sibling of /root so the impermanence rollback cannot
+                    # delete the btrbk snapshots nested below it
+                    "/snapshots" = {
+                      mountpoint = "/snapshots";
+                      mountOptions = [
+                        "subvol=snapshots"
+                        "compress=zstd"
+                        "noatime"
+                      ];
+                    };
                     "/log" = {
                       mountpoint = "/var/log";
                       mountOptions = [
