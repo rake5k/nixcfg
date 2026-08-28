@@ -24,6 +24,8 @@ let
   # via `BindsTo`) deterministically and returns to the greeter.
   endSessionCmd = "systemctl --user start --job-mode=replace-irreversibly niri-shutdown.target";
 
+  dunstctl = "${pkgs.dunst}/bin/dunstctl";
+
   powerProfilesCtl = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl";
   togglePowerProfileCmd = ''
     if [ "$(${powerProfilesCtl} get)" = power-saver ]; then
@@ -276,6 +278,24 @@ in
               hotkey-overlay.title = "Lock the Screen";
               action.spawn-sh = "${cfg.lockerCfg.lockerCmd}";
             };
+
+            # Notifications (dunst grabs these itself under X11 only)
+            "Ctrl+Space".action.spawn = [
+              dunstctl
+              "close"
+            ];
+            "Ctrl+Shift+Space".action.spawn = [
+              dunstctl
+              "close-all"
+            ];
+            "Ctrl+Grave".action.spawn = [
+              dunstctl
+              "history-pop"
+            ];
+            "Ctrl+Shift+Period".action.spawn = [
+              dunstctl
+              "context"
+            ];
 
             # Media keys
             "XF86AudioRaiseVolume".action.spawn = [

@@ -66,6 +66,13 @@ in
           dmenu = "${pkgs.dmenu}/bin/dmenu";
           browser = "${pkgs.xdg-utils}/bin/xdg-open";
 
+          # SHORTCUTS
+          # X11 only; Wayland compositors bind the matching dunstctl commands.
+          close = "ctrl+space";
+          close_all = "ctrl+shift+space";
+          history = "ctrl+grave";
+          context = "ctrl+shift+period";
+
           # RULES
           word_wrap = "false";
           alignment = "left";

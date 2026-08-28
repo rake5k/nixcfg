@@ -27,6 +27,7 @@ let
   fontPackage = pkgs.nerd-fonts.monofur;
   launcherPackage = pkgs.fuzzel;
   terminalCmd = getExe terminalCfg.package;
+  dunstctl = "${pkgs.dunst}/bin/dunstctl";
   audioMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
   audioSourceMuteToggle = "${pkgs.wireplumber}/bin/wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
 
@@ -250,6 +251,12 @@ in
             "Super+Alt+Shift N" = "resize vertical 100";
             "Super+Alt+Shift R" = "resize vertical -100";
             "Super+Alt+Shift S" = "resize horizontal 100";
+
+            # Notifications (dunst grabs these itself under X11 only)
+            "Control Space" = "spawn '${dunstctl} close'";
+            "Control+Shift Space" = "spawn '${dunstctl} close-all'";
+            "Control Grave" = "spawn '${dunstctl} history-pop'";
+            "Control+Shift Period" = "spawn '${dunstctl} context'";
 
             "Super Space" = "toggle-float";
             "Super F" = "toggle-fullscreen";

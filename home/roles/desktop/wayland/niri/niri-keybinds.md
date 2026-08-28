@@ -221,6 +221,17 @@ Generated from config: `home/roles/desktop/wayland/niri/default.nix`
 | `Ctrl + Print` | Screenshot Screen        |
 | `Alt + Print`  | Screenshot Window        |
 
+## Notifications
+
+Dunst grabs these keys itself under X11; on Wayland niri spawns the matching `dunstctl` command.
+
+| Keybinding              | Action                      |
+| ----------------------- | --------------------------- |
+| `Ctrl + Space`          | Close Notification          |
+| `Ctrl + Shift + Space`  | Close All Notifications     |
+| `Ctrl + Grave`          | Redisplay Last Notification |
+| `Ctrl + Shift + Period` | Open Context Menu           |
+
 ## Lock & Power
 
 | Keybinding        | Action             |
