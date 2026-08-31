@@ -38,6 +38,7 @@ in
 
     home.packages = with pkgs; [
       ascii
+      dbeaver-bin
       libxml2
       wrk
     ];
