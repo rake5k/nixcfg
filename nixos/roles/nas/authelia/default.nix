@@ -20,6 +20,10 @@ let
 
   dataDir = "/var/lib/authelia-main";
 
+  # Repeated as `session.redis.host` in ./config/session.yml, which cannot
+  # reference Nix, so pin it here instead of taking the module default.
+  redisSocket = "/run/redis-authelia/redis.sock";
+
   notifierConfig = "authelia-config-notifier";
   oidcClientConfig = "authelia-config-oidc-clients";
 
@@ -68,6 +72,14 @@ in
         '';
       };
 
+      sessionSecret = mkOption {
+        type = types.str;
+        default = "authelia-session-secret";
+        description = ''
+          Name of the secret used to encrypt session data in Redis.
+        '';
+      };
+
       storageEncryptionKey = mkOption {
         type = types.str;
         default = "authelia-storage-encryption-key";
@@ -84,6 +96,7 @@ in
       cfg.jwtSecret
       cfg.oidcHmacSecret
       cfg.oidcIssuerPrivateKey
+      cfg.sessionSecret
       cfg.storageEncryptionKey
       notifierConfig
       oidcClientConfig
@@ -94,6 +107,7 @@ in
         cfg.jwtSecret
         cfg.oidcHmacSecret
         cfg.oidcIssuerPrivateKey
+        cfg.sessionSecret
         cfg.storageEncryptionKey
         notifierConfig
         oidcClientConfig
@@ -151,6 +165,7 @@ in
           jwtSecretFile = mkSecretFilePath cfg.jwtSecret;
           oidcHmacSecretFile = mkSecretFilePath cfg.oidcHmacSecret;
           oidcIssuerPrivateKeyFile = mkSecretFilePath cfg.oidcIssuerPrivateKey;
+          sessionSecretFile = mkSecretFilePath cfg.sessionSecret;
           storageEncryptionKeyFile = mkSecretFilePath cfg.storageEncryptionKey;
         };
         settings.theme = "auto";
@@ -159,6 +174,13 @@ in
           (mkSecretFilePath notifierConfig)
           (mkSecretFilePath oidcClientConfig)
         ];
+      };
+
+      # The default in-memory provider drops every session on an Authelia restart.
+      redis.servers.authelia = {
+        enable = true;
+        port = 0;
+        unixSocket = redisSocket;
       };
 
       traefik.dynamicConfigOptions.http = {
@@ -193,5 +215,13 @@ in
         };
       };
     };
+
+    # Both units are wantedBy multi-user.target, so Authelia would race the socket.
+    systemd.services.authelia-main.after = [ "redis-authelia.service" ];
+
+    # The socket is mode 0660, owned by the Redis instance's own group.
+    users.users."${config.services.authelia.instances.main.user}".extraGroups = [
+      config.services.redis.servers.authelia.group
+    ];
   };
 }
