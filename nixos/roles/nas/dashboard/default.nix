@@ -36,11 +36,18 @@ let
 
   localUrl = "http://localhost:${toString config.services.homepage-dashboard.listenPort}";
   openweathermapKeySecret = "dashboard-openweathermap-key";
-  openweathermapKeySecretPath = config.age.secrets."${openweathermapKeySecret}".path;
+  openweathermapKeySecretPath = "${trimmedSecretsPath}/${openweathermapKeySecret}";
   synologyDsmUsernameSecret = "dashboard-synology-dsm-username";
   synologyDsmPasswordSecret = "dashboard-synology-dsm-password";
-  synologyDsmUsernameSecretPath = config.age.secrets."${synologyDsmUsernameSecret}".path;
-  synologyDsmPasswordSecretPath = config.age.secrets."${synologyDsmPasswordSecret}".path;
+  synologyDsmUsernameSecretPath = "${trimmedSecretsPath}/${synologyDsmUsernameSecret}";
+  synologyDsmPasswordSecretPath = "${trimmedSecretsPath}/${synologyDsmPasswordSecret}";
+
+  ownSecrets = [
+    openweathermapKeySecret
+    synologyDsmUsernameSecret
+    synologyDsmPasswordSecret
+  ];
+  allSecrets = cfg.secrets ++ ownSecrets;
 
 in
 
@@ -73,8 +80,8 @@ in
         default = trimmedSecretsPath;
         readOnly = true;
         description = ''
-          Directory holding a copy of every entry in `secrets` with trailing
-          newlines stripped.
+          Directory holding a copy of every entry in `secrets`, and of the
+          secrets this role owns, with trailing newlines stripped.
 
           Homepage substitutes `{{HOMEPAGE_FILE_*}}` with the raw file contents,
           so values compared verbatim by an upstream API must come from here.
@@ -110,19 +117,8 @@ in
 
   config = mkIf cfg.enable {
 
-    custom.base.agenix.secrets = [
-      openweathermapKeySecret
-      synologyDsmUsernameSecret
-      synologyDsmPasswordSecret
-    ];
-    age.secrets = mkSecretOwner (
-      cfg.secrets
-      ++ [
-        openweathermapKeySecret
-        synologyDsmUsernameSecret
-        synologyDsmPasswordSecret
-      ]
-    );
+    custom.base.agenix.secrets = ownSecrets;
+    age.secrets = mkSecretOwner allSecrets;
 
     services = {
       homepage-dashboard = {
@@ -293,7 +289,7 @@ in
       preStart = concatMapStringsSep "\n" (
         secret:
         ''printf '%s' "$(< ${config.age.secrets."${secret}".path})" > ${trimmedSecretsPath}/${secret}''
-      ) cfg.secrets;
+      ) allSecrets;
 
       serviceConfig = {
         User = user;
