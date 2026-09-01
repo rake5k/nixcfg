@@ -19,6 +19,7 @@ let
   localUrl = "http://localhost:${toString config.services.calibre-web.listen.port}";
   remoteUrl = "https://${cfg.host}";
 
+  dashboardCfg = config.custom.roles.nas.dashboard;
   dashboardUsernameSecret = "dashboard-calibreweb-username";
   dashboardPasswordSecret = "dashboard-calibreweb-password";
 
@@ -55,9 +56,11 @@ in
         ];
       };
       roles.nas.dashboard = {
+        # Calibre-Web compares both OPDS credentials verbatim, so a decrypted
+        # trailing newline would never match the account.
         environment = ''
-          HOMEPAGE_FILE_CALIBREWEB_USERNAME=${config.age.secrets."${dashboardUsernameSecret}".path}
-          HOMEPAGE_FILE_CALIBREWEB_PASSWORD=${config.age.secrets."${dashboardPasswordSecret}".path}
+          HOMEPAGE_FILE_CALIBREWEB_USERNAME=${dashboardCfg.trimmedSecretsPath}/${dashboardUsernameSecret}
+          HOMEPAGE_FILE_CALIBREWEB_PASSWORD=${dashboardCfg.trimmedSecretsPath}/${dashboardPasswordSecret}
         '';
         secrets = [
           dashboardUsernameSecret

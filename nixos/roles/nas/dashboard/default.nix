@@ -10,6 +10,7 @@ let
   cfg = config.custom.roles.nas.dashboard;
 
   inherit (lib)
+    concatMapStringsSep
     genAttrs
     mkEnableOption
     mkForce
@@ -21,6 +22,7 @@ let
   settingsFormat = pkgs.formats.yaml { };
 
   user = "homepage-dashboard";
+  trimmedSecretsPath = "/run/${user}/secrets";
   mkSecretOwner =
     secrets:
     genAttrs secrets (_name: {
@@ -64,6 +66,19 @@ in
         type = with types; listOf str;
         default = [ ];
         description = "Names of secrets that homepage needs access to.";
+      };
+
+      trimmedSecretsPath = mkOption {
+        type = types.str;
+        default = trimmedSecretsPath;
+        readOnly = true;
+        description = ''
+          Directory holding a copy of every entry in `secrets` with trailing
+          newlines stripped.
+
+          Homepage substitutes `{{HOMEPAGE_FILE_*}}` with the raw file contents,
+          so values compared verbatim by an upstream API must come from here.
+        '';
       };
 
       services = mkOption {
@@ -274,10 +289,19 @@ in
       };
     };
 
-    systemd.services.homepage-dashboard.serviceConfig = {
-      User = user;
-      Group = user;
-      DynamicUser = mkForce false;
+    systemd.services.homepage-dashboard = {
+      preStart = concatMapStringsSep "\n" (
+        secret:
+        ''printf '%s' "$(< ${config.age.secrets."${secret}".path})" > ${trimmedSecretsPath}/${secret}''
+      ) cfg.secrets;
+
+      serviceConfig = {
+        User = user;
+        Group = user;
+        DynamicUser = mkForce false;
+        RuntimeDirectory = "${user}/secrets";
+        RuntimeDirectoryMode = "0700";
+      };
     };
 
     users = {
