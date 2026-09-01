@@ -78,3 +78,12 @@ session:
 
   ## Cookie Session Domain default 'remember_me' value.
   remember_me: '1M'
+
+  ## Redis provider. Without it sessions live in the Authelia process, so every
+  ## restart of the unit invalidates them.
+  ## 'host' is the socket of `services.redis.servers.authelia`; the path is
+  ## pinned in ../default.nix because YAML cannot reference Nix.
+  ## 'port' is 0 because the instance listens on the socket only.
+  redis:
+    host: '/run/redis-authelia/redis.sock'
+    port: 0
