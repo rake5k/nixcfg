@@ -37,7 +37,22 @@ in
         };
       };
 
-      systemd.enable = true;
+      systemd = {
+        enable = true;
+
+        # NetworkManager pins networking.useDHCP to false, so nixpkgs derives no
+        # DHCP network for the initrd: sshd starts but the link never gets an
+        # address. Sorts before the generated 40-<interface>.network, which
+        # inherits that DHCP=no, and covers hosts that generate no network file
+        # at all.
+        network.networks."10-remote-unlock" = {
+          matchConfig = {
+            Type = "ether";
+            Kind = "!*"; # physical interfaces have no kind
+          };
+          DHCP = "yes";
+        };
+      };
     };
   };
 }
