@@ -1,158 +1,118 @@
-# Authelia SSO Module
+# Authelia SSO
 
-Adds Authelia as a centralized SSO provider for Traefik-exposed services.
+Centralised authentication for the services the NAS role exposes through Traefik. Authelia runs as
+the `main` instance of the upstream NixOS module, backed by SQLite for persistent state and Redis
+for sessions.
 
-## Features
+## Integration paths
 
-- Native NixOS Authelia service with SQLite database
-- Automatic Traefik middleware configuration
-- Age-encrypted user management
-- Trust local network (10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16)
+Services reach Authelia in one of two ways, and the choice lives in the consuming role, not here.
 
-## Configuration
-
-### Enabling Authelia
-
-In `nixos/roles/nas/default.nix`:
-
-```nix
-roles.nas.authelia.enable = true;
-```
-
-### Customizing Hostname
-
-```nix
-roles.nas.authelia.cookieDomain = "auth.local.harke.ch";
-```
-
-### Protected Services
-
-By default, Authelia protects:
-
-| Traefik Hostname           | Service     |
-| -------------------------- | ----------- |
-| `chat.local.harke.ch`      | open-webui  |
-| `photos.local.harke.ch`    | immich      |
-| `dms.local.harke.ch`       | paperless   |
-| `library.local.harke.ch`   | calibre-web |
-| `syncthing.local.harke.ch` | syncthing   |
-
-## Setting Up Users
-
-### 1. Create Age Public Key
+**Forward auth.** The role's Traefik router lists the `authelia` middleware, which forwards each
+request to `/api/authz/forward-auth` and passes `Remote-User`, `Remote-Groups`, `Remote-Name` and
+`Remote-Email` back to the backend. Find the current set with:
 
 ```bash
-age-keygen -o ~/.age/id.age -o ~/.age/pub.age
+grep -rn 'middlewares' --include='*.nix' nixos/roles/nas/ | grep authelia
 ```
 
-Copy `pub.age` to `secrets/nas/agepub.asc`.
+**OIDC.** The application authenticates against Authelia's identity provider itself and its router
+carries no middleware. Clients are defined in the `authelia-config-oidc-clients` secret; the
+application side lives in its own role, such as `services.immich.settings.oauth` in
+`../photos/default.nix`.
 
-### 2. Create User Configuration
+Both paths are subject to `config/access_control.yml`, which defaults to `deny` and grants access
+per domain, network and group.
 
-Edit `secrets/nas/authelia-users.secrets`:
+## Options
 
-```yaml
-users:
-  admin:
-    username: admin
-    display_name: Administrator
-    usernamePermutations:
-      - admin
-    email: admin@harke.ch
-    primaryGroups:
-      - authelia
-    emailVerificationEnabled: true
-    smtpSettings:
-      disabled: true
-```
+All options live under `custom.roles.nas.authelia`.
 
-### 3. Encrypt the Users File
+| Option                 | Default                            | Purpose                       |
+| ---------------------- | ---------------------------------- | ----------------------------- |
+| `enable`               | `false`                            | Enable the instance           |
+| `host`                 | `auth.local.harke.ch`              | Host name of the portal       |
+| `jwtSecret`            | `authelia-jwt-secret`              | Password reset JWT secret     |
+| `oidcHmacSecret`       | `authelia-oidc-hmac-secret`        | HMAC secret signing OIDC JWTs |
+| `oidcIssuerPrivateKey` | `authelia-oidc-issuer-private-key` | OIDC issuer private key       |
+| `sessionSecret`        | `authelia-session-secret`          | Encrypts session data         |
+| `storageEncryptionKey` | `authelia-storage-encryption-key`  | Encrypts the SQLite database  |
+
+Each option names an agenix secret rather than holding a value. The role registers the names in
+`custom.base.agenix.secrets` and chowns them to the instance user.
+
+Two further secrets are not exposed as options because they are whole configuration fragments rather
+than single values: `authelia-config-notifier` and `authelia-config-oidc-clients`. Both are passed
+to Authelia as additional settings files.
+
+## Session storage
+
+Authelia's default session provider holds sessions in the process, so restarting the unit logs every
+user out. The role runs a dedicated `services.redis.servers.authelia` instance instead, listening on
+`/run/redis-authelia/redis.sock` with TCP disabled. Redis keeps the nixpkgs default RDB schedule, so
+sessions also survive a reboot.
+
+The socket path appears twice — as `redisSocket` in `default.nix` and as `session.redis.host` in
+`config/session.yml` — because the YAML cannot reference Nix. Change both together.
+
+Session lifetimes are set in `config/session.yml`. With `inactivity` at `5m`, an idle session ends
+after five minutes regardless of the backend; Redis changes what happens to sessions that are still
+alive when the unit restarts.
+
+## Managing users
+
+The authentication backend is a file, `/var/lib/authelia-main/users_database.yml`, hashed with
+argon2id and watched for changes, so edits take effect without a restart.
+
+`authelia-create-user` appends an entry interactively:
 
 ```bash
-cat secrets/nas/authelia-users.secrets | age -o - -r agepub.asc > secrets/nas/authelia-users.secrets.age
+authelia-create-user <username> <email> [group1,group2,...]
 ```
 
-### 4. Configure in Nix
+Groups default to `users`. `config/access_control.yml` grants the wider set of hosts to
+`group:admins`.
 
-In your `home.nix` or `nixos-config.nix`:
+The `authelia` package is also on `PATH` for `authelia crypto hash generate` and the `storage`
+subcommands.
 
-```nix
-age.secrets."authelia-users" = {
-  source = config.age.secrets."authelia-users".path;
-};
-```
+## Files
 
-In `nixos/roles/nas/authelia/default.nix`:
+| Path                                | Contents                                      |
+| ----------------------------------- | --------------------------------------------- |
+| `config/access_control.yml`         | Default-deny rules per domain, network, group |
+| `config/authentication_backend.yml` | File backend and argon2id parameters          |
+| `config/ntp.yml`                    | NTP server used for the clock skew check      |
+| `config/session.yml`                | Cookie domain, lifetimes, Redis provider      |
+| `config/storage.yml`                | SQLite database path                          |
 
-```nix
-let
-  autheliaUsers = builtins.fromJSON (
-    builtins.readFileToString (config.age.secrets."authelia-users".path)
-  );
-in
-{
-  services.authelia.users = autheliaUsers.users;
-}
-```
+The whole `config/` directory is passed to Authelia, along with the two secret settings files.
+Authelia deep-merges them, and files listed later win on conflicting keys.
 
-## Initial Setup
-
-After enabling Authelia:
-
-1. **Generate secrets:**
-
-   ```bash
-   nix develop --command sh -c '
-     # Generate secret key
-     nix run github:ryantm/authentik-cli generate-secret > /tmp/authelia-secret.txt
-
-     # Generate admin password hash
-     nix run github:ryantm/authentik-cli hash-password admin123 > /tmp/admin-password.txt
-   '
-   ```
-
-2. **Update configuration** with generated secrets
-
-3. **Rebuild and start:**
-
-   ```bash
-   sudo nixos-rebuild switch
-   systemctl --user start authelia
-   ```
-
-4. **Access the Authelia UI:** `https://auth.local.harke.ch`
-
-5. **Complete initial setup** in the browser (create users, configure SMTP if needed)
+State lives in `/var/lib/authelia-main` (SQLite, user database) and `/var/lib/redis-authelia`
+(sessions), both persisted across the impermanence rollback.
 
 ## Troubleshooting
 
-### Authelia won't start
-
-Check if the secrets file is being read:
-
-```bash
-journalctl -u authelia -f
-```
-
-### Services not redirecting to login
-
-Ensure the middleware is referenced in the router config:
-
-```nix
-middlewares = [ "authelia" ];
-```
-
-### SSL certificate issues
-
-Verify Let's Encrypt certificates are being issued:
+Check the config as the service sees it. The unit already runs `validate-config` as `ExecStartPre`,
+so the file list to reuse is in the unit itself:
 
 ```bash
-journalctl -u traefik -f | grep -i cert
+systemctl cat authelia-main | grep ExecStart
 ```
 
-## Security Notes
+Service and unit state:
 
-- Keep `secretKey` and `adminPassword` encrypted in secrets
-- Enable SMTP if you want email verification
-- Consider 2FA after initial setup
-- Regular users can be added via the Authelia UI or config
+```bash
+journalctl -u authelia-main -f
+systemctl status redis-authelia
+```
+
+Confirm sessions are reaching Redis rather than falling back to memory:
+
+```bash
+sudo redis-cli -s /run/redis-authelia/redis.sock dbsize
+```
+
+A user who is logged out on every restart of `authelia-main` indicates the Redis provider is not
+being picked up — check that `session.redis` survived the settings-file merge.
