@@ -24,10 +24,7 @@ in
     custom.roles.dev = {
       android.enable = true;
       embedmongo.enable = false;
-      intellij = {
-        enable = true;
-        ultimate = true;
-      };
+      intellij.enable = true;
       java.enable = true;
       claudecode.enable = true;
       js.enable = true;
