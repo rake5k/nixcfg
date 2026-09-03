@@ -31,6 +31,7 @@ in
       plantuml.enable = true;
       opencode.enable = true;
       scala.enable = true;
+      zed.enable = true;
     };
 
     home.packages = with pkgs; [
