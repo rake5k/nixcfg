@@ -9,6 +9,7 @@ let
   cfg = config.custom.roles.dev.claudecode;
 
   claude-code = pkgs.unstable.claude-code;
+  claude-agent-acp = pkgs.unstable.claude-agent-acp;
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
 
   codegraph = pkgs.unstable.codegraph;
@@ -152,6 +153,7 @@ in
       # Only include seccomp on Linux - macOS uses native sandbox
       packages = [
         claude-code
+        claude-agent-acp
         codegraph
       ]
       ++ wrappers
