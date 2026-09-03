@@ -11,12 +11,6 @@ let
 
   cfg = config.custom.roles.dev.intellij;
 
-  # JetBrains ships a single unified IDEA distribution since 2025.3; the former
-  # Ultimate/Community split is now `jetbrains.idea` (unfree, paid features
-  # unlocked by licence) vs `jetbrains.idea-oss` (community-equivalent build).
-  # See: https://blog.jetbrains.com/idea/2025/07/intellij-idea-unified-distribution-plan/
-  ideaPackage = if cfg.ultimate then pkgs.jetbrains.idea else pkgs.jetbrains.idea-oss;
-
 in
 
 {
@@ -26,12 +20,6 @@ in
 
       install = mkEnableOption "Whether to install IntelliJ" // {
         default = true;
-      };
-
-      ultimate = mkOption {
-        type = types.bool;
-        default = false;
-        description = "If installing, select the unified distribution, the OSS build otherwise.";
       };
     };
   };
@@ -55,7 +43,7 @@ in
           nil
           nixfmt
         ]
-        ++ (optionals cfg.install [ ideaPackage ]);
+        ++ (optionals cfg.install [ jetbrains.idea-oss ]);
     };
   };
 }
