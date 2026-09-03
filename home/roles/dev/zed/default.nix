@@ -33,7 +33,7 @@ in
       # Fonts and theme are owned by the stylix zed target.
       userSettings = {
         format_on_save = "on";
-        relative_line_numbers = true;
+        relative_line_numbers = "enabled";
         vim_mode = true;
 
         telemetry = {
