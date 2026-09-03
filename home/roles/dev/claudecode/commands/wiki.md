@@ -110,6 +110,8 @@ Phase 3 - Page Operations (target: 5-15 page touches):
     key for query Phase 0 — keep it terse, distinctive, no filler ("Notes about ...").
   - Add [[cross-references]] between all affected pages
   - Set updated:: property (or YAML updated field) on all modified pages
+  - Inbox drain (source `inbox` only): once a target page is written, remove exactly the pending
+    lines whose facts landed on it; lines not written stay in `## Pending`
 
 Phase 4 - Quality Gate:
   - All new pages have required properties (per Schema)?
@@ -118,9 +120,11 @@ Phase 4 - Quality Gate:
   - No credentials in wiki content?
   - Count page touches (warn if < 5 or > 20)
 
-Phase 5 - Report:
+Phase 5 - Report + Commit:
   - Summary: pages created, pages updated, cross-refs added
   - List any warnings or skipped items
+  - Git commit, staging ONLY the pages listed in that summary by explicit pathspec (see Constraints:
+    the wiki has concurrent writers — `git add -A` would commit their in-progress edits)
 
 ## Workflow: query
 
@@ -195,7 +199,8 @@ Phase 2 - Demote Candidates:
 
 Phase 3 - Report + Commit:
   - Demoted list, new live-index size per namespace, hot pages (top access) for contrast
-  - Git commit (structural change: hub index + page properties)
+  - Git commit (structural change: hub index + page properties) — explicit pathspecs: the demoted
+    pages + their hubs + the Access-Log, nothing else (see Constraints)
   - Note: next prune due in N months — user may wire it via their scheduler
 
 ## Workflow: lint
@@ -236,7 +241,7 @@ Phase 4 - Auto-Fix (only with --fix flag):
   - Downgrade stale confidence from high to stale
   - Create stub pages for broken [[links]]
   - Add cross-references where obvious connections exist
-  - Git commit after fixes
+  - Git commit after fixes — explicit pathspecs of the fixed pages only (see Constraints)
 
 Phase 5 - Dashboard Update:
   - Update Dashboard page with current health metrics
@@ -294,7 +299,7 @@ Phase 3 - Create Pages:
 Phase 4 - Verification:
   - Run lint on imported pages
   - Report: pages imported, issues found
-  - Git commit with import summary
+  - Git commit with import summary — explicit pathspecs of the imported pages only (see Constraints)
 </workflow>
 
 <formats>
@@ -366,6 +371,41 @@ Rules:
 - prune/status parse the date + `[[page]]` from fixed positions (split on ` -- `); the `matched:` suffix is
   irrelevant to LRU aggregation and does not affect parsing
 - This page is exempt from orphan / stale / demote rules
+
+## Ingest-Inbox (format)
+
+Page: `Wiki/Reference/Ingest-Inbox` (`Wiki___Reference___Ingest-Inbox.md` / `Wiki/Reference/Ingest-Inbox.md`)
+— the capture queue drained by `ingest inbox`, one durable learning per line:
+
+Logseq:
+```
+- ingest-inbox:: true
+- type:: reference
+- ## Pending (append-only, newest at bottom)
+  - 2026-06-07 -- Wiki/Tech/Strapi -- PUT needs documentId, not the numeric id -- src: session strapi-migration
+  - 2026-06-07 -- ? -- Client X moved billing to quarterly -- src: MR !412
+```
+
+Obsidian:
+```
+---
+ingest-inbox: true
+type: reference
+---
+## Pending (append-only, newest at bottom)
+- 2026-06-07 -- Wiki/Tech/Strapi -- PUT needs documentId, not the numeric id -- src: session strapi-migration
+- 2026-06-07 -- ? -- Client X moved billing to quarterly -- src: MR !412
+```
+
+Rules:
+- Line format: `<ISO date> -- <Wiki/NS/Page target or ?> -- <one-sentence fact> -- src: <repo / MR / URL / session>`
+- Append one line per durable learning while working (a decision + rationale, an architecture or ops fact,
+  a domain rule, a dead end worth not repeating). Nothing durable -> capture nothing; a queue of trivia is
+  worse than an empty one
+- Target `?` = namespace unclear; `ingest inbox` decides the page at drain time
+- NEVER capture credentials (the wiki is git-tracked). Quick rules/gotchas belong in L1 memory, not here
+- A line leaves the queue only after its fact is written to a page and committed — never clear wholesale
+- This page is exempt from orphan / stale / demote rules
 </formats>
 
 <constraints>
@@ -386,7 +426,18 @@ Rules:
 - ALWAYS use correct format for the configured tool (outliner vs. flat markdown)
 - Properties: tool-specific (property:: value for Logseq, YAML frontmatter for Obsidian)
 - Max 3 wiki pages loaded simultaneously (JIT retrieval)
-- Git commit after every structural change
+- Git commit after every structural change — but the wiki repo has CONCURRENT WRITERS (other Claude
+  sessions, a Logseq/Obsidian git plugin auto-committing, the user editing in the app). Commit ONLY
+  the pages this run wrote, by explicit pathspec:
+  `git add -- <page> ...` then `git commit -m "<msg>" -- <page> ...`
+  (the `-- <paths>` on commit keeps foreign staged content out of the commit)
+- NEVER `git add -A`, `git add .`, or `git commit -a` in the wiki repo — each sweeps another writer's
+  uncommitted page edits into your commit
+- NEVER rewrite wiki history: no `git reset`, no `git commit --amend`, no force-push. A concurrent
+  session may have committed on top of yours since you last looked; rewriting silently drops that
+  commit. Correct a bad commit with a NEW commit (`git revert` if it must be undone)
+- Before committing, run `git status --porcelain` and treat every path you did not write as
+  someone else's work in progress: leave it unstaged, and mention it in the report
 - L1 feedback rules belong in Memory, NOT in the wiki
 - New quick rules/gotchas -> recommend Memory, not Wiki
 - New projects/workflows/research -> Wiki
