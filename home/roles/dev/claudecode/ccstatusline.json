@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "lines": [
     [
       {
@@ -20,7 +20,7 @@
         "type": "git-origin-repo",
         "metadata": {
           "linkToRepo": "true",
-          "hideNoRemote": "true"
+          "hide": "no-remote"
         }
       },
       {
@@ -32,7 +32,7 @@
         "type": "git-branch",
         "color": "magenta",
         "metadata": {
-          "hideNoGit": "true",
+          "hide": "no-git",
           "linkToRepo": "true"
         }
       },
@@ -46,7 +46,7 @@
         "type": "git-changes",
         "color": "yellow",
         "metadata": {
-          "hideNoGit": "true"
+          "hide": "no-git"
         }
       }
     ],

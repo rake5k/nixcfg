@@ -91,8 +91,14 @@ forgotten. Capture is automatic and cheap (one line, no commit); draining into p
 error-prone; edit it through the configuration utility instead:
 
 ```bash
-npx ccstatusline@latest --config ccstatusline.json
+npx ccstatusline@2.2.29 --config ccstatusline.json
 ```
 
 The utility provides an interactive editor for widgets, separators, colors, and powerline settings,
 and writes changes back to the given file. Commit the result.
+
+The version is pinned here and in `settings_common.json`. Keep both in sync: the linked
+`~/.config/ccstatusline/settings.json` is a read-only store path, so a version whose config schema
+is newer than `ccstatusline.json` cannot persist its migration and renders `⚠ invalid config`
+instead of the statusline. To upgrade, bump both, re-run the utility to migrate the layout file, and
+commit it together with the pin.
