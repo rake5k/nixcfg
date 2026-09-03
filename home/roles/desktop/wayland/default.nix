@@ -41,9 +41,12 @@ let
   # On non-NixOS: install `swaylock` from the distribution's repository.
   # See: https://nix-community.github.io/home-manager/options.xhtml#opt-programs.swaylock.enable
   swaylockPkg = if config.custom.base.non-nixos.enable then null else pkgs.swaylock;
+  # The swayidle unit's PATH holds only a shell, so commands need absolute
+  # paths. Host binaries on non-NixOS: swaylock for PAM, systemctl for logind.
+  hostBin = if config.custom.base.non-nixos.enable then "/usr/bin" else "/run/current-system/sw/bin";
   lockerCfg = {
     package = swaylockPkg;
-    lockerCmd = "swaylock -f";
+    lockerCmd = if swaylockPkg == null then "${hostBin}/swaylock -f" else "${getExe swaylockPkg} -f";
   };
 
   screenshotScript = pkgs.writeShellScript "wayland-screenshot" ''
@@ -192,7 +195,7 @@ in
         }
         {
           timeout = 900;
-          command = "systemctl suspend";
+          command = "${hostBin}/systemctl suspend";
         }
       ];
       events."before-sleep" = lockerCfg.lockerCmd;
