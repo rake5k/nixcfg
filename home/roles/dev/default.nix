@@ -23,13 +23,13 @@ in
   config = mkIf cfg.enable {
     custom.roles.dev = {
       android.enable = true;
+      claudecode.enable = true;
       embedmongo.enable = false;
       intellij.enable = true;
       java.enable = true;
-      claudecode.enable = true;
       js.enable = true;
-      plantuml.enable = true;
       opencode.enable = true;
+      plantuml.enable = true;
       scala.enable = true;
       zed.enable = true;
     };
