@@ -9,11 +9,10 @@ commands, and the ccstatusline layout. See `default.nix` for options.
 `env` overrides and the consuming flake's `custom.roles.dev.claudecode.extraSettings`, then passed
 to `claude --settings`, which outranks `~/.claude/settings.json`.
 
-`permissions.{allow,deny,ask}` and `hooks.<event>` lists are concatenated across the common defaults
-and `extraSettings`, so a downstream flake adds rules and hook handlers without redeclaring the
-shared ones; every other key follows `lib.recursiveUpdate` (downstream wins). Keep
-downstream-specific entries — employer domains, private plugins and skills — in that flake's
-`extraSettings`, not here.
+Lists are concatenated across the common defaults and `extraSettings`, so a downstream flake adds
+permission rules, hook handlers and sandbox entries without redeclaring the shared ones; every other
+key follows `lib.recursiveUpdate` (downstream wins). Keep downstream-specific entries — employer
+domains, private plugins and skills — in that flake's `extraSettings`, not here.
 
 `~/.claude/settings.json` is deliberately left unmanaged: Claude Code writes to it itself
 (`/config`, `/model`, plugin installs), so a read-only store symlink would break those. Keys set
@@ -21,6 +20,42 @@ here shadow it; `hooks` entries merge across both, with identical handlers dedup
 
 Plugins enabled via `enabledPlugins` need their marketplace declared in `extraKnownMarketplaces`
 unless it ships as a built-in (`claude-plugins-official`).
+
+## Sandbox
+
+The `sandbox` block in `settings_common.json` turns on the
+[sandboxed Bash tool](https://code.claude.com/docs/en/sandboxing), which confines Bash commands and
+their children at the OS level (bubblewrap on Linux, Seatbelt on macOS). `bwrap` and `socat` need no
+declaration here — the nixpkgs `claude-code` wrapper puts both on `PATH`.
+
+The policy assumes sessions run with `--dangerously-skip-permissions`, where the sandbox is the only
+boundary left, so the escape routes are closed rather than gated: `failIfUnavailable` refuses to
+start instead of silently running unsandboxed, `allowUnsandboxedCommands` drops the
+`dangerouslyDisableSandbox` retry, and `network.strictAllowlist` denies an unlisted host instead of
+prompting. Secrets are listed under `credentials` rather than `filesystem.denyRead`: the effect is
+the same, and a `deny` file entry also pins `filesystem.disabled` so no downstream scope can switch
+the filesystem layer off.
+
+`claude-seccomp` blocks every AF_UNIX socket inside the sandbox, which also blocks the nix daemon
+socket and with it every `nix` command. `network.allowAllUnixSockets` lifts that, but the Linux
+sandbox has no per-path socket allowlist, so it also exposes `/run/docker.sock`, which is equivalent
+to root on the host. Both docker socket paths are therefore in `filesystem.denyRead`, which replaces
+them with `/dev/null` inside the sandbox. Use `denyRead`, not `denyWrite`: a `denyWrite` entry
+leaves the socket connectable and `docker` keeps working.
+
+Commands that cannot work under these rules fail with no retry, by design. Run them yourself with
+the [`!` prompt](https://code.claude.com/docs/en/interactive-mode#shell-mode-with-prefix), which
+stays unsandboxed in interactive sessions:
+
+- `docker`, which is incompatible with the sandbox. It is deliberately not in `excludedCommands`,
+  which would reopen the socket path the `denyRead` entries close.
+- `hm-switch`, `nixos-rebuild` and anything else needing `sudo` or writes across `$HOME`.
+- `git checkout` or `git merge` across a branch that changes a
+  [protected path](https://code.claude.com/docs/en/sandboxing#protected-paths) such as
+  `.claude/skills`, which fails with `unable to unlink old`.
+
+Downstream flakes append to the `sandbox` lists through `extraSettings` the same way they append
+permissions; `nixcfg-work` adds its Artifactory and Gradle hosts there.
 
 ## Plugins
 

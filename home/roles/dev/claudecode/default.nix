@@ -30,33 +30,25 @@ let
     }
   );
 
-  # Merge two settings attrsets like `recursiveUpdate`, but concatenate the
-  # `permissions.{allow,deny,ask}` and `hooks.<event>` lists instead of letting
-  # the right-hand side replace them. This lets downstream flakes append
-  # permissions and hook handlers without having to redeclare the full list.
+  # Merge two settings attrsets like `recursiveUpdate`, but concatenate lists
+  # instead of letting the right-hand side replace them. This lets downstream
+  # flakes append to `permissions.{allow,deny,ask}`, `hooks.<event>` and the
+  # `sandbox` rule lists without having to redeclare the shared entries.
   mergeSettings =
     a: b:
     let
-      base = lib.recursiveUpdate a b;
-      mergePerm = key: (a.permissions.${key} or [ ]) ++ (b.permissions.${key} or [ ]);
-      hasPermissions = (a ? permissions) || (b ? permissions);
-      hookEvents = lib.attrNames ((a.hooks or { }) // (b.hooks or { }));
-      hasHooks = (a ? hooks) || (b ? hooks);
+      mergeValue =
+        x: y:
+        if lib.isList x && lib.isList y then
+          x ++ y
+        else if lib.isAttrs x && lib.isAttrs y then
+          mergeAttrs x y
+        else
+          y;
+      mergeAttrs =
+        x: y: x // lib.mapAttrs (name: value: if x ? ${name} then mergeValue x.${name} value else value) y;
     in
-    base
-    // lib.optionalAttrs hasPermissions {
-      permissions =
-        (a.permissions or { })
-        // (b.permissions or { })
-        // {
-          allow = mergePerm "allow";
-          deny = mergePerm "deny";
-          ask = mergePerm "ask";
-        };
-    }
-    // lib.optionalAttrs hasHooks {
-      hooks = lib.genAttrs hookEvents (event: (a.hooks.${event} or [ ]) ++ (b.hooks.${event} or [ ]));
-    };
+    mergeAttrs a b;
 
   commonSettings = lib.importJSON ./settings_common.json;
 
@@ -128,8 +120,7 @@ in
       default = { };
       description = ''
         Additional settings merged into every backend's settings file on top of
-        the common defaults. The `permissions.{allow,deny,ask}` and
-        `hooks.<event>` lists are concatenated; all other keys follow
+        the common defaults. Lists are concatenated; all other keys follow
         `lib.recursiveUpdate` semantics (right-hand side wins).
       '';
     };
