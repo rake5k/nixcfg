@@ -99,7 +99,7 @@
       "Edit(~/.age/**)",
       "Read(./.env.*)",
       "Read(/etc/ssh)",
-      "Read(/etc/ssh/id_!(*.pub)",
+      "Read(/etc/ssh/id_!(*.pub))",
       "Read(/run/agenix)",
       "Read(/run/agenix.d)",
       "Read(/run/agenix.d/**)",
@@ -109,7 +109,7 @@
       "Read(~/.local/share/secrets)",
       "Read(~/.local/share/secrets/**)",
       "Read(~/.ssh)",
-      "Read(~/.ssh/id_!(*.pub)"
+      "Read(~/.ssh/id_!(*.pub))"
     ],
     "ask": [
       "Bash(curl:*)",
