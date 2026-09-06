@@ -103,6 +103,11 @@ only consulted for `Read` and `Edit`; an `Edit` rule covers `Write` and `Noteboo
 `Write(...)` or `Glob(...)` path rule is
 [ignored with a startup warning](https://code.claude.com/docs/en/permissions#read-and-edit).
 
+The Bash sandbox needs the whole repo, not just `pages/`: committing writes `.git/index.lock`, so
+`~/Documents/notes/claude` is in `sandbox.filesystem.allowWrite`. Without it `/wiki ingest` writes
+its pages and then fails to commit them with `Read-only file system`. The `Edit` rule still keeps
+the tools themselves out of everything but `pages/`.
+
 ## Hooks
 
 Scripts under `hooks/` are linked into `~/.claude/hooks/` and registered in the `hooks` block of
