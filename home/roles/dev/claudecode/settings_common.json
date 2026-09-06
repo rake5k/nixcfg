@@ -198,6 +198,7 @@
         "~/.gradle",
         "~/.m2",
         "~/.npm",
+        "~/Documents/notes/claude",
         "~/go/pkg"
       ],
       "denyRead": ["/run/docker.sock", "/var/run/docker.sock", "~/**/*.kdbx"]
