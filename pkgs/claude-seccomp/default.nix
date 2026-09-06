@@ -6,8 +6,10 @@
 #   $out/share/claude-seccomp/apply-seccomp  - Loads BPF filter + execs command
 #   $out/share/claude-seccomp/unix-block.bpf - Compiled BPF bytecode
 #
-# Usage in settings.json:
-#   "sandbox": { "seccomp": { "bpfPath": "...", "applyPath": "..." } }
+# There is no `sandbox.seccomp` setting. Claude Code discovers the filter at the
+# global npm path, which the claudecode role links these outputs into. The filter
+# blocks every AF_UNIX socket; `sandbox.network.allowAllUnixSockets` re-permits
+# them, which the role sets so sandboxed commands reach the nix daemon socket.
 { pkgs }:
 
 pkgs.stdenv.mkDerivation {
