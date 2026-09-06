@@ -61,12 +61,16 @@ in
       swaylock = { };
     };
 
-    # Use the standard openssh agent for SSH instead of gcr-ssh-agent. The
-    # gcr-4 agent (shipped with gnome-keyring on 26.05) auto-loads passphrase
-    # protected keys via ssh-add at login, but its prompter does not display
-    # under the niri/Wayland session, so signing hangs and every ssh
-    # connection blocks. gnome-keyring still handles passwords/secrets.
-    programs.ssh.startAgent = true;
+    programs = {
+      localsend.enable = true;
+
+      # Use the standard openssh agent for SSH instead of gcr-ssh-agent. The
+      # gcr-4 agent (shipped with gnome-keyring on 26.05) auto-loads passphrase
+      # protected keys via ssh-add at login, but its prompter does not display
+      # under the niri/Wayland session, so signing hangs and every ssh
+      # connection blocks. gnome-keyring still handles passwords/secrets.
+      ssh.startAgent = true;
+    };
 
     services = {
       udisks2.enable = true;
