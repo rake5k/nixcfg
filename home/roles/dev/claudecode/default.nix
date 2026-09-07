@@ -72,7 +72,9 @@ let
     backend:
     let
       backendSettings = mergeSettings commonSettings { env = backendEnv.${backend}; };
-      unified = mergeSettings backendSettings cfg.extraSettings;
+      unified = mergeSettings (mergeSettings backendSettings cfg.extraSettings) (
+        cfg.extraBackendSettings.${backend} or { }
+      );
     in
     pkgs.writeText "claude-settings-${backend}.json" (builtins.toJSON unified);
 
@@ -135,6 +137,16 @@ in
         Additional settings merged into every backend's settings file on top of
         the common defaults. Lists are concatenated; all other keys follow
         `lib.recursiveUpdate` semantics (right-hand side wins).
+      '';
+    };
+    extraBackendSettings = lib.mkOption {
+      type = lib.types.attrsOf lib.types.attrs;
+      default = { };
+      description = ''
+        Settings merged on top of `extraSettings` for a single backend, keyed
+        by backend name. Holds what is bound to one endpoint rather than to the
+        machine — model tags, context window — which set globally would follow
+        `claude-cloud` to the Anthropic API and name a model it does not serve.
       '';
     };
   };

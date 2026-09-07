@@ -14,6 +14,16 @@ permission rules, hook handlers and sandbox entries without redeclaring the shar
 key follows `lib.recursiveUpdate` (downstream wins). Keep downstream-specific entries — employer
 domains, private plugins and skills — in that flake's `extraSettings`, not here.
 
+`extraBackendSettings.<backend>` merges on top of `extraSettings` for one backend only. Model tags
+and the context window belong there rather than in `settings_local.json`: the tags name models that
+exist on one machine's ollama, and `extraSettings` would hand them to `claude-cloud` too.
+
+`settings_local.json` therefore keeps only what any local ollama needs — the endpoint, and the
+timeouts a slow backend needs to survive. On a custom `ANTHROPIC_BASE_URL`, Claude Code runs three
+[stream watchdogs](https://code.claude.com/docs/en/network-config#streaming-idle-watchdogs) plus a
+body idle timeout, all at 300 s, and a model generating a couple of tokens per second trips them
+during a long prefill or a buffered non-streaming retry.
+
 `~/.claude/settings.json` is deliberately left unmanaged: Claude Code writes to it itself
 (`/config`, `/model`, plugin installs), so a read-only store symlink would break those. Keys set
 here shadow it; `hooks` entries merge across both, with identical handlers deduplicated.
