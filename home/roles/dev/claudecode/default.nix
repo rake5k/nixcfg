@@ -50,7 +50,14 @@ let
     in
     mergeAttrs a b;
 
-  commonSettings = lib.importJSON ./settings_common.json;
+  # `additionalDirectories` turns the wiki into a working directory of every
+  # session, so `/wiki` reads and writes it without `/add-dir` and without
+  # tripping `permissions.blockReadsOutsideWorkingDirectories`. The key takes
+  # plain directory paths, hence the interpolated home instead of a `~` entry
+  # in settings_common.json.
+  commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
+    permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
+  };
 
   # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint).
   backendEnv = {

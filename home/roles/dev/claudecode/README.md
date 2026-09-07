@@ -139,7 +139,14 @@ Markdown files under `commands/` are linked into `~/.claude/commands/` by `defau
 `/<name>` commands. `wiki.md` implements `/wiki`, a Logseq/Obsidian knowledge base with an L1/L2
 cache model.
 
-The wiki lives outside every project, so `settings_common.json` allows
+The wiki lives outside every project, so `default.nix` adds it to
+[`permissions.additionalDirectories`](https://code.claude.com/docs/en/permissions#working-directories),
+making it a working directory of every session. Without it the file tools refuse the path once
+`permissions.blockReadsOutsideWorkingDirectories` is on, and each session needs `/add-dir`. The key
+takes plain directory paths, so `default.nix` interpolates `home.homeDirectory` rather than writing
+a `~` entry into `settings_common.json`.
+
+Access inside that directory is still rule-scoped: `settings_common.json` allows
 `Read(~/Documents/notes/claude/**)` and `Edit(~/Documents/notes/claude/pages/**)` — writes are
 scoped to `pages/`, keeping `journals/`, `logseq/` and `llm-wiki.yml` prompt-gated. Path rules are
 only consulted for `Read` and `Edit`; an `Edit` rule covers `Write` and `NotebookEdit` too, and a
