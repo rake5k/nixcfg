@@ -192,6 +192,7 @@
       ]
     },
     "filesystem": {
+      "allowRead": ["~/.config/git", "~/.config/glab-cli", "~/.gitconfig"],
       "allowWrite": [
         "~/.cache",
         "~/.cargo",
