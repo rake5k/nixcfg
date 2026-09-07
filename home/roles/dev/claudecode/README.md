@@ -65,8 +65,10 @@ Commands that cannot work under these rules fail with no retry, by design. Run t
 the [`!` prompt](https://code.claude.com/docs/en/interactive-mode#shell-mode-with-prefix), which
 stays unsandboxed in interactive sessions:
 
-- `docker`, which is incompatible with the sandbox. It is deliberately not in `excludedCommands`,
-  which would reopen the socket path the `denyRead` entries close.
+- `docker` or `podman` against a local engine. The rootful socket stays closed by the `denyRead`
+  entries above, and rootless podman cannot start its own containers here at all: `newuidmap` cannot
+  write `uid_map` in bubblewrap's user namespace. Neither is in `excludedCommands`, which would
+  reopen the socket path those entries close.
 - `hm-switch`, `nixos-rebuild` and anything else needing `sudo` or writes across `$HOME`.
 - `git checkout` or `git merge` across a branch that changes a
   [protected path](https://code.claude.com/docs/en/sandboxing#protected-paths) such as
@@ -77,6 +79,16 @@ stays unsandboxed in interactive sessions:
   with `parsing .gitmodules file ... is locked` and a `path:` reference with
   `has an unsupported type`. Run `treefmt` from the dev shell instead of `nix fmt`. Directories
   added with `/add-dir` carry no such masks, so downstream flakes still build in-session.
+
+A rootless podman _service_ on the host is reachable, though, and that is how `nixcfg-work` runs
+containers from inside the sandbox. `CONTAINER_HOST` pointed at
+`$XDG_RUNTIME_DIR/podman/podman.sock` implies `--remote`, so the client — `podman` and the `docker`
+shim alike, wrapper scripts included — only talks to the socket while the service outside the
+sandbox runs the containers. It needs `$XDG_RUNTIME_DIR/libpod` and `.../containers` in
+`allowWrite`, because the client sets a sticky bit on its runtime directory before it connects. Both
+the variable and the paths carry the uid, so they live in that flake rather than here. The
+containers run outside the boundary: a bind mount reaches every path their user can read, and image
+pulls do not pass the domain allowlist.
 
 Snap-packaged commands cannot run inside the sandbox either: the launcher asks systemd for a
 transient scope over D-Bus and the PID namespace turns that into
