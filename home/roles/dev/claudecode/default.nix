@@ -73,6 +73,12 @@ let
   wrapperFor =
     backend:
     pkgs.writeShellScriptBin "claude-${backend}" ''
+      # `home.profileDirectory` puts ~/.nix-profile on PATH, which the Bash
+      # sandbox does not materialize, leaving every Home Manager package
+      # unreachable. Prepend the profile directory nix itself manages; the
+      # path is absent where home-manager installs through the NixOS module.
+      export PATH="$HOME/.local/state/nix/profiles/profile/bin:$PATH"
+
       exec ${claude-code}/bin/claude \
         --settings ${settingsFileFor backend} \
         --mcp-config ${mcpConfigFile} \

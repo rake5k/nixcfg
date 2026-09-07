@@ -49,10 +49,12 @@ authenticate. `filesystem.allowRead` therefore re-opens `~/.gitconfig`, `~/.conf
 `~/.config/glab-cli`. Configuration only: `git-credential-libsecret` reads the secret itself from
 the keyring over the D-Bus session socket, so `~/.local/share/secrets` and `~/.ssh` stay denied.
 
-The same deny also hides `~/.nix-profile`, which makes every Home Manager package unreachable inside
-the sandbox — a `PATH` lookup falls through to `/usr/bin` or `/snap/bin` instead. The profile and
-the generation directory it points at are therefore in `allowRead` as well; both resolve to
-read-only store paths.
+The same deny hides the Home Manager profile, which makes every Home Manager package unreachable
+inside the sandbox — a `PATH` lookup falls through to `/usr/bin` or `/snap/bin` instead. `allowRead`
+therefore covers `~/.nix-profile` and `~/.local/state/nix/profiles`, both read-only store paths.
+Only the second one is materialized, so the wrapper in `default.nix` also prepends
+`~/.local/state/nix/profiles/profile/bin` to `PATH`: `home.profileDirectory`, and with it the entry
+Home Manager puts on `PATH`, is `~/.nix-profile`, which stays invisible inside the sandbox.
 
 `claude-seccomp` blocks every AF_UNIX socket inside the sandbox, which also blocks the nix daemon
 socket and with it every `nix` command. `network.allowAllUnixSockets` lifts that, but the Linux
