@@ -36,6 +36,19 @@ prompting. Secrets are listed under `credentials` rather than `filesystem.denyRe
 the same, and a `deny` file entry also pins `filesystem.disabled` so no downstream scope can switch
 the filesystem layer off.
 
+`Read()` and `Edit()` deny rules take
+[`//path` for an absolute path](https://code.claude.com/docs/en/permissions#read-and-edit); a single
+leading `/` is project-relative and resolves against the directory of the settings file, which here
+is a nix store path. Keep the `//` on every absolute rule — without it the rule silently guards
+`/nix/store/etc/ssh` instead of `/etc/ssh`. The `sandbox.filesystem.*` lists use the opposite
+convention: there a single `/` is absolute.
+
+The sandbox denies reads across `$HOME`, which also hides the global git config and with it
+`url.*.insteadOf` and `credential.helper`, so a push falls back to plain SSH and fails to
+authenticate. `filesystem.allowRead` therefore re-opens `~/.gitconfig`, `~/.config/git` and
+`~/.config/glab-cli`. Configuration only: `git-credential-libsecret` reads the secret itself from
+the keyring over the D-Bus session socket, so `~/.local/share/secrets` and `~/.ssh` stay denied.
+
 `claude-seccomp` blocks every AF_UNIX socket inside the sandbox, which also blocks the nix daemon
 socket and with it every `nix` command. `network.allowAllUnixSockets` lifts that, but the Linux
 sandbox has no per-path socket allowlist, so it also exposes `/run/docker.sock`, which is equivalent
@@ -53,6 +66,17 @@ stays unsandboxed in interactive sessions:
 - `git checkout` or `git merge` across a branch that changes a
   [protected path](https://code.claude.com/docs/en/sandboxing#protected-paths) such as
   `.claude/skills`, which fails with `unable to unlink old`.
+- every flake-based `nix` command in the session's primary working directory. The sandbox
+  bind-mounts `/dev/null` over the write-protected paths there, so `.gitmodules`,
+  `.git/config.lock`, `.bashrc` and `.bash_profile` stat as character devices; libgit2 then aborts
+  with `parsing .gitmodules file ... is locked` and a `path:` reference with
+  `has an unsupported type`. Run `treefmt` from the dev shell instead of `nix fmt`. Directories
+  added with `/add-dir` carry no such masks, so downstream flakes still build in-session.
+
+Snap-packaged commands cannot run inside the sandbox either: the launcher asks systemd for a
+transient scope over D-Bus and the PID namespace turns that into
+`cannot create transient scope: ... Process N is a kernel thread, refusing`. Install the tool from
+nixpkgs instead, which is what `nixcfg-work` does for `glab`.
 
 Downstream flakes append to the `sandbox` lists through `extraSettings` the same way they append
 permissions; `nixcfg-work` adds its Artifactory and Gradle hosts there.
