@@ -32,9 +32,22 @@ in
 
       # Fonts and theme are owned by the stylix zed target.
       userSettings = {
+        base_keymap = "JetBrains";
         format_on_save = "on";
         relative_line_numbers = "enabled";
         vim_mode = true;
+
+        agent_servers."claude-acp" = {
+          type = "registry";
+          default_config_options.model = "default";
+          favorite_config_option_values = {
+            model = [
+              "opus[1m]"
+              "claude-fable-5[1m]"
+            ];
+            mode = [ "auto" ];
+          };
+        };
 
         telemetry = {
           diagnostics = false;
