@@ -43,7 +43,17 @@ Read `llm-wiki.yml` from the wiki root directory FIRST to determine:
 - `memory_path`: L1 memory root. Claude Code memory is PER-PROJECT, so treat this as a pattern,
   not a leaf dir: the current session's L1 is `<projects-root>/<slug>/memory/`, where `<slug>` is
   the cwd with every non-alphanumeric char replaced by `-` (`/home/me/work/api` ->
-  `-home-me-work-api`). A `*` in the configured value means all projects — lint scope only
+  `-home-me-work-api`). A `*` in the configured value means all projects — lint scope only.
+  The value may contain `$VAR` and `${VAR:-default}`; **expand it before globbing**. Prefer
+  `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/*/memory/` over an absolute path: one config file
+  is shared across devices and into sandboxes that redirect `CLAUDE_CONFIG_DIR`, so a literal path
+  is wrong somewhere by construction. A pattern that expands to ZERO existing directories is a
+  **warning to report**, never a silent pass — a lint that scanned nothing must not print "clean"
+- `extra_memory_paths`: optional list of additional L1 roots, same expansion rules, folded into the
+  **lint** duplicate scan only — never into "the current session's L1". Use it where one machine can
+  see another environment's memory (a VM host reading its guests'). Entries matching nothing are
+  skipped without comment, since that is the expected case on the other side; deduplicate the union
+  by resolved path, because in the redirected environment both keys point at the same tree
 - `namespaces`: configured top-level namespaces
 
 The wiki syncs via Syncthing, whose conflict copies keep the `.md` suffix
@@ -140,8 +150,8 @@ Phase 1 - Targeted Read (Stage 2, only the chosen pages):
   - L3 fallback when routing yields nothing useful (namespace unclear, hub index missing/empty, no
     routing line matches): classic grep across all wiki pages -> top 3-5. This is the slow
     backing-store scan and should be the exception, not the default
-  - If needed, also read L1 Memory for complete picture — resolve memory_path to the cwd slug
-    (current project only, never the all-projects glob)
+  - If needed, also read L1 Memory for complete picture — expand memory_path, then resolve it to the
+    cwd slug (current project only, never the all-projects glob, never `extra_memory_paths`)
 
 Phase 1b - Access Logging (LRU signal + routing transparency):
   - For each page ACTUALLY read in full, append one line to the Access-Log page (Wiki/Reference/Access-Log):
@@ -223,8 +233,10 @@ Phase 2 - Check Rules (from Schema):
   - Credential Leak: regex scan for token/password/secret patterns
   - Empty Pages: pages with only properties, no content
   - Cross-ref Minimum: pages with fewer than 1 outgoing [[link]]
-  - L1/L2 Duplicates: same info in Memory AND Wiki -> warning. Across ALL project memory dirs
-    (expand the memory_path glob); read each dir's `MEMORY.md` index, not every memory file
+  - L1/L2 Duplicates: same info in Memory AND Wiki -> warning. Across ALL project memory dirs —
+    the expanded `memory_path` glob UNION the expanded `extra_memory_paths`, deduplicated by
+    resolved path; read each dir's `MEMORY.md` index, not every memory file. If the union is
+    empty, report "L1 not reachable from here" rather than "no duplicates"
 
 Phase 3 - Report:
   - Group findings by severity (critical, warning, info)
