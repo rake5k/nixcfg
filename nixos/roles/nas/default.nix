@@ -39,6 +39,7 @@ in
         dashboard.enable = true;
         glances.enable = true;
         library.enable = true;
+        littlesnitch.enable = true;
         photos.enable = true;
         plex.enable = true;
         power-notification.enable = true;
