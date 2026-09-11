@@ -43,6 +43,7 @@ access_control:
     ## Only admins
     - domain:
       - 'glances.local.harke.ch'
+      - 'littlesnitch.local.harke.ch'
       - 'sunshine.local.harke.ch'
       - 'syncthing.local.harke.ch'
       - 'threadfin.local.harke.ch'
