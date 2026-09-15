@@ -68,12 +68,23 @@ let
     hyperion = (lib.importJSON ./settings_hyperion.json).env;
   };
 
+  # Ask rules that must prompt in every backend, bypass included: the GitLab
+  # writes that create or mutate merge requests. `settings_common.json` puts
+  # them in `permissions.ask`; the container backend keeps only these.
+  isGitlabWriteRule =
+    rule:
+    lib.any (prefix: lib.hasPrefix prefix rule) [
+      "Bash(glab api "
+      "Bash(glab mr create"
+    ];
+
   # Per-backend rewrite of the merged settings, for what a merge cannot
   # express: removing keys. `container` drops the host-only blocks — the
   # bubblewrap `sandbox` (the container is the boundary, and bubblewrap does
   # not start inside podman), the statusline (nothing renders it there) and
-  # `permissions.ask` (content-scoped ask rules still prompt under bypass) —
-  # and makes bypass the default mode. Mirrors nixcfg-home's microvm guest.
+  # all `permissions.ask` rules but the GitLab writes (content-scoped ask
+  # rules still prompt under bypass) — and makes bypass the default mode.
+  # Mirrors nixcfg-home's microvm guest.
   finalize = {
     container =
       settings:
@@ -82,7 +93,8 @@ let
         "statusLine"
       ]
       // {
-        permissions = removeAttrs settings.permissions [ "ask" ] // {
+        permissions = settings.permissions // {
+          ask = lib.filter isGitlabWriteRule (settings.permissions.ask or [ ]);
           defaultMode = "bypassPermissions";
         };
       };
