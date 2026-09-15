@@ -55,8 +55,23 @@ let
   # tripping `permissions.blockReadsOutsideWorkingDirectories`. The key takes
   # plain directory paths, hence the interpolated home instead of a `~` entry
   # in settings_common.json.
+  #
+  # The wiki hook runs from its store path rather than `~/.claude/hooks/`: the
+  # cli-c container hides `~/.claude` behind a tmpfs and refuses binds under it,
+  # while `+host-store` makes the store visible inside.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
     permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
+    hooks.SessionStart = [
+      {
+        matcher = "startup|resume|clear|compact";
+        hooks = [
+          {
+            type = "command";
+            command = "${lib.getExe pkgs.bash} ${./hooks/wiki-index.sh}";
+          }
+        ];
+      }
+    ];
   };
 
   # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint);
@@ -234,12 +249,6 @@ in
 
         # Slash commands
         ".claude/commands/wiki.md".source = ./commands/wiki.md;
-
-        # Hooks (registered in settings_common.json)
-        ".claude/hooks/wiki-index.sh" = {
-          source = ./hooks/wiki-index.sh;
-          executable = true;
-        };
 
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
