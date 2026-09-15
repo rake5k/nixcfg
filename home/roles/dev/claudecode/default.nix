@@ -59,11 +59,33 @@ let
     permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
   };
 
-  # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint).
+  # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint);
+  # `container` talks to the same endpoint from inside a cli-c sandbox.
   backendEnv = {
     cloud = { };
+    container = { };
     local = (lib.importJSON ./settings_local.json).env;
     hyperion = (lib.importJSON ./settings_hyperion.json).env;
+  };
+
+  # Per-backend rewrite of the merged settings, for what a merge cannot
+  # express: removing keys. `container` drops the host-only blocks — the
+  # bubblewrap `sandbox` (the container is the boundary, and bubblewrap does
+  # not start inside podman), the statusline (nothing renders it there) and
+  # `permissions.ask` (content-scoped ask rules still prompt under bypass) —
+  # and makes bypass the default mode. Mirrors nixcfg-home's microvm guest.
+  finalize = {
+    container =
+      settings:
+      removeAttrs settings [
+        "sandbox"
+        "statusLine"
+      ]
+      // {
+        permissions = removeAttrs settings.permissions [ "ask" ] // {
+          defaultMode = "bypassPermissions";
+        };
+      };
   };
 
   # Full, self-contained settings for one backend: common + backend env +
@@ -76,7 +98,9 @@ let
         cfg.extraBackendSettings.${backend} or { }
       );
     in
-    pkgs.writeText "claude-settings-${backend}.json" (builtins.toJSON unified);
+    pkgs.writeText "claude-settings-${backend}.json" (
+      builtins.toJSON ((finalize.${backend} or lib.id) unified)
+    );
 
   # `claude-<backend>` wrapper pinning the backend's settings and MCP servers.
   wrapperFor =
@@ -94,19 +118,18 @@ let
         "$@"
     '';
 
-  wrappers = map wrapperFor cfg.backends;
+  backendType = lib.types.enum [
+    "cloud"
+    "container"
+    "local"
+    "hyperion"
+  ];
 in
 {
   options.custom.roles.dev.claudecode = {
     enable = lib.mkEnableOption "claude-code";
     backends = lib.mkOption {
-      type = lib.types.listOf (
-        lib.types.enum [
-          "cloud"
-          "local"
-          "hyperion"
-        ]
-      );
+      type = lib.types.listOf backendType;
       default = [
         "cloud"
         "hyperion"
@@ -114,16 +137,14 @@ in
       description = ''
         Backends to expose as `claude-<backend>` commands. Each generates a
         self-contained settings file passed via `claude --settings`. `cloud`
-        uses the native Anthropic endpoint; `local` and `hyperion` point at
-        ollama (see settings_local.json / settings_hyperion.json).
+        uses the native Anthropic endpoint; `container` does too but with the
+        host-only settings stripped for a run inside a cli-c sandbox; `local`
+        and `hyperion` point at ollama (see settings_local.json /
+        settings_hyperion.json).
       '';
     };
     defaultBackend = lib.mkOption {
-      type = lib.types.enum [
-        "cloud"
-        "local"
-        "hyperion"
-      ];
+      type = backendType;
       default = "cloud";
       description = ''
         Backend the bare `claude` shell alias resolves to. Must be listed in
@@ -149,9 +170,20 @@ in
         `claude-cloud` to the Anthropic API and name a model it does not serve.
       '';
     };
+    wrapperPackages = lib.mkOption {
+      type = lib.types.attrsOf lib.types.package;
+      readOnly = true;
+      description = ''
+        The generated `claude-<backend>` wrappers keyed by backend, for
+        downstream launchers that wrap one of them (a sandbox launcher around
+        `container`, say) without matching names in `home.packages`.
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
+    custom.roles.dev.claudecode.wrapperPackages = lib.genAttrs cfg.backends wrapperFor;
+
     assertions = [
       {
         assertion = lib.elem cfg.defaultBackend cfg.backends;
@@ -172,7 +204,7 @@ in
         claude-agent-acp
         codegraph
       ]
-      ++ wrappers
+      ++ lib.attrValues cfg.wrapperPackages
       ++ lib.optionals pkgs.stdenv.isLinux [
         claude-seccomp # sandbox dependency
       ];
