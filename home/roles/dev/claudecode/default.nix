@@ -56,22 +56,34 @@ let
   # plain directory paths, hence the interpolated home instead of a `~` entry
   # in settings_common.json.
   #
-  # The wiki hook runs from its store path rather than `~/.claude/hooks/`: a
-  # container sandbox can hide `~/.claude` while still mounting the host's nix
-  # store.
+  # Hook commands are store paths, not `~/.claude/hooks/` files or bare names:
+  # a container sandbox can hide `~/.claude` and lack the Home Manager profile
+  # on PATH while still mounting the host's nix store.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
     permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
-    hooks.SessionStart = [
-      {
-        matcher = "startup|resume|clear|compact";
-        hooks = [
-          {
-            type = "command";
-            command = "${lib.getExe pkgs.bash} ${./hooks/wiki-index.sh}";
-          }
-        ];
-      }
-    ];
+    hooks = {
+      SessionStart = [
+        {
+          matcher = "startup|resume|clear|compact";
+          hooks = [
+            {
+              type = "command";
+              command = "${lib.getExe pkgs.bash} ${./hooks/wiki-index.sh}";
+            }
+          ];
+        }
+      ];
+      UserPromptSubmit = [
+        {
+          hooks = [
+            {
+              type = "command";
+              command = "${codegraph}/bin/codegraph prompt-hook";
+            }
+          ];
+        }
+      ];
+    };
   };
 
   # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint);
