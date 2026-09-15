@@ -180,8 +180,10 @@ the tools themselves out of everything but `pages/`.
 
 ## Hooks
 
-Scripts under `hooks/` are linked into `~/.claude/hooks/` and registered in the `hooks` block of
-`settings_common.json`. See the [hooks docs](https://code.claude.com/docs/en/hooks).
+Scripts under `hooks/` are registered by store path in `commonSettings` (`default.nix`), not linked
+into `~/.claude/hooks/`: the cli-c container hides `~/.claude` behind a tmpfs and refuses binds
+under it, while `+host-store` makes store paths resolve inside. See the
+[hooks docs](https://code.claude.com/docs/en/hooks).
 
 `wiki-index.sh` (`SessionStart`) prints the `### Index` routing lines of every `/wiki` hub page,
 which Claude Code appends to the session context — the wiki's index without its page bodies, so
