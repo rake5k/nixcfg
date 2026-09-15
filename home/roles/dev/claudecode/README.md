@@ -25,9 +25,10 @@ body idle timeout, all at 300 s, and a model generating a couple of tokens per s
 during a long prefill or a buffered non-streaming retry.
 
 The `container` backend is for a run inside a container sandbox, where the container is the
-boundary. Its file is the merged result minus `sandbox`, `statusLine` and `permissions.ask`, with
-`permissions.defaultMode` set to `bypassPermissions`. Settings that only make sense on the host
-(`env.CONTAINER_HOST`, extra `sandbox` rules) therefore belong in
+boundary. Its file is the merged result minus `sandbox`, `statusLine` and `permissions.ask`, except
+the `glab mr create` and `glab api` write rules, which prompt in every backend so no merge request
+is created without confirmation. `permissions.defaultMode` is set to `bypassPermissions`. Settings
+that only make sense on the host (`env.CONTAINER_HOST`, extra `sandbox` rules) therefore belong in
 `extraBackendSettings.<host backend>`, not in `extraSettings`. `wrapperPackages.<backend>` exposes
 the generated wrappers so a downstream launcher can wrap `claude-container` without matching names
 in `home.packages`.
