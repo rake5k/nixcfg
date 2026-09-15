@@ -27,11 +27,12 @@ during a long prefill or a buffered non-streaming retry.
 The `container` backend is for a run inside a
 [cli-c](https://gitlab.com/medbasecode/bc/devops/playground/cli-c) sandbox, where the container is
 the boundary. Its file is the merged result minus `sandbox`, `statusLine` and `permissions.ask`,
-with `permissions.defaultMode` set to `bypassPermissions`. Settings that only make sense on the host
-(`env.CONTAINER_HOST`, extra `sandbox` rules) therefore belong in
-`extraBackendSettings.<host backend>`, not in `extraSettings`. `wrapperPackages.<backend>` exposes
-the generated wrappers so a downstream launcher can wrap `claude-container` without matching names
-in `home.packages`.
+except the `glab mr create` and `glab api` write rules, which prompt in every backend so no merge
+request is created without confirmation. `permissions.defaultMode` is set to `bypassPermissions`.
+Settings that only make sense on the host (`env.CONTAINER_HOST`, extra `sandbox` rules) therefore
+belong in `extraBackendSettings.<host backend>`, not in `extraSettings`. `wrapperPackages.<backend>`
+exposes the generated wrappers so a downstream launcher can wrap `claude-container` without matching
+names in `home.packages`.
 
 `~/.claude/settings.json` is deliberately left unmanaged: Claude Code writes to it itself
 (`/config`, `/model`, plugin installs), so a read-only store symlink would break those. Keys set
