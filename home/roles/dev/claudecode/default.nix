@@ -200,6 +200,7 @@ in
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
         ".claude/skills/ollama".source = ./skills/ollama;
+        ".claude/skills/updating-nixcfg".source = ./skills/updating-nixcfg;
       }
       // lib.optionalAttrs pkgs.stdenv.isLinux {
         # Seccomp sandbox filter for Claude Code native sandbox
