@@ -56,22 +56,35 @@ let
   # plain directory paths, hence the interpolated home instead of a `~` entry
   # in settings_common.json.
   #
-  # The wiki hook runs from its store path rather than `~/.claude/hooks/`: the
-  # cli-c container hides `~/.claude` behind a tmpfs and refuses binds under it,
-  # while `+host-store` makes the store visible inside.
+  # Hook commands are store paths, not `~/.claude/hooks/` files or bare names:
+  # the cli-c container hides `~/.claude` behind a tmpfs, refuses binds under
+  # it and has no Home Manager profile on PATH, while `+host-store` makes the
+  # store visible inside.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
     permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
-    hooks.SessionStart = [
-      {
-        matcher = "startup|resume|clear|compact";
-        hooks = [
-          {
-            type = "command";
-            command = "${lib.getExe pkgs.bash} ${./hooks/wiki-index.sh}";
-          }
-        ];
-      }
-    ];
+    hooks = {
+      SessionStart = [
+        {
+          matcher = "startup|resume|clear|compact";
+          hooks = [
+            {
+              type = "command";
+              command = "${lib.getExe pkgs.bash} ${./hooks/wiki-index.sh}";
+            }
+          ];
+        }
+      ];
+      UserPromptSubmit = [
+        {
+          hooks = [
+            {
+              type = "command";
+              command = "${codegraph}/bin/codegraph prompt-hook";
+            }
+          ];
+        }
+      ];
+    };
   };
 
   # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint);

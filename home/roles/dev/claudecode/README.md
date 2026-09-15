@@ -147,11 +147,11 @@ cd <project> && codegraph init
 ```
 
 The rest of what `codegraph install` would write is declared instead of installed: the
-`mcp__codegraph__*` allow rule and the `codegraph prompt-hook` `UserPromptSubmit` hook in
-`settings_common.json`, and the agent guidance in `../codegraph.md`, which is appended to
-`~/.claude/CLAUDE.md` and reused verbatim as opencode's `AGENTS.md`. Do not run `codegraph install`
-— it replaces the managed `CLAUDE.md` symlink with a plain file, which then blocks Home Manager
-activation.
+`mcp__codegraph__*` allow rule in `settings_common.json`, the `codegraph prompt-hook`
+`UserPromptSubmit` hook by store path in `commonSettings` (`default.nix`), and the agent guidance in
+`../codegraph.md`, which is appended to `~/.claude/CLAUDE.md` and reused verbatim as opencode's
+`AGENTS.md`. Do not run `codegraph install` — it replaces the managed `CLAUDE.md` symlink with a
+plain file, which then blocks Home Manager activation.
 
 ## Slash commands
 
