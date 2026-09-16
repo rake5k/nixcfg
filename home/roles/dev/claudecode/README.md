@@ -102,8 +102,16 @@ stays unsandboxed in interactive sessions:
   `has an unsupported type`. Run `treefmt` from the dev shell instead of `nix fmt`. Directories
   added with `/add-dir` carry no such masks, so downstream flakes still build in-session.
 
+A mask is a `nodev` bind of `/dev/null`, so it stats fine but opens with `EACCES`. Started in
+`$HOME`, the cwd-only `.gitconfig` mask lands on `~/.gitconfig`, which git probes as a global config
+and aborts on with `unable to access '~/.gitconfig': Permission denied`. The wrapper in
+`default.nix` sets `GIT_CONFIG_GLOBAL` to the XDG config file Home Manager writes, which git reads
+in place of the two default locations, so it never probes the mask. Nothing but the cwd-only masks
+differs between the two locations: `~/.gitconfig` does not exist on a Home Manager machine, so the
+`allowRead` entry for it has no file to open.
+
 The same masks stat as untracked files, so `treefmt` walks them and a git hook that formats the
-working tree fails on them: prettier cannot read a character device. Six of them reach prettier:
+working tree fails on them: prettier cannot open a mask either. Six of them reach prettier:
 `.mcp.json`, `.claude/launch.json`, `.claude/loop.md`, `.claude/scheduled_tasks.json`,
 `.claude/settings.json` and `.claude/settings.local.json`. The global gitignore in
 `home/users/christian/git/default.nix` drops those from the walk, anchored to the repo root; the
