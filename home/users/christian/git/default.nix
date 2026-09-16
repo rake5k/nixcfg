@@ -316,6 +316,19 @@ in
         "docs/superpowers/plans/"
         "docs/superpowers/specs/"
 
+        # The Bash sandbox bind-mounts /dev/null over the protected paths that do
+        # not exist yet, so inside a session they stat as character devices and
+        # show up as untracked files. Only these six reach a formatter; the rest
+        # of the masks either match none or, like `.gitmodules`, sit in treefmt's
+        # own excludes. Anchored to the repo root, where the masks appear. A new
+        # real `.claude/settings.json` therefore needs `git add -f` once.
+        "/.claude/launch.json"
+        "/.claude/loop.md"
+        "/.claude/scheduled_tasks.json"
+        "/.claude/settings.json"
+        "/.claude/settings.local.json"
+        "/.mcp.json"
+
         # Custom/Vim
         #
 
@@ -325,6 +338,7 @@ in
         #
 
         "bin"
+
       ];
     };
   };
