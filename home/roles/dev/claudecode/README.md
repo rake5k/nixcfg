@@ -102,6 +102,18 @@ stays unsandboxed in interactive sessions:
   `has an unsupported type`. Run `treefmt` from the dev shell instead of `nix fmt`. Directories
   added with `/add-dir` carry no such masks, so downstream flakes still build in-session.
 
+The same masks stat as untracked files, so `treefmt` walks them and a git hook that formats the
+working tree fails on them: prettier cannot read a character device. Six of them reach prettier:
+`.mcp.json`, `.claude/launch.json`, `.claude/loop.md`, `.claude/scheduled_tasks.json`,
+`.claude/settings.json` and `.claude/settings.local.json`. The global gitignore in
+`home/users/christian/git/default.nix` drops those from the walk, anchored to the repo root; the
+sandbox offers no way to exempt a
+[protected path](https://code.claude.com/docs/en/sandboxing#protected-paths). The other masks stay
+visible — the `.claude` directories match no formatter, and `.gitmodules` sits in treefmt's own
+excludes — so a project that tracks its own `.claude/agents` or `.claude/commands` still sees them
+in `git status`. A mask only appears where the path is missing, so a path the repo does track is
+never masked, but a newly created `.claude/settings.json` needs `git add -f` once.
+
 A rootless podman _service_ on the host is reachable, though, and that is how `nixcfg-work` runs
 containers from inside the sandbox. `CONTAINER_HOST` pointed at
 `$XDG_RUNTIME_DIR/podman/podman.sock` implies `--remote`, so the client — `podman` and the `docker`
