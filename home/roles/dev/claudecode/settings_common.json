@@ -161,6 +161,7 @@
         "*.crates.io",
         "*.github.com",
         "*.npmjs.org",
+        "cdn.artifacts.gitlab-static.net",
         "codeload.github.com",
         "gitlab.com",
         "objects.githubusercontent.com",

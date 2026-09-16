@@ -52,9 +52,11 @@ The policy assumes sessions run with `--dangerously-skip-permissions`, where the
 boundary left, so the escape routes are closed rather than gated: `failIfUnavailable` refuses to
 start instead of silently running unsandboxed, `allowUnsandboxedCommands` drops the
 `dangerouslyDisableSandbox` retry, and `network.strictAllowlist` denies an unlisted host instead of
-prompting. Secrets are listed under `credentials` rather than `filesystem.denyRead`: the effect is
-the same, and a `deny` file entry also pins `filesystem.disabled` so no downstream scope can switch
-the filesystem layer off.
+prompting. A redirect is a new host, so `allowedDomains` also carries the targets behind the listed
+forges: `codeload.github.com` and `objects.githubusercontent.com` for GitHub archives and release
+assets, `cdn.artifacts.gitlab-static.net` for GitLab.com job artifacts. Secrets are listed under
+`credentials` rather than `filesystem.denyRead`: the effect is the same, and a `deny` file entry
+also pins `filesystem.disabled` so no downstream scope can switch the filesystem layer off.
 
 `Read()` and `Edit()` deny rules take
 [`//path` for an absolute path](https://code.claude.com/docs/en/permissions#read-and-edit); a single
