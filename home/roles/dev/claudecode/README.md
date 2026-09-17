@@ -131,8 +131,17 @@ shim alike, wrapper scripts included — only talks to the socket while the serv
 sandbox runs the containers. It needs `$XDG_RUNTIME_DIR/libpod` and `.../containers` in
 `allowWrite`, because the client sets a sticky bit on its runtime directory before it connects. Both
 the variable and the paths carry the uid, so they live in that flake rather than here. The
-containers run outside the boundary: a bind mount reaches every path their user can read, and image
-pulls do not pass the domain allowlist.
+containers run outside the boundary, which cuts both ways: a bind mount reaches every path their
+user can read, and an image pull goes to the registry without passing the domain allowlist at all.
+
+Pulling an image and starting a container therefore both work from inside a session. Reaching the
+container is what does not. The sandbox gets its own network namespace holding nothing but `lo`, so
+a port published on the host loopback is unreachable: a direct connection gets `ECONNREFUSED`, and
+the sandbox proxy, which does reach the host, answers `403` because the address is not in
+`allowedDomains`. Listing it there would only help a client that speaks the proxy, which a database
+driver does not. A test suite that talks to a container it starts has to run outside the sandbox
+instead, which is why `nixcfg-work` puts `gradlew` and `cargo` in `excludedCommands`. An entry
+matches the command itself, so the same run wrapped in `nix develop -c` is sandboxed again.
 
 Snap-packaged commands cannot run inside the sandbox either: the launcher asks systemd for a
 transient scope over D-Bus and the PID namespace turns that into
