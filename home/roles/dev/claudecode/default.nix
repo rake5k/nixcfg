@@ -151,11 +151,17 @@ let
       # path is absent where home-manager installs through the NixOS module.
       export PATH="$HOME/.local/state/nix/profiles/profile/bin:$PATH"
 
-      # The sandbox masks a missing protected path with a `nodev` bind of
-      # /dev/null, which opens with EACCES. Started in $HOME, the cwd-only
-      # `.gitconfig` mask lands on ~/.gitconfig, which git probes as a global
-      # config and aborts on. Naming the XDG file skips that probe.
-      export GIT_CONFIG_GLOBAL="${config.xdg.configHome}/git/config"
+      ${lib.optionalString (backend != "container") ''
+        # The sandbox masks a missing protected path with a `nodev` bind of
+        # /dev/null, which opens with EACCES. Started in $HOME, the cwd-only
+        # `.gitconfig` mask lands on ~/.gitconfig, which git probes as a global
+        # config and aborts on. Naming the XDG file skips that probe. Not in
+        # `container`: it drops the `sandbox` block, so no mask exists, the XDG
+        # file is absent inside cli-c, and pinning git there hides the
+        # `~/.gitconfig` cli-c seeds with the identity and the GitLab broker's
+        # `url.insteadOf`.
+        export GIT_CONFIG_GLOBAL="${config.xdg.configHome}/git/config"
+      ''}
 
       exec ${claude-code}/bin/claude \
         --settings ${settingsFileFor backend} \

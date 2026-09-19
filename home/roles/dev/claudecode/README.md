@@ -112,6 +112,11 @@ in place of the two default locations, so it never probes the mask. Nothing but 
 differs between the two locations: `~/.gitconfig` does not exist on a Home Manager machine, so the
 `allowRead` entry for it has no file to open.
 
+The `container` wrapper leaves `GIT_CONFIG_GLOBAL` unset. That backend drops the `sandbox` block, so
+no mask exists to dodge, the XDG file is absent inside the cli-c container, and pinning git at a
+missing path hides `~/.gitconfig` — the file cli-c seeds with the git identity and, under `+gitlab`,
+the broker's `url.insteadOf` rewrite for `https://gitlab.com/`.
+
 The same masks stat as untracked files, so `treefmt` walks them and a git hook that formats the
 working tree fails on them: prettier cannot open a mask either. Six of them reach prettier:
 `.mcp.json`, `.claude/launch.json`, `.claude/loop.md`, `.claude/scheduled_tasks.json`,
