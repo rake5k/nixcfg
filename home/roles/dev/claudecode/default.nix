@@ -109,17 +109,16 @@ let
   # Per-backend rewrite of the merged settings, for what a merge cannot
   # express: removing keys. `container` drops the host-only blocks — the
   # bubblewrap `sandbox` (the container is the boundary, and bubblewrap does
-  # not start inside podman), the statusline (nothing renders it there) and
-  # all `permissions.ask` rules but the GitLab writes (content-scoped ask
-  # rules still prompt under bypass) — and makes bypass the default mode.
+  # not start inside podman) and all `permissions.ask` rules but the GitLab
+  # writes (content-scoped ask rules still prompt under bypass) — and makes
+  # bypass the default mode. `statusLine` stays: the default `npx` command
+  # cannot reach registry.npmjs.org from the sandbox, but a downstream
+  # `extraSettings.statusLine` pointing at a packaged renderer does work.
   # Mirrors nixcfg-home's microvm guest.
   finalize = {
     container =
       settings:
-      removeAttrs settings [
-        "sandbox"
-        "statusLine"
-      ]
+      removeAttrs settings [ "sandbox" ]
       // {
         permissions = settings.permissions // {
           ask = lib.filter isGitlabWriteRule (settings.permissions.ask or [ ]);
