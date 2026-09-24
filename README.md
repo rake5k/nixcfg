@@ -4,8 +4,8 @@
 
 ## Features
 
-- Automation scripts to setup a fresh [NixOS machine from scratch](flake/apps/nixos-install.sh) or
-  an [arbitrary preinstalled Linux machine](flake/apps/setup.sh) easily
+- Automation scripts to setup a fresh [NixOS machine from scratch](lib/apps/disko-install.sh) or an
+  [arbitrary preinstalled Linux machine](lib/apps/setup.sh) easily
 - Disk configuration using [Disko][disko]
 - Secret management in [NixOS][nixos] ([agenix][agenix]) and [Home Manager][home-manager]
   ([homeage][homeage]) with [age][age]
@@ -15,12 +15,15 @@
 
 ## Supported configurations
 
+- [Home Manager][home-manager]-managed
+  - `demo@non-nixos`
+- [nix-darwin][nix-darwin]-managed
+  - `macos`
 - [Nix-on-Droid][nix-on-droid]-managed
   - `nix-on-droid`
 - [NixOS][nixos]-managed
-  - `nixos-vm`
-- [Home Manager][home-manager]-managed
-  - `non-nixos-vm`
+  - `nixos`
+  - `installer` -- installer ISO, see [Installer ISO](#installer-iso)
 
 See [flake.nix](flake.nix) for more information like `system`.
 
@@ -28,28 +31,41 @@ See [flake.nix](flake.nix) for more information like `system`.
 
 ```text
 📂 .
-├──🔒 flake.lock    -- flake lockfile
-├── ❄ flake.nix     -- flake definition
-├──📂 home          -- Home Manager configuration
-│  ├──📂 base       -- basic configs
-│  ├──📂 programs   -- custom program modules
-│  ├──📂 roles      -- custom roles for bundling configsets
-│  └──📂 users      -- user-specific config
-├──📂 hosts         -- NixOS host configs
-│  ├──📂 nixos-vm
+├──🔒 flake.lock      -- flake lockfile
+├── ❄ flake.nix       -- flake definition
+├──📂 home            -- Home Manager configuration
+│  ├──📂 base         -- basic configs
+│  ├──📂 programs     -- custom program modules
+│  ├──📂 roles        -- custom roles for bundling configsets
+│  └──📂 users        -- user-specific config
+├──📂 hosts           -- per-host configs
+│  ├──📂 macos
 │  ├──📂 nix-on-droid
-│  └──📂 non-nixos-vm
-├──📂 installer     -- installer ISO config (not imported by hosts)
-├──📂 lib           -- internal flake library
-├──📂 nix-on-droid  -- custom NixOnDroid modules
-├──📂 nixos         -- custom NixOS modules
-│  ├──📂 base       -- basic configs
-│  │   └──📂 users  -- user configs
-│  ├──📂 containers -- custom container modules
-│  ├──📂 programs   -- custom program modules
-│  └──📂 roles      -- custom roles for bundling configsets
-└──📂 secrets       -- agenix-encrypted secrets
+│  ├──📂 nixos        -- incl. hardware and disko config
+│  └──📂 non-nixos
+├──📂 installer       -- installer ISO config (not imported by hosts)
+├──📂 lib             -- internal flake library
+│  ├──📂 apps         -- shell scripts exposed as flake apps
+│  └──📂 builders     -- mkHome/mkNixos/... builders and their modules
+├──📂 nix-darwin      -- custom nix-darwin modules
+├──📂 nix-on-droid    -- custom Nix-on-Droid modules
+├──📂 nixos           -- custom NixOS modules
+│  ├──📂 base         -- basic configs
+│  ├──📂 programs     -- custom program modules
+│  ├──📂 roles        -- custom roles for bundling configsets
+│  └──📂 users        -- user configs
+├──📂 pkgs            -- custom packages
+├──📂 secrets         -- age-encrypted secrets (not present in this flake)
+│  ├──📂 home         -- homeage secrets, per user subdirectory
+│  └──📂 nixos        -- agenix secrets
+└──📂 users           -- platform-independent user config
 ```
+
+This base flake ships no `secrets` directory — downstream flakes carry their own, alongside the
+[.agenix.toml](#make-secrets-available-on-new-host) that maps keys to secrets. The location is set
+by `custom.base.agenix.secretsBasePath` ([NixOS](nixos/base/agenix/default.nix)) and
+`custom.roles.homeage.secretsBasePath` ([Home Manager](home/roles/homeage/default.nix)), both
+defaulting to `secrets/` in the flake that defines the configuration.
 
 ## Usage
 
@@ -214,9 +230,9 @@ nix-on-droid switch --flake github:rake5k/nixcfg#<hostname>
 
 ### Make secrets available on new host
 
-Add the host public key into the [.agenix.toml](.agenix.toml) file and assign it to the appropriate
-groups. Push the updated `.agenix.toml` back to the git repository, pull it to an existing host and
-re-key all the secrets with the command:
+Add the host public key into the `.agenix.toml` file of the flake holding the secrets and assign it
+to the appropriate groups. Push the updated `.agenix.toml` back to the git repository, pull it to an
+existing host and re-key all the secrets with the command:
 
 ```bash
 # On NixOS:
@@ -276,6 +292,7 @@ NixOS collects the store daily (`nix.gc`). Home Manager configs expire generatio
 [home-manager]: https://nix-community.github.io/home-manager
 [homeage]: https://github.com/jordanisaacs/homeage
 [lanzaboote]: https://github.com/nix-community/lanzaboote
+[nix-darwin]: https://github.com/lnl7/nix-darwin
 [nix-on-droid]: https://nix-community.github.io/nix-on-droid
 [nixos]: https://nixos.org/
 [nixos-anywhere]: https://github.com/nix-community/nixos-anywhere
