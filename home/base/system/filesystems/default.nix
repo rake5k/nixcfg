@@ -8,7 +8,7 @@
 let
 
   inherit (lib) mkIf;
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
 
 in
 

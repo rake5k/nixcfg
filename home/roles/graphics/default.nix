@@ -25,7 +25,7 @@ in
 
     home.packages =
       with pkgs;
-      optionals pkgs.stdenv.isLinux [
+      optionals pkgs.stdenv.hostPlatform.isLinux [
         gimp
         sxiv
       ];

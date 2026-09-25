@@ -10,7 +10,7 @@ let
   cfg = config.custom.roles.dev.js;
 
   inherit (lib) mkEnableOption mkIf optionals;
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
 
 in
 

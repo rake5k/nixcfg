@@ -26,7 +26,7 @@ in
     home.packages =
       with pkgs;
       [ reveal-md ]
-      ++ optionals pkgs.stdenv.isLinux [
+      ++ optionals pkgs.stdenv.hostPlatform.isLinux [
         libreoffice
         openjdk
       ];
