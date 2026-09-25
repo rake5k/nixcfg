@@ -8,6 +8,8 @@
 let
   cfg = config.custom.roles.dev.claudecode;
 
+  inherit (pkgs.stdenv.hostPlatform) isLinux;
+
   claude-code = pkgs.unstable.claude-code;
   claude-agent-acp = pkgs.unstable.claude-agent-acp;
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
@@ -256,7 +258,7 @@ in
         codegraph
       ]
       ++ lib.attrValues cfg.wrapperPackages
-      ++ lib.optionals pkgs.stdenv.isLinux [
+      ++ lib.optionals isLinux [
         claude-seccomp # sandbox dependency
       ];
 
@@ -279,7 +281,7 @@ in
         ".claude/skills/ollama".source = ./skills/ollama;
         ".claude/skills/updating-nixcfg".source = ./skills/updating-nixcfg;
       }
-      // lib.optionalAttrs pkgs.stdenv.isLinux {
+      // lib.optionalAttrs isLinux {
         # Seccomp sandbox filter for Claude Code native sandbox
         ".claude/seccomp/apply-seccomp".source = "${claude-seccomp}/share/claude-seccomp/apply-seccomp";
         ".claude/seccomp/unix-block.bpf".source = "${claude-seccomp}/share/claude-seccomp/unix-block.bpf";

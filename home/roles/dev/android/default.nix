@@ -27,6 +27,6 @@ in
         android-tools
       ]
       # signify is Linux-only in nixpkgs.
-      ++ optionals stdenv.isLinux [ signify ];
+      ++ optionals stdenv.hostPlatform.isLinux [ signify ];
   };
 }

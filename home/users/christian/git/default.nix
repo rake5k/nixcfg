@@ -10,7 +10,7 @@ let
   cfg = config.custom.users.christian.git;
 
   credentialHelper =
-    if pkgs.stdenv.isDarwin then
+    if pkgs.stdenv.hostPlatform.isDarwin then
       "${pkgs.gitFull}/share/git/contrib/credential/osxkeychain/git-credential-osxkeychain"
     else
       "${pkgs.gitFull}/share/git/contrib/credential/libsecret/git-credential-libsecret";

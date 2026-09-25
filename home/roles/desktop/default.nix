@@ -62,7 +62,7 @@ in
     # GTK/GNOME tooling and tray applets have no Darwin counterpart. Force the
     # role off there so hosts can enable it unconditionally without dragging
     # Linux-only packages into a Darwin evaluation.
-    { custom.roles.desktop.enable = mkIf (!pkgs.stdenv.isLinux) (mkForce false); }
+    { custom.roles.desktop.enable = mkIf (!pkgs.stdenv.hostPlatform.isLinux) (mkForce false); }
 
     (mkIf cfg.enable {
 
