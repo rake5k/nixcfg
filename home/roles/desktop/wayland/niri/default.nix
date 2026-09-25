@@ -43,6 +43,9 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Re-enable the stylix target that base defaults off (see home/base).
+    stylix.targets.niri.enable = true;
+
     custom = {
       roles = {
         desktop = {

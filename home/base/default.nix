@@ -25,4 +25,11 @@
 
   # See: https://github.com/nix-community/stylix/issues/1832
   stylix.overlays.enable = false;
+
+  # niri's home module is imported for every profile (see lib/mkHome), so its
+  # stylix target is on by default. That generates a `config.kdl` which is
+  # validated with `niri validate` at build time, forcing `pkgs.niri` to build
+  # even on hosts that never run niri. Keep it off unless the niri role enables
+  # it (see roles/desktop/wayland/niri).
+  stylix.targets.niri.enable = lib.mkDefault false;
 }
