@@ -19,6 +19,16 @@ let
   localUrl = "http://localhost:${toString config.services.calibre-web.listen.port}";
   remoteUrl = "https://${cfg.host}";
 
+  # calibre-web hardcodes Tornado's max_buffer_size to ~200MB, so larger uploads
+  # are rejected with "Content-Length too long". Bump it to allow big PDFs.
+  maxUploadBytes = 2 * 1024 * 1024 * 1024; # 2 GiB
+  calibreWebPackage = pkgs.unstable.calibre-web.overrideAttrs (old: {
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace src/calibreweb/cps/server.py \
+        --replace-fail "max_buffer_size=209700000," "max_buffer_size=${toString maxUploadBytes},"
+    '';
+  });
+
   dashboardCfg = config.custom.roles.nas.dashboard;
   dashboardUsernameSecret = "dashboard-calibreweb-username";
   dashboardPasswordSecret = "dashboard-calibreweb-password";
@@ -87,7 +97,7 @@ in
     services = {
       calibre-web = {
         enable = true;
-        package = pkgs.unstable.calibre-web;
+        package = calibreWebPackage;
         options = {
           calibreLibrary = cfg.libraryPath;
           enableBookConversion = true;
