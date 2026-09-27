@@ -238,9 +238,5 @@
   },
   "model": "opus[1m]",
   "tui": "fullscreen",
-  "skipDangerousModePermissionPrompt": true,
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@2.2.29"
-  }
+  "skipDangerousModePermissionPrompt": true
 }

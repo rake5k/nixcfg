@@ -13,6 +13,7 @@ let
   claude-code = pkgs.unstable.claude-code;
   claude-agent-acp = pkgs.unstable.claude-agent-acp;
   claude-seccomp = pkgs.callPackage ../../../../pkgs/claude-seccomp { };
+  ccstatusline = pkgs.callPackage ../../../../pkgs/ccstatusline { };
 
   codegraph = pkgs.unstable.codegraph;
 
@@ -64,6 +65,11 @@ let
   # store visible inside.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
     permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
+    # Packaged rather than `npx`, so rendering needs no route to registry.npmjs.org.
+    statusLine = {
+      type = "command";
+      command = lib.getExe ccstatusline;
+    };
     hooks = {
       SessionStart = [
         {
@@ -113,9 +119,8 @@ let
   # bubblewrap `sandbox` (the container is the boundary, and bubblewrap does
   # not start inside podman) and all `permissions.ask` rules but the GitLab
   # writes (content-scoped ask rules still prompt under bypass) — and makes
-  # bypass the default mode. `statusLine` stays: the default `npx` command
-  # cannot reach registry.npmjs.org from the sandbox, but a downstream
-  # `extraSettings.statusLine` pointing at a packaged renderer does work.
+  # bypass the default mode. `statusLine` stays: the packaged renderer runs
+  # inside the sandbox.
   # Mirrors nixcfg-home's microvm guest.
   finalize = {
     container =
@@ -255,6 +260,7 @@ in
       packages = [
         claude-code
         claude-agent-acp
+        ccstatusline
         codegraph
       ]
       ++ lib.attrValues cfg.wrapperPackages
@@ -269,7 +275,7 @@ in
           (builtins.readFile ../codegraph.md)
         ];
 
-        # ccstatusline layout (statusLine command set in settings_common.json).
+        # ccstatusline layout (statusLine command set in commonSettings).
         # Leading git-root-dir widget shows the project name.
         ".config/ccstatusline/settings.json".source = ./ccstatusline.json;
 
