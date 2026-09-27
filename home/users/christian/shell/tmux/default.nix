@@ -23,6 +23,12 @@ in
     programs.tmux = {
       enable = true;
       tmuxinator.enable = true;
+      # Pass Shift+Enter through as a distinct key and OSC notifications to the outer terminal.
+      extraConfig = ''
+        set -g allow-passthrough on
+        set -s extended-keys on
+        set -as terminal-features 'xterm*:extkeys'
+      '';
     };
   };
 }
