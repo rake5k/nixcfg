@@ -78,6 +78,8 @@ in
       extraConfig = ''
         mouse_map ctrl+left click ungrabbed mouse_handle_click selection link prompt
         mouse_map left click ungrabbed no-op
+        # Send Ctrl+J (newline in claude, Enter elsewhere); tmux cannot tell Shift+Enter from Enter in kitty.
+        map shift+enter send_text all \n
       '';
     };
   };
