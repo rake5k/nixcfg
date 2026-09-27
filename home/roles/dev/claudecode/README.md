@@ -232,19 +232,23 @@ forgotten. Capture is automatic and cheap (one line, no commit); draining into p
 
 ## ccstatusline
 
+The statusline command is `ccstatusline`, packaged in `pkgs/ccstatusline` from its npm tarball so
+rendering needs no route to `registry.npmjs.org`. Downstream flakes reuse it via
+`pkgs.callPackage "${inputs.nixcfg}/pkgs/ccstatusline" { }`.
+
 `ccstatusline.json` holds the statusline widget layout, linked to
-`~/.config/ccstatusline/settings.json` (see `default.nix`). Hand-editing the raw JSON is
-error-prone; edit it through the configuration utility instead:
+`~/.config/ccstatusline/settings.json` (see `default.nix`). A consumer without Home Manager passes
+it with `--config` instead. Hand-editing the raw JSON is error-prone; edit it through the
+configuration utility instead:
 
 ```bash
-npx ccstatusline@2.2.29 --config ccstatusline.json
+ccstatusline --config ccstatusline.json
 ```
 
 The utility provides an interactive editor for widgets, separators, colors, and powerline settings,
 and writes changes back to the given file. Commit the result.
 
-The version is pinned here and in `settings_common.json`. Keep both in sync: the linked
-`~/.config/ccstatusline/settings.json` is a read-only store path, so a version whose config schema
-is newer than `ccstatusline.json` cannot persist its migration and renders `⚠ invalid config`
-instead of the statusline. To upgrade, bump both, re-run the utility to migrate the layout file, and
-commit it together with the pin.
+The version is pinned in `pkgs/ccstatusline`. The linked `~/.config/ccstatusline/settings.json` is a
+read-only store path, so a version whose config schema is newer than `ccstatusline.json` cannot
+persist its migration and renders `⚠ invalid config` instead of the statusline. To upgrade, bump the
+package, re-run the utility to migrate the layout file, and commit it together with the bump.
