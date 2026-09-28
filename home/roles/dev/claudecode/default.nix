@@ -254,6 +254,9 @@ in
     home = {
       shellAliases.claude = "claude-${cfg.defaultBackend}";
 
+      # Opts out of telemetry (codegraph and others) in shells; settings_common.json covers sessions.
+      sessionVariables.DO_NOT_TRACK = "1";
+
       # Only include seccomp on Linux - macOS uses native sandbox
       packages = [
         claude-code
