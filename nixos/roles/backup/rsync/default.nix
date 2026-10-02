@@ -43,6 +43,7 @@ let
     "/home/*/.cargo/"
     "/home/*/.ccache/"
     "/home/*/.config/pnpm/"
+    "/home/*/.local/share/pnpm/"
     "/home/*/.npm/"
     "/home/*/.rustup/"
 
