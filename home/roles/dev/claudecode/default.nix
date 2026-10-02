@@ -251,6 +251,9 @@ in
     # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
     custom.roles.syncthing.enable = lib.mkDefault true;
 
+    # Agent microVM workspaces hold git checkouts, recoverable from their remotes.
+    custom.roles.backup.excludes = [ "${config.home.homeDirectory}/microvm/*/workspace/" ];
+
     home = {
       shellAliases.claude = "claude-${cfg.defaultBackend}";
 

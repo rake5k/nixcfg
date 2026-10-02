@@ -10,6 +10,8 @@ let
   cfg = config.custom.roles.backup.rsync;
 
   inherit (lib)
+    attrValues
+    concatMap
     getExe
     mapAttrs'
     mapAttrsToList
@@ -87,6 +89,11 @@ let
     "/var/tmp/"
   ];
 
+  # Declared per user by Home Manager roles (home/roles/backup).
+  userExcludes = concatMap (user: user.custom.roles.backup.excludes) (
+    attrValues config.home-manager.users
+  );
+
   job = types.submodule {
     options = {
       identityFile = mkOption {
@@ -147,7 +154,9 @@ let
     concatStringsSep " " (map (include: "--include '${include}'") (defaultIncludes ++ includes));
   mkExcludes =
     excludes:
-    concatStringsSep " " (map (exclude: "--exclude '${exclude}'") (defaultExcludes ++ excludes));
+    concatStringsSep " " (
+      map (exclude: "--exclude '${exclude}'") (defaultExcludes ++ userExcludes ++ excludes)
+    );
   mkPaths = concatStringsSep " ";
   mkCmd = concatStringsSep " ";
   rsyncCmd = mkCmd [
