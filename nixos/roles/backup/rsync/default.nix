@@ -208,6 +208,8 @@ let
       script = mkCmd [
         rsyncCmd
         "--delete-after --delete-excluded"
+        # Per-directory .rsync-filter files add excludes without a rebuild, e.g. `- *` skips a dir's contents
+        "--filter=': .rsync-filter'"
         (mkIdentity value.identityFile)
         (mkIncludes value.includes)
         (mkExcludes value.excludes)
