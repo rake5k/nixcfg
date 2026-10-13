@@ -1,0 +1,55 @@
+diff --git a/SKILL.md b/SKILL.md
+index 2036e34..b7cf966 100644
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -71,11 +71,25 @@ with the wiki root above. The config determines:
+   is PER-PROJECT, so treat this as a pattern, not a leaf dir: the current session's L1 is
+   `<projects-root>/<slug>/memory/`, where `<slug>` is the cwd with every non-alphanumeric char
+   replaced by `-` (`/home/me/work/api` -> `-home-me-work-api`). A `*` in the configured value means
+-  all projects — lint scope only
++  all projects — lint scope only. The value may contain `$VAR` and `${VAR:-default}`; **expand it
++  before globbing**. Prefer `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/*/memory/` over an absolute
++  path: one config file is shared across devices and into sandboxes that redirect `CLAUDE_CONFIG_DIR`,
++  so a literal path is wrong somewhere by construction. A pattern that expands to ZERO existing
++  directories is a **warning to report**, never a silent pass — a lint that scanned nothing must not
++  print "clean"
++- `extra_memory_paths`: optional list of additional L1 roots, same expansion rules, folded into the
++  **lint** duplicate scan only — never into "the current session's L1". Use it where one machine can
++  see another environment's memory (a VM host reading its guests'). Entries matching nothing are
++  skipped without comment, since that is the expected case on the other side; deduplicate the union
++  by resolved path, because in the redirected environment both keys point at the same tree
+ - `l1_verify_days`: days until an L1 behavior claim is due for re-verification (optional, default 90;
+   invalid value -> warn and use 90)
+ - `namespaces`: configured top-level namespaces
+ 
++The wiki syncs via Syncthing, whose conflict copies keep the `.md` suffix
++(`Wiki___Tech___Foo.sync-conflict-20260101-120000-ABCDEFG.md`). Exclude `*.sync-conflict-*` from
++every glob and grep below — they are stale duplicates, never pages. Report them in `lint`.
++
+ ## Tool-Specific Format Rules
+ 
+ ### Logseq Mode
+@@ -172,8 +186,8 @@ Phase 1 - Targeted Read (Stage 2, only the chosen pages):
+   - L3 fallback when routing yields nothing useful (namespace unclear, hub index missing/empty, no
+     routing line matches): classic grep across all wiki pages -> top 3-5. This is the slow
+     backing-store scan and should be the exception, not the default
+-  - If needed, also read L1 Memory for complete picture — resolve memory_path to the cwd slug
+-    (current project only, never the all-projects glob)
++  - If needed, also read L1 Memory for complete picture — expand memory_path, then resolve it to the
++    cwd slug (current project only, never the all-projects glob, never `extra_memory_paths`)
+ 
+ Phase 1b - Access Logging (LRU signal + routing transparency):
+   - For each page ACTUALLY read in full, append one line to the Access-Log page (Wiki/Reference/Access-Log):
+@@ -318,8 +332,10 @@ Phase 2 - Check Rules (from Schema):
+   - Credential Leak: regex scan for token/password/secret patterns
+   - Empty Pages: pages with only properties, no content
+   - Cross-ref Minimum: pages with fewer than 1 outgoing [[link]]
+-  - L1/L2 Duplicates: same info in Memory AND Wiki -> warning. Across ALL project memory dirs
+-    (expand the memory_path glob); read each dir's `MEMORY.md` index, not every memory file
++  - L1/L2 Duplicates: same info in Memory AND Wiki -> warning. Across ALL project memory dirs —
++    the expanded `memory_path` glob UNION the expanded `extra_memory_paths`, deduplicated by
++    resolved path; read each dir's `MEMORY.md` index, not every memory file. If the union is
++    empty, report "L1 not reachable from here" rather than "no duplicates"
+   - Block Bloat (warning):
+     - a block (Obsidian: a paragraph) with > 600 characters of prose outside `History` / `Change log`
+       blocks — code blocks, tables and the Access-Log page don't count -> "split into state + history"

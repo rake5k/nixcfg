@@ -17,6 +17,35 @@ let
 
   codegraph = pkgs.unstable.codegraph;
 
+  # /wiki is llm-wiki's root skill, copied like its setup.sh does: the plugin
+  # placeholders become the wiki root and the source tree (`/wiki setup` runs
+  # its scripts/init-wiki.sh), `/llm-wiki` becomes `/wiki`. wiki.patch carries
+  # the local changes (Syncthing conflict copies, env-expanded memory paths).
+  wikiRoot = "${config.home.homeDirectory}/Documents/notes/claude";
+  llm-wiki = pkgs.applyPatches {
+    name = "llm-wiki";
+    src = pkgs.fetchFromGitHub {
+      owner = "rake5k";
+      repo = "llm-wiki";
+      rev = "7348a4aea7ebe07045dacd619f09802e264b21a8";
+      hash = "sha256-V0ofzh/kthFW+9sxP4E/meOd+pgA2OsrtS1DiiT88o0=";
+    };
+    patches = [ ./commands/wiki.patch ];
+  };
+  wikiCommand =
+    pkgs.runCommand "wiki.md"
+      {
+        wikiRootVar = "\${user_config.wiki_path}";
+        pluginRootVar = "\${CLAUDE_PLUGIN_ROOT}";
+      }
+      ''
+        substitute ${llm-wiki}/SKILL.md $out \
+          --replace-fail "$wikiRootVar" ${lib.escapeShellArg wikiRoot} \
+          --replace-fail "$pluginRootVar" ${llm-wiki} \
+          --replace-fail 'name: llm-wiki' 'name: wiki' \
+          --replace-fail /llm-wiki /wiki
+      '';
+
   # MCP servers passed via `claude --mcp-config`; settings.json has no
   # mcpServers key. Without --strict-mcp-config this merges with the servers
   # already configured in ~/.claude.json instead of replacing them.
@@ -63,7 +92,7 @@ let
   # a container sandbox can hide `~/.claude` and lack the Home Manager profile
   # on PATH while still mounting the host's nix store.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
-    permissions.additionalDirectories = [ "${config.home.homeDirectory}/Documents/notes/claude" ];
+    permissions.additionalDirectories = [ wikiRoot ];
     # Packaged rather than `npx`, so rendering needs no route to registry.npmjs.org.
     statusLine = {
       type = "command";
@@ -284,7 +313,7 @@ in
         ".config/ccstatusline/settings.json".source = ./ccstatusline.json;
 
         # Slash commands
-        ".claude/commands/wiki.md".source = ./commands/wiki.md;
+        ".claude/commands/wiki.md".source = wikiCommand;
 
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;

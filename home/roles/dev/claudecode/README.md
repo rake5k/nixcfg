@@ -189,9 +189,18 @@ plain file, which then blocks Home Manager activation.
 
 ## Slash commands
 
-Markdown files under `commands/` are linked into `~/.claude/commands/` by `default.nix` and become
-`/<name>` commands. `wiki.md` implements `/wiki`, a Logseq/Obsidian knowledge base with an L1/L2
-cache model.
+`~/.claude/commands/wiki.md` implements `/wiki`, a Logseq/Obsidian knowledge base with an L1/L2
+cache model. `default.nix` builds it from the root `SKILL.md` of
+[llm-wiki](https://github.com/rake5k/llm-wiki), pinned by `fetchFromGitHub`, the way llm-wiki's
+`setup.sh` copies the skill: the `${user_config.wiki_path}` and `${CLAUDE_PLUGIN_ROOT}` plugin
+placeholders become the wiki root and the source store path (so `/wiki setup` finds
+`scripts/init-wiki.sh`), and `/llm-wiki` becomes `/wiki`. `substitute --replace-fail` breaks the
+build when an update drops a placeholder.
+
+`commands/wiki.patch` carries the local changes on top: Syncthing conflict copies are excluded from
+every scan, and `memory_path` / `extra_memory_paths` are env-expanded so one synced `llm-wiki.yml`
+resolves inside sandboxes that redirect `CLAUDE_CONFIG_DIR`. To update, bump `rev` and `hash`, then
+regenerate the patch against the new `SKILL.md` with `git diff --no-ext-diff`.
 
 The wiki lives outside every project, so `default.nix` adds it to
 [`permissions.additionalDirectories`](https://code.claude.com/docs/en/permissions#working-directories),

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SessionStart hook: inject the wiki's hub routing index (the L2 "page table") into context, so
 # routing to a wiki page happens without an explicit /wiki query. Emits only the `### Index`
-# routing lines from hub pages — never page bodies. See commands/wiki.md for the L1/L2 model.
+# routing lines from hub pages — never page bodies. See llm-wiki's SKILL.md for the L1/L2 model.
 # Stdout of a SessionStart hook is added to the session context.
 set -euo pipefail
 
