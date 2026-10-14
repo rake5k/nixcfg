@@ -1,10 +1,35 @@
+// OpenRewrite left the Gradle Plugin Portal (plugin 7.42.0) and Maven Central (rewrite 8.91.0)
+// for the Code Genome Project, which needs a download token: https://codegenomeproject.org/token.
+// Credentials come from CODE_GENOME_USERNAME and CODE_GENOME_TOKEN, or from the files named by
+// CODE_GENOME_USERNAME_FILE and CODE_GENOME_TOKEN_FILE (homeage secrets). With credentials, the
+// latest releases resolve from there; without them, the last public versions are used.
+def cgpSecret = { name -> System.getenv(name) ?: System.getenv("${name}_FILE")?.with { new File(it).text.trim() } }
+def cgpUser = cgpSecret('CODE_GENOME_USERNAME')
+def cgpToken = cgpSecret('CODE_GENOME_TOKEN')
+def useCgp = cgpUser && cgpToken
+
 initscript {
+  // The initscript block is compiled on its own, so it cannot share the definitions above.
+  def cgpSecret = { name -> System.getenv(name) ?: System.getenv("${name}_FILE")?.with { new File(it).text.trim() } }
+  def cgpUser = cgpSecret('CODE_GENOME_USERNAME')
+  def cgpToken = cgpSecret('CODE_GENOME_TOKEN')
+
   repositories {
-    gradlePluginPortal()
+    if (cgpUser && cgpToken) {
+      maven {
+        url = 'https://artifacts.codegenomeproject.org/maven'
+        credentials {
+          username = cgpUser
+          password = cgpToken
+        }
+      }
+    } else {
+      gradlePluginPortal()
+    }
   }
 
   dependencies {
-    classpath 'org.openrewrite:plugin:latest.release'
+    classpath "org.openrewrite:plugin:${cgpUser && cgpToken ? 'latest.release' : '7.39.0'}"
   }
 }
 
@@ -12,7 +37,7 @@ rootProject {
   plugins.apply(org.openrewrite.gradle.RewritePlugin)
 
   dependencies {
-    rewrite platform('org.openrewrite.recipe:rewrite-recipe-bom:3.21.0')
+    rewrite platform("org.openrewrite.recipe:rewrite-recipe-bom:${useCgp ? 'latest.release' : '3.37.0'}")
     rewrite 'org.openrewrite:rewrite-java'
 
     // add your recipe dependencies as needed:
@@ -25,6 +50,21 @@ rootProject {
     if (repositories.isEmpty()) {
       repositories {
         mavenCentral()
+      }
+    }
+
+    if (useCgp) {
+      repositories {
+        maven {
+          url = 'https://artifacts.codegenomeproject.org/maven'
+          credentials {
+            username = cgpUser
+            password = cgpToken
+          }
+          content {
+            includeGroupByRegex '(org[.]openrewrite|io[.]moderne).*'
+          }
+        }
       }
     }
   }
