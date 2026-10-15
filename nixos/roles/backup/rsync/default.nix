@@ -208,6 +208,8 @@ let
       script = mkCmd [
         rsyncCmd
         "--delete-after --delete-excluded"
+        # Keep remote dirs owner-writable so later --delete runs can remove their contents
+        "--chmod=Du+w"
         # Per-directory .rsync-filter files add excludes without a rebuild, e.g. `- *` skips a dir's contents
         "--filter=': .rsync-filter'"
         (mkIdentity value.identityFile)
