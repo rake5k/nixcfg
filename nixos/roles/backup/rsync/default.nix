@@ -135,9 +135,9 @@ let
       runtimeInputs = [ rsync ];
       text = ''
         set -x
-        ${getExe rsync} "$@"
+        e=0
+        ${getExe rsync} "$@" || e=$?
         set +x
-        e=$?
         if test $e = 24; then
             exit 0
         fi
