@@ -289,17 +289,20 @@ in
       # Opts out of telemetry (codegraph and others) in shells; settings_common.json covers sessions.
       sessionVariables.DO_NOT_TRACK = "1";
 
-      # Only include seccomp on Linux - macOS uses native sandbox
-      packages = [
-        claude-code
-        claude-agent-acp
-        ccstatusline
-        codegraph
-      ]
-      ++ lib.attrValues cfg.wrapperPackages
-      ++ lib.optionals isLinux [
-        claude-seccomp # sandbox dependency
-      ];
+      packages =
+        with pkgs;
+        [ unstable.ccusage ]
+        ++ [
+          claude-code
+          claude-agent-acp
+          ccstatusline
+          codegraph
+        ]
+        ++ lib.attrValues cfg.wrapperPackages
+        # Only include seccomp on Linux - macOS uses native sandbox
+        ++ lib.optionals isLinux [
+          claude-seccomp # sandbox dependency
+        ];
 
       file = {
         # The CodeGraph guidance is shared with opencode's AGENTS.md.
