@@ -38,6 +38,7 @@ in
             "/data/syncthing"
           ];
           excludes = [
+            "/data/**/.Trash-*/"
             "/data/container/steam-headless/games"
             "/data/container/steam-headless/home/*/.thumbnails/*"
             "/data/container/steam-headless/home/*/.cache/*"
