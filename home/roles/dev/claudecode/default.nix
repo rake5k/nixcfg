@@ -291,7 +291,10 @@ in
 
       packages =
         with pkgs;
-        [ unstable.ccusage ]
+        [
+          gh
+          unstable.ccusage
+        ]
         ++ [
           claude-code
           claude-agent-acp

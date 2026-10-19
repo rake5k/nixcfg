@@ -37,6 +37,7 @@ in
     home.packages = with pkgs; [
       ascii
       dbeaver-bin
+      gh
       libxml2
       wrk
     ];
