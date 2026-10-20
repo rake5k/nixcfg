@@ -62,7 +62,10 @@ also pins `filesystem.disabled` so no downstream scope can switch the filesystem
 leading `/` is project-relative and resolves against the directory of the settings file, which here
 is a nix store path. Keep the `//` on every absolute rule — without it the rule silently guards
 `/nix/store/etc/ssh` instead of `/etc/ssh`. The `sandbox.filesystem.*` lists use the opposite
-convention: there a single `/` is absolute.
+convention: there a single `/` is absolute. The sandbox also enforces these rules, but on Linux it
+ignores any rule with a glob beyond a trailing `/**` (`/status` warns about them), so deny rules
+name literal paths: a directory rule such as `Read(~/.ssh)` covers its contents, and `.env` files
+are listed by name.
 
 The sandbox denies reads across `$HOME`, which also hides the global git config and with it
 `url.*.insteadOf` and `credential.helper`, so a push falls back to plain SSH and fails to
