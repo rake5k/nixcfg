@@ -57,6 +57,15 @@ holds is already in context.
 
 # Git
 
+- Before changing code, check for a stale branch: `git fetch origin` (and `upstream` if present).
+  Base = the default branch of `upstream` for forks, else of `origin`
+  (`git symbolic-ref --short refs/remotes/<remote>/HEAD`; refresh with
+  `git remote set-head <remote> -a`).
+  - Behind `@{u}` → `git pull --ff-only`.
+  - Unpushed feature branch (no `@{u}`) behind base, clean tree → `git rebase <base>`; abort on
+    conflict.
+  - Pushed feature branch behind base, dirty tree blocking a rebase, diverged from `@{u}`, detached
+    HEAD, conflict or failed fetch → ask first.
 - Amend a previous commit for small follow-up fixes on the same branch.
 - Never push a worktree's throwaway branch name (`worktree-wtN` from clauckpit or
   `claude --worktree`, `wip`, `tmp`). Rename it to the repo's convention — usually `feat/<slug>` /
