@@ -294,6 +294,7 @@ in
         [
           gh
           unstable.ccusage
+          unstable.herdr
         ]
         ++ [
           claude-code
