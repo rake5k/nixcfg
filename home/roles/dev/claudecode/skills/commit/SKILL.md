@@ -29,6 +29,10 @@ being committed.
 Before every commit, run all project tests and ensure they pass. Do NOT commit if any test fails —
 fix the issue first.
 
+Exception: when every staged file is documentation (Markdown, plain text, docs directories) and none
+is code, config, or build input, skip the test suite. Still run the project's doc lint/format checks
+if it has any.
+
 ## Rules
 
 **Never** add `Co-Authored-By` or any AI attribution to commit messages

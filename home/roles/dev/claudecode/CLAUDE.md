@@ -28,7 +28,6 @@
 - Never suppress warnings in your code suggestions, fix them instead.
 - Always refactor to prevent code duplication in your code suggestions.
 - Always verify that no new linting issues are introduced in your changes.
-- Run tests before commits.
 - Always use static imports of methods when unambiguous and self-explaining.
 - Keep code comments concise and to a single line whenever possible.
 
