@@ -158,7 +158,6 @@ inputs.flake-commons.lib {
       passwordManager = {
         spawnCmd = mkOption {
           type = types.str;
-          default = "${getExe pkgs._1password-gui}";
           description = "Command to spawn the default password manager";
         };
         wmClassName = mkOption {

@@ -81,6 +81,7 @@ in
         enable = true;
         launcherCfg = { inherit (cfg.launcher) package launcherCmd; };
         lockerCfg = { inherit (cfg.locker) package lockerCmd; };
+        passwordManager = { inherit (desktopCfg.passwordManager) spawnCmd; };
         terminalCfg = {
           inherit (desktopCfg.terminal)
             package
