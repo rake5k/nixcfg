@@ -10,6 +10,7 @@ let
   cfg = config.custom.programs.firefox;
 
   inherit (lib)
+    genAttrs
     mkEnableOption
     mkIf
     mkOption
@@ -293,5 +294,20 @@ in
     '';
 
     stylix.targets.firefox.profileNames = [ defaultProfile ];
+
+    xdg.mimeApps.defaultApplications = genAttrs [
+      "application/x-extension-htm"
+      "application/x-extension-html"
+      "application/x-extension-shtml"
+      "application/x-extension-xht"
+      "application/x-extension-xhtml"
+      "application/xhtml+xml"
+      "text/html"
+      "x-scheme-handler/about"
+      "x-scheme-handler/chrome"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "x-scheme-handler/unknown"
+    ] (_: "firefox.desktop");
   };
 }

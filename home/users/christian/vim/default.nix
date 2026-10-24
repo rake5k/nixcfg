@@ -86,5 +86,47 @@ in
       vimAlias = true;
       vimdiffAlias = true;
     };
+
+    # Canonical shared-mime-info types plus the libmagic variants `xdg-open` detects
+    xdg.mimeApps.defaultApplications = genAttrs [
+      "application/json"
+      "application/sql"
+      "application/toml"
+      "application/x-perl"
+      "application/x-ruby"
+      "application/x-shellscript"
+      "application/xml"
+      "application/yaml"
+      "text/css"
+      "text/javascript"
+      "text/markdown"
+      "text/org"
+      "text/plain"
+      "text/rust"
+      "text/vnd.trolltech.linguist"
+      "text/x-c"
+      "text/x-c++hdr"
+      "text/x-c++src"
+      "text/x-chdr"
+      "text/x-cmake"
+      "text/x-csrc"
+      "text/x-go"
+      "text/x-haskell"
+      "text/x-java"
+      "text/x-kotlin"
+      "text/x-log"
+      "text/x-lua"
+      "text/x-makefile"
+      "text/x-patch"
+      "text/x-python"
+      "text/x-python3"
+      "text/x-rst"
+      "text/x-scala"
+      "text/x-script.python"
+      "text/x-scss"
+      "text/x-shellscript"
+      "text/x-tex"
+      "text/xml"
+    ] (_: "nvim.desktop");
   };
 }

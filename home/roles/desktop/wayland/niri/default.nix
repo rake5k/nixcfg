@@ -89,9 +89,6 @@ in
     # shipped by `pkgs.niri` are invisible to `systemctl --user`. Mirror them
     # into `~/.config/systemd/user/`, which is always in the search path, so
     # `niri-session` (which runs `systemctl --user start niri.service`) works.
-    # The same goes for `niri-portals.conf`: the system `xdg-desktop-portal`
-    # only searches its compile-time datadir and `$XDG_CONFIG_HOME`, so the file
-    # shipped by `pkgs.niri` is invisible until it's mirrored under `~/.config`.
     #
     # `niri.service` carries `X-SwitchMethod=keep-old`: Home Manager's
     # `reloadSystemd` step (sd-switch) scans `~/.config/systemd/user`, and the
@@ -105,8 +102,22 @@ in
           ${pkgs.niri}/share/systemd/user/niri.service > $out
       '';
       "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
-      "xdg-desktop-portal/niri-portals.conf".source =
-        "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
+    };
+
+    # `pkgs.niri`'s portals.conf with a GTK file chooser (GNOME's delegates to Nautilus).
+    # Lands in `~/.config`, which the system `xdg-desktop-portal` on non-NixOS also reads.
+    xdg.portal = {
+      config.niri = {
+        default = [
+          "gnome"
+          "gtk"
+        ];
+        "org.freedesktop.impl.portal.Access" = "gtk";
+        "org.freedesktop.impl.portal.FileChooser" = "gtk";
+        "org.freedesktop.impl.portal.Notification" = "gtk";
+        "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
+      };
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     };
 
     programs = {

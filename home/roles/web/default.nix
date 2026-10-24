@@ -53,7 +53,6 @@ in
       ]
       ++ (optionals isLinux [
         proton-vpn
-        protonmail-desktop
       ]);
 
     programs.chromium = {

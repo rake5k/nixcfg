@@ -36,6 +36,12 @@ in
         description = "Command to spawn the default terminal emulator";
       };
 
+      desktopId = mkOption {
+        type = types.str;
+        default = "kitty.desktop";
+        description = "Desktop file ID of the terminal emulator package";
+      };
+
       commandArgPrefix = mkOption {
         type = types.str;
         default = "";
@@ -81,6 +87,12 @@ in
         # Send Ctrl+J (newline in claude, Enter elsewhere); tmux cannot tell Shift+Enter from Enter in kitty.
         map shift+enter send_text all \n
       '';
+    };
+
+    # GLib launches `Terminal=true` desktop entries through xdg-terminal-exec
+    xdg.terminal-exec = {
+      enable = pkgs.stdenv.hostPlatform.isLinux;
+      settings.default = [ cfg.desktopId ];
     };
   };
 }

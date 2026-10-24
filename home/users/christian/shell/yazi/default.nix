@@ -136,28 +136,6 @@ in
         mgr = {
           linemode = "size";
         };
-
-        opener = {
-          firefox = [
-            {
-              desc = "Open in Firefox";
-              run = "firefox \"$@\"";
-              orphan = true;
-            }
-          ];
-        };
-
-        open = {
-          prepend_rules = [
-            {
-              mime = "application/pdf";
-              use = [
-                "open"
-                "firefox"
-              ];
-            }
-          ];
-        };
       };
     };
   };

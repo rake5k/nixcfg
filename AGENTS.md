@@ -390,6 +390,19 @@ A breaking change here will fail in `nixcfg-home` / `nixcfg-work` at lock time. 
 3. `nix flake update nixcfg && nix flake check` — fix and amend if it breaks.
 4. On green: push `nixcfg`, restore `nixcfg.url = "github:rake5k/nixcfg";`, relock, commit, push.
 
+### Default applications
+
+`custom.roles.desktop` enables `xdg.mimeApps` and owns `mimeapps.list` (`force = true`), so
+associations set through a file manager do not persist. Each module that installs an application
+maps that application's MIME types and URL schemes in `xdg.mimeApps.defaultApplications`, e.g. the
+mpv module maps audio and video, `users/christian/vim` maps text and code. List the canonical
+[shared-mime-info](https://gitlab.freedesktop.org/xdg/shared-mime-info) types (GIO, used by Nemo)
+plus the libmagic variants (`file --mime-type`) that `xdg-open` reports outside GNOME and Cinnamon
+where File::MimeInfo is missing. Where one extension stands for several formats (`.ts`), the
+secondary application goes into `xdg.mimeApps.associations.added`. Applications that alone register
+a URL scheme need no entry. `custom.roles.desktop.terminal` routes `Terminal=true` desktop entries
+to the configured terminal through `xdg.terminal-exec`.
+
 ### Common pitfalls
 
 - **Adding a package that a module already installs.** Check the module first; if `enable` is on,

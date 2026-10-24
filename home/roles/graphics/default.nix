@@ -27,7 +27,6 @@ in
       with pkgs;
       optionals pkgs.stdenv.hostPlatform.isLinux [
         gimp
-        sxiv
       ];
   };
 }
