@@ -400,8 +400,12 @@ mpv module maps audio and video, `users/christian/vim` maps text and code. List 
 plus the libmagic variants (`file --mime-type`) that `xdg-open` reports outside GNOME and Cinnamon
 where File::MimeInfo is missing. Where one extension stands for several formats (`.ts`), the
 secondary application goes into `xdg.mimeApps.associations.added`. Applications that alone register
-a URL scheme need no entry. `custom.roles.desktop.terminal` routes `Terminal=true` desktop entries
-to the configured terminal through `xdg.terminal-exec`.
+a URL scheme need no entry. A module that takes over a type another module maps sets it with
+`mkForce`, e.g. `custom.roles.ops` maps `text/x-log` to lnav over nvim, through an
+`xdg.desktopEntries` entry since lnav ships none. `custom.roles.desktop.terminal` routes
+`Terminal=true` desktop entries to the configured terminal through `xdg.terminal-exec`. yazi
+bypasses `mimeapps.list` for `text/*` and opens it with `$EDITOR`, so a module that maps a text type
+also adds a `programs.yazi.settings.open.prepend_rules` entry, as the ops role does.
 
 ### Common pitfalls
 
