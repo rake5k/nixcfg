@@ -13,6 +13,7 @@ let
     getExe
     mkForce
     mkIf
+    mkMerge
     ;
 
   inherit (config.lib.custom) mkWindowManagerOptions;
@@ -96,13 +97,25 @@ in
     # every `niri` upgrade changes the unit and sd-switch's default `stop-start`
     # tears down the running compositor mid-activation, killing the session.
     # `keep-old` leaves the running instance untouched on switch.
-    xdg.configFile = mkIf config.custom.base.non-nixos.enable {
-      "systemd/user/niri.service".source = pkgs.runCommand "niri.service" { } ''
-        sed '/^\[Unit\]$/a X-SwitchMethod=keep-old' \
-          ${pkgs.niri}/share/systemd/user/niri.service > $out
-      '';
-      "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
-    };
+    xdg.configFile = mkMerge [
+      (mkIf config.custom.base.non-nixos.enable {
+        "systemd/user/niri.service".source = pkgs.runCommand "niri.service" { } ''
+          sed '/^\[Unit\]$/a X-SwitchMethod=keep-old' \
+            ${pkgs.niri}/share/systemd/user/niri.service > $out
+        '';
+        "systemd/user/niri-shutdown.target".source = "${pkgs.niri}/share/systemd/user/niri-shutdown.target";
+      })
+
+      # The running portal reads its config and backends only at startup
+      {
+        "xdg-desktop-portal/niri-portals.conf".onChange = ''
+          runtimeDir="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
+          if [[ -S $runtimeDir/systemd/private ]]; then
+            run env XDG_RUNTIME_DIR="$runtimeDir" ${config.systemd.user.systemctlPath} --user try-restart xdg-desktop-portal.service
+          fi
+        '';
+      }
+    ];
 
     # `pkgs.niri`'s portals.conf with a GTK file chooser (GNOME's delegates to Nautilus).
     # Lands in `~/.config`, which the system `xdg-desktop-portal` on non-NixOS also reads.
