@@ -56,6 +56,9 @@ matching the current repo, so what L2 holds is already in context.
   it when a task is finished, never in the middle.
 - Quick rules and gotchas belong in memory (L1), deep knowledge in the wiki (L2). Never put
   credentials in the wiki — it is git-tracked.
+- Never `cd` into the wiki directory, not even inside a `/wiki` run: it moves the session's working
+  directory away from the project. Reach wiki content through `/wiki query`; for file or git access
+  use absolute paths and `git -C <wiki_path>`.
 
 # Git
 
