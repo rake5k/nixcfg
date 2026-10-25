@@ -24,6 +24,10 @@ timeouts a slow backend needs to survive. On a custom `ANTHROPIC_BASE_URL`, Clau
 body idle timeout, all at 300 s, and a model generating a couple of tokens per second trips them
 during a long prefill or a buffered non-streaming retry.
 
+The `strata` backend reuses that env with the endpoint of a
+[Strata](https://github.com/Niko1221/Strata) server on `127.0.0.1:8080`; its model ids and context
+window go in `extraBackendSettings.strata`.
+
 The `container` backend is for a run inside a container sandbox, where the container is the
 boundary. Its file is the merged result minus `sandbox` and `permissions.ask`, except the
 `glab mr create` and `glab api` write rules, which prompt in every backend so no merge request is

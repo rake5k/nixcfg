@@ -123,12 +123,19 @@ let
     };
   };
 
+  localEnv = (lib.importJSON ./settings_local.json).env;
+
   # Per-backend env overrides. `cloud` adds nothing (native Anthropic endpoint);
   # `container` talks to the same endpoint from inside a container sandbox.
+  # `strata` is a local Strata server, with the timeouts of the local ollama.
   backendEnv = {
     cloud = { };
     container = { };
-    local = (lib.importJSON ./settings_local.json).env;
+    local = localEnv;
+    strata = localEnv // {
+      ANTHROPIC_BASE_URL = "http://127.0.0.1:8080";
+      ANTHROPIC_AUTH_TOKEN = "strata";
+    };
     hyperion = (lib.importJSON ./settings_hyperion.json).env;
   };
 
@@ -207,6 +214,7 @@ let
     "cloud"
     "container"
     "local"
+    "strata"
     "hyperion"
   ];
 in
@@ -225,7 +233,8 @@ in
         uses the native Anthropic endpoint; `container` does too but with the
         host-only settings stripped for a run inside a container sandbox; `local`
         and `hyperion` point at ollama (see settings_local.json /
-        settings_hyperion.json).
+        settings_hyperion.json); `strata` points at a Strata server on
+        127.0.0.1:8080 with the timeouts of `local`.
       '';
     };
     defaultBackend = lib.mkOption {
