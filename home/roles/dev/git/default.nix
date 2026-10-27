@@ -287,8 +287,6 @@ in
 
         # Custom/Claude Code
         ".codegraph/"
-        "docs/superpowers/plans/"
-        "docs/superpowers/specs/"
 
         # The Bash sandbox bind-mounts /dev/null over the protected paths that do
         # not exist yet, so inside a session they stat as character devices and

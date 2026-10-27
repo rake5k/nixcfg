@@ -8,6 +8,7 @@
 let
   cfg = config.custom.roles.dev.claudecode;
 
+  inherit (config.lib.custom) genAttrs';
   inherit (pkgs.stdenv.hostPlatform) isLinux;
 
   claude-code = pkgs.unstable.claude-code;
@@ -45,6 +46,56 @@ let
           --replace-fail 'name: llm-wiki' 'name: wiki' \
           --replace-fail /llm-wiki /wiki
       '';
+
+  # Skills cherry-picked from the ponytail plugin (v5.3.2), without its hooks.
+  ponytail = pkgs.fetchFromGitHub {
+    owner = "DietrichGebert";
+    repo = "ponytail";
+    rev = "16352ac229eb08a9598dcae48fe9f2b342567d86";
+    hash = "sha256-IJlhfkdXI6pMZZCZO7XBRg88LBiNfzc5Gnm4ofGybL8=";
+  };
+
+  # Honey (honey-for-devs v1.4.0) without its plugin: the hive agents, the mode
+  # hooks and the skills needing neither npx, pip nor the repo's bench/. The
+  # PostToolUse hook rewriting Bash output stays out.
+  honey = pkgs.fetchFromGitHub {
+    owner = "Green-PT";
+    repo = "honey-for-devs";
+    rev = "cc82b7e7250a8295b4ba556e0aa291d78a9ed38a";
+    hash = "sha256-ZYPoMSOjwfYEWMbqHC7XFTDfNtuKQ+ABbQHz+qmuqMk=";
+  };
+  honeyNode = lib.getExe pkgs.nodejs;
+  honeyHook = script: {
+    type = "command";
+    command = "${honeyNode} ${honey}/hooks/${script}";
+  };
+  # Skills calling the plugin's scripts get the plugin root and node as store paths.
+  honeySkill =
+    name:
+    pkgs.runCommand "honey-skill-${name}" { pluginRootVar = "\${CLAUDE_PLUGIN_ROOT}"; } ''
+      cp -r ${honey}/skills/${name} $out
+      chmod -R u+w $out
+      if grep -qF "$pluginRootVar" $out/SKILL.md; then
+        substituteInPlace $out/SKILL.md \
+          --replace-fail "$pluginRootVar" ${honey} \
+          --replace-fail '`node ' '`${honeyNode} '
+      fi
+    '';
+  honeyFiles =
+    genAttrs' [
+      "honey"
+      "honey-ccr"
+      "honey-compress"
+      "honey-debt"
+      "honey-design"
+      "honey-hive"
+      "honey-loop"
+      "honey-memory"
+      "honey-review"
+    ] (name: lib.nameValuePair ".claude/skills/${name}" { source = honeySkill name; })
+    // genAttrs' [ "hive-builder" "hive-reviewer" "hive-scout" ] (
+      name: lib.nameValuePair ".claude/agents/${name}.md" { source = "${honey}/agents/${name}.md"; }
+    );
 
   # MCP servers passed via `claude --mcp-config`; settings.json has no
   # mcpServers key. Without --strict-mcp-config this merges with the servers
@@ -109,7 +160,9 @@ let
             }
           ];
         }
+        { hooks = [ (honeyHook "honey-session.js") ]; }
       ];
+      SubagentStart = [ { hooks = [ (honeyHook "honey-subagent.js") ]; } ];
       UserPromptSubmit = [
         {
           hooks = [
@@ -334,8 +387,11 @@ in
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
         ".claude/skills/ollama".source = ./skills/ollama;
+        ".claude/skills/ponytail-audit".source = "${ponytail}/skills/ponytail-audit";
+        ".claude/skills/ponytail-review".source = "${ponytail}/skills/ponytail-review";
         ".claude/skills/updating-nixcfg".source = ./skills/updating-nixcfg;
       }
+      // honeyFiles
       // lib.optionalAttrs isLinux {
         # Seccomp sandbox filter for Claude Code native sandbox
         ".claude/seccomp/apply-seccomp".source = "${claude-seccomp}/share/claude-seccomp/apply-seccomp";
