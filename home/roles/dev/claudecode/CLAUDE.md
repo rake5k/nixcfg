@@ -7,6 +7,8 @@
 - Verify your work before declaring it done - run tests, check types, lint. Always verify yourself
   if the CI succeeds.
 - Update the existing documentation after every substantial change done.
+- Never `cd` in a Bash command: it moves the session's working directory for every later command.
+  Use absolute paths and `git -C <dir>` instead.
 
 # Conversation
 
