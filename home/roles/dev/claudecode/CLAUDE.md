@@ -36,13 +36,14 @@
 # Wiki
 
 `/wiki` maintains my knowledge base (L2) at the `wiki_path` in its `llm-wiki.yml`. A SessionStart
-hook (`hooks/wiki-index.sh`) injects the hub `### Index` routing lines every session, so what L2
-holds is already in context.
+hook (`hooks/wiki-index.sh`) injects every page name per hub plus the full routing lines of pages
+matching the current repo, so what L2 holds is already in context.
 
 - Before a web search or repo-wide grep about my projects, business processes, decisions or infra,
-  check those routing lines. A line covers the question -> answer via `/wiki query <question>`
-  (reads at most 3 pages, logs the hit) before reaching for external sources.
-- No routing line matches -> research normally, then capture what is worth keeping (below).
+  check those page names and routing lines. One covers the question -> answer via
+  `/wiki query <question>` (reads the hub index and at most 3 pages, logs the hit) before reaching
+  for external sources.
+- Nothing matches -> research normally, then capture what is worth keeping (below).
 - Capture durable learnings as they happen: a decision and its rationale, an architecture or ops
   fact, a domain rule, a dead end worth not repeating. Append ONE line per learning to
   `Wiki/Reference/Ingest-Inbox` —

@@ -235,12 +235,19 @@ into `~/.claude/hooks/`: a container sandbox can hide `~/.claude` while still mo
 nix store, so store paths resolve in both places. See the
 [hooks docs](https://code.claude.com/docs/en/hooks).
 
-`wiki-index.sh` (`SessionStart`) prints the `### Index` routing lines of every `/wiki` hub page,
-which Claude Code appends to the session context — the wiki's index without its page bodies, so
-routing to a page needs no explicit `/wiki query`. It locates the wiki via `LLM_WIKI_ROOT` (default
-`~/Documents/notes/claude`), reads `pages_dir` from `llm-wiki.yml`, and exits silently when neither
-is present. `LLM_WIKI_INDEX_MAX_LINES` (default 150) caps the injection; the overflow is reported in
-the output, not dropped silently.
+`wiki-index.sh` (`SessionStart`) prints a view of the `### Index` routing lines of every `/wiki` hub
+page, which Claude Code appends to the session context — the wiki's index without its page bodies,
+so routing to a page needs no explicit `/wiki query`. It locates the wiki via `LLM_WIKI_ROOT`
+(default `~/Documents/notes/claude`), reads `pages_dir` from `llm-wiki.yml`, and exits silently when
+neither is present.
+
+Claude Code caps hook output at 10,000 characters and passes only a preview of anything longer (see
+the [hooks docs](https://code.claude.com/docs/en/hooks)), so the full index does not fit. The hook
+prints every page name per hub instead, merging `-Architecture`/`-Operations`/`-Testing` variants,
+plus the full routing lines of pages matching the repo name (the main checkout's, also from a
+worktree). `LLM_WIKI_INDEX_MAX_CHARS` (default 9500) is the budget: names collapse to per-hub page
+counts when they overflow it, and matching routing lines fill what it leaves, with the omitted count
+reported. `/wiki query` reads the full routing lines from the hub page.
 
 It also counts the dated lines pending in `Wiki/Reference/Ingest-Inbox` — the capture queue sessions
 append durable learnings to — and reports them, so `/wiki ingest inbox` gets offered instead of
