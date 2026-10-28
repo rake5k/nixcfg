@@ -22,11 +22,12 @@ in
 
   config = mkIf cfg.enable {
     custom = {
+      programs.herdr.enable = true;
+
       users.christian.shell = {
         direnv.enable = true;
         lazygit.enable = true;
         starship.enable = true;
-        tmux.enable = true;
         yazi.enable = true;
         zsh.enable = true;
       };

@@ -329,7 +329,20 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    custom.roles.dev.claudecode.wrapperPackages = lib.genAttrs cfg.backends wrapperFor;
+    custom = {
+      programs.herdr.enable = true;
+
+      roles = {
+        dev.claudecode.wrapperPackages = lib.genAttrs cfg.backends wrapperFor;
+
+        # The wiki folder below is inert without it; hosts that must not run
+        # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
+        syncthing.enable = lib.mkDefault true;
+
+        # Agent microVM workspaces hold git checkouts, recoverable from their remotes.
+        backup.excludes = [ "${config.home.homeDirectory}/microvm/*/workspace/" ];
+      };
+    };
 
     assertions = [
       {
@@ -337,13 +350,6 @@ in
         message = "custom.roles.dev.claudecode.defaultBackend (${cfg.defaultBackend}) must be listed in backends ([ ${lib.concatStringsSep " " cfg.backends} ]).";
       }
     ];
-
-    # The wiki folder below is inert without it; hosts that must not run
-    # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
-    custom.roles.syncthing.enable = lib.mkDefault true;
-
-    # Agent microVM workspaces hold git checkouts, recoverable from their remotes.
-    custom.roles.backup.excludes = [ "${config.home.homeDirectory}/microvm/*/workspace/" ];
 
     home = {
       shellAliases.claude = "claude-${cfg.defaultBackend}";
@@ -356,7 +362,6 @@ in
         [
           gh
           unstable.ccusage
-          unstable.herdr
         ]
         ++ [
           claude-code

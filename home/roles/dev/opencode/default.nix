@@ -21,12 +21,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    home = {
-      # Opts out of telemetry, incl. the codegraph MCP server below.
-      sessionVariables.DO_NOT_TRACK = "1";
+    custom.programs.herdr.enable = true;
 
-      packages = [ pkgs.unstable.herdr ];
-    };
+    # Opts out of telemetry, incl. the codegraph MCP server below.
+    home.sessionVariables.DO_NOT_TRACK = "1";
 
     programs.opencode = {
       enable = true;
