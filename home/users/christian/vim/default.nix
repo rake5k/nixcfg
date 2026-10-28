@@ -36,6 +36,9 @@ in
       withPython3 = false;
       withRuby = false;
 
+      # lazygit.nvim shells out to the lazygit binary
+      extraPackages = [ config.programs.lazygit.package ];
+
       initLua = ''
         vim.opt.clipboard = 'unnamedplus'
         vim.opt.cursorline = true
@@ -53,6 +56,39 @@ in
         require('nvim-surround').setup({
           move_cursor = 'sticky'
         })
+
+        --------------
+        -- GITSIGNS --
+        --------------
+
+        require('gitsigns').setup({
+          on_attach = function(bufnr)
+            local gs = require('gitsigns')
+            local function map(mode, l, r, desc)
+              vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+            end
+
+            -- Keep native ]c/[c in diff mode
+            map('n', ']c', function()
+              if vim.wo.diff then vim.cmd.normal({ ']c', bang = true }) else gs.nav_hunk('next') end
+            end, 'Next hunk')
+            map('n', '[c', function()
+              if vim.wo.diff then vim.cmd.normal({ '[c', bang = true }) else gs.nav_hunk('prev') end
+            end, 'Previous hunk')
+
+            map('n', '<leader>hs', gs.stage_hunk, 'Stage hunk')
+            map('n', '<leader>hr', gs.reset_hunk, 'Reset hunk')
+            map('n', '<leader>hp', gs.preview_hunk, 'Preview hunk')
+            map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, 'Blame line')
+            map('n', '<leader>hd', gs.diffthis, 'Diff against index')
+          end,
+        })
+
+        -------------
+        -- LAZYGIT --
+        -------------
+
+        vim.keymap.set('n', '<leader>gg', '<cmd>LazyGit<cr>', { silent = true, desc = 'LazyGit' })
 
         ----------------
         -- TREESITTER --
@@ -72,6 +108,10 @@ in
 
       plugins = with pkgs.vimPlugins; [
         vim-nix
+
+        # Git
+        gitsigns-nvim
+        lazygit-nvim
 
         # Markdown
         tabular
