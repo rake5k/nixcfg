@@ -21,16 +21,24 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      dive
-      kubectl
-      skopeo
-    ];
+    home = {
+      packages = with pkgs; [
+        dive
+        kubectl
+        skopeo
+      ];
+      shellAliases = {
+        ld = "lazydocker";
+      };
+    };
 
-    programs.k9s.enable = true;
-    programs.zsh.initContent = ''
-      # kubectl autocompletion
-      source <(kubectl completion zsh)
-    '';
+    programs = {
+      k9s.enable = true;
+      lazydocker.enable = true;
+      zsh.initContent = ''
+        # kubectl autocompletion
+        source <(kubectl completion zsh)
+      '';
+    };
   };
 }
