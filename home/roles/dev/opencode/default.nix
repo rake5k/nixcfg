@@ -36,6 +36,8 @@ in
       # Shared with claude-code's CLAUDE.md.
       context = ../codegraph.md;
 
+      skills.herdr = config.custom.programs.herdr.skill;
+
       settings = {
         mcp.codegraph = {
           type = "local";

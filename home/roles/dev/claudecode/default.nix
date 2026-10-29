@@ -391,6 +391,7 @@ in
 
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
+        ".claude/skills/herdr".source = config.custom.programs.herdr.skill;
         ".claude/skills/ollama".source = ./skills/ollama;
         ".claude/skills/ponytail-audit".source = "${ponytail}/skills/ponytail-audit";
         ".claude/skills/ponytail-review".source = "${ponytail}/skills/ponytail-review";

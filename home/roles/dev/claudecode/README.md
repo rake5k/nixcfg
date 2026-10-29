@@ -228,6 +228,22 @@ The Bash sandbox needs the whole repo, not just `pages/`: committing writes `.gi
 its pages and then fails to commit them with `Read-only file system`. The `Edit` rule still keeps
 the tools themselves out of everything but `pages/`.
 
+## herdr
+
+`~/.claude/skills/herdr` links the `SKILL.md` that the herdr package ships under
+`share/skills/herdr/herdr`, exposed as `custom.programs.herdr.skill` (`home/programs/herdr`) and
+linked into opencode the same way. The skill only acts inside a herdr pane (`HERDR_ENV=1`) and
+drives the session through the `herdr` CLI, which connects to the server socket in
+`HERDR_SOCKET_PATH` (default `~/.config/herdr/herdr.sock`, see `herdr status`).
+
+That socket is a sandbox bypass. `herdr pane run` and `herdr agent prompt` execute in other panes,
+which run outside the Bash sandbox, so any process that can connect to the socket gets unsandboxed
+command execution as the user. In Claude Code's Bash sandbox the socket stays hidden, since it lies
+under `$HOME` and `sandbox.filesystem.allowRead` does not re-open `~/.config/herdr`: `herdr`
+commands from the Bash tool fail, and the skill works only in unsandboxed sessions or through the
+`!` prompt. Keep `~/.config/herdr` out of `allowRead`. A container sandbox that bind-mounts
+`~/.config/herdr` hands its agent the same bypass.
+
 ## Hooks
 
 Scripts under `hooks/` are registered by store path in `commonSettings` (`default.nix`), not linked
