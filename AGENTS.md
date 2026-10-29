@@ -1,108 +1,6 @@
 # AGENTS.md
 
-## Overview
-
-This repository contains NixOS and Home‑Manager configurations built by the Nix Flake `nixos`,
-`homeConfigurations`, and `nixOnDroidConfigurations`. The following sections explain how to build,
-lint, test, and develop the code within a _Nix development shell_ (`nix develop`).
-
-## Project Structure
-
-```
-nixcfg/
-├── flake.nix          # Main flake definition, hosts, outputs
-├── flake.lock         # Locked inputs
-├── home/              # Home Manager configuration
-│   ├── base/          # Basic user configs
-│   ├── programs/      # Custom program modules
-│   ├── roles/         # Custom roles for bundling configsets
-│   └── users/         # User-specific configs
-├── hosts/             # NixOS host configs
-│   ├── nixos-vm/
-│   ├── nix-on-droid/
-│   └── non-nixos-vm/
-├── lib/               # Internal flake library
-├── nix-on-droid/      # Custom NixOnDroid modules
-├── nixos/             # Custom NixOS modules
-│   ├── base/          # Basic NixOS configs
-│   ├── containers/    # Container modules
-│   ├── programs/      # Program modules
-│   └── roles/         # Roles for bundling configsets
-└── secrets/           # agenix-encrypted secrets
-```
-
-### Key Input Dependencies
-
-The flake depends on:
-
-- **nixpkgs** - Main package set (nixos-26.05)
-- **nixpkgs-unstable** - Unstable branch for newer features
-- **flake-commons** (rake5k/flake-commons) - Shared utilities
-- **nur** - Nix User Repositories
-- **home-manager** - User dotfile management
-- **darwin** - MacOS configuration
-- **nix-on-droid** - Android Nix management
-- **agenix** - Secret management
-- **agenix-cli** - CLI utilities for agenix
-- **disko** - Disk partitioning
-- **homeage** - Home age secret management
-- **impermanence** - Zero-configuration immutable NixOS
-- **lanzaboote** - Secure boot
-- **nix-index-database** - Nix index for performance
-- **nvidia-patch** - NVIDIA driver patches
-- **stylix** - Theming and customization
-- **wallpapers** - Personal wallpaper collection
-
-### Configuration Flow
-
-1. **flake.nix** defines all outputs:
-   - `nixosConfigurations` - NixOS system configs
-   - `homeConfigurations` - Home Manager user configs
-   - `nixOnDroidConfigurations` - Nix-on-Droid configs
-   - `darwinConfigurations` - Darwin/MacOS configs
-   - `devShells` - Development shells
-
-2. **nixos/** - NixOS-specific modules:
-   - `base/` - Core system configuration (boot, nix, network, etc.)
-   - `programs/` - Program configurations
-   - `roles/` - Role-based composition (desktop, nas, gaming, etc.)
-   - `users/` - Per-user configuration
-
-3. **home/** - Home Manager modules:
-   - `base/` - Basic user environment
-   - `programs/` - Custom program modules
-   - `roles/` - Role-specific configs (gnome, gtk, terminal, etc.)
-   - `users/` - User-specific overrides
-
-4. **secrets/** - Encrypted secrets for agenix decryption
-
-### Roles System
-
-The configuration uses a role-based composition system:
-
-**nixos/roles/** - NixOS roles:
-
-- `desktop/` - General desktop environment
-- `desktop/mobile/` - Mobile-friendly desktop
-- `gaming/` - Gaming setup
-- `nas/` - NAS configuration (various sub-roles)
-- `containers/` - Container runtime
-- `android/` - Android development
-- `ai/` - AI/ML setup
-- `sound/` - Audio configuration
-- `printing/` - Printer support
-- And more...
-
-**home/roles/** - Home Manager roles:
-
-- `desktop/gnome/`, `desktop/gtk/`, `desktop/wayland/` - DE configurations
-- `terminal/` - Terminal emulator setup
-- `password-manager/` - Password manager configuration
-- `shell/` - Shell configuration
-- `notification/` - Notification daemon
-- And more...
-
-### Secrets Management
+## Secrets Management
 
 Secrets are stored encrypted in `secrets/` using agenix. The process:
 
@@ -134,34 +32,16 @@ age --encrypt --armor -i ~/.age/key.txt -o ./secrets/<secretfile>.age < tmpfile
 
 ## Build / Lint / Test Commands
 
-### 1. Build all configurations
+### 1. Build
 
 ```bash
-# Build the NixOS system and all Home‑Manager configurations for *every* supported system.
-#  `nix flake check` will also invoke each check defined in flake-commons.
-
-nix flake check
+nix flake check                                   # build all outputs + run all checks
+nix build .#packages.x86_64-linux.nixos           # demo NixOS host
+nix build .#packages.x86_64-linux.non-nixos-demo  # demo Home Manager activation package
+nix build .#checks.x86_64-linux.<name>            # single check from flake-commons
 ```
 
-### 2. Build a single configuration
-
-```bash
-# Build the NixOS system for the default Linux configuration.
-# Replace `x86_64-linux` with another system if needed.
-
-nix build .#packages.x86_64-linux.nixos
-```
-
-### 3. Home‑Manager activation packages
-
-```bash
-# Build and apply the Home‑Manager configuration for the non‑NixOS demo user.
-# The generated activation package can be executed with `activate`.
-
-nix build .#packages.x86_64-linux.non-nixos-demo
-```
-
-### 4. Rebuild configurations
+### 2. Rebuild configurations
 
 This is a base flake and defines **no real hosts**. Never apply a config from here — building
 `nixcfg#<host>` fails with "host not defined". Real hosts live in downstream flakes (`nixcfg-home`,
@@ -179,7 +59,7 @@ sudo nixos-rebuild switch --flake ~/code/nixcfg-home#<host> \
 Prefer `nixos-rebuild test` (no boot entry) over `switch` while iterating; `switch` once confirmed
 good. On non-NixOS use `hm-switch`; on Nix-on-Droid `nix-on-droid switch --flake .#<hostname>`.
 
-### 5. Setup (first-time configuration)
+### 3. Setup (first-time configuration)
 
 ```bash
 # Apply system configuration
@@ -189,48 +69,9 @@ nix run github:rake5k/nixcfg#setup -- <flake-url>
 nix run $FLAKE#disko-install -- <hostname> $FLAKE
 ```
 
-### 6. Update Flake Inputs
+### 4. Linting & formatting
 
-```bash
-nix flake update
-```
-
-### 7. Linting & formatting
-
-| Tool      | Command   | Notes                        |
-| --------- | --------- | ---------------------------- |
-| `treefmt` | `treefmt` | Formats and lints all files. |
-
-### 8. Run tests for a single check
-
-Use `nix build .#checks.<system>.<name>` to run individual checks, or use
-`nix test .#check.<system>.<name>` to run tests in a sandboxed environment.
-
-The flake-commons project provides a set of _checks_ that can be run individually:
-
-```bash
-# List all checks for the current system
-nix build .#checks.<system>.default
-
-# Run a single named check (replace <name> with the actual check name)
-# e.g., `nix build .#checks.x86_64-linux.nixpkgs-test` will invoke the test defined there.
-
-nix build .#checks.x86_64-linux.<name>
-```
-
-If you need to run the test in a sandboxed environment you can also use `nix test`:
-
-```bash
-nix test .#check.<system>.<name>
-```
-
-### 9. Building a specific package
-
-Individual packages can be built with the `packages` attribute set. For example:
-
-```bash
-nix build .#packages.x86_64-linux.<package-name>
-```
+Run `treefmt` (available in the dev shell, `nix develop`).
 
 ## Code‑Style Guidelines
 
@@ -278,37 +119,6 @@ The following rules are enforced by `treefmt`, and are expected to be followed b
 No hosted CI builds the flake outputs. Run `nix flake check` locally before pushing.
 
 Dependabot (`.github/dependabot.yml`) opens weekly pull requests updating the flake inputs.
-
-## Apps
-
-The flake provides these buildable applications:
-
-- `setup` - Setup script for applying configuration
-- `disko-install` - Full installation with disk partitioning
-
-## Utilities
-
-Built-in utility functions from `nixcfgLib`:
-
-- `mkApp` - Create flake app
-- `mkDevShell` - Create dev shell
-- `mkHome` - Create home configuration
-- `mkNixos` - Create NixOS configuration
-- `mkNixDarwin` - Create Darwin configuration
-- `mkNixOnDroid` - Create NixOnDroid configuration
-- `mkForEachSystem` - Create for each system
-
-## Development Workflow
-
-1. Enter the development shell:
-   ```bash
-   nix develop
-   ```
-2. Run `treefmt` to format/lint files (available in the dev shell).
-3. Build or test changes with one of the commands above.
-4. Commit and push.
-
-Feel free to ask an agent for help with any of the commands listed here or for further explanations.
 
 ## Editing Conventions
 
@@ -417,7 +227,3 @@ also adds a `programs.yazi.settings.open.prepend_rules` entry, as the ops role d
   `nixcfg-work`; keep machine-specific or user-specific defaults out of `nixos/` and `home/` here.
 - **Hardcoding paths to secrets.** Use `custom.base.agenix.secrets.<name>.path` (or the homeage
   equivalent) — the path is generated.
-
----
-
-_The file is intentionally verbose to aid readability for both humans and bots._
