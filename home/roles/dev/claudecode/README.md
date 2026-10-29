@@ -238,11 +238,11 @@ drives the session through the `herdr` CLI, which connects to the server socket 
 
 That socket is a sandbox bypass. `herdr pane run` and `herdr agent prompt` execute in other panes,
 which run outside the Bash sandbox, so any process that can connect to the socket gets unsandboxed
-command execution as the user. In Claude Code's Bash sandbox the socket stays hidden, since it lies
-under `$HOME` and `sandbox.filesystem.allowRead` does not re-open `~/.config/herdr`: `herdr`
-commands from the Bash tool fail, and the skill works only in unsandboxed sessions or through the
-`!` prompt. Keep `~/.config/herdr` out of `allowRead`. A container sandbox that bind-mounts
-`~/.config/herdr` hands its agent the same bypass.
+command execution as the user. The Bash sandbox reads `$HOME` and allows every Unix socket
+(`network.allowAllUnixSockets`), so `sandbox.filesystem.denyRead` hides `~/.config/herdr` to cut the
+connection: `herdr` commands from the Bash tool fail, and the skill works only in unsandboxed
+sessions or through the `!` prompt. A container sandbox that bind-mounts `~/.config/herdr` hands its
+agent the same bypass.
 
 ## Hooks
 
