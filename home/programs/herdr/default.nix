@@ -20,22 +20,21 @@ let
 
   toml = pkgs.formats.toml { };
 
-  # Config reference: https://herdr.dev/llms.txt
-  settings = {
-    # herdr writes this on first run; preset since the file is read-only.
-    onboarding = false;
-    # Follows the outer terminal's (stylix) palette.
-    theme.name = "terminal";
-    # Updates come through nixpkgs.
-    update.version_check = false;
-  };
-
 in
 
 {
   options = {
     custom.programs.herdr = {
       enable = mkEnableOption "herdr terminal workspace manager";
+
+      settings = mkOption {
+        inherit (toml) type;
+        default = { };
+        description = ''
+          herdr `config.toml` settings. See the Configuration page in
+          <https://herdr.dev/llms.txt>.
+        '';
+      };
 
       skill = mkOption {
         type = types.path;
@@ -52,6 +51,15 @@ in
   config = mkIf cfg.enable {
     home.packages = [ package ];
 
-    xdg.configFile."herdr/config.toml".source = toml.generate "herdr-config.toml" settings;
+    custom.programs.herdr.settings = {
+      # herdr writes this on first run; preset since the file is read-only.
+      onboarding = false;
+      # Follows the outer terminal's (stylix) palette.
+      theme.name = "terminal";
+      # Updates come through nixpkgs.
+      update.version_check = false;
+    };
+
+    xdg.configFile."herdr/config.toml".source = toml.generate "herdr-config.toml" cfg.settings;
   };
 }
