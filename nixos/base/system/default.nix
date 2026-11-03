@@ -5,6 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     lsof
+    p7zip
   ];
 
   services.fwupd.enable = true;
