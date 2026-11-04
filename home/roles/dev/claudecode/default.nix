@@ -97,6 +97,17 @@ let
       name: lib.nameValuePair ".claude/agents/${name}.md" { source = "${honey}/agents/${name}.md"; }
     );
 
+  # Packaged with jq, since a container sandbox lacks the Home Manager profile on PATH.
+  simplifyNudge = pkgs.writeShellApplication {
+    name = "simplify-nudge";
+    runtimeInputs = [ pkgs.jq ];
+    text = builtins.readFile ./hooks/simplify-nudge.sh;
+  };
+  simplifyNudgeHook = mode: {
+    type = "command";
+    command = "${lib.getExe simplifyNudge} ${mode}";
+  };
+
   # MCP servers passed via `claude --mcp-config`; settings.json has no
   # mcpServers key. Without --strict-mcp-config this merges with the servers
   # already configured in ~/.claude.json instead of replacing them.
@@ -163,6 +174,13 @@ let
         { hooks = [ (honeyHook "honey-session.js") ]; }
       ];
       SubagentStart = [ { hooks = [ (honeyHook "honey-subagent.js") ]; } ];
+      PostToolUse = [
+        {
+          matcher = "Edit|Write|MultiEdit|NotebookEdit";
+          hooks = [ (simplifyNudgeHook "record") ];
+        }
+      ];
+      Stop = [ { hooks = [ (simplifyNudgeHook "stop") ]; } ];
       UserPromptSubmit = [
         {
           hooks = [

@@ -269,6 +269,14 @@ It also counts the dated lines pending in `Wiki/Reference/Ingest-Inbox` — the 
 append durable learnings to — and reports them, so `/wiki ingest inbox` gets offered instead of
 forgotten. Capture is automatic and cheap (one line, no commit); draining into pages stays manual.
 
+`simplify-nudge.sh` runs the built-in `simplify` skill periodically during implementation work. Its
+`record` mode (`PostToolUse` on `Edit|Write|MultiEdit|NotebookEdit`) logs every edited file under
+the session's `cwd`; its `stop` mode (`Stop`) blocks the stop once the log holds
+`SIMPLIFY_NUDGE_EDITS` edits (default 10) and asks Claude to run `simplify` on the listed files. The
+following stop passes and clears the log, so the pass's own edits do not trigger another one. State
+lives in `$XDG_RUNTIME_DIR/claude-simplify-nudge/<session_id>/`. It is packaged with
+`writeShellApplication` to put `jq` on its `PATH`.
+
 ## ccstatusline
 
 The statusline command is `ccstatusline`, packaged in `pkgs/ccstatusline` from its npm tarball so
