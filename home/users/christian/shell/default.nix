@@ -9,7 +9,13 @@ let
 
   cfg = config.custom.users.christian.shell;
 
-  inherit (lib) mkEnableOption mkIf readFile;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    mkOption
+    readFile
+    types
+    ;
 
 in
 
@@ -17,6 +23,12 @@ in
   options = {
     custom.users.christian.shell = {
       enable = mkEnableOption "Shell configuration and utils";
+
+      portableRc = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Bash snippet carrying the TUIs and their shell wrappers into shells without Home Manager, such as sandboxes.";
+      };
     };
   };
 

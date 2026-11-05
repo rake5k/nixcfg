@@ -8,6 +8,7 @@
 let
 
   cfg = config.custom.users.christian.shell.yazi;
+  yaziCfg = config.programs.yazi;
 
   inherit (lib) mkEnableOption mkIf;
 
@@ -24,6 +25,14 @@ in
     home.packages = with pkgs; [
       exiftool
     ];
+
+    # Home Manager's wrapper (`shellWrapperName`, cd to yazi's last dir on exit)
+    # for shells without Home Manager.
+    custom.users.christian.shell.portableRc = import ../portable-wrapper.nix {
+      name = yaziCfg.shellWrapperName;
+      inherit (yaziCfg) package;
+      run = ''command yazi "$@" --cwd-file="$tmp"'';
+    };
 
     programs.yazi = {
       enable = true;
