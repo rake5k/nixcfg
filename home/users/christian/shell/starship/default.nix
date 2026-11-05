@@ -40,12 +40,6 @@ in
           error_symbol = "[➜](bold red)";
           vimcmd_symbol = "[V](bold green)";
         };
-        nix_shell = {
-          symbol = "❄ ";
-        };
-        package = {
-          symbol = " ";
-        };
       };
     };
   };
