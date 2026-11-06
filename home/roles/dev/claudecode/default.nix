@@ -55,6 +55,34 @@ let
     hash = "sha256-IJlhfkdXI6pMZZCZO7XBRg88LBiNfzc5Gnm4ofGybL8=";
   };
 
+  # The grill skills from the mattpocock-skills plugin (v1.3.1), for backends that
+  # disable the plugin; grill-me and grill-with-docs delegate to grilling and domain-modeling.
+  mattpocockSkills = pkgs.fetchFromGitHub {
+    owner = "mattpocock";
+    repo = "skills";
+    rev = "49dd158d1076134a641b33efb035946536778336";
+    hash = "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs=";
+  };
+  mattpocockFiles =
+    lib.mapAttrs'
+      (
+        name: path:
+        lib.nameValuePair ".claude/skills/${name}" { source = "${mattpocockSkills}/skills/${path}"; }
+      )
+      {
+        domain-modeling = "engineering/domain-modeling";
+        grill-me = "productivity/grill-me";
+        grill-with-docs = "engineering/grill-with-docs";
+        grilling = "productivity/grilling";
+      };
+
+  securityAudit = pkgs.fetchFromGitHub {
+    owner = "cloudflare";
+    repo = "security-audit-skill";
+    rev = "c1c8a8c1471069fb0e188eeaff69b8e8db6564a8";
+    hash = "sha256-oVVACjotkHvllQGxEP8yWaEt4c3GxT0d909TUM5P3NM=";
+  };
+
   # Honey (honey-for-devs v1.4.0) without its plugin: the hive agents, the mode
   # hooks and the skills needing neither npx, pip nor the repo's bench/. The
   # PostToolUse hook rewriting Bash output stays out.
@@ -413,9 +441,11 @@ in
         ".claude/skills/ollama".source = ./skills/ollama;
         ".claude/skills/ponytail-audit".source = "${ponytail}/skills/ponytail-audit";
         ".claude/skills/ponytail-review".source = "${ponytail}/skills/ponytail-review";
+        ".claude/skills/security-audit".source = "${securityAudit}/skills/security-audit";
         ".claude/skills/updating-nixcfg".source = ./skills/updating-nixcfg;
       }
       // honeyFiles
+      // mattpocockFiles
       // lib.optionalAttrs isLinux {
         # Seccomp sandbox filter for Claude Code native sandbox
         ".claude/seccomp/apply-seccomp".source = "${claude-seccomp}/share/claude-seccomp/apply-seccomp";
