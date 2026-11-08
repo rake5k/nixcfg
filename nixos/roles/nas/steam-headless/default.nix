@@ -13,7 +13,9 @@ let
     types
     ;
 
-  localSteamUrl = "http://localhost:${toString cfg.services.steam-headless.port}";
+  # The 2.x SHUI portal serves HTTPS with a self-signed cert on webPort;
+  # the old PORT_NOVNC_WEB HTTP endpoint no longer exists.
+  localSteamUrl = "https://localhost:${toString cfg.services.steam-headless.webPort}";
   localSunshineUrl = "https://localhost:${toString cfg.services.sunshine.port}";
   remoteSteamUrl = "https://${cfg.services.steam-headless.host}";
   remoteSunshineUrl = "https://${cfg.services.sunshine.host}";
@@ -45,6 +47,12 @@ in
             type = types.int;
             default = 8083;
             description = "Port of the steam-headless web UI";
+          };
+
+          webPort = mkOption {
+            type = types.int;
+            default = 8483;
+            description = "Port of the SHUI portal (self-signed TLS) proxied by traefik";
           };
         };
 
@@ -209,6 +217,7 @@ in
       allowedTCPPorts = [
         7860
         5900
+        8483
         32036
         32037
         32041
@@ -232,9 +241,10 @@ in
         dynamicConfigOptions = {
           http = {
             services = {
-              steam.loadBalancer.servers = [
-                { url = localSteamUrl; }
-              ];
+              steam.loadBalancer = {
+                servers = [ { url = localSteamUrl; } ];
+                serversTransport = "steam-transport";
+              };
 
               sunshine.loadBalancer = {
                 servers = [ { url = localSunshineUrl; } ];
@@ -242,8 +252,11 @@ in
               };
             };
 
-            # Skip TLS verification for the backend
-            serversTransports.sunshine-transport.insecureSkipVerify = true;
+            # Skip TLS verification for both self-signed container backends
+            serversTransports = {
+              sunshine-transport.insecureSkipVerify = true;
+              steam-transport.insecureSkipVerify = true;
+            };
 
             # Add sunshine basic auth credentials automatically
             middlewares = {
