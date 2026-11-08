@@ -217,19 +217,10 @@ in
         "steam-headless-state:/var/lib/steam-headless"
         "steam-headless-journal:/var/log/journal"
 
+        # shinputd reads kernel-allocated input device numbers here.
+        "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
         "/etc/localtime:/run/host-localtime:ro"
-      ]
-      # shinputd reads kernel-allocated input device numbers here. The sysfs
-      # subsystem dir only exists while a virtual input device is registered,
-      # so binding it unconditionally breaks container startup on fresh boots.
-      ++ (
-        if cfg.evdevInputs then
-          [
-            "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
-          ]
-        else
-          [ ]
-      );
+      ];
     };
 
     networking.firewall = {
