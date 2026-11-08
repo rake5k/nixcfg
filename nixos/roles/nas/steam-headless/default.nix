@@ -31,6 +31,8 @@ in
         description = "Path where the Sunshine data lies";
       };
 
+      evdevInputs = mkEnableOption "virtual evdev input injection; requires /dev/uhid on the host";
+
       services = {
         steam-headless = {
           host = mkOption {
@@ -89,30 +91,46 @@ in
     };
 
     users = {
+      # Pin the ids: with an undeclared uid NixOS allocates one via
+      # systemd-sysusers at activation, so `toString ...uid` below evaluates
+      # to null and the container silently falls back to the image default 1000.
       users.steam-headless = {
+        uid = 985;
         isSystemUser = true;
         group = "steam-headless";
       };
 
-      groups.steam-headless = { };
+      groups.steam-headless = {
+        gid = 982;
+      };
     };
 
     virtualisation.oci-containers.containers.steam-headless = {
-      image = "josh5/steam-headless:latest";
+      image = "josh5/steam-headless:2";
 
       hostname = "steam-headless";
 
+      # Mirrors the upstream devices-and-storage contract (steamheadless.com docs).
       capabilities = {
+        DAC_READ_SEARCH = true;
         NET_ADMIN = true;
         SYS_ADMIN = true;
         SYS_NICE = true;
-        SYS_TIME = true;
+        SYS_PTRACE = true;
       };
 
       devices = [
         "/dev/fuse"
         "/dev/uinput"
-      ];
+      ]
+      ++ (
+        if cfg.evdevInputs then
+          [
+            "/dev/uhid"
+          ]
+        else
+          [ ]
+      );
 
       # https://github.com/Steam-Headless/docker-steam-headless/blob/master/docs/compose-files/.env
       environment = {
@@ -129,7 +147,7 @@ in
         ENABLE_SUNSHINE = "true";
         SUNSHINE_USER = "sunshine";
         SUNSHINE_PASS = "sunshine";
-        ENABLE_EVDEV_INPUTS = "true";
+        ENABLE_EVDEV_INPUTS = if cfg.evdevInputs then "true" else "false";
         NVIDIA_DRIVER_CAPABILITIES = "all";
         NVIDIA_VISIBLE_DEVICES = "all";
 
@@ -143,6 +161,12 @@ in
         "--gpus=all"
         "--security-opt=apparmor=unconfined"
         "--security-opt=seccomp=unconfined"
+        # PID 1 of the image is systemd; without the writable cgroup, private
+        # cgroup namespace and tmpfs set it aborts right after steam-headless-init.
+        "--systemd=always"
+        "--security-opt=systempaths=unconfined"
+        "--tmpfs=/dev/input:rw,dev,mode=0755"
+        "--ulimit=nofile=1024:524288"
         "--device-cgroup-rule=c 13:* rmw"
         "--ipc=host"
         "--add-host=steam-headless:127.0.0.1"
@@ -161,15 +185,22 @@ in
       pull = "always";
 
       volumes = [
-        # The location of your home directory.
-        "${cfg.dataPath}/home:/home/default:rw"
+        # The image's desktop home is /home/steamheadless; per-container private,
+        # must stay on a native Linux filesystem (Proton prefixes need POSIX).
+        "${cfg.dataPath}/home:/home/steamheadless:rw"
 
-        # The location where all games should be installed.
-        # This path needs to be set as a library path in Steam after logging in.
-        # Otherwise, Steam will store games in the home directory above.
+        # Shared Steam library; /mnt/games/GameLibrary/Steam is registered as a
+        # Steam storage library by the image itself at startup.
         "${cfg.dataPath}/games:/mnt/games:rw"
 
-        "/dev/input:/dev/input:rw"
+        # Private appliance state and journal; without them the image redoes
+        # initial setup and refetches the compat32 cache on every recreation.
+        "steam-headless-state:/var/lib/steam-headless"
+        "steam-headless-journal:/var/log/journal"
+
+        # shinputd reads kernel-allocated input device numbers here.
+        "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
+        "/etc/localtime:/run/host-localtime:ro"
       ];
     };
 
