@@ -153,8 +153,6 @@ in
         ENABLE_STEAM = "true";
         #STEAM_ARGS = "-silent -bigpicture";
         ENABLE_SUNSHINE = "true";
-        SUNSHINE_USER = "sunshine";
-        SUNSHINE_PASS = "sunshine";
         ENABLE_EVDEV_INPUTS = if cfg.evdevInputs then "true" else "false";
         NVIDIA_DRIVER_CAPABILITIES = "all";
         NVIDIA_VISIBLE_DEVICES = "all";
@@ -179,7 +177,20 @@ in
         "--ipc=host"
         "--add-host=steam-headless:127.0.0.1"
         "--memory=8g"
-      ];
+      ]
+      # shinputd's unit lists /dev/uhid in InaccessiblePaths, which overmounts
+      # an existing path: when the path is absent the unit dies (status 226/NAMESPACE)
+      # and the Requires= chain in steam-headless-pre-session.target takes down the
+      # whole session, even with ENABLE_EVDEV_INPUTS=false. Satisfy the path with
+      # a bind file; only a real HID device (evdevInputs) enables injection.
+      ++ (
+        if cfg.evdevInputs then
+          [ ]
+        else
+          [
+            "--volume=${cfg.dataPath}/dev-uhid:/dev/uhid"
+          ]
+      );
 
       networks = [
         "host"
@@ -206,10 +217,19 @@ in
         "steam-headless-state:/var/lib/steam-headless"
         "steam-headless-journal:/var/log/journal"
 
-        # shinputd reads kernel-allocated input device numbers here.
-        "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
         "/etc/localtime:/run/host-localtime:ro"
-      ];
+      ]
+      # shinputd reads kernel-allocated input device numbers here. The sysfs
+      # subsystem dir only exists while a virtual input device is registered,
+      # so binding it unconditionally breaks container startup on fresh boots.
+      ++ (
+        if cfg.evdevInputs then
+          [
+            "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
+          ]
+        else
+          [ ]
+      );
     };
 
     networking.firewall = {
@@ -258,11 +278,6 @@ in
               steam-transport.insecureSkipVerify = true;
             };
 
-            # Add sunshine basic auth credentials automatically
-            middlewares = {
-              sunshine-auth.headers.customRequestHeaders.Authorization = "Basic c3Vuc2hpbmU6c3Vuc2hpbmU=";
-            };
-
             routers = {
               steam = {
                 entryPoints = [ "websecure" ];
@@ -272,6 +287,8 @@ in
                 middlewares = [ "authelia" ];
               };
 
+              # 2.44 syncs Sunshine credentials through SHUI enrolment; clients
+              # pair via the SHUI dashboard, so no basic-auth injection applies.
               sunshine = {
                 entryPoints = [ "websecure" ];
                 rule = "Host(`${cfg.services.sunshine.host}`)";
@@ -279,7 +296,6 @@ in
                 tls.certResolver = "letsencrypt";
                 middlewares = [
                   "authelia"
-                  "sunshine-auth"
                 ];
               };
             };
@@ -319,6 +335,8 @@ in
     systemd.tmpfiles.rules = [
       "d ${cfg.dataPath}/home 0755 ${config.users.users.steam-headless.name} ${config.users.users.steam-headless.group} -"
       "d ${cfg.dataPath}/games 0755 ${config.users.users.steam-headless.name} ${config.users.users.steam-headless.group} -"
+      # Placeholder bind source for /dev/uhid (see extraOptions above).
+      "f ${cfg.dataPath}/dev-uhid 0600 ${config.users.users.steam-headless.name} ${config.users.users.steam-headless.group} -"
     ];
   };
 }
