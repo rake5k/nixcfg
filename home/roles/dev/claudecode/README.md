@@ -173,6 +173,30 @@ claude plugin install <name>@<marketplace>
 
 See the [plugin docs](https://code.claude.com/docs/en/discover-plugins).
 
+Anything absent from `enabledPlugins` falls back to the plugin's own default, so a plugin is
+disabled by writing `false` here rather than by a `/plugin` toggle: that state lives in
+`~/.claude.json` and is lost when a config dir is recreated (the agent microVMs share one seeded by
+`hosts/altair/microvm` on the host). Only `mattpocock-skills@claude-plugins-official` stays `true`:
+its `tdd`, `to-spec`, `implement-spec` and `setup-matt-pocock-skills` skills dispatch. The `false`
+entries are the plugins recorded at `"scope":"user"` in `installed_plugins.json` with no lifetime
+use in the `.claude.json` counters. A plugin installed at `"scope":"project"` stays out of this
+file: a `false` entry here outranks the project's own settings and switches off an install that
+project made on purpose — `frontend-design`, `typescript-lsp` and `supabase` are project-scoped in
+`teamzmittag`, and the backends that run without plugins already list their own set in
+`hosts/altair/claude-models.nix`. `honey@greenpt` is off on purpose: only `/honey-compress` stays,
+seeded from the store pin in `default.nix` with its `bin/check.js` and node paths baked in, and the
+marketplace copy is a release behind that pin. Honey's hooks go with it, including the `PostToolUse`
+`logcompress-hook.js` that rewrites Bash output; restoring it is one `PostToolUse` entry with
+matcher `Bash` on `${honey}/hooks/logcompress-hook.js`.
+
+`skillOverrides` in the same file hides a skill without deleting its seed (`"off"`, and `"on"`,
+`"name-only"`, `"user-invocable-only"` are the other values). It takes effect per settings file, so
+it is per backend; plugin-shipped skills are not affected by it. The list in
+`plugin-mirrored-skills.json` names the skills this role seeds that a user-scoped plugin also ships:
+every backend that keeps that plugin enabled gets the seeded copy hidden (`mirroredSkillOverrides`
+in `default.nix`), so a skill is never listed twice. A backend that disables the plugin re-enables
+the names through `extraBackendSettings.<backend>.skillOverrides`.
+
 ## MCP servers
 
 `settings.json` has no `mcpServers` key, so servers are generated into a store file and passed via

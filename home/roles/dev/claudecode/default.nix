@@ -47,34 +47,51 @@ let
           --replace-fail /llm-wiki /wiki
       '';
 
-  # Skills cherry-picked from the ponytail plugin (v5.3.2), without its hooks.
+  # Skills cherry-picked from the ponytail plugin (v5.3.3), without its hooks: the
+  # plugin is installed only at project/local scope, so a user-scope session has
+  # nothing else to fall back on. Only the two with dispatch counters at user
+  # scope, plus the mode skill; `ponytail-gain` and `ponytail-debt` were reached
+  # through the plugin's own namespaced copies, so seeding them would add entries
+  # to every session for skills that never run there.
   ponytail = pkgs.fetchFromGitHub {
     owner = "DietrichGebert";
     repo = "ponytail";
-    rev = "16352ac229eb08a9598dcae48fe9f2b342567d86";
-    hash = "sha256-IJlhfkdXI6pMZZCZO7XBRg88LBiNfzc5Gnm4ofGybL8=";
+    rev = "96608e078b2d5ea607c5c3b8b5a54d1c1fba6846";
+    hash = "sha256-vg77CLqKUFcq6vttfDMCmJu4LaR210do1Z7y7xirF0Q=";
   };
+  ponytailSkills = [
+    "ponytail"
+    "ponytail-audit"
+    "ponytail-review"
+  ];
+  ponytailFiles = lib.listToAttrs (
+    map (
+      name: lib.nameValuePair ".claude/skills/${name}" { source = "${ponytail}/skills/${name}"; }
+    ) ponytailSkills
+  );
 
-  # The grill skills from the mattpocock-skills plugin (v1.3.1), for backends that
-  # disable the plugin; grill-me and grill-with-docs delegate to grilling and domain-modeling.
+  # The mattpocock-skills plugin skills, for the backends that disable the plugin
+  # (`local`/`strata` in nixcfg-home's hosts/altair/claude-models.nix); grill-me and
+  # grill-with-docs delegate to grilling and domain-modeling. `plugin-mirrored-skills.json`
+  # is the single list of what the plugin also ships: it drives the seed here and the
+  # `skillOverrides` that hides the duplicate below, and the guest reads the same file.
+  # The plugin's own `code-review` is left out: a bare skill of that name would
+  # collide with the skill claude-code bundles.
   mattpocockSkills = pkgs.fetchFromGitHub {
     owner = "mattpocock";
     repo = "skills";
     rev = "49dd158d1076134a641b33efb035946536778336";
     hash = "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs=";
   };
-  mattpocockFiles =
-    lib.mapAttrs'
-      (
-        name: path:
-        lib.nameValuePair ".claude/skills/${name}" { source = "${mattpocockSkills}/skills/${path}"; }
-      )
-      {
-        domain-modeling = "engineering/domain-modeling";
-        grill-me = "productivity/grill-me";
-        grill-with-docs = "engineering/grill-with-docs";
-        grilling = "productivity/grilling";
-      };
+  pluginMirroredSkills = lib.importJSON ./plugin-mirrored-skills.json;
+  mattpocockMirror = pluginMirroredSkills."mattpocock-skills@claude-plugins-official";
+  mattpocockFiles = lib.mapAttrs' (
+    name: group:
+    lib.nameValuePair ".claude/skills/${name}" {
+      source = "${mattpocockSkills}/skills/${group}/${name}";
+    }
+  ) mattpocockMirror;
+  mirroredSkillNames = lib.concatLists (map builtins.attrNames (lib.attrValues pluginMirroredSkills));
 
   securityAudit = pkgs.fetchFromGitHub {
     owner = "cloudflare";
@@ -83,9 +100,9 @@ let
     hash = "sha256-oVVACjotkHvllQGxEP8yWaEt4c3GxT0d909TUM5P3NM=";
   };
 
-  # Honey (honey-for-devs v1.4.0) without its plugin: the hive agents, the mode
-  # hooks and the skills needing neither npx, pip nor the repo's bench/. The
-  # PostToolUse hook rewriting Bash output stays out.
+  # Honey (honey-for-devs v1.4.0), plugin and hooks both off: only
+  # `/honey-compress` stays, and it needs nothing from the plugin once
+  # `honeySkill` bakes the store paths for `bin/check.js` and node into its SKILL.md.
   honey = pkgs.fetchFromGitHub {
     owner = "Green-PT";
     repo = "honey-for-devs";
@@ -93,10 +110,6 @@ let
     hash = "sha256-ZYPoMSOjwfYEWMbqHC7XFTDfNtuKQ+ABbQHz+qmuqMk=";
   };
   honeyNode = lib.getExe pkgs.nodejs;
-  honeyHook = script: {
-    type = "command";
-    command = "${honeyNode} ${honey}/hooks/${script}";
-  };
   # Skills calling the plugin's scripts get the plugin root and node as store paths.
   honeySkill =
     name:
@@ -109,21 +122,9 @@ let
           --replace-fail '`node ' '`${honeyNode} '
       fi
     '';
-  honeyFiles =
-    genAttrs' [
-      "honey"
-      "honey-ccr"
-      "honey-compress"
-      "honey-debt"
-      "honey-design"
-      "honey-hive"
-      "honey-loop"
-      "honey-memory"
-      "honey-review"
-    ] (name: lib.nameValuePair ".claude/skills/${name}" { source = honeySkill name; })
-    // genAttrs' [ "hive-builder" "hive-reviewer" "hive-scout" ] (
-      name: lib.nameValuePair ".claude/agents/${name}.md" { source = "${honey}/agents/${name}.md"; }
-    );
+  honeyFiles = genAttrs' [ "honey-compress" ] (
+    name: lib.nameValuePair ".claude/skills/${name}" { source = honeySkill name; }
+  );
 
   # Packaged with jq, since a container sandbox lacks the Home Manager profile on PATH.
   simplifyNudge = pkgs.writeShellApplication {
@@ -199,9 +200,7 @@ let
             }
           ];
         }
-        { hooks = [ (honeyHook "honey-session.js") ]; }
       ];
-      SubagentStart = [ { hooks = [ (honeyHook "honey-subagent.js") ]; } ];
       PostToolUse = [
         {
           matcher = "Edit|Write|MultiEdit|NotebookEdit";
@@ -268,12 +267,26 @@ let
       };
   };
 
+  # The seeded copy of a plugin-shipped skill is hidden in every backend that
+  # keeps the plugin enabled, so the plugin's copy is the one listed. A backend
+  # that drops the plugin re-enables the names via
+  # `extraBackendSettings.<backend>.skillOverrides`.
+  mirroredSkillOverrides = lib.listToAttrs (
+    map (name: {
+      inherit name;
+      value = "off";
+    }) mirroredSkillNames
+  );
+
   # Full, self-contained settings for one backend: common + backend env +
   # extraSettings, generated as a store file passed to `claude --settings`.
   settingsFileFor =
     backend:
     let
-      backendSettings = mergeSettings commonSettings { env = backendEnv.${backend}; };
+      backendSettings = mergeSettings commonSettings {
+        env = backendEnv.${backend};
+        skillOverrides = mirroredSkillOverrides;
+      };
       unified = mergeSettings (mergeSettings backendSettings cfg.extraSettings) (
         cfg.extraBackendSettings.${backend} or { }
       );
@@ -439,11 +452,10 @@ in
         ".claude/skills/commit".source = ./skills/commit;
         ".claude/skills/herdr".source = config.custom.programs.herdr.skill;
         ".claude/skills/ollama".source = ./skills/ollama;
-        ".claude/skills/ponytail-audit".source = "${ponytail}/skills/ponytail-audit";
-        ".claude/skills/ponytail-review".source = "${ponytail}/skills/ponytail-review";
         ".claude/skills/security-audit".source = "${securityAudit}/skills/security-audit";
         ".claude/skills/updating-nixcfg".source = ./skills/updating-nixcfg;
       }
+      // ponytailFiles
       // honeyFiles
       // mattpocockFiles
       // lib.optionalAttrs isLinux {
