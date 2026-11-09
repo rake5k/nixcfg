@@ -156,6 +156,11 @@ in
         ENABLE_EVDEV_INPUTS = if cfg.evdevInputs then "true" else "false";
         NVIDIA_DRIVER_CAPABILITIES = "all";
         NVIDIA_VISIBLE_DEVICES = "all";
+        # The container toolkit mounts the host driver libraries at
+        # /usr/local/nvidia/lib64; mesa libgbm only scans the Debian/Fedora backend
+        # dirs by default, so the NVIDIA gbm backend (libnvidia-allocator) is invisible
+        # and the compositor falls back to software rendering (green stream).
+        GBM_BACKENDS_PATH = "/usr/local/nvidia/lib64/gbm:/usr/lib/x86_64-linux-gnu/gbm:/usr/lib64/gbm";
 
         PUID = toString config.users.users.steam-headless.uid;
         PGID = toString config.users.groups.steam-headless.gid;
@@ -174,9 +179,16 @@ in
         "--tmpfs=/dev/input:rw,dev,mode=0755"
         "--ulimit=nofile=1024:524288"
         "--device-cgroup-rule=c 13:* rmw"
+        # podman's default capability set lacks CAP_MKNOD (docker has it); shinputd
+        # mknod's private event nodes under /dev/input for evdev input injection.
+        "--cap-add=MKNOD"
         "--ipc=host"
         "--add-host=steam-headless:127.0.0.1"
         "--memory=8g"
+        # PID 1 is systemd: SIGTERM would skip graceful game/session shutdown (upstream
+        # contract). No --shm-size: --ipc=host shares the host's shm already.
+        "--stop-signal=SIGRTMIN+3"
+        "--stop-timeout=30"
       ]
       # shinputd's unit lists /dev/uhid in InaccessiblePaths, which overmounts
       # an existing path: when the path is absent the unit dies (status 226/NAMESPACE)
@@ -217,10 +229,31 @@ in
         "steam-headless-state:/var/lib/steam-headless"
         "steam-headless-journal:/var/log/journal"
 
-        # shinputd reads kernel-allocated input device numbers here.
-        "/sys/devices/virtual/input:/sys/devices/virtual/input:ro"
         "/etc/localtime:/run/host-localtime:ro"
-      ];
+      ]
+      # The image's bundled Vulkan/EGL vendor jsons resolve their bare library names
+      # against the json directory, which only exists on Debian/Fedora host layouts.
+      # The driver's own jsons carry absolute store paths and load correctly.
+      ++ (
+        if config.hardware.nvidia.package != null then
+          [
+            "${config.hardware.nvidia.package}/share/vulkan/icd.d/nvidia_icd.json:/usr/share/vulkan/icd.d/nvidia_icd.json:ro"
+            "${config.hardware.nvidia.package}/share/glvnd/egl_vendor.d/10_nvidia.json:/usr/share/glvnd/egl_vendor.d/10_nvidia.json:ro"
+          ]
+        else
+          [ ]
+      )
+      # shinputd reads kernel-allocated input device numbers under
+      # /sys/devices/virtual/input. That dir only exists while a virtual input
+      # device is registered, so bind the always-present parent instead.
+      ++ (
+        if cfg.evdevInputs then
+          [
+            "/sys/devices/virtual:/sys/devices/virtual:ro"
+          ]
+        else
+          [ ]
+      );
     };
 
     networking.firewall = {
@@ -294,8 +327,12 @@ in
         };
       };
 
+      # static_node rules so /dev/uinput and /dev/uhid exist at boot: the container's
+      # evdev input injection (Sunshine gamepad/keyboard emulation via shinputd) needs
+      # the real host /dev/uhid, and its presence creates /sys/devices/virtual/input.
       udev.extraRules = ''
         KERNEL=="uinput", SUBSYSTEM=="misc", OPTIONS+="static_node=uinput", TAG+="uaccess"
+        KERNEL=="uhid", SUBSYSTEM=="usb", OPTIONS+="static_node=uhid", TAG+="uaccess"
       '';
     };
 
