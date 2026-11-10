@@ -11,6 +11,8 @@ let
 
   cfg = config.custom.users.christian.vim;
 
+  editor = "vim";
+
 in
 
 {
@@ -21,13 +23,20 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.users.christian.vim = {
-      coc.enable = true;
+    custom.users.christian = {
+      # Init and plugins stay in ~/.config/nvim and ~/.local/share/nvim, which
+      # shells without Home Manager must bring in themselves.
+      shell.portableRc = ''
+        PATH="${config.programs.neovim.finalPackage}/bin:$PATH"
+        export EDITOR=${editor}
+      '';
+
+      vim.coc.enable = true;
     };
 
     home = {
       sessionVariables = {
-        EDITOR = "vim";
+        EDITOR = editor;
       };
     };
 
