@@ -70,28 +70,34 @@ let
     ) ponytailSkills
   );
 
-  # The mattpocock-skills plugin skills, for the backends that disable the plugin
-  # (`local`/`strata` in nixcfg-home's hosts/altair/claude-models.nix); grill-me and
-  # grill-with-docs delegate to grilling and domain-modeling. `plugin-mirrored-skills.json`
-  # is the single list of what the plugin also ships: it drives the seed here and the
-  # `skillOverrides` that hides the duplicate below, and the guest reads the same file.
-  # The plugin's own `code-review` is left out: a bare skill of that name would
-  # collide with the skill claude-code bundles.
+  # Skills from mattpocock/skills (plugin v1.3.1), seeded in place of the
+  # mattpocock-skills plugin, which settings_common.json disables. Values are the
+  # repo's group directories. The plugin's own `code-review` is left out: a bare
+  # skill of that name would collide with the skill claude-code bundles.
   mattpocockSkills = pkgs.fetchFromGitHub {
     owner = "mattpocock";
     repo = "skills";
     rev = "49dd158d1076134a641b33efb035946536778336";
     hash = "sha256-NljCSZNI3sZ+vbCw7pRdrwR7try4BxOFp4gdjuWYtzs=";
   };
-  pluginMirroredSkills = lib.importJSON ./plugin-mirrored-skills.json;
-  mattpocockMirror = pluginMirroredSkills."mattpocock-skills@claude-plugins-official";
-  mattpocockFiles = lib.mapAttrs' (
-    name: group:
-    lib.nameValuePair ".claude/skills/${name}" {
-      source = "${mattpocockSkills}/skills/${group}/${name}";
-    }
-  ) mattpocockMirror;
-  mirroredSkillNames = lib.concatLists (map builtins.attrNames (lib.attrValues pluginMirroredSkills));
+  mattpocockFiles =
+    lib.mapAttrs'
+      (
+        name: group:
+        lib.nameValuePair ".claude/skills/${name}" {
+          source = "${mattpocockSkills}/skills/${group}/${name}";
+        }
+      )
+      {
+        domain-modeling = "engineering";
+        grill-me = "productivity";
+        grill-with-docs = "engineering";
+        grilling = "productivity";
+        implement-spec = "engineering";
+        setup-matt-pocock-skills = "engineering";
+        to-spec = "engineering";
+        tdd = "engineering";
+      };
 
   securityAudit = pkgs.fetchFromGitHub {
     owner = "cloudflare";
@@ -267,26 +273,12 @@ let
       };
   };
 
-  # The seeded copy of a plugin-shipped skill is hidden in every backend that
-  # keeps the plugin enabled, so the plugin's copy is the one listed. A backend
-  # that drops the plugin re-enables the names via
-  # `extraBackendSettings.<backend>.skillOverrides`.
-  mirroredSkillOverrides = lib.listToAttrs (
-    map (name: {
-      inherit name;
-      value = "off";
-    }) mirroredSkillNames
-  );
-
   # Full, self-contained settings for one backend: common + backend env +
   # extraSettings, generated as a store file passed to `claude --settings`.
   settingsFileFor =
     backend:
     let
-      backendSettings = mergeSettings commonSettings {
-        env = backendEnv.${backend};
-        skillOverrides = mirroredSkillOverrides;
-      };
+      backendSettings = mergeSettings commonSettings { env = backendEnv.${backend}; };
       unified = mergeSettings (mergeSettings backendSettings cfg.extraSettings) (
         cfg.extraBackendSettings.${backend} or { }
       );
