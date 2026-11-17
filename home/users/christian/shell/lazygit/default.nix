@@ -29,7 +29,7 @@ in
       enable = true;
       settings = {
         gui = {
-          useHunkModeInStagingView = false;
+          useHunkModeInDiffView = false;
         };
       };
     };
