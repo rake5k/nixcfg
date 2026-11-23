@@ -253,25 +253,27 @@ let
       "Bash(glab mr create"
     ];
 
-  # Per-backend rewrite of the merged settings, for what a merge cannot
-  # express: removing keys. `container` drops the host-only blocks — the
-  # bubblewrap `sandbox` (the container is the boundary, and bubblewrap does
-  # not start inside podman) and all `permissions.ask` rules but the GitLab
-  # writes (content-scoped ask rules still prompt under bypass) — and makes
-  # bypass the default mode. `statusLine` stays: the packaged renderer runs
-  # inside the sandbox.
+  # `container` and the backends listed in `containerBackends` run inside a
+  # container sandbox.
+  inContainer = backend: backend == "container" || lib.elem backend cfg.containerBackends;
+
+  # Rewrite of a container backend's merged settings, for what a merge cannot
+  # express: removing keys. It drops the host-only blocks — the bubblewrap
+  # `sandbox` (the container is the boundary, and bubblewrap does not start
+  # inside podman) and all `permissions.ask` rules but the GitLab writes
+  # (content-scoped ask rules still prompt under bypass) — and makes bypass the
+  # default mode. `statusLine` stays: the packaged renderer runs inside the
+  # sandbox.
   # Mirrors nixcfg-home's microvm guest.
-  finalize = {
-    container =
-      settings:
-      removeAttrs settings [ "sandbox" ]
-      // {
-        permissions = settings.permissions // {
-          ask = lib.filter isGitlabWriteRule (settings.permissions.ask or [ ]);
-          defaultMode = "bypassPermissions";
-        };
+  finalizeContainer =
+    settings:
+    removeAttrs settings [ "sandbox" ]
+    // {
+      permissions = settings.permissions // {
+        ask = lib.filter isGitlabWriteRule (settings.permissions.ask or [ ]);
+        defaultMode = "bypassPermissions";
       };
-  };
+    };
 
   # Full, self-contained settings for one backend: common + backend env +
   # extraSettings, generated as a store file passed to `claude --settings`.
@@ -284,7 +286,7 @@ let
       );
     in
     pkgs.writeText "claude-settings-${backend}.json" (
-      builtins.toJSON ((finalize.${backend} or lib.id) unified)
+      builtins.toJSON ((if inContainer backend then finalizeContainer else lib.id) unified)
     );
 
   # `claude-<backend>` wrapper pinning the backend's settings and MCP servers.
@@ -297,14 +299,14 @@ let
       # path is absent where home-manager installs through the NixOS module.
       export PATH="$HOME/.local/state/nix/profiles/profile/bin:$PATH"
 
-      ${lib.optionalString (backend != "container") ''
+      ${lib.optionalString (!inContainer backend) ''
         # The sandbox masks a missing protected path with a `nodev` bind of
         # /dev/null, which opens with EACCES. Started in $HOME, the cwd-only
         # `.gitconfig` mask lands on ~/.gitconfig, which git probes as a global
-        # config and aborts on. Naming the XDG file skips that probe. Not in
-        # `container`: it drops the `sandbox` block, so no mask exists, the XDG
-        # file is absent inside the container, and pinning git there hides the
-        # container's own `~/.gitconfig`.
+        # config and aborts on. Naming the XDG file skips that probe. Not in a
+        # container backend: it drops the `sandbox` block, so no mask exists,
+        # the XDG file is absent inside the container, and pinning git there
+        # hides the container's own `~/.gitconfig`.
         export GIT_CONFIG_GLOBAL="${config.xdg.configHome}/git/config"
       ''}
 
@@ -339,6 +341,17 @@ in
         and `hyperion` point at ollama (see settings_local.json /
         settings_hyperion.json); `strata` points at a Strata server on
         127.0.0.1:8080 with the timeouts of `local`.
+      '';
+    };
+    containerBackends = lib.mkOption {
+      type = lib.types.listOf backendType;
+      default = [ ];
+      description = ''
+        Backends besides `container` that run inside a container sandbox, such
+        as `strata` launched through a sandbox launcher. Their settings get the
+        `container` rewrite (no `sandbox` block, only the GitLab write `ask`
+        rules, `bypassPermissions`) and their wrapper leaves
+        `GIT_CONFIG_GLOBAL` unset.
       '';
     };
     defaultBackend = lib.mkOption {

@@ -37,6 +37,11 @@ only make sense on the host (`env.CONTAINER_HOST`, extra `sandbox` rules) theref
 the generated wrappers so a downstream launcher can wrap `claude-container` without matching names
 in `home.packages`.
 
+`containerBackends` gives other backends the same treatment, for an endpoint other than the
+Anthropic API reached from inside a container sandbox (`strata` through a host tunnel, say). Their
+`ANTHROPIC_BASE_URL` must then name an address the container reaches, set in
+`extraBackendSettings.<backend>`.
+
 `~/.claude/settings.json` is deliberately left unmanaged: Claude Code writes to it itself
 (`/config`, `/model`, plugin installs), so a read-only store symlink would break those. Keys set
 here shadow it; `hooks` entries merge across both, with identical handlers deduplicated.
@@ -118,9 +123,10 @@ in place of the two default locations, so it never probes the mask. Nothing but 
 differs between the two locations: `~/.gitconfig` does not exist on a Home Manager machine, so the
 `allowRead` entry for it has no file to open.
 
-The `container` wrapper leaves `GIT_CONFIG_GLOBAL` unset. That backend drops the `sandbox` block, so
-no mask exists to dodge, the XDG file is absent inside the container, and pinning git at a missing
-path hides the container's own `~/.gitconfig` with its git identity and `url.insteadOf` rewrites.
+The `container` wrapper, like those of `containerBackends`, leaves `GIT_CONFIG_GLOBAL` unset. A
+container backend drops the `sandbox` block, so no mask exists to dodge, the XDG file is absent
+inside the container, and pinning git at a missing path hides the container's own `~/.gitconfig`
+with its git identity and `url.insteadOf` rewrites.
 
 The same masks stat as untracked files, so `treefmt` walks them and a git hook that formats the
 working tree fails on them: prettier cannot open a mask either. Six of them reach prettier:
