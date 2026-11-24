@@ -12,7 +12,12 @@ let
   cfg = config.custom.roles.dev.java;
 
   java = pkgs.jdk;
-  visualvm = pkgs.visualvm.override { jdk = pkgs.jdk8; };
+  # Non-reparenting WMs (niri via xwayland-satellite) leave AWT windows blank without the flag.
+  visualvm = pkgs.writeShellApplication {
+    name = "visualvm";
+    runtimeEnv._JAVA_AWT_WM_NONREPARENTING = "1";
+    text = ''exec ${getExe pkgs.visualvm} "$@"'';
+  };
 
   inherit (config.custom.roles.homeage) secretsPath;
   codeGenomeSecrets = filter (s: s != null) [
