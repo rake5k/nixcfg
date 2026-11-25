@@ -21,10 +21,22 @@ in
   };
 
   config = mkIf cfg.enable {
-    custom.programs.herdr.enable = true;
+    custom.programs = {
+      herdr.enable = true;
+      llm-wiki.enable = true;
+    };
 
     # Opts out of telemetry, incl. the codegraph MCP server below.
     home.sessionVariables.DO_NOT_TRACK = "1";
+
+    xdg.configFile = {
+      # Same `/wiki` as claude-code. Not `programs.opencode.commands`: it links only literal paths
+      # and writes a derivation as text.
+      "opencode/commands/wiki.md".source = config.custom.programs.llm-wiki.command;
+
+      # Claude Code's per-project memory (L1), loaded into every session; Home Manager has no plugin option.
+      "opencode/plugins/claude-memory".source = ./plugins/claude-memory;
+    };
 
     programs.opencode = {
       enable = true;

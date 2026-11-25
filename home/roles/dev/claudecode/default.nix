@@ -18,34 +18,7 @@ let
 
   codegraph = pkgs.unstable.codegraph;
 
-  # /wiki is llm-wiki's root skill, copied like its setup.sh does: the plugin
-  # placeholders become the wiki root and the source tree (`/wiki setup` runs
-  # its scripts/init-wiki.sh), `/llm-wiki` becomes `/wiki`. wiki.patch carries
-  # the local changes (Syncthing conflict copies, env-expanded memory paths).
-  wikiRoot = "${config.home.homeDirectory}/Documents/notes/claude";
-  llm-wiki = pkgs.applyPatches {
-    name = "llm-wiki";
-    src = pkgs.fetchFromGitHub {
-      owner = "rake5k";
-      repo = "llm-wiki";
-      rev = "7348a4aea7ebe07045dacd619f09802e264b21a8";
-      hash = "sha256-V0ofzh/kthFW+9sxP4E/meOd+pgA2OsrtS1DiiT88o0=";
-    };
-    patches = [ ./commands/wiki.patch ];
-  };
-  wikiCommand =
-    pkgs.runCommand "wiki.md"
-      {
-        wikiRootVar = "\${user_config.wiki_path}";
-        pluginRootVar = "\${CLAUDE_PLUGIN_ROOT}";
-      }
-      ''
-        substitute ${llm-wiki}/SKILL.md $out \
-          --replace-fail "$wikiRootVar" ${lib.escapeShellArg wikiRoot} \
-          --replace-fail "$pluginRootVar" ${llm-wiki} \
-          --replace-fail 'name: llm-wiki' 'name: wiki' \
-          --replace-fail /llm-wiki /wiki
-      '';
+  llmWiki = config.custom.programs.llm-wiki;
 
   # Skills cherry-picked from the ponytail plugin (v5.3.3), without its hooks: the
   # plugin is installed only at project/local scope, so a user-scope session has
@@ -189,7 +162,7 @@ let
   # a container sandbox can hide `~/.claude` and lack the Home Manager profile
   # on PATH while still mounting the host's nix store.
   commonSettings = mergeSettings (lib.importJSON ./settings_common.json) {
-    permissions.additionalDirectories = [ wikiRoot ];
+    permissions.additionalDirectories = [ llmWiki.root ];
     # Packaged rather than `npx`, so rendering needs no route to registry.npmjs.org.
     statusLine = {
       type = "command";
@@ -394,14 +367,13 @@ in
 
   config = lib.mkIf cfg.enable {
     custom = {
-      programs.herdr.enable = true;
+      programs = {
+        herdr.enable = true;
+        llm-wiki.enable = true;
+      };
 
       roles = {
         dev.claudecode.wrapperPackages = lib.genAttrs cfg.backends wrapperFor;
-
-        # The wiki folder below is inert without it; hosts that must not run
-        # Syncthing set `custom.roles.syncthing.enable = mkForce false`.
-        syncthing.enable = lib.mkDefault true;
 
         # Agent microVM workspaces hold git checkouts, recoverable from their remotes.
         backup.excludes = [ "${config.home.homeDirectory}/microvm/*/workspace/" ];
@@ -451,7 +423,7 @@ in
         ".config/ccstatusline/settings.json".source = ./ccstatusline.json;
 
         # Slash commands
-        ".claude/commands/wiki.md".source = wikiCommand;
+        ".claude/commands/wiki.md".source = llmWiki.command;
 
         # Skills directories
         ".claude/skills/commit".source = ./skills/commit;
@@ -473,19 +445,6 @@ in
         ".npm/lib/node_modules/@anthropic-ai/sandbox-runtime/vendor/seccomp/x64/unix-block.bpf".source =
           "${claude-seccomp}/share/claude-seccomp/unix-block.bpf";
       };
-    };
-
-    # L2 knowledge base read and written by /wiki, synced through hyperion.
-    # `.git` stays local (per-device .stignore); `maxConflicts = 1` keeps a
-    # single copy of a lost race instead of a growing pile of conflict files.
-    services.syncthing.settings.folders.LogseqClaude = {
-      enable = true;
-      devices = [
-        config.services.syncthing.settings.devices.hyperion.name
-      ];
-      id = "oce6r-2p1ft";
-      maxConflicts = 1;
-      path = "~/Documents/notes/claude";
     };
   };
 }
